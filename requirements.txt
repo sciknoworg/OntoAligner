@@ -1,0 +1,16 @@
+pathlib
+argparse
+owlready2
+rdflib
+tqdm
+ontospy
+numpy
+torch
+contextlib
+transformers
+datasets
+rapidfuzz
+openai
+rank_bm25
+sklearn
+sentence_transformers
