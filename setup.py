@@ -5,8 +5,8 @@ setup(
     version="0.1.0",
     author="Hamed Babaei Giglou",
     author_email="hamedbabaeigiglou@gmail.com",
-    description="A short description of your library",
-    long_description=open('README.md').read(),  # Optional: Provide a long description using README.md
+    description="OntoAligner: A Ontology Alignment Python Library",
+    long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
     url="https://github.com/HamedBabaei/OntoAligner",
     packages=find_packages(),
