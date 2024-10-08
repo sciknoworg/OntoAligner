@@ -1,0 +1,2734 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rdf:RDF xmlns='http://knowledgeweb.semanticweb.org/heterogeneity/alignment'
+	 xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+	 xmlns:xsd='http://www.w3.org/2001/XMLSchema#'
+	 alignmentSource='AgreementMakerLight'>
+
+<Alignment>
+	<xml>yes</xml>
+	<level>0</level>
+	<type>??</type>
+	<onto1>http://codata.jp/OML-MaterialInformation</onto1>
+	<onto2>http://matonto.org/ontologies/matonto</onto2>
+	<uri1>http://codata.jp/OML-MaterialInformation</uri1>
+	<uri2>http://matonto.org/ontologies/matonto</uri2>
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Density"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Density"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ElectricCurrent"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ElectricCurrent"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Entropy"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Entropy"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Mass"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Mass"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ElectricFluxDensity"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ElectricFluxDensity"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#SpecificEntropy"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/SpecificEntropy"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Concentration"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Concentration"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Solvent"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Solvent"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#EnergyDensity"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/EnergyDensity"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#SurfaceTension"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/SurfaceTension"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ElectricResistance"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ElectricResistance"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Frequency"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Frequency"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#SpecificEnergy"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/SpecificEnergy"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#LuminousFlux"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/LuminousFlux"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ElectricFieldStrength"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ElectricFieldStrength"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#SpecificVolume"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/SpecificVolume"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Exposure"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Exposure"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Illuminance"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Illuminance"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Radiance"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Radiance"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Irradiance"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Irradiance"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#RadiantIntensity"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/RadiantIntensity"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Permeability"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Permeability"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Luminance"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Luminance"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Energy"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Energy"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Acceleration"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Acceleration"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#LuminousIntensity"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/LuminousIntensity"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Force"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Force"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#AngularAcceleration"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/AngularAcceleration"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Volume"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Volume"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#BulkModulus"/>
+			<entity2 rdf:resource="http://matonto.org/ontologies/matonto#BulkModulus"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ElectricChargeDensity"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ElectricChargeDensity"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#AmountOfSubstance"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/AmountOfSubstance"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Length"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Length"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Permittivity"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Permittivity"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Time"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Time"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#PlaneAngle"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/PlaneAngle"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#SolidAngle"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/SolidAngle"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ElectricCharge"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ElectricCharge"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#MolarEntropy"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/MolarEntropy"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#MagneticFluxDensity"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/MagneticFluxDensity"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#MomentOfForce"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/MomentOfForce"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#MagneticFieldStrength"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/MagneticFieldStrength"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#MolarEnergy"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/MolarEnergy"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#MagneticFlux"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/MagneticFlux"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#AbsorbedDoseRate"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/AbsorbedDoseRate"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Area"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Area"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Mixture"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Mixture"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Atom"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Atom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ThermalConductivity"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ThermalConductivity"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pressure"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Pressure"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#pH"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/pH"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#HeatCapacity"/>
+			<entity2 rdf:resource="http://matonto.org/ontologies/matonto#HeatCapacity"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Temperature"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Temperature"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Alloy"/>
+			<entity2 rdf:resource="http://matonto.org/ontologies/matonto#Alloy"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ElectricConductance"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ElectricConductance"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#YoungsModulus"/>
+			<entity2 rdf:resource="http://matonto.org/ontologies/matonto#YoungsModulus"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Power"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Power"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ShearModulus"/>
+			<entity2 rdf:resource="http://matonto.org/ontologies/matonto#ShearModulus"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#MassDensity"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/VolumeDensity"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#SpecificHeatCapacity"/>
+			<entity2 rdf:resource="http://matonto.org/ontologies/matonto#SpecificHeat"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#WaveNumber"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Wavenumber"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ElectricPotentialDifference"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/PotentialDifference"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#CurrentDensity"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ElectricCurrentDensity"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#LinearMassDensity"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/LinearDensity"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ElectricInductance"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Inductance"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ElectricCapacitance"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Capacitance"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#ElementalSubstance"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Element"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Substance"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ChemicalSubstance"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ac"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Actinium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ac"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ActiniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ag"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Silver"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ag"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/SilverAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Al"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Aluminium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Al"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/AluminiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Am"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Americium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Am"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/AmericiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ar"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Argon"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ar"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ArgonAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#As"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Arsenic"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#As"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ArsenicAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#At"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Astatine"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#At"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/AstatineAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Au"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Gold"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Au"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/GoldAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ba"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Barium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ba"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/BariumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Be"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Beryllium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Be"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/BerylliumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Bh"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Bohrium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Bh"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/BohriumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Bi"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Bismuth"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Bi"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/BismuthAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Bk"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Berkelium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Bk"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/BerkeliumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Br"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Bromine"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Br"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/BromineAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ca"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Calcium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ca"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/CalciumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cd"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Cadmium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cd"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/CadmiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ce"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Cerium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ce"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/CeriumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cf"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Californium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cf"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/CaliforniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cl"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Chlorine"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cl"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ChlorineAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cm"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Curium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cm"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/CuriumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Co"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Cobalt"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Co"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/CobaltAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Chromium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ChromiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cu"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Copper"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cu"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/CopperAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Db"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Dubnium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Db"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/DubniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ds"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Darmstadtium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Dy"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Dysprosium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Dy"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/DysprosiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Er"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Erbium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Er"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ErbiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Es"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Einsteinium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Es"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/EinsteiniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Eu"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Europium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Eu"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/EuropiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Fe"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Iron"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Fe"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/IronAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Fm"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/FermiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Fm"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Fermium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Fr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Francium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Fr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/FranciumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ga"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Gallium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ga"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/GalliumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Gd"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Gadolinium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Gd"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/GadoliniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ge"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Germanium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ge"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/GermaniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#He"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Helium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#He"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/HeliumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Hf"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Hafnium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Hf"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/HafniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Hg"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Mercury"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Hg"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/MercuryAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ho"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Holmium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ho"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/HolmiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Hs"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Hassium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Hs"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/HassiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#In"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Indium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#In"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/IndiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ir"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Iridium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ir"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/IridiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Kr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Krypton"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Kr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/KryptonAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#La"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Lanthanum"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#La"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/LanthanumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Li"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Lithium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Li"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/LithiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Lr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Lawrencium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Lr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/LawrenciumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Lu"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Lutetium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Lu"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/LutetiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Md"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Mendelevium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Md"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/MendeleviumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Mg"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Magnesium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Mg"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/MagnesiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Mn"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Manganese"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Mn"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ManganeseAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Mo"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Molybdenum"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Mo"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/MolybdenumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Mt"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Meitnerium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Mt"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/MeitneriumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Na"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Sodium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Na"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/SodiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Nb"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Niobium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Nb"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/NiobiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Nd"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Neodymium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Nd"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/NeodymiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ne"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Neon"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ne"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/NeonAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ni"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Nickel"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ni"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/NickelAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#No"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Nobelium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#No"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/NobeliumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Np"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Neptunium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Np"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/NeptuniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Os"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Osmium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Os"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/OsmiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pa"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Protactinium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pa"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ProtactiniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pb"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Lead"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pb"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/LeadAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pd"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Palladium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pd"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/PalladiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pm"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Promethium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pm"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/PromethiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Po"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Polonium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Po"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/PoloniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Praseodymium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/PraseodymiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pt"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Platinum"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pt"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/PlatinumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pu"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Plutonium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Pu"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/PlutoniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ra"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Radium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ra"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/RadiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Rb"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Rubidium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Rb"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/RubidiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Conductivity"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Conduction"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Re"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Rhenium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Re"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/RheniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Rf"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Rutherfordium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Rf"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/RutherfordiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Rg"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Roentgenium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Rh"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Rhodium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Rh"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/RhodiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Rn"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Radon"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Rn"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/RadonAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ru"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Ruthenium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ru"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/RutheniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Sb"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Antimony"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Sb"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/AntimonyAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Sc"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Scandium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Sc"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ScandiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Se"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Selenium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Se"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/SeleniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Sg"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/SeaborgiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Sg"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Seaborgium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Si"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Silicon"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Si"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/SiliconAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Sm"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Samarium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Sm"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/SamariumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Sn"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Tin"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Sn"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/TinAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Sr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Strontium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Sr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/StrontiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ta"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Tantalum"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ta"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/TantalumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Tb"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Terbium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Tb"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/TerbiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Tc"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Technetium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Tc"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/TechnetiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Te"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Tellurium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Te"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/TelluriumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Th"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Thorium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Th"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ThoriumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ti"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Titanium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Ti"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/TitaniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Tl"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Thallium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Tl"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ThalliumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Tm"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Thulium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Tm"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ThuliumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Uuo"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Ununoctium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Uup"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Ununpentium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Uup"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/UnunpentiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Uus"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Ununseptium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Uuo"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/UnunoctiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Uus"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/UnunseptiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Uut"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Ununtrium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Uut"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/UnuntriumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Xe"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Xenon"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Xe"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/XenonAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Yb"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Ytterbium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Yb"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/YtterbiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Zn"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Zinc"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Zn"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ZincAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Zr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Zirconium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Zr"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/ZirconiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Metal"/>
+			<entity2 rdf:resource="http://matonto.org/ontologies/matonto#Metals"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Glass"/>
+			<entity2 rdf:resource="http://matonto.org/ontologies/matonto#Glasses"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#CompoundSubstance"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Compound"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#CommonName"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/TraditionalName"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#EnergyGap"/>
+			<entity2 rdf:resource="http://matonto.org/ontologies/matonto#BandGap"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#B"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Boron"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#B"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/BoronAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#C"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/CarbonAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#C"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Carbon"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#F"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/FluorineAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#F"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Fluorine"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#H"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/HydrogenAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#H"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Hydrogen"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#I"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/IodineAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#I"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Iodine"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#K"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/PotassiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#K"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Potassium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#N"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/NitrogenAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#N"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Nitrogen"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#O"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/OxygenAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#O"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Oxygen"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#P"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/PhosphorusAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#P"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Phosphorus"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#S"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/SulfurAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#S"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Sulfur"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#U"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/UraniumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#U"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Uranium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#V"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/VanadiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#V"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Vanadium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#W"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/TungstenAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#W"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Tungsten"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Y"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/YttriumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Y"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Yttrium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cs"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/CaesiumAtom"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+	<map>
+		<Cell>
+			<entity1 rdf:resource="http://codata.jp/OML-MaterialInformation#Cs"/>
+			<entity2 rdf:resource="http://ontology.dumontierlab.com/Caesium"/>
+			<measure rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</measure>
+			<relation>=</relation>
+		</Cell>
+	</map>
+
+</Alignment>
+</rdf:RDF>
