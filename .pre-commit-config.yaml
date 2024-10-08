@@ -8,8 +8,10 @@ repos:
       - id: detect-private-key
       - id: check-byte-order-marker
       - id: mixed-line-ending
+      - id: check-added-large-files
+        args: [ "--maxkb=5000" ]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.1.1
     hooks:
       - id: ruff
-        args: [ "--fix", "--exit-non-zero-on-fix", "--max-file-size", "5000"]
+        args: [ "--fix", "--exit-non-zero-on-fix"]
