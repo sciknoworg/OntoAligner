@@ -1,7 +1,7 @@
 # OntoAligner: A Ontology Alignment Python Library
 
 <div align="center">
-<h4><span align="center" style="color: red;">🔴🔴Under Construction🔴🔴</span></h4>
+<h4><span align="center" style="color: red;">🔴🔴🔴🔴Under Construction🔴🔴🔴🔴</span></h4>
 </div>
 
 [//]: # ()
