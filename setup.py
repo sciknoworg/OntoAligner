@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="OntoAligner",
-    version="0.1.0",
+    version="0.1.1",
     author="Hamed Babaei Giglou",
     author_email="hamedbabaeigiglou@gmail.com",
     description="OntoAligner: A Ontology Alignment Python Library",
