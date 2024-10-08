@@ -3,6 +3,7 @@ import os
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List
 
+
 from owlready2 import World
 from rdflib import Namespace, URIRef
 from tqdm import tqdm

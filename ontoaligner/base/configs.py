@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 from typing import Dict, Optional
 
+
 import openai
 from dotenv import find_dotenv, load_dotenv
 

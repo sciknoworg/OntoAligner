@@ -7,6 +7,7 @@ from ontoaligner.base.ontology import BaseAlignmentsParser
 from ontoaligner.utils import io
 
 
+
 class OMDataset(ABC):
     track: str = ""
     ontology_name: str = ""
