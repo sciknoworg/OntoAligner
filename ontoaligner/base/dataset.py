@@ -19,19 +19,12 @@ class OMDataset(ABC):
 
     working_dir: str = ""
 
-    def collect(self, root_dir: str) -> Dict:
-        om_root_path = os.path.join(root_dir, self.track, self.ontology_name)
+    def collect(self, source_ontology_path:str, target_ontology_path:str, reference_matching_path:str) -> Dict:
         data = {
             "dataset-info": {"track": self.track, "ontology-name": self.ontology_name},
-            "source": self.source_ontology.parse(
-                root_dir=om_root_path, ontology_file_name="source.xml"
-            ),
-            "target": self.target_ontology.parse(
-                root_dir=om_root_path, ontology_file_name="target.xml"
-            ),
-            "reference": self.alignments.parse(
-                root_dir=om_root_path, reference_file_name="reference.xml"
-            ),
+            "source": self.source_ontology.parse(input_file_path=source_ontology_path),
+            "target": self.target_ontology.parse(input_file_path=target_ontology_path),
+            "reference": self.alignments.parse(input_file_path=reference_matching_path),
         }
         return data
 

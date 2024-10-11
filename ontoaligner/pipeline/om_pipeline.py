@@ -5,6 +5,9 @@ from typing import Any
 
 class OMPipelines:
     def __init__(self,
+                 source_ontology_path: str,
+                 target_ontology_path: str,
+                 reference_matching_path: str=None,
                  owl_json_path: str=None,
                  llm_confidence_th: float=0.7,
                  ir_score_threshold: float=0.9,
@@ -13,6 +16,9 @@ class OMPipelines:
                  om_dataset: Any=None,
                  om_encoder: Any=None,
                  **kwargs) -> None:
+        self.source_ontology_path = source_ontology_path
+        self.target_ontology_path = target_ontology_path
+        self.reference_matching_path = reference_matching_path
         self.owl_json_path = owl_json_path
         self.llm_confidence_th = llm_confidence_th
         self.ir_score_threshold = ir_score_threshold
@@ -27,7 +33,9 @@ class OMPipelines:
         if self.owl_json_path:
             task_owl = task_obj.load_from_json(root_dir=self.owl_json_path)
         else:
-            task_owl = task_obj.collect(root_dir=self.config.root_dir)
+            task_owl = task_obj.collect(source_ontology_path=self.source_ontology_path,
+                                        target_ontology_path=self.target_ontology_path,
+                                        reference_matching_path=self.reference_matching_path)
         output_dict_obj = {
             "dataset-info": task_owl["dataset-info"],
             "encoder-info": self.om_encoder.get_encoder_info(),

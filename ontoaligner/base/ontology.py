@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List
 
@@ -104,9 +103,7 @@ class BaseOntologyParser(ABC):
         ontology.get_ontology(input_file_path).load()
         return ontology
 
-    def parse(self, root_dir: str, ontology_file_name: str) -> List:
-        input_file_path = os.path.join(root_dir, ontology_file_name)
-        print(f"\t\tworking on {input_file_path}")
+    def parse(self, input_file_path: str) -> List:
         ontology = self.load_ontology(input_file_path=input_file_path)
         return self.extract_data(ontology)
 
@@ -140,8 +137,6 @@ class BaseAlignmentsParser(ABC):
         ontology.get_ontology(input_file_path).load()
         return ontology
 
-    def parse(self, root_dir: str, reference_file_name: str) -> List:
-        input_file_path = os.path.join(root_dir, reference_file_name)
-        print(f"\t\tworking on reference: {input_file_path}")
+    def parse(self, input_file_path: str) -> List:
         reference = self.load_ontology(input_file_path=input_file_path)
         return self.extract_data(reference)
