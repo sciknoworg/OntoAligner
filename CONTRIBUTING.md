@@ -1,5 +1,5 @@
 # Contribution Guidelines
-Welcome to **OntoAligner**! 
+Welcome to **OntoAligner**!
 
 We appreciate your interest in contributing to this project. Whether you're a developer, researcher, or enthusiast, your contributions are invaluable. Before you start contributing, please take your time to review the following guidelines.
 
@@ -37,15 +37,15 @@ If you have suggestions to make our documentation clearer or more professional, 
 - If a commit references an issue or pull request, format it as follows: "Add LLaMA-3 [#42]".
 - Optionally, prepend your commit message with one of the following emoji codes for clarity:
 
-| Code           | Emoji | Use for                        | 
+| Code           | Emoji | Use for                        |
 |----------------|-------|--------------------------------|
-| `:fire:`       | 🔥    | Remove code or files           | 
-| `:bug:`        | 🐛    | Fix a bug or issue             | 
+| `:fire:`       | 🔥    | Remove code or files           |
+| `:bug:`        | 🐛    | Fix a bug or issue             |
 | `:sparkles:`   | ✨    | Add feature or improvements    |
-| `:memo:`       | 📝    | Add or update documentation    | 
-| `:tada:`       | 🎉    | Start a project                | 
-| `:recycle:`    | ♻️    | Refactor code                  | 
-| `:pencil2:`    | ✏️    | Minor changes   or improvement | 
+| `:memo:`       | 📝    | Add or update documentation    |
+| `:tada:`       | 🎉    | Start a project                |
+| `:recycle:`    | ♻️    | Refactor code                  |
+| `:pencil2:`    | ✏️    | Minor changes   or improvement |
 | `:bookmark:`   | 🔖    | Version release                |
 | `:adhesive_bandage:` | 🩹 | Non-critical fix               |
 | `:test_tube:`  | 🧪    | Test-related changes           |
@@ -63,7 +63,7 @@ To contribute changes to the library, please follow these steps:
 6. Format the code using `ruff` (`ruff check --fix .`).
 7. Write tests to validate the functionality if necessary.
 8. If your changes involve code, run the tests and ensure they all pass.
-9. Open a pull request with your changes.
+9. Open a pull request with your changes to the `dev` branch.
 10. Be responsive to feedback during the review process.
 
 ## 3. License
