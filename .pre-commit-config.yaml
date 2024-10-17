@@ -14,4 +14,4 @@ repos:
     rev: v0.1.1
     hooks:
       - id: ruff
-        args: [ "--fix", "--exit-non-zero-on-fix"]
+        args: [ "--fix"]
