@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from transformers import AutoTokenizer, LlamaForCausalLM, LlamaTokenizer, MistralForCausalLM, T5ForConditionalGeneration, T5Tokenizer
+from transformers import AutoTokenizer, T5Tokenizer, LlamaTokenizer, LlamaForCausalLM, MistralForCausalLM, T5ForConditionalGeneration
 
 from .llm import EncoderDecoderLLMArch, DecoderLLMArch, OpenAILLMArch
 
