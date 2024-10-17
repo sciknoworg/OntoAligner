@@ -18,3 +18,4 @@ pre-commit
 setuptools
 wheel
 twine
+ruff
