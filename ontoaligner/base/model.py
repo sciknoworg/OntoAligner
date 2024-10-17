@@ -4,7 +4,6 @@ from typing import List
 
 
 class BaseOMModel(ABC):
-    path: str = ""
 
     def __init__(self, **kwargs) -> None:
         self.kwargs = kwargs
