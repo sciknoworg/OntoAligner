@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
 import time
 from abc import abstractmethod
 from typing import Any, List
@@ -16,21 +15,20 @@ class LLM(BaseOMModel):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.load()
 
     @abstractmethod
     def __str__(self):
         pass
 
-    def load(self) -> None:
-        self.load_tokenizer()
-        self.load_model()
+    def load(self, path: str) -> None:
+        self.load_tokenizer(path=path)
+        self.load_model(path=path)
 
-    def load_tokenizer(self) -> None:
-        self.tokenizer = self.tokenizer.from_pretrained(self.path)
+    def load_tokenizer(self, path: str) -> None:
+        self.tokenizer = self.tokenizer.from_pretrained(path)
 
-    def load_model(self) -> None:
-        self.model = self.model.from_pretrained(self.path)
+    def load_model(self, path: str) -> None:
+        self.model = self.model.from_pretrained(path)
         self.model.to(self.kwargs["device"])
 
     def tokenize(self, input_data: List) -> Any:
@@ -76,13 +74,11 @@ class BaseLLMArch(LLM):
     def __str__(self):
         pass
 
-    def load_model(self) -> None:
+    def load_model(self, path: str) -> None:
         if self.kwargs["device"] != "cpu":
-            self.model = self.model.from_pretrained(
-                self.path, load_in_8bit=True, device_map="balanced"
-            )
+            self.model = self.model.from_pretrained(self.path, load_in_8bit=True, device_map="balanced")
         else:
-            super().load_model()
+            super().load_model(path=path)
 
     def generate_for_one_input(self, tokenized_input_data: Any) -> List:
         with torch.no_grad():
@@ -116,13 +112,10 @@ class BaseLLMArch(LLM):
 class OpenAILLMArch(LLM):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.client = OpenAI(api_key=os.environ["OPENAI_KEY"])
+        self.client = OpenAI(api_key=kwargs["OPENAI_KEY"])
 
     def __str__(self):
         return "OpenAILM"
-
-    def load(self) -> None:
-        pass
 
     def tokenize(self, input_data: List) -> Any:
         return input_data
@@ -178,43 +171,48 @@ class EncoderDecoderLLMArch(BaseLLMArch):
 
 
 class DecoderLLMArch(BaseLLMArch):
+    def __init__(self, **kwargs) -> None:
+        super().__init__(**kwargs)
+        self.llms_with_special_tk =  ["llama", "falcon", "vicuna", "mpt", 'mamba']
+        self.llms_with_hugging_tk = ["llama", 'mistral']
+
     def __str__(self):
         return "DecoderLLMArch"
 
+    def check_list_llms(self, llm_path: str, check_list: List[str]) -> bool:
+        for llm in check_list:
+            if llm in llm_path:
+                return True
+        return False
 
-class LLaMA2DecoderLLMArch(BaseLLMArch):
-    def __str__(self):
-        return "LLaMA2DecoderLLMArch"
+    def load_tokenizer(self, path: str) -> None:
 
-    def load_tokenizer(self) -> None:
-        def padding_side_left_llms(path):
-            llms = ["llama", "falcon", "vicuna", "mpt", 'Mamba']
-            for llm in llms:
-                if llm in path:
-                    return True
-            return False
+        llm_req_special_tk = self.check_list_llms(path, self.llms_with_special_tk)
+        llm_req_hugging_tk = self.check_list_llms(path, self.llms_with_hugging_tk)
 
-        if padding_side_left_llms(self.path):
-            self.tokenizer = self.tokenizer.from_pretrained(
-                self.path,
-                token=os.environ["HUGGINGFACE_ACCESS_TOKEN"],
-                padding_side="left",
-            )
+        if llm_req_special_tk and llm_req_hugging_tk:
+            self.tokenizer = self.tokenizer.from_pretrained(path, token=self.kwargs['HUGGINGFACE_ACCESS_TOKEN'],
+                                                            padding_side="left")
+        elif llm_req_hugging_tk:
+            self.tokenizer = self.tokenizer.from_pretrained(path, token=self.kwargs['HUGGINGFACE_ACCESS_TOKEN'])
         else:
-            self.tokenizer = self.tokenizer.from_pretrained(self.path, token=os.environ["HUGGINGFACE_ACCESS_TOKEN"])
-        if "falcon" not in self.path:
-            self.tokenizer.eos_token = "<\s>"
+            self.tokenizer = self.tokenizer.from_pretrained(path)
         self.tokenizer.pad_token = self.tokenizer.eos_token
-        # self.tokenizer.add_special_tokens({'pad_token': '[PAD]'})
 
-    def load_model(self) -> None:
+    def load_model(self, path: str) -> None:
+        llm_req_hugging_tk = self.check_list_llms(path, self.llms_with_hugging_tk)
+
         if self.kwargs["device"] != "cpu":
-            self.model = self.model.from_pretrained(
-                self.path,
-                load_in_8bit=True,
-                device_map="balanced",
-                token=os.environ["HUGGINGFACE_ACCESS_TOKEN"],
-            )
+            if llm_req_hugging_tk:
+                self.model = self.model.from_pretrained(path, load_in_8bit=True, device_map="balanced",
+                                                        token=self.kwargs['HUGGINGFACE_ACCESS_TOKEN'])
+            else:
+                self.model = self.model.from_pretrained(path, load_in_8bit=True, device_map="balanced")
         else:
-            self.model = self.model.from_pretrained(self.path, token=os.environ["HUGGINGFACE_ACCESS_TOKEN"])
+            self.model = self.model.from_pretrained(path, token=self.kwargs['HUGGINGFACE_ACCESS_TOKEN'])
+            if llm_req_hugging_tk:
+                self.model = self.model.from_pretrained(path, token=self.kwargs['HUGGINGFACE_ACCESS_TOKEN'])
+            else:
+                self.model = self.model.from_pretrained(path)
+
             self.model.to(self.kwargs["device"])
