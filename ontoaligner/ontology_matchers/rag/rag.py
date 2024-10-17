@@ -4,14 +4,15 @@ from typing import Any, List
 import torch
 from torch.utils.data import DataLoader
 from tqdm import tqdm
+from transformers import AutoModelForCausalLM, AutoTokenizer, LlamaForCausalLM, LlamaTokenizer, MistralForCausalLM
 
 from ontoaligner.base import BaseOMModel
-from ..llm import LLaMA2DecoderLLMArch, OpenAILLMArch
+from ..llm import DecoderLLMArch, OpenAILLMArch
 from .dataset import * # NOQA
 from ontoaligner.postprocess import process
 
 
-class RAGBasedDecoderLLMArch(LLaMA2DecoderLLMArch):
+class RAGBasedDecoderLLMArch(DecoderLLMArch):
     ANSWER_SET = {
         "yes": ["yes", "correct", "true", "positive", "valid", "right", "accurate", "ok"],
         "no": ["no", "incorrect", "false", "negative", "invalid", "wrong", "not"],
@@ -40,9 +41,8 @@ class RAGBasedDecoderLLMArch(LLaMA2DecoderLLMArch):
         return len(self.tokenizer(answer).input_ids) == 2
 
     def get_probas_yes_no(self, outputs):
-        probas_yes_no = outputs.scores[0][
-            :, self.answer_sets_token_id["yes"] + self.answer_sets_token_id["no"]
-        ].softmax(-1)
+        probas_yes_no = outputs.scores[0][:,
+                        self.answer_sets_token_id["yes"] + self.answer_sets_token_id["no"]].softmax(-1)
         return probas_yes_no
 
     def generate_for_llm(self, tokenized_input_data: Any) -> Any:
@@ -103,7 +103,11 @@ class RAG(BaseOMModel):
         self.Retrieval = self.Retrieval(**self.kwargs["retriever-config"])
         self.LLM = self.LLM(**self.kwargs["llm-config"])
 
-    def __str__(self):
+    def load(self, llm_path: str, ir_path: str) -> None:
+        self.LLM.load(path=llm_path)
+        self.Retrieval.load(path=ir_path)
+
+    def __str__(self) -> str:
         return "RAG"
 
     def generate(self, input_data: List) -> List:
@@ -185,3 +189,90 @@ class RAG(BaseOMModel):
         retrieval_input = input_data["retriever-encoder"]()(**input_data["task-args"])
         retrieval_predicts = self.Retrieval.generate(input_data=retrieval_input)
         return retrieval_predicts
+
+
+
+class LLaMADecoderRAGLLM(RAGBasedDecoderLLMArch):
+    tokenizer = LlamaTokenizer
+    model = LlamaForCausalLM
+
+    def __str__(self):
+        return super().__str__() + "-LLaMALLM"
+
+
+class MistralDecoderRAGLLM(RAGBasedDecoderLLMArch):
+    tokenizer = AutoTokenizer
+    model = MistralForCausalLM
+
+    def __str__(self):
+        return super().__str__() + "-MistralLLM"
+
+class AutoModelDecoderRAGLLM(RAGBasedDecoderLLMArch):
+    tokenizer = AutoTokenizer
+    model = AutoModelForCausalLM
+
+    def __str__(self):
+        return super().__str__() + "-AutoModel"
+
+
+class AutoModelDecoderRAGLLMV2(RAGBasedDecoderLLMArch):
+    tokenizer = AutoTokenizer
+    model = AutoModelForCausalLM
+
+    def __str__(self):
+        return super().__str__() + "-AutoModel-V2"
+
+    def get_probas_yes_no(self, outputs):
+        probas_yes_no = (
+            outputs.scores[0][:, self.answer_sets_token_id["yes"] + self.answer_sets_token_id["no"]]
+            .float()
+            .softmax(-1)
+        )
+        return probas_yes_no
+
+    def check_answer_set_tokenizer(self, answer: str) -> bool:
+        return len(self.tokenizer(answer).input_ids) == 1
+
+
+class OpenAIRAGLLM(RAGBasedOpenAILLMArch):
+
+    def __str__(self):
+        return super().__str__() + "-OpenAILLM"
+
+
+class MambaSSMRAGLLM(RAGBasedDecoderLLMArch):
+    tokenizer = AutoTokenizer
+    model = AutoModelForCausalLM
+
+    def __str__(self):
+        return super().__str__() + "-MambaSSM"
+
+    def load_model(self, path: str) -> None:
+        if self.kwargs["device"] != "cpu":
+            self.model = self.model.from_pretrained(path, load_in_8bit=True, device_map="balanced", trust_remote_code=True)
+        else:
+            self.model = self.model.from_pretrained(path, trust_remote_code=True)
+            self.model.to(self.kwargs["device"])
+
+    def generate_for_llm(self, tokenized_input_data: Any) -> Any:
+        with torch.cuda.amp.autocast():
+            outputs = self.model.generate(
+                tokenized_input_data.input_ids,
+                pad_token_id=self.tokenizer.eos_token_id,
+                max_new_tokens=self.kwargs["max_token_length"],
+                do_sample=False,
+                output_scores=True,
+                return_dict_in_generate=True
+            )
+        return outputs
+
+    def get_probas_yes_no(self, outputs):
+        probas_yes_no = (
+            outputs.scores[0][:, self.answer_sets_token_id["yes"] + self.answer_sets_token_id["no"]]
+            .float()
+            .softmax(-1)
+        )
+        return probas_yes_no
+
+    def check_answer_set_tokenizer(self, answer: str) -> bool:
+        return len(self.tokenizer(answer).input_ids) == 1
