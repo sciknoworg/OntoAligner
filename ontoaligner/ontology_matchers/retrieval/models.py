@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-from pathlib import Path
 from typing import Any
 import numpy as np
 from rank_bm25 import BM25Okapi
@@ -13,37 +12,18 @@ from ontoaligner.utils import io
 
 
 class BERTRetrieval(BiEncoderRetrieval):
-    path: str = "sentence-transformers/multi-qa-mpnet-base-dot-v1"
-
     def __str__(self):
         return super().__str__() + "+BERTRetrieval"
 
 
-class SpecterBERTRetrieval(BiEncoderRetrieval):
-    path: str = "allenai/specter_plus_plus"
-
-    def __str__(self):
-        return super().__str__() + "SpecterBERTRetrieval"
-
-
-class FlanT5XLRetrieval(BiEncoderRetrieval):
-    path: str = "google/flan-t5-xl"
-
+class FlanT5Retrieval(BiEncoderRetrieval):
     def __str__(self):
         return super().__str__() + "FlanT5XLRetrieval"
 
 
-class FlanT5XXLRetrieval(BiEncoderRetrieval):
-    path: str = "google/flan-t5-xxl"
-
-    def __str__(self):
-        return super().__str__() + "FlanT5XXLRetrieval"
-
-
 class TFIDFRetrieval(Retrieval):
-    path: str = "NO MODEL LOADING IN TFIDFRetrieval MODEL"
 
-    def load(self):
+    def load(self, path: str = None):
         self.model = TfidfVectorizer()
 
     def fit(self, inputs: Any) -> Any:
@@ -64,7 +44,8 @@ class BM25Retrieval(Retrieval):
     """
     http://ethen8181.github.io/machine-learning/search/bm25_intro.html
     """
-    path: str = "NO MODEL LOADING IN BM25Retrieval MODEL"
+    def load(self, path: str = None):
+        pass
 
     def fit(self, inputs: Any) -> Any:
         tokenized_inputs = [input.split(" ") for input in inputs]
@@ -83,21 +64,15 @@ class BM25Retrieval(Retrieval):
 
 
 class SVMBERTRetrieval(MLRetrieval):
-    path: str = "sentence-transformers/multi-qa-mpnet-base-dot-v1"
-
     def __str__(self):
         return super().__str__() + "+SVMBERTRetrieval"
 
 
 class AdaRetrieval(BiEncoderRetrieval):
-    path: str = os.path.join(
-        Path(__file__).parents[3], "assets", "openai-ada-embedding"
-    )
-
     def __str__(self):
         return super().__str__() + "+AdaRetrieval"
 
-    def load(self):
+    def load(self, path: str):
         self.model = np.load(os.path.join(self.path, "openai_embeddings.npy"))
         self.labels2index = io.read_json(os.path.join(self.path, "labels2index.json"))
 

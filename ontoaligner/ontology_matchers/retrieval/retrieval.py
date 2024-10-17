@@ -17,9 +17,8 @@ class Retrieval(BaseOMModel):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.load()
 
-    def load(self):
+    def load(self, path: str) -> Any:
         pass
 
     def __str__(self):
@@ -72,10 +71,9 @@ class Retrieval(BaseOMModel):
 
 
 class BiEncoderRetrieval(Retrieval):
-    path: str = ""
 
-    def load(self):
-        self.model = SentenceTransformer(self.path, device=self.kwargs["device"])
+    def load(self, path: str):
+        self.model = SentenceTransformer(path, device=self.kwargs["device"])
 
     def fit(self, inputs: Any) -> Any:
         return self.model.encode(inputs, show_progress_bar=True, batch_size=16)
@@ -117,10 +115,7 @@ class MLRetrieval(Retrieval):
     This retriever is the slowest model.
     So it should be used for labels based retrieval
     """
-
-    path: str = ""
-
-    def load(self):
+    def load(self, path: str):
         self.model = SentenceTransformer(self.path, device=self.kwargs["device"])
 
     def fit(self, inputs: Any) -> Any:
