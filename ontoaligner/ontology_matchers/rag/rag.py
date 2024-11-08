@@ -4,13 +4,12 @@ from typing import Any, List
 import torch
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-from transformers import AutoModelForCausalLM, AutoTokenizer, LlamaForCausalLM, LlamaTokenizer, MistralForCausalLM
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from ontoaligner.base import BaseOMModel
+from ...base import BaseOMModel
 from ..llm import DecoderLLMArch, OpenAILLMArch
 from .dataset import * # NOQA
-from ontoaligner.postprocess import process
-
+from ...postprocess import process
 
 class RAGBasedDecoderLLMArch(DecoderLLMArch):
     ANSWER_SET = {
@@ -191,22 +190,6 @@ class RAG(BaseOMModel):
         return retrieval_predicts
 
 
-
-class LLaMADecoderRAGLLM(RAGBasedDecoderLLMArch):
-    tokenizer = LlamaTokenizer
-    model = LlamaForCausalLM
-
-    def __str__(self):
-        return super().__str__() + "-LLaMALLM"
-
-
-class MistralDecoderRAGLLM(RAGBasedDecoderLLMArch):
-    tokenizer = AutoTokenizer
-    model = MistralForCausalLM
-
-    def __str__(self):
-        return super().__str__() + "-MistralLLM"
-
 class AutoModelDecoderRAGLLM(RAGBasedDecoderLLMArch):
     tokenizer = AutoTokenizer
     model = AutoModelForCausalLM
@@ -220,7 +203,7 @@ class AutoModelDecoderRAGLLMV2(RAGBasedDecoderLLMArch):
     model = AutoModelForCausalLM
 
     def __str__(self):
-        return super().__str__() + "-AutoModel-V2"
+        return super().__str__() + "-AutoModelV2"
 
     def get_probas_yes_no(self, outputs):
         probas_yes_no = (
@@ -240,7 +223,7 @@ class OpenAIRAGLLM(RAGBasedOpenAILLMArch):
         return super().__str__() + "-OpenAILLM"
 
 
-class MambaSSMRAGLLM(RAGBasedDecoderLLMArch):
+class MambaSSMRAGLLM(AutoModelDecoderRAGLLMV2):
     tokenizer = AutoTokenizer
     model = AutoModelForCausalLM
 
@@ -265,14 +248,3 @@ class MambaSSMRAGLLM(RAGBasedDecoderLLMArch):
                 return_dict_in_generate=True
             )
         return outputs
-
-    def get_probas_yes_no(self, outputs):
-        probas_yes_no = (
-            outputs.scores[0][:, self.answer_sets_token_id["yes"] + self.answer_sets_token_id["no"]]
-            .float()
-            .softmax(-1)
-        )
-        return probas_yes_no
-
-    def check_answer_set_tokenizer(self, answer: str) -> bool:
-        return len(self.tokenizer(answer).input_ids) == 1
