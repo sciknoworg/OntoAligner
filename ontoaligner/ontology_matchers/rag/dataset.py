@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Any
+from typing import Any, Dict
 
 from torch.utils.data import Dataset
 
@@ -7,7 +7,7 @@ from torch.utils.data import Dataset
 class RAGDataset(Dataset):
     prompt: str = None
 
-    def __init__(self, data):
+    def __init__(self, data: Any) -> None:
         self.data = data
         self.len = len(data)
 
@@ -16,7 +16,7 @@ class RAGDataset(Dataset):
         text = text.lower()
         return text
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> Dict:
         return {
             "texts": self.fill_one_sample(self.data[index]),
             "iris": [self.data[index]["source"]["iri"], self.data[index]["target"]["iri"]]
