@@ -8,7 +8,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
 
 from .retrieval import BiEncoderRetrieval, MLRetrieval, Retrieval
-from ontoaligner.utils import io
+from ...utils import io
 
 
 class BERTRetrieval(BiEncoderRetrieval):

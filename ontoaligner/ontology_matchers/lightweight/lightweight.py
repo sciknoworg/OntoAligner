@@ -4,7 +4,7 @@ from typing import Any, List
 import rapidfuzz
 from tqdm import tqdm
 
-from ontoaligner.base import BaseOMModel
+from ...base import BaseOMModel
 
 
 class Lightweight(BaseOMModel):

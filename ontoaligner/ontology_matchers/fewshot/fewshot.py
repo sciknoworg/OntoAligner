@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..rag.rag import RAG
 from ..dataset import *  # NOQA
-from ontoaligner.postprocess import process
+from ...postprocess import process
 from typing import List, Any
 import math
 import random
@@ -9,7 +9,7 @@ import random
 random.seed(444)
 
 
-class FewShot(RAG):
+class FewShotRAG(RAG):
     positive_ratio = 0.7
 
     def __init__(self, **kwargs) -> None:

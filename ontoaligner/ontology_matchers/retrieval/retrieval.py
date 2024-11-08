@@ -8,7 +8,7 @@ from sklearn import svm
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
 
-from ontoaligner.base import BaseOMModel
+from ...base import BaseOMModel
 
 
 class Retrieval(BaseOMModel):

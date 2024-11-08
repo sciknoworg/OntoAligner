@@ -6,7 +6,7 @@ from typing import Any, List
 import torch
 from openai import OpenAI
 
-from ontoaligner.base import BaseOMModel
+from ...base import BaseOMModel
 
 
 class LLM(BaseOMModel):
@@ -115,7 +115,7 @@ class OpenAILLMArch(LLM):
         self.client = OpenAI(api_key=kwargs["OPENAI_KEY"])
 
     def __str__(self):
-        return "OpenAILM"
+        return "OpenAILLM"
 
     def tokenize(self, input_data: List) -> Any:
         return input_data
