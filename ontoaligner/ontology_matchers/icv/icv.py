@@ -4,10 +4,11 @@ from typing import List
 
 import torch
 from torch.nn import functional as F
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from .tasks.demo import DemoProbInferenceForStyle
 from ..rag import RAG, RAGBasedDecoderLLMArch
-from ontoaligner.postprocess import process
+from ...postprocess import process
 
 
 def tokenize_each_demonstration(tok, demonstration_list, dataset_name=None):
@@ -133,7 +134,7 @@ class ICV(RAG):
     }
 
     def __str__(self):
-        return "ICV"
+        return "ICVRAG"
 
     def generate(self, input_data: List) -> List:
         """
@@ -215,3 +216,30 @@ class ICV(RAG):
             answer = self.icv_answer_set_dict[f'no-{str(index + 1)}']
             icv_examples.append((query, answer))
         return icv_examples
+
+
+class AutoModelDecoderICVLLM(ICVBasedDecoderLLMArch):
+    tokenizer = AutoTokenizer
+    model = AutoModelForCausalLM
+
+    def __str__(self):
+        return super().__str__() + "-AutoModel"
+
+
+class AutoModelDecoderICVLLMV2(ICVBasedDecoderLLMArch):
+    tokenizer = AutoTokenizer
+    model = AutoModelForCausalLM
+
+    def __str__(self):
+        return super().__str__() + "-AutoModelV2"
+
+    def get_probas_yes_no(self, outputs):
+        probas_yes_no = (
+            outputs.scores[0][:, self.answer_sets_token_id["yes"] + self.answer_sets_token_id["no"]]
+            .float()
+            .softmax(-1)
+        )
+        return probas_yes_no
+
+    def check_answer_set_tokenizer(self, answer):
+        return len(self.tokenizer(answer).input_ids) == 1
