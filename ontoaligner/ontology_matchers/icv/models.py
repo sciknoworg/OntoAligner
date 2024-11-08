@@ -1,127 +1,68 @@
 # -*- coding: utf-8 -*-
 
-from transformers import AutoModelForCausalLM, AutoTokenizer, LlamaForCausalLM, LlamaTokenizer
-from .icv import ICV, ICVBasedDecoderLLMArch
+from .icv import ICV, AutoModelDecoderICVLLM, AutoModelDecoderICVLLMV2
 from ..retrieval.models import AdaRetrieval, BERTRetrieval
 
 
-class LLaMA7BDecoderLM(ICVBasedDecoderLLMArch):
-    tokenizer = LlamaTokenizer
-    model = LlamaForCausalLM
-    path = "meta-llama/Llama-2-7b-hf"
-
-    def __str__(self):
-        return super().__str__() + "-LLaMA-2-7B"
-
-
-class Falcon7BDecoderLM(ICVBasedDecoderLLMArch):
-    tokenizer = AutoTokenizer
-    model = AutoModelForCausalLM
-    path = "tiiuae/falcon-7b"
-
-    def __str__(self):
-        return super().__str__() + "-falcon-7b"
-
-    def get_probas_yes_no(self, outputs):
-        probas_yes_no = (
-            outputs.scores[0][:, self.answer_sets_token_id["yes"] + self.answer_sets_token_id["no"]]
-            .float()
-            .softmax(-1)
-        )
-        return probas_yes_no
-
-    def check_answer_set_tokenizer(self, answer):
-        return len(self.tokenizer(answer).input_ids) == 1
-
-
-class Vicuna7BDecoderLM(ICVBasedDecoderLLMArch):
-    tokenizer = AutoTokenizer
-    model = AutoModelForCausalLM
-    path = "lmsys/vicuna-7b-v1.5"
-
-    def __str__(self):
-        return super().__str__() + "-vicuna-7b-v1.5"
-
-
-class MPT7BDecoderLM(ICVBasedDecoderLLMArch):
-    tokenizer = AutoTokenizer
-    model = AutoModelForCausalLM
-    path = "mosaicml/mpt-7b"
-
-    def __str__(self):
-        return super().__str__() + "-mpt-7b"
-
-    def get_probas_yes_no(self, outputs):
-        probas_yes_no = (
-            outputs.scores[0][:, self.answer_sets_token_id["yes"] + self.answer_sets_token_id["no"]]
-            .float()
-            .softmax(-1)
-        )
-        return probas_yes_no
-
-    def check_answer_set_tokenizer(self, answer):
-        return len(self.tokenizer(answer).input_ids) == 1
-
-
-class LLaMA7BLLMAdaICV(ICV):
+class LLaMALLMAdaRetrieverICVRAG(ICV):
     Retrieval = AdaRetrieval
-    LLM = LLaMA7BDecoderLM
+    LLM = AutoModelDecoderICVLLM
 
     def __str__(self):
-        return super().__str__() + "-LLaMA7BLLMAdaICV"
+        return super().__str__() + "-LLaMALLMAdaRetrieverICVRAG"
 
 
-class LLaMA7BLLMBertICV(ICV):
+class LLaMALLMBERTRetrieverICVRAG(ICV):
     Retrieval = BERTRetrieval
-    LLM = LLaMA7BDecoderLM
+    LLM = AutoModelDecoderICVLLM
 
     def __str__(self):
-        return super().__str__() + "-LLaMA7BLLMBertICV"
+        return super().__str__() + "-LLaMALLMBERTRetrieverICVRAG"
 
 
-class FalconLLMAdaICV(ICV):
+class FalconLLMAdaRetrieverICVRAG(ICV):
     Retrieval = AdaRetrieval
-    LLM = Falcon7BDecoderLM
+    LLM = AutoModelDecoderICVLLMV2
 
     def __str__(self):
-        return super().__str__() + "-FalconLLMAdaICV"
+        return super().__str__() + "-FalconLLMAdaRetrieverICVRAG"
 
 
-class FalconLLMBertICV(ICV):
+class FalconLLMBERTRetrieverICVRAG(ICV):
     Retrieval = BERTRetrieval
-    LLM = Falcon7BDecoderLM
+    LLM = AutoModelDecoderICVLLMV2
 
     def __str__(self):
-        return super().__str__() + "-FalconLLMBertICV"
+        return super().__str__() + "-FalconLLMBERTRetrieverICVRAG"
 
 
-class VicunaLLMAdaICV(ICV):
+class VicunaLLMAdaRetrieverICVRAG(ICV):
     Retrieval = AdaRetrieval
-    LLM = Vicuna7BDecoderLM
+    LLM = AutoModelDecoderICVLLM
 
     def __str__(self):
-        return super().__str__() + "-VicunaLLMAdaICV"
+        return super().__str__() + "-VicunaLLMAdaRetrieverICVRAG"
 
 
-class VicunaLLMBertICV(ICV):
+class VicunaLLMBERTRetrieverICVRAG(ICV):
     Retrieval = BERTRetrieval
-    LLM = Vicuna7BDecoderLM
+    LLM = AutoModelDecoderICVLLM
 
     def __str__(self):
-        return super().__str__() + "-VicunaLLMBertICV"
+        return super().__str__() + "-VicunaLLMBERTRetrieverICVRAG"
 
 
-class MPTLLMAdaICV(ICV):
+class MPTLLMAdaRetrieverICVRAG(ICV):
     Retrieval = AdaRetrieval
-    LLM = MPT7BDecoderLM
+    LLM = AutoModelDecoderICVLLMV2
 
     def __str__(self):
-        return super().__str__() + "-MPTLLMAdaICV"
+        return super().__str__() + "-MPTLLMAdaRetrieverICVRAG"
 
 
-class MPTLLMBertICV(ICV):
+class MPTLLMBERTRetrieverICVRAG(ICV):
     Retrieval = BERTRetrieval
-    LLM = MPT7BDecoderLM
+    LLM = AutoModelDecoderICVLLMV2
 
     def __str__(self):
-        return super().__str__() + "-MPTLLMBertICV"
+        return super().__str__() + "-MPTLLMBERTRetrieverICVRAG"

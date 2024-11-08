@@ -1,55 +1,55 @@
 # -*- coding: utf-8 -*-
-from .rag import RAG, LLaMADecoderRAGLLM, MistralDecoderRAGLLM, OpenAIRAGLLM, AutoModelDecoderRAGLLMV2, MambaSSMRAGLLM, AutoModelDecoderRAGLLM
+from .rag import RAG,  OpenAIRAGLLM, AutoModelDecoderRAGLLMV2, MambaSSMRAGLLM, AutoModelDecoderRAGLLM
 from ..retrieval.models import AdaRetrieval, BERTRetrieval
 
 
-class LLaMALLMAdaRetriever(RAG):
+class LLaMALLMAdaRetrieverRAG(RAG):
     Retrieval = AdaRetrieval
-    LLM = LLaMADecoderRAGLLM
+    LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-LLaMALLMAdaRetriever"
+        return super().__str__() + "-LLaMALLMAdaRetrieverRAG"
 
-class LLaMALLMBERTRetriever(RAG):
+class LLaMALLMBERTRetrieverRAG(RAG):
     Retrieval = BERTRetrieval
-    LLM = LLaMADecoderRAGLLM
+    LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-LLaMALLMBERTRetriever"
+        return super().__str__() + "-LLaMALLMBERTRetrieverRAG"
 
 
-class MistralLLMAdaRetriever(RAG):
+class MistralLLMAdaRetrieverRAG(RAG):
     Retrieval = AdaRetrieval
-    LLM = MistralDecoderRAGLLM
+    LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-MistralLLMAdaRetriever"
+        return super().__str__() + "-MistralLLMAdaRetrieverRAG"
 
 
-class MistralLLMBERTRetriever(RAG):
+class MistralLLMBERTRetrieverRAG(RAG):
     Retrieval = BERTRetrieval
-    LLM = MistralDecoderRAGLLM
+    LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-MistralLLMBERTRetriever"
+        return super().__str__() + "-MistralLLMBERTRetrieverRAG"
 
 
-class GPTOpenAILLMAdaRetriever(RAG):
+class GPTOpenAILLMAdaRetrieverRAG(RAG):
     Retrieval = AdaRetrieval
     LLM = OpenAIRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-GPTOpenAILLMAdaRetriever"
+        return super().__str__() + "-GPTOpenAILLMAdaRetrieverRAG"
 
-class GPTOpenAILLMBERTRetriever(RAG):
+class GPTOpenAILLMBERTRetrieverRAG(RAG):
     Retrieval = BERTRetrieval
     LLM = OpenAIRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-GPTOpenAILLMBERTRetriever"
+        return super().__str__() + "-GPTOpenAILLMBERTRetrieverRAG"
 
 
-class FalconLLMAdaRetriever(RAG):
+class FalconLLMAdaRetrieverRAG(RAG):
     Retrieval = AdaRetrieval
     LLM = AutoModelDecoderRAGLLMV2
 
@@ -57,60 +57,57 @@ class FalconLLMAdaRetriever(RAG):
         return super().__str__() + "-FalconLLMAdaRetriever"
 
 
-class FalconLLMBERTRetriever(RAG):
+class FalconLLMBERTRetrieverRAG(RAG):
     Retrieval = BERTRetrieval
     LLM = AutoModelDecoderRAGLLMV2
 
     def __str__(self):
-        return super().__str__() + "-FalconLLMBERTRetriever"
+        return super().__str__() + "-FalconLLMBERTRetrieverRAG"
 
 
-
-
-
-class VicunaLLMAdaRetriever(RAG):
+class VicunaLLMAdaRetrieverRAG(RAG):
     Retrieval = AdaRetrieval
     LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-VicunaLLMAdaRetriever"
+        return super().__str__() + "-VicunaLLMAdaRetrieverRAG"
 
 
-class VicunaLLMBERTRetriever(RAG):
+class VicunaLLMBERTRetrieverRAG(RAG):
     Retrieval = BERTRetrieval
     LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-VicunaLLMBERTRetriever"
+        return super().__str__() + "-VicunaLLMBERTRetrieverRAG"
 
 
-class MPTLLMAdaRetriever(RAG):
+class MPTLLMAdaRetrieverRAG(RAG):
     Retrieval = AdaRetrieval
     LLM = AutoModelDecoderRAGLLMV2
 
     def __str__(self):
-        return super().__str__() + "-MPTLLMAdaRetriever"
+        return super().__str__() + "-MPTLLMAdaRetrieverRAG"
 
 
-class MPTLLMBERTRetriever(RAG):
+class MPTLLMBERTRetrieverRAG(RAG):
     Retrieval = BERTRetrieval
     LLM = AutoModelDecoderRAGLLMV2
 
     def __str__(self):
-        return super().__str__() + "-MPTLLMBERTRetriever"
+        return super().__str__() + "-MPTLLMBERTRetrieverRAG"
 
 
-class MambaLLMAdaRetriever(RAG):
+class MambaLLMAdaRetrieverRAG(RAG):
     Retrieval = AdaRetrieval
     LLM = MambaSSMRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-MambaLLMAdaRetriever"
+        return super().__str__() + "-MambaLLMAdaRetrieverRAG"
 
 
-class MambaLLMBERTRetriever(RAG):
+class MambaLLMBERTRetrieverRAG(RAG):
     Retrieval = BERTRetrieval
     LLM = MambaSSMRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-MambaLLMBERTRetriever"
+        return super().__str__() + "-MambaLLMBERTRetrieverRAG"

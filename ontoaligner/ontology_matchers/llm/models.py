@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from transformers import AutoTokenizer, T5Tokenizer,LlamaTokenizer, LlamaForCausalLM, MistralForCausalLM, T5ForConditionalGeneration
+from transformers import (AutoTokenizer, AutoModelForCausalLM, T5Tokenizer, T5ForConditionalGeneration)
 
 from .llm import EncoderDecoderLLMArch, DecoderLLMArch, OpenAILLMArch
 
@@ -9,33 +9,17 @@ class FlanT5LEncoderDecoderLM(EncoderDecoderLLMArch):
     model = T5ForConditionalGeneration
 
     def __str__(self):
-        return super().__str__() + "-FlanT5"
+        return super().__str__() + "-FlanT5LEncoderDecoderLM"
 
 
-class LLaMABDecoderLLM(DecoderLLMArch):
-    tokenizer = LlamaTokenizer
-    model = LlamaForCausalLM
-
-    def __str__(self):
-        return super().__str__() + "-LLaMALLM"
-
-
-class WizardDecoderLLM(DecoderLLMArch):
+class AutoModelDecoderLLM(DecoderLLMArch):
     tokenizer = AutoTokenizer
-    model = LlamaForCausalLM
+    model = AutoModelForCausalLM
 
     def __str__(self):
-        return super().__str__() + "-WizardLM"
-
-
-class MistralDecoderLLM(DecoderLLMArch):
-    tokenizer = AutoTokenizer
-    model = MistralForCausalLM
-
-    def __str__(self):
-        return super().__str__() + "-MistralLM"
+        return super().__str__() + "-AutoModelDecoderLLM"
 
 
 class GPTOpenAILLM(OpenAILLMArch):
     def __str__(self):
-        return super().__str__() + "-OpenAIGPT"
+        return super().__str__() + "-GPTOpenAILLM"

@@ -1,110 +1,114 @@
 # -*- coding: utf-8 -*-
-
-from ..rag.models import LLaMA7BDecoderLM, Mistral7BDecoderLM, Falcon7BDecoderLM, Vicuna7BDecoderLM, MPT7BDecoderLM, ChatGPTOpenAILLM, Mamba3BSSMLLM
-from .fewshot import FewShot
-
+from .fewshot import FewShotRAG
+from ..rag.models import OpenAIRAGLLM, AutoModelDecoderRAGLLM, AutoModelDecoderRAGLLMV2, MambaSSMRAGLLM
 from ..retrieval.models import AdaRetrieval, BERTRetrieval
 
 
-class LLaMA7BLLMAdaFewShot(FewShot):
+class LLaMALLMAdaRetrieverFSRAG(FewShotRAG):
     Retrieval = AdaRetrieval
-    LLM = LLaMA7BDecoderLM
+    LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-LLaMA7BAdaRAG"
+        return super().__str__() + "-LLaMALLMAdaRetrieverFSRAG"
 
-
-class MistralLLMAdaFewShot(FewShot):
-    Retrieval = AdaRetrieval
-    LLM = Mistral7BDecoderLM
-
-    def __str__(self):
-        return super().__str__() + "-MistralLLMAdaFewShot"
-
-
-class LLaMA7BLLMBertFewShot(FewShot):
+class LLaMALLMBERTRetrieverFSRAG(FewShotRAG):
     Retrieval = BERTRetrieval
-    LLM = LLaMA7BDecoderLM
+    LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-LLaMA7BLLMBertFewShot"
+        return super().__str__() + "-LLaMALLMBERTRetrieverFSRAG"
 
 
-class MistralLLMBertFewShot(FewShot):
-    Retrieval = BERTRetrieval
-    LLM = Mistral7BDecoderLM
-
-    def __str__(self):
-        return super().__str__() + "-MistralLLMBertFewShot"
-
-
-class ChatGPTOpenAIAdaFewShot(FewShot):
+class MistralLLMAdaRetrieverFSRAG(FewShotRAG):
     Retrieval = AdaRetrieval
-    LLM = ChatGPTOpenAILLM
+    LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-ChatGPTOpenAIAdaFewShot"
+        return super().__str__() + "-MistralLLMAdaRetrieverFSRAG"
 
 
-class FalconLLMAdaFewShot(FewShot):
-    Retrieval = AdaRetrieval
-    LLM = Falcon7BDecoderLM
-
-    def __str__(self):
-        return super().__str__() + "-FalconLLMAdaFewShot"
-
-
-class FalconLLMBertFewShot(FewShot):
+class MistralLLMBERTRetrieverFSRAG(FewShotRAG):
     Retrieval = BERTRetrieval
-    LLM = Falcon7BDecoderLM
+    LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-FalconLLMBertFewShot"
+        return super().__str__() + "-MistralLLMBERTRetrieverFSRAG"
 
 
-class VicunaLLMAdaFewShot(FewShot):
+class GPTOpenAILLMAdaRetrieverFSRAG(FewShotRAG):
     Retrieval = AdaRetrieval
-    LLM = Vicuna7BDecoderLM
+    LLM = OpenAIRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-VicunaLLMAdaFewShot"
+        return super().__str__() + "-GPTOpenAILLMAdaRetrieverFSRAG"
 
-
-class VicunaLLMBertFewShot(FewShot):
+class GPTOpenAILLMBERTRetrieverFSRAG(FewShotRAG):
     Retrieval = BERTRetrieval
-    LLM = Vicuna7BDecoderLM
+    LLM = OpenAIRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-VicunaLLMBertFewShot"
+        return super().__str__() + "-GPTOpenAILLMBERTRetrieverFSRAG"
 
 
-class MPTLLMAdaFewShot(FewShot):
+class FalconLLMAdaRetrieverFSRAG(FewShotRAG):
     Retrieval = AdaRetrieval
-    LLM = MPT7BDecoderLM
+    LLM = AutoModelDecoderRAGLLMV2
 
     def __str__(self):
-        return super().__str__() + "-MPTLLMAdaFewShot"
+        return super().__str__() + "-FalconLLMAdaRetrieverFSRAG"
 
 
-class MPTLLMBertFewShot(FewShot):
+class FalconLLMBERTRetrieverFSRAG(FewShotRAG):
     Retrieval = BERTRetrieval
-    LLM = MPT7BDecoderLM
+    LLM = AutoModelDecoderRAGLLMV2
 
     def __str__(self):
-        return super().__str__() + "-MPTLLMBertFewShot"
+        return super().__str__() + "-FalconLLMBERTRetrieverFSRAG"
 
 
-class MambaLLMAdaFewShot(FewShot):
+class VicunaLLMAdaRetrieverFSRAG(FewShotRAG):
     Retrieval = AdaRetrieval
-    LLM = Mamba3BSSMLLM
+    LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-MambaLLMAdaFewShot"
+        return super().__str__() + "-VicunaLLMAdaRetrieverFSRAG"
 
 
-class MambaLLMBertFewShot(FewShot):
+class VicunaLLMBERTRetrieverFSRAG(FewShotRAG):
     Retrieval = BERTRetrieval
-    LLM = Mamba3BSSMLLM
+    LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
-        return super().__str__() + "-MambaLLMBertFewShot"
+        return super().__str__() + "-VicunaLLMBERTRetrieverFSRAG"
+
+
+class MPTLLMAdaRetrieverFSRAG(FewShotRAG):
+    Retrieval = AdaRetrieval
+    LLM = AutoModelDecoderRAGLLMV2
+
+    def __str__(self):
+        return super().__str__() + "-MPTLLMAdaRetrieverFSRAG"
+
+
+class MPTLLMBERTRetrieverFSRAG(FewShotRAG):
+    Retrieval = BERTRetrieval
+    LLM = AutoModelDecoderRAGLLMV2
+
+    def __str__(self):
+        return super().__str__() + "-MPTLLMBERTRetrieverFSRAG"
+
+
+class MambaLLMAdaRetrieverFSRAG(FewShotRAG):
+    Retrieval = AdaRetrieval
+    LLM = MambaSSMRAGLLM
+
+    def __str__(self):
+        return super().__str__() + "-MambaLLMAdaRetrieverFSRAG"
+
+
+class MambaLLMBERTRetrieverFSRAG(FewShotRAG):
+    Retrieval = BERTRetrieval
+    LLM = MambaSSMRAGLLM
+
+    def __str__(self):
+        return super().__str__() + "-MambaLLMBERTRetrieverFSRAG"
