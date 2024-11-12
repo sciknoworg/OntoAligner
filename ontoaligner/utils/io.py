@@ -2,6 +2,7 @@
 """
 Includes Input/Output (I/O) functionalities like reading and writing from and into specific file formats.
 """
+
 import json
 import os
 from typing import Any, Dict
@@ -44,5 +45,14 @@ def write_json(output_path: str, json_data: Any):
 
 
 def mkdir(path):
+    """
+    Creates a directory at the specified path if it does not already exist.
+
+    Parameters:
+        path (str): The path where the directory should be created.
+
+    Returns:
+        None: This function does not return anything.
+    """
     if not os.path.exists(path):
         os.mkdir(path)

@@ -1,9 +1,26 @@
 # -*- coding: utf-8 -*-
-from typing import Dict, List
+"""
+This script defines functions for evaluating the intersection between predicted and reference data,
+as well as calculating various evaluation metrics such as precision, recall, and F-score.
 
+It includes two main functions:
+1. `calculate_intersection`: Computes the number of matching items between the predicted and reference data.
+2. `evaluation_report`: Calculates precision, recall, and F-score based on the intersection of predicted and reference data.
+
+Functions:
+- calculate_intersection: Computes the intersection between predicted and reference items.
+- evaluation_report: Calculates precision, recall, F-score, and other evaluation metrics based on predictions and references.
+"""
+from typing import Dict, List
 
 def calculate_intersection(predicts: List, references: List) -> int:
     """
+    Calculate the number of matching items between the predicted and reference data.
+
+    This function compares each pair of predicted and reference items, and counts the number of matching
+    items based on the `source` and `target` fields.
+
+    Parameters:
     :param predicts:
         [{
             "source": ...,
@@ -16,7 +33,8 @@ def calculate_intersection(predicts: List, references: List) -> int:
             "target": ...,
             "relation": ...
         }, ...]
-    :return: intersection
+    Returns:
+        intersection
     """
     intersection = 0
     for predict in predicts:
@@ -29,12 +47,14 @@ def calculate_intersection(predicts: List, references: List) -> int:
 
 def evaluation_report(predicts: List, references: List, beta: int = 1) -> Dict:
     """
-        Calculate Precision Score:
-            P = |intersection between out, and ref|/|out|
-        Calculate Recall score:
-            R = |intersection between out, and ref|/|ref|
-        Calculate F-Score:
-            F_beta = (1+Beta^2) P*R / (beta^2*P + R)
+    Calculate Precision Score:
+        P = |intersection between out, and ref|/|out|
+    Calculate Recall score:
+        R = |intersection between out, and ref|/|ref|
+    Calculate F-Score:
+        F_beta = (1+Beta^2) P*R / (beta^2*P + R)
+
+    Parameters:
     :param predicts:
         [{
             "source": ...,
@@ -47,7 +67,7 @@ def evaluation_report(predicts: List, references: List, beta: int = 1) -> Dict:
             "target": ...,
             "relation": ...
         }, ...]
-    :return:
+    Returns:
         {"intersections":}
     """
     intersection = calculate_intersection(predicts=predicts, references=references)

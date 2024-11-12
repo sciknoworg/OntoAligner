@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+"""
+This script defines the FewShotRAG class, an extension of the RAG model, designed for few-shot learning tasks.
+The FewShotRAG class uses retrieval-augmented generation techniques, combining information retrieval and
+language generation for enhanced predictive performance, particularly in bioinformatics and entity-matching tasks.
+
+Classes:
+- FewShotRAG: Extends the RAG class to support few-shot learning with a specific ratio of positive to negative examples.
+
+"""
 from ..rag.rag import RAG
 from ..dataset import *  # NOQA
 from ...postprocess import process
@@ -10,25 +19,57 @@ random.seed(444)
 
 
 class FewShotRAG(RAG):
+    """
+    A class for retrieval-augmented generation with few-shot learning, inheriting from the RAG base class.
+
+    Attributes:
+        positive_ratio (float): The ratio of positive examples in the few-shot samples.
+        n_shots (int): Number of shots to be used for few-shot learning, derived from input arguments.
+
+    Methods:
+        __str__: Returns a string representation of the class.
+        generate: Generates outputs using information retrieval and language generation with few-shot examples.
+        build_llm_encoder: Configures the LLM encoder with exemplar examples for processing.
+        build_fewshots: Builds positive and negative few-shot examples from the input data.
+    """
     positive_ratio = 0.7
 
     def __init__(self, **kwargs) -> None:
+        """
+        Initializes the FewShotRAG class with specified parameters.
+
+        Parameters:
+            **kwargs: Arbitrary keyword arguments including 'nshots', which determines the number of few-shot examples.
+
+        Returns:
+            None
+        """
         super().__init__(**kwargs)
         self.n_shots = int(self.kwargs['nshots'])
 
     def __str__(self):
+        """
+        Provides a string representation of the FewShotRAG class.
+
+        Returns:
+            str: The name of the class, "FewShotRAG".
+        """
         return "FewShotRAG"
 
     def generate(self, input_data: List) -> List:
         """
-        :param input_data:
-                {
-                    "retriever-encoder": self.retrieval_encoder,
-                    "task-args": kwargs,
-                    "source-onto-iri2index": source_onto_iri2index,
-                    "target-onto-iri2index": target_onto_iri2index
-                }
-        :return:
+        Generates model outputs by combining information retrieval, pre-processing, and few-shot generation.
+
+        Parameters:
+            input_data (List): A list containing data and configurations for generation, including:
+                - retriever-encoder
+                - task-args
+                - source-onto-iri2index
+                - target-onto-iri2index
+
+        Returns:
+            List: A list of dictionaries containing the information retrieval outputs, LLM outputs,
+                  and few-shot samples, each with their respective keys.
         """
         # IR generation
         ir_output = self.ir_generate(input_data=input_data)
@@ -42,11 +83,35 @@ class FewShotRAG(RAG):
         return [{"ir-outputs": ir_output}, {"llm-output": llm_predictions}, {"fewshot-samples": examples}]
 
     def build_llm_encoder(self, input_data: Any, llm_inputs: Any) -> Any:
+        """
+        Configures the LLM encoder with few-shot exemplars based on the specified dataset.
+
+        Parameters:
+            input_data (Any): Configuration data containing the 'llm-encoder' key and exemplar examples.
+            llm_inputs (Any): Inputs required by the LLM encoder for building exemplars.
+
+        Returns:
+            Any: The configured dataset with exemplars.
+        """
         dataset = eval(input_data["llm-encoder"])(data=llm_inputs)
         dataset.build_exemplars(examples=input_data['examples'])
         return dataset
 
     def build_fewshots(self, input_data: List) -> List:
+        """
+        Constructs few-shot examples, with a specified ratio of positive to negative samples, for training purposes.
+
+        Positive examples are sourced from predefined references, while negative examples are randomly generated
+        from non-matching source-target pairs.
+
+        Parameters:
+            input_data (List): A list containing task arguments, source ontology data, target ontology data,
+                               and mappings to ontology indices.
+
+        Returns:
+            List: A list of dictionaries where each entry contains 'source', 'target', and 'answer' keys, with
+                  answers indicating 'yes' for positive matches and 'no' for negative matches.
+        """
         track = input_data['task-args']['dataset-info']['track']
         if track == 'bio-ml':
             reference = input_data['task-args']['reference']['equiv']['train']

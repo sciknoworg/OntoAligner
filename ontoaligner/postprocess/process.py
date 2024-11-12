@@ -1,4 +1,22 @@
 # -*- coding: utf-8 -*-
+"""
+This script contains functions to preprocess, evaluate, and filter outputs generated
+by information retrieval (IR) systems and language models (LLMs), including confidence
+scoring, thresholding, and output filtering. It is used to refine the quality of predictions
+by integrating information from both IR and LLM systems, ensuring the most relevant and
+confident predictions are retained.
+
+Functions:
+    eval_preprocess_ir_outputs: Processes and filters IR outputs based on confidence score.
+    preprocess_ir_outputs: Prepares IR outputs for further processing by removing irrelevant data.
+    threshold_finder: Determines the threshold value for a given set of scores from a dictionary.
+    build_outputdict: Constructs a dictionary mapping sources to their respective predicted targets and scores.
+    confidence_score_ratio_based_filtering: Filters predictions based on confidence ratios and a given threshold.
+    confidence_score_based_filtering: Filters predictions based on LLM confidence scores and IR scores.
+    postprocess_heuristic: Processes and filters predictions using heuristic methods for confidence scoring.
+    postprocess_hybrid: Hybrid method for processing predictions by integrating IR and LLM results using matrix-based analysis.
+"""
+
 from typing import Dict, List
 
 import numpy as np
@@ -6,6 +24,15 @@ from tqdm import tqdm
 
 
 def eval_preprocess_ir_outputs(predicts: List) -> List:
+    """
+    Filters out redundant IR predictions based on the source-target pair and their respective scores.
+
+    Parameters:
+        predicts (List): List of dictionaries containing source, target candidates, and score candidates.
+
+    Returns:
+        List: A filtered list of predictions with unique source-target pairs and positive scores.
+    """
     predicts_temp = []
     predict_map = {}
     for predict in tqdm(predicts):
@@ -25,6 +52,15 @@ def eval_preprocess_ir_outputs(predicts: List) -> List:
 
 
 def preprocess_ir_outputs(predicts: List) -> List:
+    """
+    Prepares IR outputs by extracting source-target pairs and filtering based on score values.
+
+    Parameters:
+        predicts (List): List of dictionaries containing source, target candidates, and score candidates.
+
+    Returns:
+        List: A list of dictionaries containing source-target pairs with positive scores.
+    """
     predicts_temp = []
     for predict in tqdm(predicts):
         source, target_cands, score_cands = predict["source"], predict["target-cands"], predict["score-cands"]
@@ -35,6 +71,17 @@ def preprocess_ir_outputs(predicts: List) -> List:
 
 
 def threshold_finder(dictionary: dict, index: int, use_lst: bool = False) -> float:
+    """
+    Finds the threshold value based on the given index of a score in a dictionary.
+
+    Parameters:
+        dictionary (dict): Dictionary containing predictions with scores.
+        index (int): The index of the score in the prediction output to be thresholded.
+        use_lst (bool, optional): Whether to use the list of values or the dictionary. Defaults to False.
+
+    Returns:
+        float: The computed threshold value.
+    """
     scores_dict = {}
     scores_list = []
     for outputs in dictionary.values():
@@ -52,6 +99,17 @@ def threshold_finder(dictionary: dict, index: int, use_lst: bool = False) -> flo
 
 
 def build_outputdict(llm_outputs: List, ir_outputs: List) -> Dict:
+    """
+    Builds a dictionary mapping source IRIs to target predictions with their scores
+    from both IR and LLM outputs.
+
+    Parameters:
+        llm_outputs (List): List of LLM prediction outputs.
+        ir_outputs (List): List of IR prediction outputs.
+
+    Returns:
+        Dict: A dictionary where each source is mapped to a list of target predictions and their associated scores.
+    """
     outputdict = {}
     for llm_output in tqdm(llm_outputs):
         for ir_output in ir_outputs:
@@ -66,6 +124,18 @@ def build_outputdict(llm_outputs: List, ir_outputs: List) -> Dict:
 
 
 def confidence_score_ratio_based_filtering(outputdict: Dict, topk_confidence_ratio: int, cr_threshold: float) -> Dict:
+    """
+    Filters the predictions based on confidence ratio values, selecting the top-k predictions
+    that exceed the specified confidence ratio threshold.
+
+    Parameters:
+        outputdict (Dict): Dictionary containing source-target predictions with scores and confidence ratios.
+        topk_confidence_ratio (int): Number of top predictions to keep based on confidence ratio.
+        cr_threshold (float): The threshold for confidence ratio to filter predictions.
+
+    Returns:
+        Dict: Filtered predictions with the top-k items exceeding the confidence ratio threshold.
+    """
     outputdict_confidence_ratios = {}
     for source_iri, target_cands in outputdict.items():
         top_k_items = sorted(target_cands, key=lambda X: X[3] >= cr_threshold, reverse=True)[:topk_confidence_ratio]
@@ -79,6 +149,19 @@ def confidence_score_based_filtering(
     llm_confidence_threshold: float,
     ir_score_threshold: float,
 ) -> List:
+    """
+    Filters the predictions based on LLM confidence score and IR score, selecting the top-k
+    predictions that exceed the given thresholds.
+
+    Parameters:
+        outputdict_confidence_ratios (Dict): Dictionary with source-target predictions filtered by confidence ratio.
+        topk_confidence_score (int): Number of top predictions to keep based on LLM confidence score.
+        llm_confidence_threshold (float): The threshold for LLM confidence score to filter predictions.
+        ir_score_threshold (float): The threshold for IR score to filter predictions.
+
+    Returns:
+        List: Filtered predictions based on LLM confidence score and IR score thresholds.
+    """
     filtered_predicts = []
     for source_iri, target_cands in outputdict_confidence_ratios.items():
         top_k_items = sorted(target_cands, key=lambda X: (X[2] >= llm_confidence_threshold), reverse=True)[:topk_confidence_score]
@@ -97,6 +180,19 @@ def confidence_score_based_filtering(
 
 
 def postprocess_heuristic(predicts: List, topk_confidence_ratio: int = 3, topk_confidence_score: int = 1) -> [List, Dict]:
+    """
+    Processes the predictions using heuristic methods for filtering based on confidence ratio,
+    IR score, and LLM confidence score.
+
+    Parameters:
+        predicts (List): List of prediction outputs containing both IR and LLM results.
+        topk_confidence_ratio (int, optional): Number of top predictions to retain based on confidence ratio.
+        topk_confidence_score (int, optional): Number of top predictions to retain based on LLM confidence score.
+
+    Returns:
+        List: Filtered predictions after applying the heuristic method.
+        Dict: Configuration settings used for filtering predictions.
+    """
     ir_outputs = predicts[0]["ir-outputs"]
     llm_outputs = predicts[1]["llm-output"]
 
@@ -130,6 +226,18 @@ def postprocess_heuristic(predicts: List, topk_confidence_ratio: int = 3, topk_c
 
 
 def postprocess_hybrid(predicts: List, ir_score_threshold: float = 0.9, llm_confidence_th: float = 0.7) -> [List, Dict]:
+    """
+    A hybrid approach that integrates IR and LLM outputs using matrix analysis and confidence thresholds.
+
+    Parameters:
+        predicts (List): List containing IR and LLM output predictions.
+        ir_score_threshold (float, optional): Threshold for IR score filtering. Default is 0.9.
+        llm_confidence_th (float, optional): Threshold for LLM confidence score filtering. Default is 0.7.
+
+    Returns:
+        List: A list of filtered predictions.
+        Dict: A dictionary of configuration parameters used for filtering.
+    """
     ir_outputs = predicts[0]["ir-outputs"]
     llm_outputs = predicts[1]["llm-output"]
     ir_cleaned_outputs_id = []
