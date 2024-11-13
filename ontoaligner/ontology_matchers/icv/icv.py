@@ -125,6 +125,7 @@ class ICVAdapter(torch.nn.Module):
         """
         super().__init__()
         self.model = model
+        # Freeze the original model parameters
         for params in self.model.parameters():
             params.requires_grad = False
 
@@ -275,7 +276,7 @@ class ICV(RAG):
         return [{"ir-outputs": ir_output}, {"llm-output": llm_predictions}, {"icv-samples": examples}]
 
 
-    def build_icv_examples(self, input_data):
+    def build_icv_examples(self, input_data: List) -> List:
         """
         Builds positive and negative ICV examples from input data for ontology matching.
 
