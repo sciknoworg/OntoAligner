@@ -128,6 +128,7 @@ class BM25Retrieval(Retrieval):
     """
     BM25Retrieval implements the BM25 retrieval model (Okapi BM25), a probabilistic information retrieval method.
     This model is used to estimate document relevance based on term frequency and inverse document frequency.
+    http://ethen8181.github.io/machine-learning/search/bm25_intro.html
     """
 
     def load(self, path: str = None):

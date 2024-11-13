@@ -247,7 +247,6 @@ class RAG(BaseOMModel):
 
         Args:
             input_data (list): Input data containing retrieval encoder and task arguments.
-            input_data:
                 {
                     "retriever-encoder": self.retrieval_encoder,
                     "task-args": kwargs,
@@ -341,13 +340,12 @@ class RAG(BaseOMModel):
                     predictions.append({"source": iri_pair[0], "target": iri_pair[1], "score": proba})
         return predictions
 
-    def ir_generate(self, input_data: List) -> Any:
+    def ir_generate(self, input_data: Any) -> Any:
         """
         Generates retrieval outputs based on the input data.
 
         Args:
-            input_data (list): The input data containing the query.
-            input_data:
+            input_data (Any): The input data containing the query.
                 {
                     "retriever-encoder": self.retrieval_encoder,
                     "llm-encoder": self.llm_encoder,

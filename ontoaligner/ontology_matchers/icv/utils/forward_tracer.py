@@ -175,7 +175,10 @@ class ForwardTracer:
                 acts = getattr(residual_stream, acts_type)
                 while len(acts) < layer_num + 1:
                     acts.append([])
-                acts[layer_num].append(out)
+                try:
+                    acts[layer_num].append(out)
+                except IndexError:
+                    print(len(acts), layer_num)
 
             return hook
 
