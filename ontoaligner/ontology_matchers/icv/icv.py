@@ -1,5 +1,19 @@
 # -*- coding: utf-8 -*-
+"""
+Script for implementing ICV-based ontology matching using RAG and LLM architectures.
 
+This script applies adapter layers and ICVs to pre-trained language models, enabling few-shot
+learning for ontology matching tasks. It includes modules for tokenizing demonstrations, creating
+adapter layers, and fine-tuning the language model based on inference confidence vectors (ICVs).
+
+Classes:
+- AdapterLayer: Defines an adapter layer for embedding adjustment based on ICVs.
+- ICVAdapter: A wrapper that integrates or removes ICV-based adapters in a model.
+- ICVBasedDecoderLLMArch: A RAG-based LLM architecture for ICV-based decoding.
+- ICV: Main class to manage ICV creation, ontology matching, and output generation.
+- AutoModelDecoderICVLLM: LLM decoder using AutoModel for causal language modeling.
+- AutoModelDecoderICVLLMV2: Extends AutoModelDecoderICVLLM with specific yes/no probability calculations.
+"""
 from typing import List
 
 import torch
@@ -10,8 +24,22 @@ from .tasks.demo import DemoProbInferenceForStyle
 from ..rag import RAG, RAGBasedDecoderLLMArch
 from ...postprocess import process
 
-
 def tokenize_each_demonstration(tok, demonstration_list, dataset_name=None):
+    """
+    Tokenizes and preprocesses each example in a demonstration list for language model input.
+
+    Parameters:
+        tok : AutoTokenizer
+            Tokenizer instance for encoding text.
+        demonstration_list : list of tuple(str, str)
+            List of text pairs to be tokenized, with each pair containing original and rewritten forms.
+        dataset_name : str, optional
+            The name of the dataset being used (default is None).
+
+    Returns:
+        list of tuple
+            Tokenized list of pairs where each tuple contains encoded original and rewritten text.
+    """
     tokenized_demonstration_list = []
     for exp_id in range(len(demonstration_list)):
         demonstration_list[exp_id] = (
@@ -26,13 +54,38 @@ def tokenize_each_demonstration(tok, demonstration_list, dataset_name=None):
 
 
 class AdapterLayer(torch.nn.Module):
+    """
+    Adapter layer that adjusts embeddings of a language model based on ICVs to improve
+    representation for ontology matching.
+    """
+
     def __init__(self, icvs, alpha):
+        """
+        Initializes an AdapterLayer instance with ICVs and an alpha scaling factor.
+
+        Parameters:
+            icvs : list of torch.Tensor
+                List of ICVs used to influence model output embeddings.
+            alpha : float
+                Scaling factor to control the strength of ICV adjustments.
+        """
         super(AdapterLayer, self).__init__()
         self.icvs = icvs
         self.alpha = alpha
         self.weight_all = []
 
     def forward(self, x):
+        """
+        Forward pass of the adapter layer, adjusting embeddings based on ICVs.
+
+        Parameters:
+            x : torch.Tensor
+                Input tensor representing embeddings to be transformed.
+
+        Returns:
+            torch.Tensor
+                Transformed tensor with adjusted embeddings based on ICVs.
+        """
         input_dtype = x.dtype
         if self.icvs is not None:
             norm = torch.norm(x.float(), dim=-1).unsqueeze(-1)
@@ -57,9 +110,19 @@ class AdapterLayer(torch.nn.Module):
         else:
             return x
 
-
 class ICVAdapter(torch.nn.Module):
+    """
+    Wrapper for integrating or removing ICV-based adjustments to a language model using adapter layers.
+    """
+
     def __init__(self, model):
+        """
+        Initializes an ICVAdapter by wrapping a pre-trained model and freezing its parameters.
+
+        Parameters:
+            model : torch.nn.Module
+                The pre-trained language model to be wrapped with ICV-based adapter layers.
+        """
         super().__init__()
         self.model = model
         # Freeze the original model parameters
@@ -67,6 +130,19 @@ class ICVAdapter(torch.nn.Module):
             params.requires_grad = False
 
     def get_model(self, icvs, alpha):
+        """
+        Adds ICV-based adapter layers to the model for ICV-based embedding adjustment.
+
+        Parameters:
+            icvs : list of torch.Tensor
+                List of ICVs used for embedding adjustment.
+            alpha : list of float
+                List of scaling factors for ICV influence.
+
+        Returns:
+            torch.nn.Module
+                The model with ICV-based adapter layers integrated.
+        """
         for i in range(0, len(self.model.transformer.h)):
             icvs_ = icvs[i]
             self.model.transformer.h[i].mlp = torch.nn.Sequential(
@@ -75,6 +151,10 @@ class ICVAdapter(torch.nn.Module):
         return self.model
 
     def remove_adapter(self):
+        """
+        Removes adapter layers from the model and restores the original architecture.
+
+        """
         weight_all = []
 
         for i in range(0, len(self.model.transformer.h)):
@@ -84,6 +164,9 @@ class ICVAdapter(torch.nn.Module):
 
 
 class ICVBasedDecoderLLMArch(RAGBasedDecoderLLMArch):
+    """
+    RAG-based decoder architecture for ICV-based LLMs used in ontology matching tasks.
+    """
     icv_dataset = "demo"
     icv_prompt_version = "default"
     icv_kv_iter = 15
@@ -94,6 +177,9 @@ class ICVBasedDecoderLLMArch(RAGBasedDecoderLLMArch):
     icv_seed = 0
 
     def __init__(self, **kwargs):
+        """
+        Initializes an ICVBasedDecoderLLMArch instance
+        """
         super().__init__(**kwargs)
         self.task_agent = DemoProbInferenceForStyle(
             prompt_version=self.icv_prompt_version
@@ -101,9 +187,23 @@ class ICVBasedDecoderLLMArch(RAGBasedDecoderLLMArch):
         self.task_agent.set_seed(self.icv_seed)
 
     def __str__(self):
+        """
+        String representation of the decoder class.
+
+        Returns:
+            str
+                Name of the class with model type.
+        """
         return "ICVBasedDecoderLLMArch"
 
     def build_icv(self, examples):
+        """
+        Builds and applies ICVs to the model to refine ontology matching accuracy.
+
+        Parameters:
+            examples : list of tuple
+            List of demonstration examples for generating ICVs.
+        """
         icv_examples = self.task_agent.get_icv(
             self.model, tokenize_each_demonstration(self.tokenizer, examples)
         )
@@ -115,6 +215,9 @@ class ICVBasedDecoderLLMArch(RAGBasedDecoderLLMArch):
 
 
 class ICV(RAG):
+    """
+    Core class for managing ontology matching via ICV generation and integration with LLMs.
+    """
 
     icv_prompts = {
         "prompt-1": """Classify if the following two concepts are the same.\n### First concept:\n{source}\n### Second concept:\n{target}\n### Answer:""",
@@ -134,18 +237,32 @@ class ICV(RAG):
     }
 
     def __str__(self):
+        """
+        String representation of the class.
+
+        Returns:
+            str
+                Name of the class with model type.
+        """
         return "ICVRAG"
 
     def generate(self, input_data: List) -> List:
         """
-        :param input_data:
+        Generates IR and LLM outputs for ontology matching tasks.
+
+        Parameters:
+            input_data : dict
+                A dictionary containing retrieval encoder, dataset information, and task settings.
+            input_data:
                 {
                     "retriever-encoder": self.retrieval_encoder,
                     "task-args": kwargs,
                     "source-onto-iri2index": source_onto_iri2index,
                     "target-onto-iri2index": target_onto_iri2index
                 }
-        :return:
+        Returns:
+            list of dict
+                List containing IR outputs, LLM outputs, and ICV samples.
         """
         # IR generation
         ir_output = self.ir_generate(input_data=input_data)
@@ -158,7 +275,19 @@ class ICV(RAG):
         )
         return [{"ir-outputs": ir_output}, {"llm-output": llm_predictions}, {"icv-samples": examples}]
 
-    def build_icv_examples(self, input_data: List):
+
+    def build_icv_examples(self, input_data: List) -> List:
+        """
+        Builds positive and negative ICV examples from input data for ontology matching.
+
+        Parameters:
+            input_data : dict
+                Dictionary with information about the dataset and retrieval index.
+
+        Returns:
+            list of tuple
+                List of queries and their expected answers for ICV-based classification.
+        """
         def minor_clean(concept):
             concept = concept.replace("_", " ")
             concept = concept.lower()
@@ -219,21 +348,52 @@ class ICV(RAG):
 
 
 class AutoModelDecoderICVLLM(ICVBasedDecoderLLMArch):
+    """
+    LLM decoder using AutoModel for causal language modeling, designed for ontology matching.
+    """
     tokenizer = AutoTokenizer
     model = AutoModelForCausalLM
 
     def __str__(self):
+        """
+        String representation of the decoder class.
+
+        Returns:
+            str
+                Name of the class with model type.
+        """
         return super().__str__() + "-AutoModel"
 
 
 class AutoModelDecoderICVLLMV2(ICVBasedDecoderLLMArch):
+    """
+    Extended decoder class using AutoModel with specialized methods for ontology matching.
+    """
     tokenizer = AutoTokenizer
     model = AutoModelForCausalLM
 
     def __str__(self):
+        """
+        String representation of the decoder class.
+
+        Returns:
+            str
+                Name of the class with model type.
+        """
         return super().__str__() + "-AutoModelV2"
 
     def get_probas_yes_no(self, outputs):
+        """
+        Calculates probabilities for yes/no responses from model outputs.
+
+        Parameters:
+            outputs : torch.Tensor
+                Model output tensor for calculating yes/no response probabilities.
+
+        Returns:
+            torch.Tensor
+                Probabilities for yes/no classifications.
+        """
         probas_yes_no = (
             outputs.scores[0][:, self.answer_sets_token_id["yes"] + self.answer_sets_token_id["no"]]
             .float()
@@ -242,4 +402,15 @@ class AutoModelDecoderICVLLMV2(ICVBasedDecoderLLMArch):
         return probas_yes_no
 
     def check_answer_set_tokenizer(self, answer):
+        """
+        Verifies if an answer set can be tokenized as a single token.
+
+        Parameters:
+            answer : str
+                Answer text to be checked.
+
+        Returns:
+            bool
+                True if answer can be tokenized into a single token, False otherwise.
+        """
         return len(self.tokenizer(answer).input_ids) == 1

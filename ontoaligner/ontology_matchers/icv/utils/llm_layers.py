@@ -1,9 +1,38 @@
 # -*- coding: utf-8 -*-
+"""
+This script provides utility functions for working with Transformer-based models in PyTorch.
+It includes functions for accessing various layers within the model, such as the embedding layer,
+attention layers, and MLP layers. The script also includes functions for recursively traversing
+the model to find the longest `nn.ModuleList`, and for setting and getting nested attributes within the model.
+
+Functions:
+    - get_nested_attr: Retrieves a nested attribute from an object using a string path.
+    - set_nested_attr: Sets a nested attribute on an object using a string path.
+    - find_longest_modulelist: Recursively searches a PyTorch model to find the longest `nn.ModuleList`.
+    - find_module: Finds a module in a PyTorch model based on a list of keyword matches.
+    - get_embedding_layer: Finds and returns the embedding layer in a transformer model.
+    - get_lm_head: Finds and returns the language model head of a transformer model.
+    - get_lm_pipeline: Returns the complete language model pipeline (normalization and head) for different model types.
+    - get_layers_path: Finds the path to the longest `nn.ModuleList` in a model.
+    - get_layers: Retrieves all the layers from the model, based on the longest `nn.ModuleList`.
+    - get_attention_layers: Finds and returns the attention layers in a transformer model.
+    - get_mlp_layers: Finds and returns the MLP (feedforward) layers in a transformer model.
+"""
 from torch import nn
 from transformers import PreTrainedModel
 
 
 def get_nested_attr(obj, attr_path):
+    """
+    Retrieves a nested attribute from an object using a string path.
+
+    Args:
+        obj (object): The object from which to retrieve the attribute.
+        attr_path (str): A dot-separated string representing the path to the attribute.
+
+    Returns:
+        The value of the nested attribute.
+    """
     attrs = attr_path.split(".")
     for attr in attrs:
         obj = getattr(obj, attr)
@@ -11,6 +40,14 @@ def get_nested_attr(obj, attr_path):
 
 
 def set_nested_attr(obj, attr_path, value):
+    """
+    Sets a nested attribute on an object using a string path.
+
+    Args:
+        obj (object): The object on which to set the attribute.
+        attr_path (str): A dot-separated string representing the path to the attribute.
+        value (any): The value to set for the nested attribute.
+    """
     attrs = attr_path.split(".")
     parent = get_nested_attr(obj, ".".join(attrs[:-1]))
     setattr(parent, attrs[-1], value)
@@ -61,6 +98,15 @@ def find_module(block, keywords):
 
 
 def get_embedding_layer(model: PreTrainedModel):
+    """
+    Finds and returns the embedding layer of a transformer model.
+
+    Args:
+        model (PreTrainedModel): The transformer model from which to retrieve the embedding layer.
+
+    Returns:
+        nn.Module: The embedding layer of the model.
+    """
     # model_type = model.__class__.__name__
     # if model_type == "LlamaForCausalLM":
     #     return model.model.embed_tokens
@@ -72,11 +118,29 @@ def get_embedding_layer(model: PreTrainedModel):
 
 
 def get_lm_head(model: PreTrainedModel):
+    """
+    Finds and returns the language model head of a transformer model.
+
+    Args:
+        model (PreTrainedModel): The transformer model from which to retrieve the LM head.
+
+    Returns:
+        nn.Module: The LM head module of the model.
+    """
     keywords = ["lm_head", "embed_out"]
     return find_module(model, keywords)
 
 
 def get_lm_pipeline(model: PreTrainedModel):
+    """
+    Returns the complete language model pipeline (normalization and head) for different model types.
+
+    Args:
+        model (PreTrainedModel): The transformer model for which the LM pipeline is generated.
+
+    Returns:
+        nn.Sequential: A sequential model containing the normalization and LM head.
+    """
     model_class = model.__class__.__name__
 
     if model_class == "LlamaForCausalLM":
@@ -93,11 +157,29 @@ def get_lm_pipeline(model: PreTrainedModel):
 
 
 def get_layers_path(model: PreTrainedModel):
+    """
+    Finds the path to the longest `nn.ModuleList` in a model.
+
+    Args:
+        model (PreTrainedModel): The model to search within.
+
+    Returns:
+        str: The path to the longest `nn.ModuleList`.
+    """
     longest_path, longest_len = find_longest_modulelist(model)
     return longest_path
 
 
 def get_layers(model: PreTrainedModel):
+    """
+    Retrieves all the layers from a model, based on the longest `nn.ModuleList`.
+
+    Args:
+        model (PreTrainedModel): The model from which to retrieve layers.
+
+    Returns:
+        list: A list of layers from the model.
+    """
     # model_type = model.__class__.__name__
     # if model_type == "LlamaForCausalLM":
     #     return model.model.layers
@@ -109,6 +191,15 @@ def get_layers(model: PreTrainedModel):
 
 
 def get_attention_layers(model: PreTrainedModel):
+    """
+    Finds and returns the attention layers in a transformer model.
+
+    Args:
+        model (PreTrainedModel): The transformer model to retrieve attention layers from.
+
+    Returns:
+        list: A list of attention layers in the model.
+    """
     # model_type = model.__class__.__name__
     # if model_type == "LlamaForCausalLM":
     #     return [layer.self_attn for layer in layers]
@@ -122,6 +213,15 @@ def get_attention_layers(model: PreTrainedModel):
 
 
 def get_mlp_layers(model: PreTrainedModel):
+    """
+    Finds and returns the MLP (feedforward) layers in a transformer model.
+
+    Args:
+        model (PreTrainedModel): The transformer model to retrieve MLP layers from.
+
+    Returns:
+        list: A list of MLP layers in the model.
+    """
     # model_type = model.__class__.__name__
     # if model_type == "LlamaForCausalLM":
     #     return [layer.mlp for layer in layers]
