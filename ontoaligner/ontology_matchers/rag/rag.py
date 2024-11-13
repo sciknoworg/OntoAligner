@@ -166,9 +166,6 @@ class RAGBasedOpenAILLMArch(OpenAILLMArch):
     """
     RAGBasedOpenAILLMArch is a class implementing an OpenAI-specific architecture for a RAG-based model
     with a post-processing step to extract yes/no predictions from the generated text.
-
-    Methods:
-        post_processor(generated_texts): Processes the generated texts to classify them as "yes" or "no".
     """
 
     def __str__(self):
@@ -207,14 +204,6 @@ class RAG(BaseOMModel):
     """
     RAG is a retrieval-augmented generation (RAG) model that integrates both retrieval and generation components
     to answer questions based on retrieved documents and a language model.
-
-    Methods:
-        load(llm_path, ir_path): Loads the pre-trained models for retrieval and generation.
-        generate(input_data): Main generation method that processes input data and generates output.
-        build_llm_inputs(input_data, ir_output): Builds the inputs for the LLM from the retrieved results.
-        build_llm_encoder(input_data, llm_inputs): Encodes the LLM inputs for generation.
-        llm_generate(input_data, ir_output): Generates predictions using the LLM.
-        ir_generate(input_data): Generates retrieval outputs based on the input data.
     """
 
     path: str = "NO MODEL LOADING IN RAG MODELS"
@@ -378,9 +367,6 @@ class AutoModelDecoderRAGLLM(RAGBasedDecoderLLMArch):
     """
     AutoModelDecoderRAGLLM is a subclass of RAGBasedDecoderLLMArch.
     It uses the AutoTokenizer and AutoModelForCausalLM models for language generation.
-
-    Methods:
-        __str__(): Returns the string representation of the model.
     """
     tokenizer = AutoTokenizer
     model = AutoModelForCausalLM
@@ -399,10 +385,6 @@ class AutoModelDecoderRAGLLMV2(RAGBasedDecoderLLMArch):
     """
     AutoModelDecoderRAGLLMV2 is an updated version of AutoModelDecoderRAGLLM.
     It includes additional checks for token probability predictions and optimizes answer prediction accuracy.
-
-    Methods:
-        get_probas_yes_no(outputs): Returns the probability distribution for "yes" and "no" answers.
-        check_answer_set_tokenizer(answer): Validates tokenization output.
     """
     tokenizer = AutoTokenizer
     model = AutoModelForCausalLM
@@ -449,9 +431,6 @@ class AutoModelDecoderRAGLLMV2(RAGBasedDecoderLLMArch):
 class OpenAIRAGLLM(RAGBasedOpenAILLMArch):
     """
     OpenAIRAGLLM is a subclass of RAGBasedOpenAILLMArch designed to work with OpenAI's language models.
-
-    Methods:
-        __str__(): Returns the string representation of the model.
     """
     def __str__(self):
         """
@@ -466,10 +445,6 @@ class MambaSSMRAGLLM(AutoModelDecoderRAGLLMV2):
     """
     MambaSSMRAGLLM is a subclass of AutoModelDecoderRAGLLMV2 with support for MambaSSM,
     a model that uses efficient loading and precision settings for faster generation on compatible GPUs.
-
-    Methods:
-        load_model(path): Loads the model, enabling 8-bit precision and balanced GPU distribution if applicable.
-        generate_for_llm(tokenized_input_data): Generates text responses with GPU-optimized generation.
     """
     tokenizer = AutoTokenizer
     model = AutoModelForCausalLM

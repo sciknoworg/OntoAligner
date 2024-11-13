@@ -6,16 +6,6 @@ This script defines classes that combine different LLM and retrieval model pairi
 ICV-based language modeling architectures. Each class pairs a specific retrieval model
 (e.g., AdaRetrieval, BERTRetrieval) with an LLM model variant (e.g., AutoModelDecoderICVLLM,
 AutoModelDecoderICVLLMV2) for enhanced ontology matching and retrieval-based NLP tasks.
-
-Classes:
-- LLaMALLMAdaRetrieverICVRAG: Combines LLaMA-based LLM with AdaRetrieval.
-- LLaMALLMBERTRetrieverICVRAG: Combines LLaMA-based LLM with BERTRetrieval.
-- FalconLLMAdaRetrieverICVRAG: Combines Falcon-based LLM with AdaRetrieval.
-- FalconLLMBERTRetrieverICVRAG: Combines Falcon-based LLM with BERTRetrieval.
-- VicunaLLMAdaRetrieverICVRAG: Combines Vicuna-based LLM with AdaRetrieval.
-- VicunaLLMBERTRetrieverICVRAG: Combines Vicuna-based LLM with BERTRetrieval.
-- MPTLLMAdaRetrieverICVRAG: Combines MPT-based LLM with AdaRetrieval.
-- MPTLLMBERTRetrieverICVRAG: Combines MPT-based LLM with BERTRetrieval.
 """
 
 from .icv import ICV, AutoModelDecoderICVLLM, AutoModelDecoderICVLLMV2
@@ -25,15 +15,6 @@ from ..retrieval.models import AdaRetrieval, BERTRetrieval
 class LLaMALLMAdaRetrieverICVRAG(ICV):
     """
     Class for pairing LLaMA-based LLM with AdaRetrieval for ICV-based ontology matching.
-
-    This class combines the LLaMA language model with the AdaRetrieval model, using ICV-based
-adapters to fine-tune the embeddings for improved ontology matching and retrieval tasks.
-
-    Attributes:
-        Retrieval : type
-            Specifies AdaRetrieval as the retrieval mechanism.
-        LLM : type
-            Specifies AutoModelDecoderICVLLM as the language model architecture.
     """
 
     Retrieval = AdaRetrieval
@@ -53,15 +34,6 @@ adapters to fine-tune the embeddings for improved ontology matching and retrieva
 class LLaMALLMBERTRetrieverICVRAG(ICV):
     """
     Class for pairing LLaMA-based LLM with BERTRetrieval for ICV-based ontology matching.
-
-    This class combines the LLaMA language model with BERTRetrieval, using ICV-based adapters
-    to fine-tune the embeddings for improved ontology matching and retrieval tasks.
-
-    Attributes:
-        Retrieval : type
-            Specifies BERTRetrieval as the retrieval mechanism.
-        LLM : type
-            Specifies AutoModelDecoderICVLLM as the language model architecture.
     """
 
     Retrieval = BERTRetrieval
@@ -81,15 +53,6 @@ class LLaMALLMBERTRetrieverICVRAG(ICV):
 class FalconLLMAdaRetrieverICVRAG(ICV):
     """
     Class for pairing Falcon-based LLM with AdaRetrieval for ICV-based ontology matching.
-
-    This class combines the Falcon language model with the AdaRetrieval model, using ICV-based
-adapters to fine-tune the embeddings for improved ontology matching and retrieval tasks.
-
-    Attributes:
-        Retrieval : type
-            Specifies AdaRetrieval as the retrieval mechanism.
-        LLM : type
-            Specifies AutoModelDecoderICVLLMV2 as the language model architecture.
     """
 
     Retrieval = AdaRetrieval
@@ -109,15 +72,6 @@ adapters to fine-tune the embeddings for improved ontology matching and retrieva
 class FalconLLMBERTRetrieverICVRAG(ICV):
     """
     Class for pairing Falcon-based LLM with BERTRetrieval for ICV-based ontology matching.
-
-    This class combines the Falcon language model with BERTRetrieval, using ICV-based adapters
-    to fine-tune the embeddings for improved ontology matching and retrieval tasks.
-
-    Attributes:
-        Retrieval : type
-            Specifies BERTRetrieval as the retrieval mechanism.
-        LLM : type
-            Specifies AutoModelDecoderICVLLMV2 as the language model architecture.
     """
 
     Retrieval = BERTRetrieval
@@ -137,15 +91,6 @@ class FalconLLMBERTRetrieverICVRAG(ICV):
 class VicunaLLMAdaRetrieverICVRAG(ICV):
     """
     Class for pairing Vicuna-based LLM with AdaRetrieval for ICV-based ontology matching.
-
-    This class combines the Vicuna language model with the AdaRetrieval model, using ICV-based
-    adapters to fine-tune the embeddings for improved ontology matching and retrieval tasks.
-
-    Attributes:
-        Retrieval : type
-            Specifies AdaRetrieval as the retrieval mechanism.
-        LLM : type
-            Specifies AutoModelDecoderICVLLM as the language model architecture.
     """
 
     Retrieval = AdaRetrieval
@@ -165,15 +110,6 @@ class VicunaLLMAdaRetrieverICVRAG(ICV):
 class VicunaLLMBERTRetrieverICVRAG(ICV):
     """
     Class for pairing Vicuna-based LLM with BERTRetrieval for ICV-based ontology matching.
-
-    This class combines the Vicuna language model with BERTRetrieval, using ICV-based adapters
-    to fine-tune the embeddings for improved ontology matching and retrieval tasks.
-
-    Attributes:
-        Retrieval : type
-            Specifies BERTRetrieval as the retrieval mechanism.
-        LLM : type
-            Specifies AutoModelDecoderICVLLM as the language model architecture.
     """
 
     Retrieval = BERTRetrieval
@@ -193,15 +129,6 @@ class VicunaLLMBERTRetrieverICVRAG(ICV):
 class MPTLLMAdaRetrieverICVRAG(ICV):
     """
     Class for pairing MPT-based LLM with AdaRetrieval for ICV-based ontology matching.
-
-    This class combines the MPT language model with the AdaRetrieval model, using ICV-based
-    adapters to fine-tune the embeddings for improved ontology matching and retrieval tasks.
-
-    Attributes:
-        Retrieval : type
-            Specifies AdaRetrieval as the retrieval mechanism.
-        LLM : type
-            Specifies AutoModelDecoderICVLLMV2 as the language model architecture.
     """
 
     Retrieval = AdaRetrieval
@@ -221,15 +148,6 @@ class MPTLLMAdaRetrieverICVRAG(ICV):
 class MPTLLMBERTRetrieverICVRAG(ICV):
     """
     Class for pairing MPT-based LLM with BERTRetrieval for ICV-based ontology matching.
-
-    This class combines the MPT language model with BERTRetrieval, using ICV-based adapters
-    to fine-tune the embeddings for improved ontology matching and retrieval tasks.
-
-    Attributes:
-        Retrieval : type
-            Specifies BERTRetrieval as the retrieval mechanism.
-        LLM : type
-            Specifies AutoModelDecoderICVLLMV2 as the language model architecture.
     """
 
     Retrieval = BERTRetrieval

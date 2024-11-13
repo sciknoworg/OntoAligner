@@ -1,28 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 This script defines several classes for parsing and processing ontologies related to
-material information. It includes helper functions for string manipulation and
+material science and engineering. It includes helper functions for string manipulation and
 ontology parsing methods for extracting labels, comments, synonyms, ancestors,
 and other ontology-related information.
-
-The script consists of:
-- A utility function `split_string` for splitting and formatting ontology class names.
-- Several ontology parser classes (`EMMOOntology`, `MaterialInformationOntoOntology`,
-  and `MatOntoOntology`) for handling specific ontologies.
-- Dataset classes (`MaterialInformationEMMOOMDataset`, `MaterialInformationMatOntoMDataset`,
-  `MaterialInformationMatOntoReducedMDataset`) for working with material information datasets
-  using the above ontology parsers.
-
-Functions:
-- `split_string`: Splits an input string into meaningful components using regular expressions.
-
-Classes:
-- `EMMOOntology`: A parser for the EMMO ontology, extracting labels, comments, ancestors, and checking label presence.
-- `MaterialInformationOntoOntology`: A parser for the Material Information Ontology, extracting names, labels,
-  synonyms, and more, as well as loading the ontology from a file.
-- `MatOntoOntology`: A parser for the MatOnto ontology, focused on extracting comments and synonyms.
-- Dataset classes that map the ontologies to specific dataset configurations for Material Information.
-
 """
 
 import re
@@ -70,13 +51,6 @@ class EMMOOntology(BaseOntologyParser):
 
     This class provides methods for extracting information such as labels, comments,
     ancestors, and checking whether an ontology class contains a label.
-
-    Methods:
-        is_contain_label(owl_class: Any) -> bool: Checks if the ontology class has a label.
-        get_comments(owl_class: Any) -> List: Retrieves the comments for the given ontology class.
-        get_label(owl_class: Any) -> str: Retrieves and formats the label of the given ontology class.
-        get_ancestors(owl_class: Any) -> List: Retrieves the ancestors of the given ontology class.
-        get_synonyms(owl_class: Any) -> List: Retrieves the synonyms for the given ontology class.
     """
     def is_contain_label(self, owl_class: Any) -> bool:
         """
@@ -153,18 +127,6 @@ class MaterialInformationOntoOntology(BaseOntologyParser):
 
     This class provides methods for handling ontology items such as labels, names, IRIs,
     parents, children, and more. It also provides functionality to load the ontology from a file.
-
-    Methods:
-        is_contain_label(owl_class: Any) -> bool: Checks if the ontology class has a label.
-        get_name(owl_class: Any) -> str: Retrieves the name of the ontology class.
-        get_label(owl_class: Any) -> str: Retrieves and formats the label of the ontology class.
-        get_iri(owl_class: Any) -> str: Retrieves the IRI of the ontology class.
-        get_childrens(owl_class: Any) -> List: Retrieves the children of the ontology class.
-        get_parents(owl_class: Any) -> List: Retrieves the parents of the ontology class.
-        get_synonyms(owl_class: Any) -> List: Retrieves synonyms for the ontology class.
-        get_comments(owl_class: Any) -> List: Retrieves comments for the ontology class.
-        get_owl_classes(ontology: Any) -> Any: Retrieves all classes from the ontology.
-        load_ontology(input_file_path: str) -> Any: Loads an ontology from a specified file.
     """
     def is_contain_label(self, owl_class: Any) -> bool:
         """

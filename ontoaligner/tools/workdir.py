@@ -3,10 +3,6 @@
 This script provides utility functions for directory creation and output file path generation.
 It defines functions to create directories and generate output file paths for saving results
 with a specific naming convention, including timestamping.
-
-Functions:
-- mkdir: Creates a directory if it doesn't already exist.
-- make_output_dir: Generates a structured output directory and file path based on provided parameters.
 """
 
 import os

@@ -6,10 +6,6 @@ as well as calculating various evaluation metrics such as precision, recall, and
 It includes two main functions:
 1. `calculate_intersection`: Computes the number of matching items between the predicted and reference data.
 2. `evaluation_report`: Calculates precision, recall, and F-score based on the intersection of predicted and reference data.
-
-Functions:
-- calculate_intersection: Computes the intersection between predicted and reference items.
-- evaluation_report: Calculates precision, recall, F-score, and other evaluation metrics based on predictions and references.
 """
 from typing import Dict, List
 

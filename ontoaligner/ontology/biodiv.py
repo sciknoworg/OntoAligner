@@ -4,22 +4,6 @@ This script defines ontology parsers for various ontologies (ENVO, SWEET, SeaLif
 and creates specific dataset classes for each ontology pairing. The ontology parsers extract various
 types of information such as synonyms, comments, and labels for different biological and environmental
 categories.
-
-Classes:
-- EnvoOntology: Extracts comments and synonyms from the ENVO ontology.
-- SweetOntology: Extracts labels and handles special cases for the SWEET ontology.
-- SeaLifeOntology: Extracts labels, synonyms, and comments for the SeaLife ontology.
-- TAXREFLDOntology: Extracts synonyms and comments from the TAXREFLD ontology.
-- NCBIOntology: Extracts synonyms from the NCBI ontology.
-- EnvoSweetOMDataset: Combines the ENVO and SWEET ontologies for the dataset.
-- FishZooplanktonOMDataset: Combines SeaLife ontology for both source and target for the dataset.
-- MacroalgaeMacrozoobenthosOMDataset: Combines SeaLife ontology for both source and target for the dataset.
-- TaxrefldBacteriaNcbitaxonBacteriaOMDataset: Combines TAXREFLD and NCBI for a Bacteria dataset.
-- TaxrefldChromistaNcbitaxonChromistaOMDataset: Combines TAXREFLD and NCBI for a Chromista dataset.
-- TaxrefldFungiNcbitaxonFungiOMDataset: Combines TAXREFLD and NCBI for a Fungi dataset.
-- TaxrefldPlantaeNcbitaxonPlantaeOMDataset: Combines TAXREFLD and NCBI for a Plantae dataset.
-- TaxrefldProtozoaNcbitaxonProtozoaOMDataset: Combines TAXREFLD and NCBI for a Protozoa dataset.
-
 """
 
 import os.path
@@ -33,10 +17,6 @@ track = "biodiv"
 class EnvoOntology(BaseOntologyParser):
     """
     This class extends `BaseOntologyParser` to parse the ENVO (Environmental Ontology).
-
-    Methods:
-        - get_comments: Retrieves the comments associated with a given ontology class.
-        - get_synonyms: Retrieves synonyms related to a given ontology class.
     """
     def get_comments(self, owl_class: Any) -> List:
         """
@@ -66,12 +46,6 @@ class EnvoOntology(BaseOntologyParser):
 class SweetOntology(BaseOntologyParser):
     """
     This class extends `BaseOntologyParser` to parse the SWEET ontology (Sweet Earth Ontology).
-
-    Methods:
-        - is_contain_label: Checks if the class contains a valid label.
-        - get_label: Retrieves the label for a given ontology class.
-        - get_comments: Retrieves an empty list of comments (SWEET ontology has no comments).
-        - get_synonyms: Retrieves an empty list of synonyms (SWEET ontology has no synonyms).
     """
     def is_contain_label(self, owl_class: Any) -> bool:
         """
@@ -136,13 +110,6 @@ class EnvoSweetOMDataset(OMDataset):
 
     This dataset includes the necessary ontologies for source and target data
     and defines the working directory for this specific dataset.
-
-    Attributes:
-        track (str): The track associated with the dataset, set to "biodiv".
-        ontology_name (str): The name of the ontology dataset, set to "envo-sweet".
-        source_ontology (EnvoOntology): The source ontology parser (ENVO).
-        target_ontology (SweetOntology): The target ontology parser (SWEET).
-        working_dir (str): The directory where the dataset files are stored, based on the track and ontology name.
     """
     track = track
     ontology_name = "envo-sweet"
@@ -154,12 +121,6 @@ class EnvoSweetOMDataset(OMDataset):
 class SeaLifeOntology(BaseOntologyParser):
     """
     This class extends `BaseOntologyParser` to parse the SeaLife ontology.
-
-    Methods:
-        - is_contain_label: Checks if the class contains a label in the SeaLife ontology.
-        - get_label: Retrieves the label for a given class in the SeaLife ontology.
-        - get_synonyms: Retrieves synonyms for a given class in the SeaLife ontology.
-        - get_comments: Retrieves comments for a given class in the SeaLife ontology.
     """
     def is_contain_label(self, owl_class: Any) -> bool:
         """
@@ -218,13 +179,6 @@ class FishZooplanktonOMDataset(OMDataset):
 
     This dataset includes the SeaLife ontology as both the source and target ontology
     and defines the working directory for this dataset.
-
-    Attributes:
-        track (str): The track associated with the dataset, set to "biodiv".
-        ontology_name (str): The name of the ontology dataset, set to "fish-zooplankton".
-        source_ontology (SeaLifeOntology): The source ontology parser (SeaLife).
-        target_ontology (SeaLifeOntology): The target ontology parser (SeaLife).
-        working_dir (str): The directory where the dataset files are stored, based on the track and ontology name.
     """
     track = track
     ontology_name = "fish-zooplankton"
@@ -237,13 +191,6 @@ class MacroalgaeMacrozoobenthosOMDataset(OMDataset):
     """
     Dataset combining the SeaLife ontology for both source and target, specific
     to macroalgae and macrozoobenthos categories.
-
-    Attributes:
-        track (str): The track associated with the dataset, set to "biodiv".
-        ontology_name (str): The name of the ontology dataset, set to "macroalgae-macrozoobenthos".
-        source_ontology (SeaLifeOntology): The source ontology parser (SeaLife).
-        target_ontology (SeaLifeOntology): The target ontology parser (SeaLife).
-        working_dir (str): The directory where the dataset files are stored, based on the track and ontology name.
     """
     track = track
     ontology_name = "macroalgae-macrozoobenthos"
@@ -293,9 +240,6 @@ class NCBIOntology(BaseOntologyParser):
     """
     This class extends `BaseOntologyParser` to parse the NCBI Taxonomy ontology,
     which provides taxonomic information on a wide range of organisms.
-
-    Methods:
-        - get_synonyms: Retrieves synonyms for a given class in the NCBI ontology.
     """
     def get_synonyms(self, owl_class: Any) -> List:
         """
@@ -325,13 +269,6 @@ class NCBIOntology(BaseOntologyParser):
 class TaxrefldBacteriaNcbitaxonBacteriaOMDataset(OMDataset):
     """
     Dataset combining the TAXREFLD and NCBI ontologies for the Bacteria category.
-
-    Attributes:
-        track (str): The track associated with the dataset, set to "biodiv".
-        ontology_name (str): The name of the ontology dataset, set to "taxrefld-bacteria-ncbitaxon-bacteria".
-        source_ontology (TAXREFLDOntology): The source ontology parser (TAXREFLD).
-        target_ontology (NCBIOntology): The target ontology parser (NCBI).
-        working_dir (str): The directory where the dataset files are stored, based on the track and ontology name.
     """
     track = track
     ontology_name = "taxrefldBacteria-ncbitaxonBacteria"
@@ -343,13 +280,6 @@ class TaxrefldBacteriaNcbitaxonBacteriaOMDataset(OMDataset):
 class TaxrefldChromistaNcbitaxonChromistaOMDataset(OMDataset):
     """
     Dataset combining the TAXREFLD and NCBI ontologies for the Chromista category.
-
-    Attributes:
-        track (str): The track associated with the dataset, set to "biodiv".
-        ontology_name (str): The name of the ontology dataset, set to "taxrefld-chromista-ncbitaxon-chromista".
-        source_ontology (TAXREFLDOntology): The source ontology parser (TAXREFLD).
-        target_ontology (NCBIOntology): The target ontology parser (NCBI).
-        working_dir (str): The directory where the dataset files are stored, based on the track and ontology name.
     """
     track = track
     ontology_name = "taxrefldChromista-ncbitaxonChromista"
@@ -361,13 +291,6 @@ class TaxrefldChromistaNcbitaxonChromistaOMDataset(OMDataset):
 class TaxrefldFungiNcbitaxonFungiOMDataset(OMDataset):
     """
     Dataset combining the TAXREFLD and NCBI ontologies for the Fungi category.
-
-    Attributes:
-        track (str): The track associated with the dataset, set to "biodiv".
-        ontology_name (str): The name of the ontology dataset, set to "taxrefld-fungi-ncbitaxon-fungi".
-        source_ontology (TAXREFLDOntology): The source ontology parser (TAXREFLD).
-        target_ontology (NCBIOntology): The target ontology parser (NCBI).
-        working_dir (str): The directory where the dataset files are stored, based on the track and ontology name.
     """
     track = track
     ontology_name = "taxrefldFungi-ncbitaxonFungi"
@@ -379,13 +302,6 @@ class TaxrefldFungiNcbitaxonFungiOMDataset(OMDataset):
 class TaxrefldPlantaeNcbitaxonPlantaeOMDataset(OMDataset):
     """
     Dataset combining the TAXREFLD and NCBI ontologies for the Plantae category.
-
-    Attributes:
-        track (str): The track associated with the dataset, set to "biodiv".
-        ontology_name (str): The name of the ontology dataset, set to "taxrefld-plantae-ncbitaxon-plantae".
-        source_ontology (TAXREFLDOntology): The source ontology parser (TAXREFLD).
-        target_ontology (NCBIOntology): The target ontology parser (NCBI).
-        working_dir (str): The directory where the dataset files are stored, based on the track and ontology name.
     """
     track = track
     ontology_name = "taxrefldPlantae-ncbitaxonPlantae"
@@ -397,13 +313,6 @@ class TaxrefldPlantaeNcbitaxonPlantaeOMDataset(OMDataset):
 class TaxrefldProtozoaNcbitaxonProtozoaOMDataset(OMDataset):
     """
     Dataset combining the TAXREFLD and NCBI ontologies for the Protozoa category.
-
-    Attributes:
-        track (str): The track associated with the dataset, set to "biodiv".
-        ontology_name (str): The name of the ontology dataset, set to "taxrefld-protozoa-ncbitaxon-protozoa".
-        source_ontology (TAXREFLDOntology): The source ontology parser (TAXREFLD).
-        target_ontology (NCBIOntology): The target ontology parser (NCBI).
-        working_dir (str): The directory where the dataset files are stored, based on the track and ontology name.
     """
     track = track
     ontology_name = "taxrefldProtozoa-ncbitaxonProtozoa"

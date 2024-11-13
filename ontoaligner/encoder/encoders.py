@@ -5,9 +5,9 @@ Each class is designed to parse ontological data in different ways, with differe
 including lightweight encoding, naive prompting, and retrieval-augmented generation.
 
 Classes:
-    - LightweightEncoder: Encodes ontological data using a lightweight strategy.
-    - NaiveConvOAEIEncoder: Encodes ontological data using a naive ontology alignment method.
-    - RAGEncoder: Encodes ontological data using retrieval-augmented generation (RAG).
+    - LightweightEncoder: A base encoder for lightweight encoding for concepts.
+    - NaiveConvOAEIEncoder: A base encoder for NaiveConvOAEI encoding for concepts.
+    - RAGEncoder: A base encoder for RAG encoding for concepts.
 """
 from typing import Any, Dict
 
@@ -19,12 +19,6 @@ class LightweightEncoder(BaseEncoder):
 
     This class provides methods for parsing ontological data, applying text preprocessing,
     and formatting the data into a structure suitable for further processing.
-
-    Methods:
-        parse: Parses the source and target ontologies, applying text preprocessing.
-        __str__: Returns a string representation of the encoder.
-        get_owl_items: Abstract method to be implemented by subclasses to extract ontology data.
-        get_encoder_info: Returns information about the encoder.
     """
     def parse(self, **kwargs) -> Any:
         """
@@ -92,13 +86,6 @@ class NaiveConvOAEIEncoder(BaseEncoder):
 
     This class creates a prompt template for ontology matching, where the source and target
     ontologies are processed to generate a formatted prompt for semantic similarity analysis.
-
-    Methods:
-        parse: Processes the source and target ontologies into a prompt.
-        __str__: Returns a string representation of the encoder.
-        get_owl_items: Abstract method to extract ontology data.
-        get_prefilled_prompt: Generates a prefilled prompt with ontology items.
-        get_encoder_info: Returns information about the encoder and its prompt template.
     """
     prompt_template: str = """<Problem Definition>
 In this task, we are given two ontologies in the form of {items_in_owl}, which consist of IRI and classes.
@@ -198,11 +185,6 @@ class RAGEncoder(BaseEncoder):
 
     This class leverages retrieval-augmented generation for encoding ontology data,
     allowing for both retrieval of relevant data and generation of encoded information.
-
-    Methods:
-        parse: Processes source and target ontologies into indices for retrieval and encoding.
-        __str__: Returns a string representation of the encoder.
-        get_encoder_info: Returns information about the encoder.
     """
     retrieval_encoder: Any = None
     llm_encoder: str = None

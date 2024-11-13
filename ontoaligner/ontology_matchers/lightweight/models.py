@@ -23,9 +23,6 @@ from .lightweight import FuzzySMLightweight
 class SimpleFuzzySMLightweight(FuzzySMLightweight):
     """
     A subclass of `FuzzySMLightweight` that uses the basic string similarity ratio from RapidFuzz.
-
-    This class overrides the `ratio_estimate` method to return the standard string similarity ratio
-    provided by RapidFuzz, which calculates a simple fuzzy matching ratio between two strings.
     """
 
     def __str__(self):
@@ -53,9 +50,6 @@ class SimpleFuzzySMLightweight(FuzzySMLightweight):
 class WeightedFuzzySMLightweight(FuzzySMLightweight):
     """
     A subclass of `FuzzySMLightweight` that uses a weighted string similarity ratio from RapidFuzz.
-
-    This class overrides the `ratio_estimate` method to return the weighted ratio function from
-    RapidFuzz, which applies weights to the characters in the strings during the similarity calculation.
     """
 
     def __str__(self):
@@ -83,9 +77,6 @@ class WeightedFuzzySMLightweight(FuzzySMLightweight):
 class TokenSetFuzzySMLightweight(FuzzySMLightweight):
     """
     A subclass of `FuzzySMLightweight` that uses the token set ratio for string similarity from RapidFuzz.
-
-    This class overrides the `ratio_estimate` method to return the token set ratio function from
-    RapidFuzz, which computes similarity by considering token sets rather than entire strings.
     """
 
     def __str__(self):

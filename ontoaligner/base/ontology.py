@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-This script defines two abstract base classes, `BaseOntologyParser` and `BaseAlignmentsParser`,
-for parsing ontologies and alignment files, respectively. The `BaseOntologyParser` class is responsible
-for extracting data from OWL ontologies, while the `BaseAlignmentsParser` class handles parsing alignment
-data, specifically in RDF format.
+This script provides functionality for parsing ontologies and alignment files.
+It includes methods for extracting data from OWL ontologies, such as names, labels, and relationships,
+as well as parsing alignment data in RDF format to extract relationships between entities and their corresponding data.
 
 Classes:
     - BaseOntologyParser: A base class for parsing OWL ontologies, extracting information such as
@@ -23,22 +22,6 @@ class BaseOntologyParser(ABC):
     """
     An abstract base class for parsing OWL ontologies. This class defines methods to extract data such as
     names, labels, IRIs, children, parents, synonyms, and comments for ontology classes.
-
-    Methods:
-        is_contain_label: Checks if the given ontology class has a label.
-        get_name: Retrieves the name of an ontology class.
-        get_label: Retrieves the label of an ontology class.
-        get_iri: Retrieves the IRI of an ontology class.
-        get_childrens: Retrieves the subclasses (children) of an ontology class.
-        get_parents: Retrieves the superclasses (parents) of an ontology class.
-        get_synonyms: Retrieves the synonyms of an ontology class.
-        get_comments: Abstract method to retrieve comments for an ontology class (to be implemented by subclasses).
-        get_owl_items: Extracts relevant items from the ontology class.
-        get_owl_classes: Retrieves all classes from the ontology.
-        duplicate_removals: Removes duplicate entries from ontology class information.
-        extract_data: Extracts relevant information from the ontology, such as names, labels, etc.
-        load_ontology: Loads the ontology from a given file.
-        parse: Loads and processes the ontology, extracting relevant data.
     """
 
     def is_contain_label(self, owl_class: Any) -> bool:
@@ -270,11 +253,6 @@ class BaseAlignmentsParser(ABC):
     """
     An abstract base class for parsing RDF alignment data. This class provides methods for extracting
     relationships between entities in the alignment data, including entities and their relations.
-
-    Methods:
-        extract_data: Extracts alignment data from an RDF graph, processing entity relationships.
-        load_ontology: Loads an RDF alignment file.
-        parse: Loads and processes the alignment data.
     """
 
     namespace: Namespace = Namespace(

@@ -5,11 +5,11 @@ The `PCA` class provides methods for fitting the model to data, transforming dat
 and performing inverse transformations. Additionally, the script includes a helper function `svd_flip`
 to ensure consistent signs for the singular value decomposition (SVD) components.
 
-Functions:
-    - svd_flip: Flips the singular vectors based on the largest element in each column of u to maintain consistency in signs.
-
 Classes:
     - PCA: A PyTorch module implementing Principal Component Analysis with methods for fitting, transforming, and inverse transforming data.
+
+Functions:
+    - svd_flip: Flips the singular vectors based on the largest element in each column of u to maintain consistency in signs.
 """
 
 import torch
@@ -42,13 +42,6 @@ class PCA(nn.Module):
 
     Args:
         n_components (int, optional): The number of principal components to keep. If None, keeps all components.
-
-    Methods:
-        fit(X): Fits the PCA model to the input data `X`.
-        forward(X): Transforms the input data `X` into the principal components.
-        transform(X): Projects the input data `X` onto the principal components.
-        fit_transform(X): Fits the PCA model and transforms the input data `X`.
-        inverse_transform(Y): Reconstructs the original data from the principal components `Y`.
     """
 
     def __init__(self, n_components):

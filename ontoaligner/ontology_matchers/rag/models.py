@@ -13,12 +13,6 @@ from ..retrieval.models import AdaRetrieval, BERTRetrieval
 class LLaMALLMAdaRetrieverRAG(RAG):
     """
     LLaMALLMAdaRetrieverRAG class combines the AdaRetrieval retrieval model with the AutoModelDecoderRAGLLM language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using AdaRetrieval for the
-    retrieval step and AutoModelDecoderRAGLLM for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, AdaRetrieval.
-        LLM (class): The language model used by this class, AutoModelDecoderRAGLLM.
     """
 
     Retrieval = AdaRetrieval
@@ -38,12 +32,6 @@ class LLaMALLMAdaRetrieverRAG(RAG):
 class LLaMALLMBERTRetrieverRAG(RAG):
     """
     LLaMALLMBERTRetrieverRAG class combines the BERTRetrieval retrieval model with the AutoModelDecoderRAGLLM language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using BERTRetrieval for the
-    retrieval step and AutoModelDecoderRAGLLM for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, BERTRetrieval.
-        LLM (class): The language model used by this class, AutoModelDecoderRAGLLM.
     """
 
     Retrieval = BERTRetrieval
@@ -63,12 +51,6 @@ class LLaMALLMBERTRetrieverRAG(RAG):
 class MistralLLMAdaRetrieverRAG(RAG):
     """
     MistralLLMAdaRetrieverRAG class combines the AdaRetrieval retrieval model with the AutoModelDecoderRAGLLM language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using AdaRetrieval for the
-    retrieval step and AutoModelDecoderRAGLLM for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, AdaRetrieval.
-        LLM (class): The language model used by this class, AutoModelDecoderRAGLLM.
     """
 
     Retrieval = AdaRetrieval
@@ -88,12 +70,6 @@ class MistralLLMAdaRetrieverRAG(RAG):
 class MistralLLMBERTRetrieverRAG(RAG):
     """
     MistralLLMBERTRetrieverRAG class combines the BERTRetrieval retrieval model with the AutoModelDecoderRAGLLM language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using BERTRetrieval for the
-    retrieval step and AutoModelDecoderRAGLLM for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, BERTRetrieval.
-        LLM (class): The language model used by this class, AutoModelDecoderRAGLLM.
     """
 
     Retrieval = BERTRetrieval
@@ -113,12 +89,6 @@ class MistralLLMBERTRetrieverRAG(RAG):
 class GPTOpenAILLMAdaRetrieverRAG(RAG):
     """
     GPTOpenAILLMAdaRetrieverRAG class combines the AdaRetrieval retrieval model with the OpenAIRAGLLM language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using AdaRetrieval for the
-    retrieval step and OpenAIRAGLLM for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, AdaRetrieval.
-        LLM (class): The language model used by this class, OpenAIRAGLLM.
     """
 
     Retrieval = AdaRetrieval
@@ -138,12 +108,6 @@ class GPTOpenAILLMAdaRetrieverRAG(RAG):
 class GPTOpenAILLMBERTRetrieverRAG(RAG):
     """
     GPTOpenAILLMBERTRetrieverRAG class combines the BERTRetrieval retrieval model with the OpenAIRAGLLM language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using BERTRetrieval for the
-    retrieval step and OpenAIRAGLLM for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, BERTRetrieval.
-        LLM (class): The language model used by this class, OpenAIRAGLLM.
     """
 
     Retrieval = BERTRetrieval
@@ -163,12 +127,6 @@ class GPTOpenAILLMBERTRetrieverRAG(RAG):
 class FalconLLMAdaRetrieverRAG(RAG):
     """
     FalconLLMAdaRetrieverRAG class combines the AdaRetrieval retrieval model with the AutoModelDecoderRAGLLMV2 language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using AdaRetrieval for the
-    retrieval step and AutoModelDecoderRAGLLMV2 for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, AdaRetrieval.
-        LLM (class): The language model used by this class, AutoModelDecoderRAGLLMV2.
     """
 
     Retrieval = AdaRetrieval
@@ -188,12 +146,6 @@ class FalconLLMAdaRetrieverRAG(RAG):
 class FalconLLMBERTRetrieverRAG(RAG):
     """
     FalconLLMBERTRetrieverRAG class combines the BERTRetrieval retrieval model with the AutoModelDecoderRAGLLMV2 language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using BERTRetrieval for the
-    retrieval step and AutoModelDecoderRAGLLMV2 for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, BERTRetrieval.
-        LLM (class): The language model used by this class, AutoModelDecoderRAGLLMV2.
     """
 
     Retrieval = BERTRetrieval
@@ -213,12 +165,6 @@ class FalconLLMBERTRetrieverRAG(RAG):
 class VicunaLLMAdaRetrieverRAG(RAG):
     """
     VicunaLLMAdaRetrieverRAG class combines the AdaRetrieval retrieval model with the AutoModelDecoderRAGLLM language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using AdaRetrieval for the
-    retrieval step and AutoModelDecoderRAGLLM for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, AdaRetrieval.
-        LLM (class): The language model used by this class, AutoModelDecoderRAGLLM.
     """
 
     Retrieval = AdaRetrieval
@@ -238,12 +184,6 @@ class VicunaLLMAdaRetrieverRAG(RAG):
 class VicunaLLMBERTRetrieverRAG(RAG):
     """
     VicunaLLMBERTRetrieverRAG class combines the BERTRetrieval retrieval model with the AutoModelDecoderRAGLLM language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using BERTRetrieval for the
-    retrieval step and AutoModelDecoderRAGLLM for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, BERTRetrieval.
-        LLM (class): The language model used by this class, AutoModelDecoderRAGLLM.
     """
 
     Retrieval = BERTRetrieval
@@ -263,12 +203,6 @@ class VicunaLLMBERTRetrieverRAG(RAG):
 class MPTLLMAdaRetrieverRAG(RAG):
     """
     MPTLLMAdaRetrieverRAG class combines the AdaRetrieval retrieval model with the AutoModelDecoderRAGLLMV2 language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using AdaRetrieval for the
-    retrieval step and AutoModelDecoderRAGLLMV2 for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, AdaRetrieval.
-        LLM (class): The language model used by this class, AutoModelDecoderRAGLLMV2.
     """
 
     Retrieval = AdaRetrieval
@@ -288,12 +222,6 @@ class MPTLLMAdaRetrieverRAG(RAG):
 class MPTLLMBERTRetrieverRAG(RAG):
     """
     MPTLLMBERTRetrieverRAG class combines the BERTRetrieval retrieval model with the AutoModelDecoderRAGLLMV2 language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using BERTRetrieval for the
-    retrieval step and AutoModelDecoderRAGLLMV2 for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, BERTRetrieval.
-        LLM (class): The language model used by this class, AutoModelDecoderRAGLLMV2.
     """
 
     Retrieval = BERTRetrieval
@@ -313,12 +241,6 @@ class MPTLLMBERTRetrieverRAG(RAG):
 class MambaLLMAdaRetrieverRAG(RAG):
     """
     MambaLLMAdaRetrieverRAG class combines the AdaRetrieval retrieval model with the MambaSSMRAGLLM language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using AdaRetrieval for the
-    retrieval step and MambaSSMRAGLLM for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, AdaRetrieval.
-        LLM (class): The language model used by this class, MambaSSMRAGLLM.
     """
 
     Retrieval = AdaRetrieval
@@ -338,12 +260,6 @@ class MambaLLMAdaRetrieverRAG(RAG):
 class MambaLLMBERTRetrieverRAG(RAG):
     """
     MambaLLMBERTRetrieverRAG class combines the BERTRetrieval retrieval model with the MambaSSMRAGLLM language model.
-    This class provides functionality for performing retrieval-augmented generation (RAG) using BERTRetrieval for the
-    retrieval step and MambaSSMRAGLLM for the language modeling step.
-
-    Attributes:
-        Retrieval (class): The retrieval model used by this class, BERTRetrieval.
-        LLM (class): The language model used by this class, MambaSSMRAGLLM.
     """
 
     Retrieval = BERTRetrieval

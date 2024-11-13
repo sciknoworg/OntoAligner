@@ -22,9 +22,6 @@ class FewShotDataset(RAGDataset):
 
     Attributes:
         exemplar_prompt (str): A prompt template used to create exemplars for the few-shot dataset.
-
-    Methods:
-        build_exemplars(examples: List): Builds and stores exemplars for the dataset.
     """
     exemplar_prompt: str = ""
 
@@ -48,10 +45,6 @@ class ConceptFewShotDataset(FewShotDataset):
     Attributes:
         prompt (str): A template prompt for comparing two concepts and asking the model to answer 'yes' or 'no'.
         exemplar_prompt (str): A template used for creating exemplars, including source and target concepts.
-
-    Methods:
-        build_exemplars(examples: List): Constructs the exemplar prompt from a list of example concept pairs.
-        fill_one_sample(input_data: Any) -> str: Fills the prompt template with exemplar data and input sample data.
     """
     prompt: str = """Classify if two concepts refer to the same real world entity or not (answer only yes or no).
 

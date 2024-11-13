@@ -5,10 +5,6 @@ This script defines functions for evaluating machine learning models based on di
 It includes two main functions:
 1. `evaluator`: This function performs evaluations by comparing predictions to reference data, handling different track types (e.g., 'bio-ml', 'bio-llm').
 2. `evaluator_module`: A more flexible evaluation function that adjusts the evaluation based on the chosen approach (e.g., retrieval, RAG, ICV, fewshot) and processes the predictions accordingly before passing them to the evaluator function.
-
-Functions:
-- evaluator: Evaluates predictions against references, returning evaluation results.
-- evaluator_module: Preprocesses predictions based on the approach and calls the evaluator function to generate results.
 """
 from typing import Any, Dict, List
 

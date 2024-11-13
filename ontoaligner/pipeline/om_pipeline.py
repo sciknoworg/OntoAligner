@@ -39,10 +39,6 @@ class OMPipelines:
         om_dataset (Any): Dataset object used to handle the ontology data.
         ontology_matcher (Any): Matcher used to perform ontology matching.
         om_encoder (Any): Encoder used to encode the ontology data.
-
-    Methods:
-        __call__(self) -> None:
-            Executes the ontology matching pipeline by loading the data, encoding it, and generating results.
     """
 
     def __init__(self,

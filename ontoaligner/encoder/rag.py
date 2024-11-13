@@ -26,9 +26,6 @@ class ConceptRAGEncoder(RAGEncoder):
         items_in_owl (str): Specifies the type of OWL items being encoded, in this case, a Concept.
         retrieval_encoder (Any): The retrieval encoder used for fetching OWL items, set to `ConceptLightweightEncoder`.
         llm_encoder (str): The language model encoder used, set to "LabelRAGDataset".
-
-    Methods:
-        None
     """
     items_in_owl: str = "(Concept)"
     retrieval_encoder: Any = ConceptLightweightEncoder
@@ -47,9 +44,6 @@ class ConceptChildrenRAGEncoder(RAGEncoder):
         items_in_owl (str): Specifies the type of OWL items being encoded, in this case, a Concept and its Children.
         retrieval_encoder (Any): The retrieval encoder used for fetching OWL items, set to `ConceptLightweightEncoder`.
         llm_encoder (str): The language model encoder used, set to "LabelChildrenRAGDataset".
-
-    Methods:
-        None
     """
     items_in_owl: str = "(Concept, Children)"
     retrieval_encoder: Any = ConceptLightweightEncoder
@@ -68,9 +62,6 @@ class ConceptParentRAGEncoder(RAGEncoder):
         items_in_owl (str): Specifies the type of OWL items being encoded, in this case, a Concept and its Parent.
         retrieval_encoder (Any): The retrieval encoder used for fetching OWL items, set to `ConceptLightweightEncoder`.
         llm_encoder (str): The language model encoder used, set to "LabelParentRAGDataset".
-
-    Methods:
-        None
     """
     items_in_owl: str = "(Concept, Parent)"
     retrieval_encoder: Any = ConceptLightweightEncoder

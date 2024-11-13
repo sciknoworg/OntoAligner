@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-This script defines the abstract base class `BaseOMModel`, which serves as a blueprint for models in the
-ontology matching (OM) domain. The class includes methods for string representation and data generation
-that must be implemented by subclasses.
+Defines a blueprint for ontology matching models, specifying methods for string representation and data generation that must be implemented by subclasses.
+The script ensures consistency and structure for building specialized models in the ontology matching domain.
 
 Classes:
     - BaseOMModel: An abstract base class for ontology matching models, which defines methods for
                    string representation and data generation.
-
 """
 from abc import ABC, abstractmethod
 from typing import List
@@ -16,11 +14,6 @@ class BaseOMModel(ABC):
     """
     An abstract base class for ontology matching models. This class defines methods for string representation
     and output generation, which must be implemented by subclasses.
-
-    Methods:
-        __init__: Initializes the model with optional keyword arguments.
-        __str__: An abstract method to define a string representation of the model.
-        generate: An abstract method to generate output based on the input data.
     """
 
     def __init__(self, **kwargs) -> None:

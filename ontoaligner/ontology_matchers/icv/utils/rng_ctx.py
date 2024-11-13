@@ -61,9 +61,6 @@ class RandomContext:
 
     This class ensures that RNG states are restored to their initial values upon exiting the context,
     even if an exception occurs within the context.
-
-    Args:
-        seed (int, optional): The seed for RNGs. If None, the seed will be set randomly.
     """
 
     def __init__(self, seed=None):

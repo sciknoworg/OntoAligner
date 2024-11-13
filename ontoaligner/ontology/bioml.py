@@ -1,21 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-This script defines ontology parsers and datasets for bioinformatics-related tasks,
-specifically for processing disease-related ontologies and alignment data.
-The main objective is to handle ontological data, parse TSV files for specific bio-entities,
-and provide aligned datasets for various ontology combinations.
-
-The script includes the following components:
-- `refactor_tsv`: A function that restructures TSV data into a more usable format.
-- `BioMLAlignmentsParser`: A class that parses and processes alignment data between source and target entities.
-- `BioOntology`: A class that extracts comments and synonyms from biological ontologies.
-- Several dataset classes (e.g., `NCITDOIDDiseaseOMDataset`, `OMIMORDODiseaseOMDataset`) that combine specific ontologies with alignment parsing logic to prepare datasets for bioinformatics tasks.
-
-Classes:
-- `BioMLAlignmentsParser`: Parses alignment data in TSV files.
-- `BioOntology`: Handles the extraction of comments and synonyms from biological ontologies.
-- Dataset Classes: Includes specific datasets combining different ontologies such as `SNOMED`, `NCIT`, `OMIM`, etc., each with associated alignment parsers.
-
+This script defines ontology parsers and datasets for bioinformatics-related tasks, specifically for
+processing disease-related ontologies and alignment data. The main objective is to handle ontological data, parse TSV
+files for specific bio-entities, and provide aligned datasets for various ontology combinations.
 """
 
 import os.path
@@ -65,10 +52,6 @@ class BioMLAlignmentsParser(BaseAlignmentsParser):
     Inherits from `BaseAlignmentsParser`. This class handles the parsing of alignment
     data where each row contains source and target entity information, and the
     candidates for the target entity.
-
-    Methods:
-        parse(input_file_path: str = None) -> Dict: Parses an input file and returns
-                                                   aligned entities in a dictionary format.
     """
     def parse(self, input_file_path: str = None) -> Dict:
         """
@@ -104,10 +87,6 @@ class BioOntology(BaseOntologyParser):
 
     Inherits from `BaseOntologyParser`. This class specifically extracts comments
     and synonyms (both related and exact) from biological ontology classes.
-
-    Methods:
-        get_comments(owl_class: Any) -> List: Retrieves comments for the given ontology class.
-        get_synonyms(owl_class: Any) -> List: Retrieves synonyms for the given ontology class.
     """
     def __init__(self):
         """
@@ -163,14 +142,6 @@ class NCITDOIDDiseaseOMDataset(OMDataset):
 
     This class provides the source and target ontologies (both `BioOntology`), along with the
     working directory and alignment parser.
-
-    Attributes:
-        track (str): The track associated with this dataset, set to "bio-ml".
-        ontology_name (str): The name of the ontology dataset, set to "ncit-doid.disease".
-        source_ontology (BioOntology): The source ontology parser (NCIT).
-        target_ontology (BioOntology): The target ontology parser (DOID).
-        working_dir (str): The directory where the dataset files are stored, based on the track and ontology name.
-        alignments (BaseAlignmentsParser): The parser for alignment data, set to `BioMLAlignmentsParser`.
     """
     track = track
     ontology_name = "ncit-doid.disease"
@@ -184,8 +155,6 @@ class OMIMORDODiseaseOMDataset(OMDataset):
     """
     A dataset class combining the OMIM (Online Mendelian Inheritance in Man) and ORDO (Orphanet Rare Disease Ontology)
     ontologies for disease-related data.
-
-    Similar to `NCITDOIDDiseaseOMDataset`, but uses OMIM and ORDO as the source and target ontologies.
     """
     track = track
     ontology_name = "omim-ordo.disease"

@@ -25,12 +25,6 @@ class FewShotRAG(RAG):
     Attributes:
         positive_ratio (float): The ratio of positive examples in the few-shot samples.
         n_shots (int): Number of shots to be used for few-shot learning, derived from input arguments.
-
-    Methods:
-        __str__: Returns a string representation of the class.
-        generate: Generates outputs using information retrieval and language generation with few-shot examples.
-        build_llm_encoder: Configures the LLM encoder with exemplar examples for processing.
-        build_fewshots: Builds positive and negative few-shot examples from the input data.
     """
     positive_ratio = 0.7
 

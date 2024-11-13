@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-This script defines the `OMDataset` class for working with ontology matching datasets. The class is responsible for
-loading and collecting data related to source and target ontologies, along with reference alignments. It provides
-methods for collecting data, loading from JSON, and handling file paths for the dataset.
+The script is responsible for loading and collecting data related to source and target ontologies, along with reference alignments.
+It provides methods for collecting data, loading from JSON, and handling file paths.
 
 Classes:
     - OMDataset: A base class for handling ontology matching datasets, including parsing ontologies and alignments
@@ -32,13 +31,6 @@ class OMDataset(ABC):
         target_ontology (Any): The target ontology object.
         alignments (Any): The alignments parser object, using `BaseAlignmentsParser`.
         working_dir (str): The directory where the dataset files are stored.
-
-    Methods:
-        collect: Collects data from the source ontology, target ontology, and reference alignments,
-                 and returns it as a dictionary.
-        load_from_json: Loads the dataset from a JSON file located in a specified directory.
-        __dir__: Returns the directory structure of the dataset based on the track and ontology name.
-        __str__: Returns a string representation of the ontology name.
     """
 
     track: str = ""

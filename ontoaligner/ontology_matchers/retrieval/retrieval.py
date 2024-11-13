@@ -9,11 +9,6 @@ Classes:
     - Retrieval: A base class for general retrieval tasks.
     - BiEncoderRetrieval: A retrieval model using bi-encoder architectures and SentenceTransformers.
     - MLRetrieval: A retrieval model using SVM and pre-trained SentenceTransformers.
-
-Functionality:
-    - The script loads models, fits them to the data, and estimates similarities between queries and documents.
-    - The retrieval models use different methods for transforming data into embeddings, calculating similarities,
-      and generating predictions based on the top-k most similar documents.
 """
 
 from typing import Any, List
@@ -33,15 +28,6 @@ class Retrieval(BaseOMModel):
     The base class for retrieval models. This class defines the common interface for loading, fitting,
     transforming, and generating retrieval results. It is intended to be subclassed and extended by more
     specific retrieval models.
-
-    Methods:
-        load(path: str) -> Any: Loads the model from a specified path.
-        __str__() -> str: Returns the string representation of the model.
-        fit(inputs: Any) -> Any: Fits the model to the provided input data.
-        transform(inputs: Any) -> Any: Transforms the input data for retrieval.
-        estimate_similarity(query_embed: Any, candidate_embeds: Any) -> Any: Estimates similarity between query and candidate embeddings.
-        get_top_k(query_embed: Any, candidate_embeds: Any) -> [List, List]: Returns the top-k most similar items based on query and candidate embeddings.
-        generate(input_data: List) -> List: Generates predictions based on similarity scores between source and target ontologies.
     """
     path: str = ""
     model: Any = None
@@ -173,12 +159,6 @@ class BiEncoderRetrieval(Retrieval):
     """
     A retrieval model using bi-encoder architecture based on SentenceTransformers. This model generates embeddings
     for both queries and candidates and calculates similarity using cosine similarity.
-
-    Methods:
-        load(path: str): Loads the bi-encoder model from the specified path.
-        fit(inputs: Any): Fits the model to the input data, generating embeddings.
-        transform(inputs: Any): Transforms the input data into embeddings.
-        generate(input_data: List): Generates predictions based on source and target ontologies using bi-encoder retrieval.
     """
     def load(self, path: str):
         """
@@ -256,16 +236,9 @@ class BiEncoderRetrieval(Retrieval):
 
 class MLRetrieval(Retrieval):
     """
-    This retriever is the slowest model.
-    So it should be used for labels based retrieval
     A retrieval model using SVM-based classification for matching queries with candidates.
     This model computes similarity scores using SVM and sentence embeddings.
-
-    Methods:
-        load(path: str): Loads the SVM model (SentenceTransformer) from the specified path.
-        fit(inputs: Any): Fits the model to input data and generates embeddings.
-        transform(inputs: Any): Transforms the input data into embeddings.
-        generate(input_data: List): Generates predictions based on SVM similarity scores.
+    This retriever is the slowest model. So it should be used for labels based retrieval
     """
     def load(self, path: str):
         """

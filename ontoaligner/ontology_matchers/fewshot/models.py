@@ -5,24 +5,6 @@ retrieval model and language model (LLM) configuration. These specialized config
 for various retrieval and generation tasks using different retrieval backends (Ada and BERT) and
 LLMs (OpenAI, AutoModelDecoderRAG, MambaSSM, etc.). Each class also overrides the string representation
 to identify the model configuration.
-
-Classes:
-- LLaMALLMAdaRetrieverFSRAG: Uses Ada for retrieval and AutoModelDecoderRAG for LLM with FewShotRAG.
-- LLaMALLMBERTRetrieverFSRAG: Uses BERT for retrieval and AutoModelDecoderRAG for LLM with FewShotRAG.
-- MistralLLMAdaRetrieverFSRAG: Uses Ada for retrieval and AutoModelDecoderRAG for LLM with FewShotRAG.
-- MistralLLMBERTRetrieverFSRAG: Uses BERT for retrieval and AutoModelDecoderRAG for LLM with FewShotRAG.
-- GPTOpenAILLMAdaRetrieverFSRAG: Uses Ada for retrieval and OpenAIRAGLLM for LLM with FewShotRAG.
-- GPTOpenAILLMBERTRetrieverFSRAG: Uses BERT for retrieval and OpenAIRAGLLM for LLM with FewShotRAG.
-- FalconLLMAdaRetrieverFSRAG: Uses Ada for retrieval and AutoModelDecoderRAGLLMV2 for LLM with FewShotRAG.
-- FalconLLMBERTRetrieverFSRAG: Uses BERT for retrieval and AutoModelDecoderRAGLLMV2 for LLM with FewShotRAG.
-- VicunaLLMAdaRetrieverFSRAG: Uses Ada for retrieval and AutoModelDecoderRAG for LLM with FewShotRAG.
-- VicunaLLMBERTRetrieverFSRAG: Uses BERT for retrieval and AutoModelDecoderRAG for LLM with FewShotRAG.
-- MPTLLMAdaRetrieverFSRAG: Uses Ada for retrieval and AutoModelDecoderRAGLLMV2 for LLM with FewShotRAG.
-- MPTLLMBERTRetrieverFSRAG: Uses BERT for retrieval and AutoModelDecoderRAGLLMV2 for LLM with FewShotRAG.
-- MambaLLMAdaRetrieverFSRAG: Uses Ada for retrieval and MambaSSMRAGLLM for LLM with FewShotRAG.
-- MambaLLMBERTRetrieverFSRAG: Uses BERT for retrieval and MambaSSMRAGLLM for LLM with FewShotRAG.
-
-Each class inherits from FewShotRAG and defines a unique combination of Retrieval and LLM models.
 """
 
 from .fewshot import FewShotRAG

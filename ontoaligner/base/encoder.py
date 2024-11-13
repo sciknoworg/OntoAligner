@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-This script defines the `BaseEncoder` class, which serves as an abstract base class for creating encoders
-that handle text preprocessing and encoding tasks. The class provides a method for preprocessing text,
-defining abstract methods for encoding and retrieving encoder-specific information, and implementing a
-call method to invoke the parsing behavior.
+This script provides a foundation for flexible text encoding, including text preprocessing,
+customizable prompt templates, and structured methods for encoding and retrieving encoder-specific details.
+It Ensures a consistent interface and behavior for text encoding tasks.
 
 Classes:
     - BaseEncoder: An abstract base class for encoders, providing text preprocessing, a template for prompts,
                    and methods for encoding data and obtaining encoder information.
 """
+
 from abc import ABC, abstractmethod
 from typing import Any
 
@@ -21,13 +21,6 @@ class BaseEncoder(ABC):
     Attributes:
         prompt_template (str): A string template used in prompting for encoding tasks.
         items_in_owl (str): A string that defines the items in the ontology used by the encoder.
-
-    Methods:
-        __str__: Returns the prompt template string.
-        preprocess: Preprocesses input text by replacing underscores with spaces and converting it to lowercase.
-        parse: An abstract method that should be implemented to parse input data.
-        get_encoder_info: An abstract method that should be implemented to provide encoder-specific information.
-        __call__: Calls the `parse` method, making the encoder instance callable for encoding tasks.
     """
 
     prompt_template: str = ""

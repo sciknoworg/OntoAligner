@@ -23,10 +23,6 @@ class ConceptNaiveEncoder(NaiveConvOAEIEncoder):
 
     Attributes:
         items_in_owl (str): Specifies the type of OWL items being encoded, in this case, an IRI and Concept.
-
-    Methods:
-        get_owl_items(owl: Dict) -> str:
-            Given an OWL item, returns a formatted string containing the IRI and label of the concept.
     """
     items_in_owl: str = "(IRI, Concept)"
 
@@ -53,10 +49,6 @@ class ConceptChildrenNaiveEncoder(NaiveConvOAEIEncoder):
 
     Attributes:
         items_in_owl (str): Specifies the type of OWL items being encoded, in this case, an IRI, Concept, and Children.
-
-    Methods:
-        get_owl_items(owl: Dict) -> str:
-            Given an OWL item, returns a formatted string containing the IRI, label of the concept, and labels of its children.
     """
     items_in_owl: str = "(IRI, Concept, Children)"
 
@@ -85,10 +77,6 @@ class ConceptParentNaiveEncoder(NaiveConvOAEIEncoder):
 
     Attributes:
         items_in_owl (str): Specifies the type of OWL items being encoded, in this case, an IRI, Concept, and Parent.
-
-    Methods:
-        get_owl_items(owl: Dict) -> str:
-            Given an OWL item, returns a formatted string containing the IRI, label of the concept, and labels of its parents.
     """
     items_in_owl: str = "(IRI, Concept, Parent)"
 

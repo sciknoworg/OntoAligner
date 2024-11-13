@@ -38,15 +38,6 @@ class LLM(BaseOMModel):
     Attributes:
         tokenizer (Any): The tokenizer object used to process text inputs.
         model (Any): The model object used for text generation.
-
-    Methods:
-        __str__: Returns a string representation of the LLM object.
-        load: Loads both the tokenizer and model from a specified path.
-        load_tokenizer: Loads the tokenizer from a pretrained path.
-        load_model: Loads the model from a pretrained path and moves it to the specified device.
-        tokenize: Tokenizes input data and returns a tensor-compatible format.
-        generate: Generates text based on input data, supporting both single and multiple inputs.
-        post_processor: Processes generated texts (default is no processing).
     """
 
     tokenizer: Any = None
@@ -376,12 +367,6 @@ class DecoderLLMArch(BaseLLMArch):
     Attributes:
         llms_with_special_tk (List[str]): List of LLMs that require special tokenization handling.
         llms_with_hugging_tk (List[str]): List of LLMs that require a Hugging Face access token.
-
-    Methods:
-        __str__: Returns a string representation of the DecoderLLMArch class.
-        check_list_llms: Checks if any items in a given list are present in the model path.
-        load_tokenizer: Loads the tokenizer with specific configurations based on LLM type.
-        load_model: Loads the model with device-specific configurations and token requirements.
     """
     def __init__(self, **kwargs) -> None:
         """

@@ -22,10 +22,6 @@ class ConceptLightweightEncoder(LightweightEncoder):
 
     Attributes:
         items_in_owl (str): Specifies the type of OWL items being encoded, in this case, a Concept.
-
-    Methods:
-        get_owl_items(owl: Dict) -> Dict:
-            Given an OWL item, returns a dictionary containing the IRI and label of the concept.
     """
     items_in_owl: str = """(Concept)"""
 
@@ -51,11 +47,6 @@ class ConceptChildrenLightweightEncoder(LightweightEncoder):
 
     Attributes:
         items_in_owl (str): Specifies the type of OWL items being encoded, in this case, a Concept with Children.
-
-    Methods:
-        get_owl_items(owl: Dict) -> Dict:
-            Given an OWL item, returns a dictionary containing the IRI, label of the concept,
-            and labels of its children.
     """
     items_in_owl: str = "(Concept, Children)"
 
@@ -83,11 +74,6 @@ class ConceptParentLightweightEncoder(LightweightEncoder):
 
     Attributes:
         items_in_owl (str): Specifies the type of OWL items being encoded, in this case, a Concept with Parent.
-
-    Methods:
-        get_owl_items(owl: Dict) -> Dict:
-            Given an OWL item, returns a dictionary containing the IRI, label of the concept,
-            and labels of its parents.
     """
     items_in_owl: str = "(Concept, Parent)"
 

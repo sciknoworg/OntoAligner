@@ -13,9 +13,6 @@ Classes:
 - ICV: Main class to manage ICV creation, ontology matching, and output generation.
 - AutoModelDecoderICVLLM: LLM decoder using AutoModel for causal language modeling.
 - AutoModelDecoderICVLLMV2: Extends AutoModelDecoderICVLLM with specific yes/no probability calculations.
-
-Functions:
-- tokenize_each_demonstration: Tokenizes and preprocesses pairs of demonstration examples.
 """
 from typing import List
 

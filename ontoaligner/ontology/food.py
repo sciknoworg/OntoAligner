@@ -1,20 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 This script defines classes for parsing and processing datasets related to food ontologies.
-It includes a class for parsing the `FoodOntology` and a dataset configuration for the
-Ciqual-Siren dataset.
-
-The script contains the following components:
-- `FoodOntology`: A class for handling the Food ontology, with methods for retrieving
-  labels, synonyms, parents, and comments for ontology classes.
-- `CiqualSirenOMDataset`: A class representing the Ciqual-Siren dataset, which combines
-  source and target ontologies with a working directory configuration.
-
-Classes:
-- `FoodOntology`: A parser for the Food ontology, providing methods for handling ontology classes.
-- `CiqualSirenOMDataset`: A dataset class that uses the FoodOntology for both the source
-  and target ontologies and defines the working directory for the Ciqual-Siren dataset.
-
+It includes a class for parsing the `FoodOntology` and a dataset configurations.
 """
 
 import os
@@ -31,13 +18,6 @@ class FoodOntology(BaseOntologyParser):
 
     This class provides methods for extracting information such as labels, synonyms,
     parent classes, and comments for ontology classes.
-
-    Methods:
-        is_contain_label(owl_class: Any) -> bool: Checks if the ontology class has a label.
-        get_label(owl_class: Any) -> str: Retrieves the label for the given ontology class.
-        get_synonyms(owl_class: Any) -> List: Retrieves the synonyms for the given ontology class.
-        get_parents(owl_class: Any) -> List: Retrieves the parent classes for the given ontology class.
-        get_comments(owl_class: Any) -> List: Retrieves the comments for the given ontology class.
     """
     def is_contain_label(self, owl_class: Any) -> bool:
         """
@@ -108,13 +88,6 @@ class CiqualSirenOMDataset(OMDataset):
 
     This class uses the `FoodOntology` for both the source and target ontologies
     and defines the working directory for the dataset.
-
-    Attributes:
-        track (str): The track associated with this dataset, set to "food".
-        ontology_name (str): The name of the dataset, set to "ciqual-siren".
-        source_ontology (FoodOntology): The source ontology parser for Ciqual-Siren.
-        target_ontology (FoodOntology): The target ontology parser for Ciqual-Siren.
-        working_dir (str): The directory where the dataset files are stored, based on the track and ontology name.
     """
     track = track
     ontology_name = "ciqual-siren"

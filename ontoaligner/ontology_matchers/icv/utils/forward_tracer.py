@@ -10,9 +10,6 @@ Classes:
     - ForwardTrace: A class that holds the forward trace of the model, including the residual stream and attention weights.
     - ForwardTracer: A context manager that registers hooks on a model's layers to trace activations during the
                      forward pass.
-
-Functions:
-    - None (class-based functionality only).
 """
 
 from dataclasses import dataclass
