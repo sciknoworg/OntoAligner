@@ -11,7 +11,7 @@ Classes:
 from ..rag.rag import RAG
 from ..dataset import *  # NOQA
 from ...postprocess import process
-from typing import List, Any
+from typing import List, Any, Dict
 import math
 import random
 
@@ -50,12 +50,12 @@ class FewShotRAG(RAG):
         """
         return "FewShotRAG"
 
-    def generate(self, input_data: List) -> List:
+    def generate(self, input_data: List[Dict]) -> List:
         """
         Generates model outputs by combining information retrieval, pre-processing, and few-shot generation.
 
         Parameters:
-            input_data (List): A list containing data and configurations for generation, including:
+            input_data (List[Dict]): A list containing data and configurations for generation in a dict format with the following keys:
                 - retriever-encoder
                 - task-args
                 - source-onto-iri2index
