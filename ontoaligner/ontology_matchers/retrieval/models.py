@@ -15,6 +15,7 @@ Classes:
 """
 
 import os
+import json
 from typing import Any
 import numpy as np
 from rank_bm25 import BM25Okapi
@@ -23,7 +24,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
 
 from .retrieval import BiEncoderRetrieval, MLRetrieval, Retrieval
-from ...utils import io
+
 
 
 class BERTRetrieval(BiEncoderRetrieval):
@@ -229,7 +230,7 @@ class AdaRetrieval(BiEncoderRetrieval):
             path (str): The directory path where the embeddings and labels are stored.
         """
         self.model = np.load(os.path.join(self.path, "openai_embeddings.npy"))
-        self.labels2index = io.read_json(os.path.join(self.path, "labels2index.json"))
+        self.labels2index = json.load(open(os.path.join(self.path, "labels2index.json"), encoding="utf-8"))
 
     def fit(self, inputs: Any) -> Any:
         """

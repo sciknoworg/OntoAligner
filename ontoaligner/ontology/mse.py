@@ -68,8 +68,7 @@ class EMMOOntology(BaseOntologyParser):
             if len(owl_class.prefLabel) == 0:
                 return False
             return True
-        except Exception as e:
-            print(f"Exception: {e}")
+        except Exception:
             return False
 
     def get_comments(self, owl_class: Any) -> List:
@@ -249,7 +248,7 @@ class MaterialInformationOntoOntology(BaseOntologyParser):
         Returns:
             Any: The loaded ontology.
         """
-        ontology = ontospy.Ontospy(input_file_path, verbose=True)
+        ontology = ontospy.Ontospy(input_file_path, verbose=False)
         return ontology
 
 

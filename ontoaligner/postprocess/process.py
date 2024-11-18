@@ -143,12 +143,7 @@ def confidence_score_ratio_based_filtering(outputdict: Dict, topk_confidence_rat
     return outputdict_confidence_ratios
 
 
-def confidence_score_based_filtering(
-    outputdict_confidence_ratios: Dict,
-    topk_confidence_score: int,
-    llm_confidence_threshold: float,
-    ir_score_threshold: float,
-) -> List:
+def confidence_score_based_filtering(outputdict_confidence_ratios: Dict, topk_confidence_score: int, llm_confidence_threshold: float, ir_score_threshold: float) -> List:
     """
     Filters the predictions based on LLM confidence score and IR score, selecting the top-k
     predictions that exceed the given thresholds.

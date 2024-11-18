@@ -6,10 +6,11 @@ files for specific bio-entities, and provide aligned datasets for various ontolo
 """
 
 import os.path
+import pandas as pd
+
 from typing import Any, Dict, List
 
 from ..base import BaseAlignmentsParser, BaseOntologyParser, OMDataset
-from ..utils import io
 
 track = "bio-ml"
 
@@ -70,7 +71,7 @@ class BioMLAlignmentsParser(BaseAlignmentsParser):
         """
         references = {
             "test-cands": refactor_tsv(
-                dataframe=io.read_tsv(input_file_path),
+                dataframe=pd.read_csv(input_file_path, sep="\t"),
                 columns={
                     "SrcEntity": "source",
                     "TgtEntity": "target",

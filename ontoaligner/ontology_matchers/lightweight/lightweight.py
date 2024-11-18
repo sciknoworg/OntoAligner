@@ -26,11 +26,18 @@ class Lightweight(BaseOMModel):
     This class does not load or process models but provides basic structure and methods
     for ontology matching. It includes methods for initializing a retriever and generating
     matching results, which can be extended in subclasses.
-
-    Attributes:
-        path (str): A placeholder indicating that no model is loaded for this class.
     """
-    path: str = "NO MODEL LOADING IN LIGHTWEIGHT MODEL"
+
+    def __init__(self, fuzzy_sm_threshold: float=0.5, **kwargs) -> None:
+        """
+        Initializes the ontology matching model with optional keyword arguments.
+
+        Parameters:
+            fuzzy_sm_threshold(float): Contains the threshold value for fuzzy string matching (e.g., 'fuzzy_sm_threshold').
+            **kwargs: Additional keyword arguments that may be used for model configuration or parameters.
+        """
+        kwargs['fuzzy_sm_threshold'] = fuzzy_sm_threshold
+        super().__init__(**kwargs)
 
     def __str__(self):
         """
@@ -77,9 +84,6 @@ class FuzzySMLightweight(Lightweight):
     This class calculates similarity scores between source and target ontologies based on
     partial string matching. It filters results based on a predefined threshold and returns
     matching predictions.
-
-    Attributes:
-        kwargs (dict): Contains the threshold value for fuzzy string matching (e.g., 'fuzzy_sm_threshold').
     """
 
     def ratio_estimate(self) -> Any:
