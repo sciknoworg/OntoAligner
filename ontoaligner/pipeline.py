@@ -21,7 +21,7 @@ Classes:
 import time
 from typing import Any
 from .base import BaseOMModel
-from .utils import xmlify
+from .utils import metrics, xmlify
 
 class Pipeline:
     """
@@ -29,17 +29,9 @@ class Pipeline:
     processes them through a dataset object, and uses an ontology matcher to generate matching results.
 
     Attributes:
-        source_ontology_path (str): Path to the source ontology.
-        target_ontology_path (str): Path to the target ontology.
-        reference_matching_path (str, optional): Path to reference matching data. Default is None.
-        owl_json_path (str, optional): Path to the owl JSON file. Default is None.
-        llm_confidence_th (float): Confidence threshold for the LLM. Default is 0.7.
-        ir_score_threshold (float): Information retrieval score threshold. Default is 0.9.
-        output_dir (str, optional): Directory where the output will be stored. Default is None.
-        kwargs (dict): Additional optional keyword arguments.
-        om_dataset (Any): Dataset object used to handle the ontology data.
         ontology_matcher (Any): Matcher used to perform ontology matching.
         om_encoder (Any): Encoder used to encode the ontology data.
+        kwargs (dict): Additional optional keyword arguments.
     """
 
     def __init__(self,
@@ -74,6 +66,7 @@ class Pipeline:
                  reference_matching_path: str = None,
                  llm_confidence_th: float = 0.7,
                  ir_score_threshold: float = 0.9,
+                 evaluation: bool = False,
                  return_dict: bool = False,
                  return_rdf: bool=False,
                  relation: str = "=",
@@ -116,6 +109,9 @@ class Pipeline:
         model_output = self.ontology_matcher.generate(input_data=encoder_output)
         output_dict["response-time"] = time.time() - start_time
         output_dict["generated-output"] = model_output
+        if evaluation:
+            output_dict['evaluation'] =metrics.evaluation_report(predicts=model_output,
+                                                                 references=dataset['reference'])
         if return_dict:
             return output_dict
         else:
