@@ -32,14 +32,14 @@ class Retrieval(BaseOMModel):
     path: str = ""
     model: Any = None
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, device: str='cpu', top_k: int=5, **kwargs) -> None:
         """
         Initializes the Retrieval model.
 
         Args:
             **kwargs: Additional keyword arguments passed to the superclass constructor.
         """
-        super().__init__(**kwargs)
+        super().__init__(device=device, top_k=top_k, **kwargs)
 
     def load(self, path: str) -> Any:
         """
