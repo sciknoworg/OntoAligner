@@ -9,6 +9,8 @@ Classes:
 """
 from abc import ABC, abstractmethod
 from typing import List
+from openai import OpenAI
+
 
 class BaseOMModel(ABC):
     """
@@ -23,6 +25,7 @@ class BaseOMModel(ABC):
         Parameters:
             **kwargs: Additional keyword arguments that may be used for model configuration or parameters.
         """
+        self.client = OpenAI(api_key=kwargs.get('openai_key', "None"))
         self.kwargs = kwargs
 
     @abstractmethod
