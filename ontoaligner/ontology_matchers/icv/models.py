@@ -9,7 +9,7 @@ AutoModelDecoderICVLLMV2) for enhanced ontology matching and retrieval-based NLP
 """
 
 from .icv import ICV, AutoModelDecoderICVLLM, AutoModelDecoderICVLLMV2
-from ..retrieval.models import AdaRetrieval, BERTRetrieval
+from ..retrieval.models import AdaRetrieval, SBERTRetrieval
 
 
 class LLaMALLMAdaRetrieverICVRAG(ICV):
@@ -36,7 +36,7 @@ class LLaMALLMBERTRetrieverICVRAG(ICV):
     Class for pairing LLaMA-based LLM with BERTRetrieval for ICV-based ontology matching.
     """
 
-    Retrieval = BERTRetrieval
+    Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderICVLLM
 
     def __str__(self):
@@ -74,7 +74,7 @@ class FalconLLMBERTRetrieverICVRAG(ICV):
     Class for pairing Falcon-based LLM with BERTRetrieval for ICV-based ontology matching.
     """
 
-    Retrieval = BERTRetrieval
+    Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderICVLLMV2
 
     def __str__(self):
@@ -112,7 +112,7 @@ class VicunaLLMBERTRetrieverICVRAG(ICV):
     Class for pairing Vicuna-based LLM with BERTRetrieval for ICV-based ontology matching.
     """
 
-    Retrieval = BERTRetrieval
+    Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderICVLLM
 
     def __str__(self):
@@ -150,7 +150,7 @@ class MPTLLMBERTRetrieverICVRAG(ICV):
     Class for pairing MPT-based LLM with BERTRetrieval for ICV-based ontology matching.
     """
 
-    Retrieval = BERTRetrieval
+    Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderICVLLMV2
 
     def __str__(self):
