@@ -1,5 +1,6 @@
 pathlib
 argparse
+xml
 owlready2
 rdflib
 tqdm

@@ -9,7 +9,7 @@ to identify the model configuration.
 
 from .fewshot import FewShotRAG
 from ..rag.models import OpenAIRAGLLM, AutoModelDecoderRAGLLM, AutoModelDecoderRAGLLMV2, MambaSSMRAGLLM
-from ..retrieval.models import AdaRetrieval, BERTRetrieval
+from ..retrieval.models import AdaRetrieval, SBERTRetrieval
 
 
 class LLaMALLMAdaRetrieverFSRAG(FewShotRAG):
@@ -31,7 +31,7 @@ class LLaMALLMBERTRetrieverFSRAG(FewShotRAG):
     """
     FewShotRAG model with BERT retrieval and AutoModelDecoderRAG as the language model (LLM).
     """
-    Retrieval = BERTRetrieval
+    Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
@@ -61,7 +61,7 @@ class MistralLLMBERTRetrieverFSRAG(FewShotRAG):
     """
     FewShotRAG model with BERT retrieval and AutoModelDecoderRAG as the language model (LLM).
     """
-    Retrieval = BERTRetrieval
+    Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
@@ -91,7 +91,7 @@ class GPTOpenAILLMBERTRetrieverFSRAG(FewShotRAG):
     """
     FewShotRAG model with BERT retrieval and OpenAIRAGLLM as the language model (LLM).
     """
-    Retrieval = BERTRetrieval
+    Retrieval = SBERTRetrieval
     LLM = OpenAIRAGLLM
 
     def __str__(self):
@@ -121,7 +121,7 @@ class FalconLLMBERTRetrieverFSRAG(FewShotRAG):
     """
     FewShotRAG model with BERT retrieval and AutoModelDecoderRAGLLMV2 as the language model (LLM).
     """
-    Retrieval = BERTRetrieval
+    Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderRAGLLMV2
 
     def __str__(self):
@@ -151,7 +151,7 @@ class VicunaLLMBERTRetrieverFSRAG(FewShotRAG):
     """
     FewShotRAG model with BERT retrieval and AutoModelDecoderRAG as the language model (LLM).
     """
-    Retrieval = BERTRetrieval
+    Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderRAGLLM
 
     def __str__(self):
@@ -181,7 +181,7 @@ class MPTLLMBERTRetrieverFSRAG(FewShotRAG):
     """
     FewShotRAG model with BERT retrieval and AutoModelDecoderRAGLLMV2 as the language model (LLM).
     """
-    Retrieval = BERTRetrieval
+    Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderRAGLLMV2
 
     def __str__(self):
@@ -211,7 +211,7 @@ class MambaLLMBERTRetrieverFSRAG(FewShotRAG):
     """
     FewShotRAG model with BERT retrieval and MambaSSMRAGLLM as the language model (LLM).
     """
-    Retrieval = BERTRetrieval
+    Retrieval = SBERTRetrieval
     LLM = MambaSSMRAGLLM
 
     def __str__(self):

@@ -23,7 +23,6 @@ from abc import abstractmethod
 from typing import Any, List
 
 import torch
-from openai import OpenAI
 
 from ...base import BaseOMModel
 
@@ -250,7 +249,6 @@ class OpenAILLMArch(LLM):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.client = OpenAI(api_key=kwargs["OPENAI_KEY"])
 
     def __str__(self):
         """

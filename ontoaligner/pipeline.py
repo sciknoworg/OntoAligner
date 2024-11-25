@@ -20,37 +20,22 @@ Classes:
 
 import time
 from typing import Any
+from .base import BaseOMModel
+from .utils import metrics, xmlify
 
-
-class OMPipelines:
+class Pipeline:
     """
     This class defines a pipeline for ontology matching, where it takes in source and target ontologies,
     processes them through a dataset object, and uses an ontology matcher to generate matching results.
 
     Attributes:
-        source_ontology_path (str): Path to the source ontology.
-        target_ontology_path (str): Path to the target ontology.
-        reference_matching_path (str, optional): Path to reference matching data. Default is None.
-        owl_json_path (str, optional): Path to the owl JSON file. Default is None.
-        llm_confidence_th (float): Confidence threshold for the LLM. Default is 0.7.
-        ir_score_threshold (float): Information retrieval score threshold. Default is 0.9.
-        output_dir (str, optional): Directory where the output will be stored. Default is None.
-        kwargs (dict): Additional optional keyword arguments.
-        om_dataset (Any): Dataset object used to handle the ontology data.
         ontology_matcher (Any): Matcher used to perform ontology matching.
         om_encoder (Any): Encoder used to encode the ontology data.
+        kwargs (dict): Additional optional keyword arguments.
     """
 
     def __init__(self,
-                 source_ontology_path: str,
-                 target_ontology_path: str,
-                 reference_matching_path: str = None,
-                 owl_json_path: str = None,
-                 llm_confidence_th: float = 0.7,
-                 ir_score_threshold: float = 0.9,
-                 output_dir: str = None,
-                 ontology_matcher: Any = None,
-                 om_dataset: Any = None,
+                 ontology_matcher: BaseOMModel,
                  om_encoder: Any = None,
                  **kwargs) -> None:
         """
@@ -69,19 +54,23 @@ class OMPipelines:
             om_encoder (Any, optional): Encoder for encoding ontology data (default is None).
             **kwargs (dict): Additional keyword arguments.
         """
-        self.source_ontology_path = source_ontology_path
-        self.target_ontology_path = target_ontology_path
-        self.reference_matching_path = reference_matching_path
-        self.owl_json_path = owl_json_path
-        self.llm_confidence_th = llm_confidence_th
-        self.ir_score_threshold = ir_score_threshold
-        self.output_dir = output_dir
         self.kwargs = kwargs
-        self.om_dataset = om_dataset
         self.ontology_matcher = ontology_matcher
         self.om_encoder = om_encoder()
 
-    def __call__(self) -> None:
+    def __call__(self,
+                 source_ontology_path: str,
+                 target_ontology_path: str,
+                 owl_json_path: str = None,
+                 om_dataset: Any = None,
+                 reference_matching_path: str = None,
+                 llm_confidence_th: float = 0.7,
+                 ir_score_threshold: float = 0.9,
+                 evaluation: bool = False,
+                 return_dict: bool = False,
+                 return_rdf: bool=False,
+                 relation: str = "=",
+                 digits: int=-2) -> Any:
         """
         Executes the ontology matching process. This includes loading data from files,
         processing the ontologies through the dataset object, encoding the inputs using
@@ -92,24 +81,42 @@ class OMPipelines:
             2. Encodes the input data using the specified encoder.
             3. Generates ontology matching results.
             4. Outputs the results along with relevant information such as the response time.
-
+        Parameters:
+            source_ontology_path (str): Path to the source ontology.
+            target_ontology_path (str): Path to the target ontology.
+            reference_matching_path (str, optional): Path to reference matching data (default is None).
+            owl_json_path (str, optional): Path to the owl JSON file (default is None).
+            llm_confidence_th (float): Confidence threshold for the LLM (default is 0.7).
+            ir_score_threshold (float): Information retrieval score threshold (default is 0.9).
+            om_dataset (Any, optional): Dataset object for handling ontology data (default is None).
         Returns:
-            None
+            Matched ontologies
         """
-        task_obj = self.om_dataset()
-        if self.owl_json_path:
-            task_owl = task_obj.load_from_json(root_dir=self.owl_json_path)
+        task = om_dataset()
+        if owl_json_path:
+            dataset = task.load_from_json(root_dir=owl_json_path)
         else:
-            task_owl = task_obj.collect(source_ontology_path=self.source_ontology_path,
-                                        target_ontology_path=self.target_ontology_path,
-                                        reference_matching_path=self.reference_matching_path)
-        output_dict_obj = {
-            "dataset-info": task_owl["dataset-info"],
+            dataset = task.collect(source_ontology_path=source_ontology_path,
+                                   target_ontology_path=target_ontology_path,
+                                   reference_matching_path=reference_matching_path)
+        output_dict = {
+            "dataset-info": dataset["dataset-info"],
             "encoder-info": self.om_encoder.get_encoder_info(),
         }
-        encoded_inputs = self.om_encoder(**task_owl)
+        encoder_output = self.om_encoder(source=dataset['source'], target=dataset['target'])
         print("\t\tWorking on generating response!")
         start_time = time.time()
-        model_output = self.ontology_matcher.generate(input_data=encoded_inputs)
-        output_dict_obj["response-time"] = time.time() - start_time
-        output_dict_obj["generated-output"] = model_output
+        model_output = self.ontology_matcher.generate(input_data=encoder_output)
+        output_dict["response-time"] = time.time() - start_time
+        output_dict["generated-output"] = model_output
+        if evaluation:
+            output_dict['evaluation'] =metrics.evaluation_report(predicts=model_output,
+                                                                 references=dataset['reference'])
+        if return_dict:
+            return output_dict
+        else:
+            xlm = xmlify.xml_alignment_generator(matchings=model_output,
+                                                 return_rdf=return_rdf,
+                                                 relation=relation,
+                                                 digits=digits)
+            return xlm

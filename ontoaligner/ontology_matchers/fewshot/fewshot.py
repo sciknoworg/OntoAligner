@@ -9,7 +9,7 @@ Classes:
 
 """
 from ..rag.rag import RAG
-from ..dataset import *  # NOQA
+from .dataset import *  # NOQA
 from ...postprocess import process
 from typing import List, Any, Dict
 import math

@@ -14,7 +14,6 @@ Classes:
     - AdaRetrieval: A retrieval class using embeddings loaded from pre-trained OpenAI models.
 """
 
-import os
 from typing import Any
 import numpy as np
 from rank_bm25 import BM25Okapi
@@ -23,12 +22,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
 
 from .retrieval import BiEncoderRetrieval, MLRetrieval, Retrieval
-from ...utils import io
 
 
-class BERTRetrieval(BiEncoderRetrieval):
+
+class SBERTRetrieval(BiEncoderRetrieval):
     """
-    BERTRetrieval is a subclass of BiEncoderRetrieval that uses a BERT-based encoder
+    SBERTRetrieval is a subclass of BiEncoderRetrieval that uses a BERT-based encoder
     for retrieval tasks. This class implements a method for returning the string representation
     of the retrieval model, appending the specific model's name.
     """
@@ -38,26 +37,9 @@ class BERTRetrieval(BiEncoderRetrieval):
         Returns the string representation of the BERTRetrieval model.
 
         Returns:
-            str: The string "+BERTRetrieval" appended to the superclass string.
+            str: The string "+SBERTRetrieval" appended to the superclass string.
         """
-        return super().__str__() + "+BERTRetrieval"
-
-
-class FlanT5Retrieval(BiEncoderRetrieval):
-    """
-    FlanT5Retrieval is a subclass of BiEncoderRetrieval that uses the Flan-T5 encoder
-    for retrieval tasks. This class implements a method for returning the string representation
-    of the retrieval model, appending the specific model's name.
-    """
-
-    def __str__(self):
-        """
-        Returns the string representation of the FlanT5Retrieval model.
-
-        Returns:
-            str: The string "+FlanT5XLRetrieval" appended to the superclass string.
-        """
-        return super().__str__() + "FlanT5XLRetrieval"
+        return super().__str__() + "+SBERTRetrieval"
 
 
 class TFIDFRetrieval(Retrieval):
@@ -211,6 +193,14 @@ class AdaRetrieval(BiEncoderRetrieval):
     AdaRetrieval is a subclass of BiEncoderRetrieval that uses pre-trained embeddings from OpenAI.
     It is designed to load embeddings from files, fit them, and transform input data into corresponding embeddings.
     """
+    def __init__(self, openai_key: str, **kwargs) -> None:
+        """
+        Initializes the Retrieval model.
+
+        Args:
+            **kwargs: Additional keyword arguments passed to the superclass constructor.
+        """
+        super().__init__(openai_key=openai_key, **kwargs)
 
     def __str__(self):
         """
@@ -228,8 +218,7 @@ class AdaRetrieval(BiEncoderRetrieval):
         Args:
             path (str): The directory path where the embeddings and labels are stored.
         """
-        self.model = np.load(os.path.join(self.path, "openai_embeddings.npy"))
-        self.labels2index = io.read_json(os.path.join(self.path, "labels2index.json"))
+        self.path = path
 
     def fit(self, inputs: Any) -> Any:
         """
@@ -243,6 +232,14 @@ class AdaRetrieval(BiEncoderRetrieval):
         """
         return self.transform(inputs=inputs)
 
+    def _clean(self, text: str) -> str:
+        text = text.replace("_", " ")
+        text = text.lower()
+        return text
+
+    def _get_embedding(self, text: str):
+        return self.client.embeddings.create(input=[text], model=self.path).data[0].embedding
+
     def transform(self, inputs: Any) -> Any:
         """
         Transforms input data into embeddings based on pre-trained OpenAI model.
@@ -255,8 +252,7 @@ class AdaRetrieval(BiEncoderRetrieval):
         """
         embeddings = []
         for input_text in tqdm(inputs):
-            index = self.labels2index.get(input_text, 0)
-            if index == 0:
-                print("NO match for the string:", input_text)
-            embeddings.append(self.model[index])
+            input_text = self._clean(input_text)
+            embedding = self._get_embedding(input_text) if input_text != "" else self._get_embedding(" ")
+            embeddings.append(embedding)
         return np.array(embeddings)

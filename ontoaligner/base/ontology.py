@@ -38,8 +38,7 @@ class BaseOntologyParser(ABC):
             if len(owl_class.label) == 0:
                 return False
             return True
-        except Exception as e:
-            print(f"Exception: {e}")
+        except Exception:
             return False
 
     def get_name(self, owl_class: Any) -> str:

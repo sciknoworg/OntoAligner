@@ -8,7 +8,7 @@ confident predictions are retained.
 
 Functions:
     eval_preprocess_ir_outputs: Processes and filters IR outputs based on confidence score.
-    preprocess_ir_outputs: Prepares IR outputs for further processing by removing irrelevant data.
+    retriever_postprocessor: Prepares IR outputs for further processing by removing irrelevant data.
     threshold_finder: Determines the threshold value for a given set of scores from a dictionary.
     build_outputdict: Constructs a dictionary mapping sources to their respective predicted targets and scores.
     confidence_score_ratio_based_filtering: Filters predictions based on confidence ratios and a given threshold.
@@ -51,7 +51,7 @@ def eval_preprocess_ir_outputs(predicts: List) -> List:
     return predicts_temp
 
 
-def preprocess_ir_outputs(predicts: List) -> List:
+def retriever_postprocessor(predicts: List) -> List:
     """
     Prepares IR outputs by extracting source-target pairs and filtering based on score values.
 
@@ -143,12 +143,7 @@ def confidence_score_ratio_based_filtering(outputdict: Dict, topk_confidence_rat
     return outputdict_confidence_ratios
 
 
-def confidence_score_based_filtering(
-    outputdict_confidence_ratios: Dict,
-    topk_confidence_score: int,
-    llm_confidence_threshold: float,
-    ir_score_threshold: float,
-) -> List:
+def confidence_score_based_filtering(outputdict_confidence_ratios: Dict, topk_confidence_score: int, llm_confidence_threshold: float, ir_score_threshold: float) -> List:
     """
     Filters the predictions based on LLM confidence score and IR score, selecting the top-k
     predictions that exceed the given thresholds.
@@ -196,7 +191,7 @@ def postprocess_heuristic(predicts: List, topk_confidence_ratio: int = 3, topk_c
     ir_outputs = predicts[0]["ir-outputs"]
     llm_outputs = predicts[1]["llm-output"]
 
-    ir_outputs = preprocess_ir_outputs(predicts=ir_outputs)
+    ir_outputs = retriever_postprocessor(predicts=ir_outputs)
     outputdict = build_outputdict(llm_outputs=llm_outputs, ir_outputs=ir_outputs)
 
     cr_threshold = threshold_finder(outputdict, index=3, use_lst=False)  # 3=confidence_ratio index
@@ -247,7 +242,7 @@ def postprocess_hybrid(predicts: List, ir_score_threshold: float = 0.9, llm_conf
             ir_cleaned_outputs_id.append(ir["source"])
             ir_cleaned_outputs.append(ir)
     ir_outputs = ir_cleaned_outputs
-    # ir_outputs = preprocess_ir_outputs(predicts=ir_outputs)
+    # ir_outputs = retriever_postprocessor(predicts=ir_outputs)
     targets = [target for index, ir_output in enumerate(ir_outputs) for target in ir_output["target-cands"]]
     targets = list(set(targets))
     target2index = {target: index for index, target in enumerate(targets)}

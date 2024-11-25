@@ -8,11 +8,12 @@ Classes:
                 and collecting dataset-related information.
 """
 import os
+import json
 from abc import ABC
 from typing import Any, Dict
 
 from ontoaligner.base.ontology import BaseAlignmentsParser
-from ontoaligner.utils import io
+
 
 
 class OMDataset(ABC):
@@ -68,7 +69,7 @@ class OMDataset(ABC):
         }
         return data
 
-    def load_from_json(self, root_dir: str) -> Dict:
+    def load_from_json(self, json_file_path: str) -> Dict:
         """
         Loads dataset information from a JSON file.
 
@@ -81,10 +82,8 @@ class OMDataset(ABC):
         Returns:
             Dict: The JSON data loaded from the specified file.
         """
-        json_file_path = os.path.join(
-            root_dir, self.track, self.ontology_name, "om.json"
-        )
-        json_data = io.read_json(input_path=json_file_path)
+        with open(json_file_path, encoding="utf-8") as f:
+            json_data = json.load(f)
         return json_data
 
     def __dir__(self):
