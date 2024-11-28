@@ -1,5 +1,4 @@
 # Configuration file for the Sphinx documentation builder.
-
 # -- Project information
 import pathlib
 import sys
@@ -9,6 +8,10 @@ sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 project = 'OntoAligner'
 copyright = '2024, SciKnowOrg'
 author = 'Hamed Babaei Giglou'
+html_logo = '../../images/logo-owl.png'
+
+def setup(app):
+    app.add_css_file('_static/custom.css')
 
 release = '0.1.0'
 
@@ -53,6 +56,15 @@ exclude_patterns = []
 # a list of builtin themes.
 #
 html_theme = "press"
+
+html_theme_options = {
+    'repository_url': 'https://github.com/sciknoworg/OntoAligner',
+    'use_repository_button': True,
+    'use_issues_button': True,
+    'logo_only': True,
+    # 'extra_navbar': '<div class="custom-footer">Custom Footer Text</div>',  # Custom footer example
+}
+
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
