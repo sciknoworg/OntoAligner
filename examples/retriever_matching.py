@@ -10,7 +10,7 @@ from ontoaligner.postprocess import retriever_postprocessor
 # Step 1: Initialize the ontology matching task
 # The task is created using the Material Information Ontology Dataset (MI-MatOntoMDataset),
 # which includes source and target ontologies and reference matchings for evaluation.
-task = ontology.MaterialInformationMatOntoMDataset()
+task = ontology.MaterialInformationMatOntoOMDataset()
 
 # Confirm the task initialization by printing its details
 print("Test Task:", task)
