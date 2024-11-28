@@ -1,5 +1,6 @@
-Welcome to OntoAligner package documentation!
+Welcome to OntoAligner!
 ===================================
+
 .. image:: https://readthedocs.org/projects/ontoaligner/badge/?version=latest
     :target: https://ontoaligner.readthedocs.io/en/latest/?badge=latest
 
@@ -13,7 +14,7 @@ Welcome to OntoAligner package documentation!
     pip install OntoAligner
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     introduction
     installation
