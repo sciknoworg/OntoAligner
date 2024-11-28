@@ -41,6 +41,9 @@ add_module_names = False  # Remove namespaces from class/method signatures
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
+# source_suffix = ['.rst', '.md']
+source_suffix = '.rst'
+
 # specify the master doc, otherwise the build at read the docs fails
 master_doc = "index"
 
@@ -51,6 +54,8 @@ exclude_patterns = []
 
 
 # -- Options for HTML output -------------------------------------------------
+# The name of the Pygments (syntax highlighting) style to use.
+pygments_style = None
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
@@ -58,14 +63,19 @@ exclude_patterns = []
 html_theme = "press"
 
 html_theme_options = {
-    'repository_url': 'https://github.com/sciknoworg/OntoAligner',
-    'use_repository_button': False,
-    'use_version_button': False,
-    'use_doc_button': True,
+    "external_links": [
+          ("Github", "https://github.com/sciknoworg/OntoAligner"),
+          ("Pypi", "https://pypi.org/project/OntoAligner/")
+    ],
+    # 'use_repository_button': False,
+    # 'use_version_button': False,
+    # 'use_doc_button': True,
     'logo_only': True,
     'light_mode': True,
     # 'extra_navbar': '<div class="custom-footer">Custom Footer Text</div>',  # Custom footer example
 }
+
+htmlhelp_basename = 'sphinx_press_themedoc'
 
 
 

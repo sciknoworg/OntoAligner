@@ -4,15 +4,3 @@
     max-width: 100%;
     height: auto;
 }
-
-
-/* Move 'version' and 'doc' buttons to the right */
-.navbar-right {
-    position: absolute;
-    right: 50px;  /* Adjust the distance from the right */
-}
-
-/* Optional: Adjust button spacing */
-.navbar-right .version, .navbar-right .doc {
-    margin-left: 10px;
-}
