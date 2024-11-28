@@ -84,8 +84,3 @@ htmlhelp_basename = 'sphinx_press_themedoc'
 # so a file named "default.css" will overwrite the builtin "default.css".
 # https://stackoverflow.com/questions/23211695/modifying-content-width-of-the-sphinx-theme-read-the-docs
 html_static_path = ["_static"]
-
-# Add custom CSS
-html_css_files = [
-    'custom.css',
-]
