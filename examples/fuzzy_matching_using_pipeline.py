@@ -2,7 +2,7 @@ import json
 
 # Import necessary modules from the 'ontoaligner' library
 from ontoaligner.encoder import ConceptParentLightweightEncoder
-from ontoaligner.ontology import MaterialInformationMatOntoMDataset
+from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
 from ontoaligner.ontology_matchers import SimpleFuzzySMLightweight
 from ontoaligner import Pipeline
 
@@ -24,7 +24,7 @@ pipe = Pipeline(ontology_matcher=ontology_matcher, om_encoder=ConceptParentLight
 matching_dict = pipe(source_ontology_path=source_ontology_path,
                      target_ontology_path=target_ontology_path,
                      reference_matching_path=reference_matching_path,
-                     om_dataset=MaterialInformationMatOntoMDataset,
+                     om_dataset=MaterialInformationMatOntoOMDataset,
                      evaluation=True,
                      return_dict=True)
 

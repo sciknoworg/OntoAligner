@@ -295,7 +295,7 @@ class MaterialInformationEMMOOMDataset(OMDataset):
     target_ontology = EMMOOntology()
 
 
-class MaterialInformationMatOntoMDataset(OMDataset):
+class MaterialInformationMatOntoOMDataset(OMDataset):
     """
     A dataset class for working with the MaterialInformation-MatOnto ontology.
 
@@ -309,7 +309,7 @@ class MaterialInformationMatOntoMDataset(OMDataset):
     target_ontology = MatOntoOntology()
 
 
-class MaterialInformationMatOntoReducedMDataset(OMDataset):
+class MaterialInformationMatOntoReducedOMDataset(OMDataset):
     """
     A dataset class for working with the MaterialInformationReduced-MatOnto ontology.
 

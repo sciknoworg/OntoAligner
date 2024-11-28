@@ -6,7 +6,7 @@ from ontoaligner.ontology_matchers import SimpleFuzzySMLightweight
 from ontoaligner.utils import metrics, xmlify
 
 # Create a task object for material information ontology matching using a predefined dataset
-task = ontology.MaterialInformationMatOntoMDataset()
+task = ontology.MaterialInformationMatOntoOMDataset()
 
 # Print the test task information (for debugging or confirmation purposes)
 print("Test Task:", task)
