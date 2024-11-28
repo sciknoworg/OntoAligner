@@ -5,13 +5,14 @@
     height: auto;
 }
 
-/* Move version and doc buttons to the right */
-.header-right {
+
+/* Move 'version' and 'doc' buttons to the right */
+.navbar-right {
     position: absolute;
-    right: 10px;  /* Adjust the distance from the right */
+    right: 50px;  /* Adjust the distance from the right */
 }
 
-/* Optional: Customize the appearance of the buttons */
-.header-right .version, .header-right .doc {
+/* Optional: Adjust button spacing */
+.navbar-right .version, .navbar-right .doc {
     margin-left: 10px;
 }

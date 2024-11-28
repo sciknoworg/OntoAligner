@@ -55,20 +55,18 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "press"
+html_theme = "sphinx_press_theme"
 
 html_theme_options = {
     'repository_url': 'https://github.com/sciknoworg/OntoAligner',
     'use_repository_button': False,
-    'use_issues_button': False,
     'use_version_button': False,
     'use_doc_button': True,
     'logo_only': True,
+    'light_mode': True,
     # 'extra_navbar': '<div class="custom-footer">Custom Footer Text</div>',  # Custom footer example
 }
-html_theme_options.update({
-    'light_mode': True
-})
+
 
 
 # Add any paths that contain custom static files (such as style sheets) here,

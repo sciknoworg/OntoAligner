@@ -20,6 +20,3 @@ setuptools
 wheel
 twine
 ruff
-mkdocs
-mkdocs-material
-mkdocstrings[python]
