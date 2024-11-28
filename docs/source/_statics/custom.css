@@ -4,3 +4,15 @@
     max-width: 100%;
     height: auto;
 }
+
+/* Force light theme */
+body {
+  color-scheme: light;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Remove dark mode toggle button (if present) */
+.dark-toggle {
+  display: none !important;
+}
