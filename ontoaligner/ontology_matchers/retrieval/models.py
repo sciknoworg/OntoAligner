@@ -193,14 +193,6 @@ class AdaRetrieval(BiEncoderRetrieval):
     AdaRetrieval is a subclass of BiEncoderRetrieval that uses pre-trained embeddings from OpenAI.
     It is designed to load embeddings from files, fit them, and transform input data into corresponding embeddings.
     """
-    def __init__(self, openai_key: str, **kwargs) -> None:
-        """
-        Initializes the Retrieval model.
-
-        Args:
-            **kwargs: Additional keyword arguments passed to the superclass constructor.
-        """
-        super().__init__(openai_key=openai_key, **kwargs)
 
     def __str__(self):
         """
