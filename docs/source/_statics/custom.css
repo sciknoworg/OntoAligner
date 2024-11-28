@@ -4,3 +4,14 @@
     max-width: 100%;
     height: auto;
 }
+
+/* Move version and doc buttons to the right */
+.header-right {
+    position: absolute;
+    right: 10px;  /* Adjust the distance from the right */
+}
+
+/* Optional: Customize the appearance of the buttons */
+.header-right .version, .header-right .doc {
+    margin-left: 10px;
+}

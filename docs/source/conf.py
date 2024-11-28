@@ -8,7 +8,7 @@ sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 project = 'OntoAligner'
 copyright = '2024, SciKnowOrg'
 author = 'Hamed Babaei Giglou'
-html_logo = '../../images/logo-owl.png'
+html_logo = '../../images/logo-ontoaligner.png'
 
 def setup(app):
     app.add_css_file('_static/custom.css')
@@ -59,11 +59,16 @@ html_theme = "press"
 
 html_theme_options = {
     'repository_url': 'https://github.com/sciknoworg/OntoAligner',
-    'use_repository_button': True,
-    'use_issues_button': True,
+    'use_repository_button': False,
+    'use_issues_button': False,
+    'use_version_button': False,
+    'use_doc_button': True,
     'logo_only': True,
     # 'extra_navbar': '<div class="custom-footer">Custom Footer Text</div>',  # Custom footer example
 }
+html_theme_options.update({
+    'light_mode': True
+})
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
