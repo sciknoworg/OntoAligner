@@ -1,15 +1,8 @@
-# OntoAligner: A Ontology Alignment Python Library
-
 <div align="center">
-<h4><span align="center" style="color: red;">🔴🔴🔴🔴Under Construction🔴🔴🔴🔴</span></h4>
+  <img src="images/logo.png"/>
 </div>
 
-[//]: # ()
-[//]: # (<div align="center">)
-[//]: # (  <img src=" "/>)
-[//]: # (</div>)
-
-[//]: # (<div align="center">OntoAligner: A Ontology Alignment Python Library </div> <br>)
+[//]: # (<h3><div align="center">OntoAligner: A Ontology Alignment Python Library </div> <br></h3>)
 
 <div align="center">
 
@@ -20,7 +13,7 @@
 </div>
 
 
-**OntoAligner** is a Python library built to make ontology alignment/matching easy for everyone in the community!
+**OntoAligner** is a Python library built to make ontology alignment/matching easy to use for everyone!
 
 ## Installation
 OntoAligner is available on PyPI and can be installed with pip:
