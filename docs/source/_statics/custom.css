@@ -16,3 +16,7 @@ body {
 .dark-toggle {
   display: none !important;
 }
+
+.wy-side-nav-search, .wy-nav-top {
+    background: #fffefe;
+}
