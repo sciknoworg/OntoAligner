@@ -42,8 +42,34 @@ class LLM(BaseOMModel):
     tokenizer: Any = None
     model: Any = None
 
-    def __init__(self, **kwargs) -> None:
-        super().__init__(**kwargs)
+    def __init__(self,
+                 device: str="cpu",
+                 truncation: bool=True,
+                 max_length: int=512,
+                 max_new_tokens: int=10,
+                 padding: bool=True,
+                 num_beams: int=1,
+                 temperature: float=1.0,
+                 top_p: float=1.0,
+                 sleep: int=5,
+                 huggingface_access_token: str=None,
+                 device_map: str='balanced',
+                 openai_key: str="None",
+                 **kwargs) -> None:
+
+        super().__init__(device=device,
+                         truncation=truncation,
+                         max_length=max_length,
+                         max_new_tokens=max_new_tokens,
+                         padding=padding,
+                         num_beams=num_beams,
+                         temperature=temperature,
+                         top_p=top_p,
+                         sleep=sleep,
+                         huggingface_access_token=huggingface_access_token,
+                         device_map=device_map,
+                         openai_key=openai_key,
+                         **kwargs)
 
     @abstractmethod
     def __str__(self):
@@ -82,7 +108,7 @@ class LLM(BaseOMModel):
             path (str): The path to the pretrained model.
         """
         self.model = self.model.from_pretrained(path)
-        self.model.to(self.kwargs["device"])
+        self.model.to(self.kwargs['device'])
 
     def tokenize(self, input_data: List) -> Any:
         """
@@ -98,7 +124,7 @@ class LLM(BaseOMModel):
             input_data,
             return_tensors="pt",
             truncation=self.kwargs["truncation"],
-            max_length=self.kwargs["tokenizer_max_length"],
+            max_length=self.kwargs["max_length"],
             padding=self.kwargs["padding"],
         )
         inputs.to(self.kwargs["device"])
@@ -191,7 +217,7 @@ class BaseLLMArch(LLM):
             path (str): The path to the pretrained model.
         """
         if self.kwargs["device"] != "cpu":
-            self.model = self.model.from_pretrained(self.path, load_in_8bit=True, device_map="balanced")
+            self.model = self.model.from_pretrained(self.path, load_in_8bit=True, device_map=self.kwargs['device_map'])
         else:
             super().load_model(path=path)
 
@@ -207,13 +233,18 @@ class BaseLLMArch(LLM):
         """
         with torch.no_grad():
             sequence_ids = self.model.generate(
-                tokenized_input_data.input_ids,
+                **tokenized_input_data,
                 num_beams=self.kwargs["num_beams"],
-                max_new_tokens=self.kwargs["max_token_length"],
+                max_new_tokens=self.kwargs["max_new_tokens"],
                 temperature=self.kwargs["temperature"],
                 top_p=self.kwargs["top_p"],
+                pad_token_id=self.tokenizer.eos_token_id,
+                return_dict_in_generate=True,
+                output_scores=False,
             )
-        sequences = self.tokenizer.batch_decode(sequence_ids.cpu(), skip_special_tokens=True)
+            generated_ids = sequence_ids["sequences"][:, tokenized_input_data.input_ids.shape[-1]:]
+
+        sequences = self.tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
         return sequences
 
     def generate_for_multiple_input(self, tokenized_input_data: Any) -> List:
@@ -230,12 +261,15 @@ class BaseLLMArch(LLM):
             sequence_ids = self.model.generate(
                 input_ids=tokenized_input_data["input_ids"],
                 attention_mask=tokenized_input_data["attention_mask"],
-                max_new_tokens=self.kwargs["max_token_length"],
+                max_new_tokens=self.kwargs["max_new_tokens"],
                 temperature=self.kwargs["temperature"],
                 top_p=self.kwargs["top_p"],
+                pad_token_id=self.tokenizer.eos_token_id,
+                return_dict_in_generate=True,
+                output_scores=False,
             )
         sequences = self.tokenizer.batch_decode(
-            sequence_ids.cpu(),
+            sequence_ids,
             skip_special_tokens=True,
             clean_up_tokenization_spaces=False,
         )
@@ -295,7 +329,7 @@ class OpenAILLMArch(LLM):
                     model=self.path,
                     messages=prompt,
                     temperature=self.kwargs["temperature"],
-                    max_tokens=self.kwargs["max_token_length"],
+                    max_tokens=self.kwargs["max_new_tokens"],
                     # top_p=self.kwargs["top_p"],
                 )
                 is_generated_output = True
@@ -413,10 +447,9 @@ class DecoderLLMArch(BaseLLMArch):
         llm_req_hugging_tk = self.check_list_llms(path, self.llms_with_hugging_tk)
 
         if llm_req_special_tk and llm_req_hugging_tk:
-            self.tokenizer = self.tokenizer.from_pretrained(path, token=self.kwargs['HUGGINGFACE_ACCESS_TOKEN'],
-                                                            padding_side="left")
+            self.tokenizer = self.tokenizer.from_pretrained(path, token=self.kwargs['huggingface_access_token'], padding_side="left")
         elif llm_req_hugging_tk:
-            self.tokenizer = self.tokenizer.from_pretrained(path, token=self.kwargs['HUGGINGFACE_ACCESS_TOKEN'])
+            self.tokenizer = self.tokenizer.from_pretrained(path, token=self.kwargs['huggingface_access_token'])
         else:
             self.tokenizer = self.tokenizer.from_pretrained(path)
         self.tokenizer.pad_token = self.tokenizer.eos_token
@@ -433,14 +466,13 @@ class DecoderLLMArch(BaseLLMArch):
 
         if self.kwargs["device"] != "cpu":
             if llm_req_hugging_tk:
-                self.model = self.model.from_pretrained(path, load_in_8bit=True, device_map="balanced",
-                                                        token=self.kwargs['HUGGINGFACE_ACCESS_TOKEN'])
+                self.model = self.model.from_pretrained(path, load_in_8bit=True, device_map=self.kwargs['device_map'], token=self.kwargs['huggingface_access_token'])
             else:
                 self.model = self.model.from_pretrained(path, load_in_8bit=True, device_map="balanced")
         else:
-            self.model = self.model.from_pretrained(path, token=self.kwargs['HUGGINGFACE_ACCESS_TOKEN'])
+            self.model = self.model.from_pretrained(path, token=self.kwargs['huggingface_access_token'])
             if llm_req_hugging_tk:
-                self.model = self.model.from_pretrained(path, token=self.kwargs['HUGGINGFACE_ACCESS_TOKEN'])
+                self.model = self.model.from_pretrained(path, token=self.kwargs['huggingface_access_token'])
             else:
                 self.model = self.model.from_pretrained(path)
 
