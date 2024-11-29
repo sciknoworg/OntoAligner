@@ -57,7 +57,7 @@ class LabelMapper:
         Returns:
         - List[str]: Predicted labels.
         """
-        predictions = self._predict(X)
+        predictions = list(self._predict(X))
         self.validate_predicts(predictions)
         return predictions
 
@@ -135,4 +135,4 @@ class SetFitShallowLabelMapper(LabelMapper):
         Returns:
         - List[str]: Predicted labels.
         """
-        return list(self.model.predict(X))
+        return self.model.predict(X)
