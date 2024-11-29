@@ -268,8 +268,9 @@ class BaseLLMArch(LLM):
                 return_dict_in_generate=True,
                 output_scores=False,
             )
+            generated_ids = sequence_ids["sequences"][:, tokenized_input_data.input_ids.shape[-1]:]
         sequences = self.tokenizer.batch_decode(
-            sequence_ids,
+            generated_ids,
             skip_special_tokens=True,
             clean_up_tokenization_spaces=False,
         )
@@ -406,7 +407,7 @@ class DecoderLLMArch(BaseLLMArch):
         Hugging Face token requirements.
         """
         super().__init__(**kwargs)
-        self.llms_with_special_tk =  ["llama", "falcon", "vicuna", "mpt", 'mamba']
+        self.llms_with_special_tk =  ["llama", "falcon", "vicuna", "mpt", 'mamba',  'qwen']
         self.llms_with_hugging_tk = ["llama", 'mistral']
 
     def __str__(self):
@@ -430,7 +431,7 @@ class DecoderLLMArch(BaseLLMArch):
             bool: True if any item in check_list is in llm_path, False otherwise.
         """
         for llm in check_list:
-            if llm in llm_path:
+            if llm in llm_path.lower():
                 return True
         return False
 
@@ -448,6 +449,8 @@ class DecoderLLMArch(BaseLLMArch):
 
         if llm_req_special_tk and llm_req_hugging_tk:
             self.tokenizer = self.tokenizer.from_pretrained(path, token=self.kwargs['huggingface_access_token'], padding_side="left")
+        elif llm_req_special_tk:
+            self.tokenizer = self.tokenizer.from_pretrained(path, padding_side="left")
         elif llm_req_hugging_tk:
             self.tokenizer = self.tokenizer.from_pretrained(path, token=self.kwargs['huggingface_access_token'])
         else:

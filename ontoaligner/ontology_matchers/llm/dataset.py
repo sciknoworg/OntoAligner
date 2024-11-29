@@ -37,7 +37,7 @@ class LLMDataset(Dataset):
         pass
 
     def collate_fn(self, batchs):
-        batchs_clear = {"texts": [], "iris": []}
+        batchs_clear = {"prompts": [], "iris": []}
         for batch in batchs:
             batchs_clear["prompts"].append(batch["prompts"])
             batchs_clear["iris"].append(batch["iris"])
