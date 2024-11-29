@@ -104,7 +104,7 @@ class RAGDataset(Dataset):
         return batchs_clear
 
 
-class LabelRAGDataset(RAGDataset):
+class ConceptRAGDataset(RAGDataset):
     """
     A subclass of RAGDataset used for real-world entity classification tasks comparing two concepts
     for similarity. It formats the input data into a classification prompt with the question of whether
@@ -135,7 +135,7 @@ class LabelRAGDataset(RAGDataset):
         return self.prompt.replace("{source}", source).replace("{target}", target)
 
 
-class LabelParentRAGDataset(RAGDataset):
+class ConceptParentRAGDataset(RAGDataset):
     """
     A subclass of RAGDataset used for real-world entity classification tasks comparing two concepts,
     considering the parent concepts of each.
@@ -177,7 +177,7 @@ Parents: {target_parents}
         return template
 
 
-class LabelChildrenRAGDataset(RAGDataset):
+class ConceptChildrenRAGDataset(RAGDataset):
     """
     A subclass of RAGDataset used for real-world entity classification tasks comparing two concepts,
     considering the children concepts of each.
