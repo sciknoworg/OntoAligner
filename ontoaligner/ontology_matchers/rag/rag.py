@@ -259,7 +259,7 @@ class RAG(BaseOMModel):
         """
         # IR generation
         ir_output = self.ir_generate(input_data=input_data)
-        ir_output_cleaned = process.preprocess_ir_outputs(predicts=ir_output)
+        ir_output_cleaned = process.retriever_postprocessor(predicts=ir_output)
         # LLm generation
         llm_predictions = self.llm_generate(input_data=input_data, ir_output=ir_output_cleaned)
         return [{"ir-outputs": ir_output}, {"llm-output": llm_predictions}]
