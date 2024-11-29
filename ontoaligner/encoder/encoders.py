@@ -80,30 +80,10 @@ class LightweightEncoder(BaseEncoder):
         return "INPUT CONSIST OF COMBINED INFORMATION TO FUZZY STRING MATCHING"
 
 
-class NaiveConvOAEIEncoder(BaseEncoder):
+class LLMEncoder(BaseEncoder):
     """
-    A naive encoder for ontology alignment using prompt-based methods.
-
-    This class creates a prompt template for ontology matching, where the source and target
-    ontologies are processed to generate a formatted prompt for semantic similarity analysis.
+    A naive encoder for ontology alignment.
     """
-    prompt_template: str = """<Problem Definition>
-In this task, we are given two ontologies in the form of {items_in_owl}, which consist of IRI and classes.
-
-<Ontologies-1>
-{source}
-
-<Ontologies-2>
-{target}
-
-<Objective>
-Our objective is to provide ontology mapping for the provided ontologies based on their semantic similarities.
-
-For a class in the ontology-1, which class in ontology-2 is the best match?
-
-List matches per line.
-"""
-
     def parse(self, **kwargs) -> Any:
         """
         Processes the source and target ontologies into a prompt for ontology alignment.
@@ -118,16 +98,17 @@ List matches per line.
             list: A list containing the formatted prompt string for ontology matching.
         """
         source_onto, target_onto = kwargs["source"], kwargs["target"]
-        source_text = ""
+        source_ontos = []
         for source in source_onto:
-            source_text += self.get_owl_items(owl=source)
-        target_text = ""
+            encoded_source = self.get_owl_items(owl=source)
+            # encoded_source["concept"] = self.preprocess(encoded_source["text"])
+            source_ontos.append(encoded_source)
+        target_ontos = []
         for target in target_onto:
-            target_text += self.get_owl_items(owl=target)
-        prompt_sample = self.get_prefilled_prompt()
-        prompt_sample = prompt_sample.replace("{source}", source_text)
-        prompt_sample = prompt_sample.replace("{target}", target_text)
-        return [prompt_sample]
+            encoded_target = self.get_owl_items(owl=target)
+            # encoded_target["concept"] = self.preprocess(encoded_target["text"])
+            target_ontos.append(encoded_target)
+        return [source_ontos, target_ontos]
 
     def __str__(self):
         """
@@ -136,10 +117,7 @@ List matches per line.
         Returns:
             dict: A dictionary with the template and items_in_owl values.
         """
-        return {
-            "Template": super().__str__(),
-            "NaiveConvOAEIPrompting": self.items_in_owl,
-        }
+        return {"LightweightEncoder": self.items_in_owl}
 
     def get_owl_items(self, owl: Dict) -> str:
         """
@@ -156,27 +134,14 @@ List matches per line.
         """
         pass
 
-    def get_prefilled_prompt(self) -> str:
-        """
-        Generates a prefilled prompt using the prompt template.
-
-        This method replaces placeholders in the prompt template with the appropriate ontology information.
-
-        Returns:
-            str: The prefilled prompt with ontology items included.
-        """
-        prompt_sample = self.prompt_template
-        prompt_sample = prompt_sample.replace("{items_in_owl}", self.items_in_owl)
-        return prompt_sample
-
     def get_encoder_info(self) -> str:
         """
         Provides information about the encoder and its prompt template.
 
         Returns:
-            str: A description of the encoder's prompt template.
+            str: A description of the encoder's components.
         """
-        return "PROMPT-TEMPLATE: " + self.get_prefilled_prompt()
+        return "INPUT CONSIST OF A DICTIONARY THAT CONSIST OF INFORMATION FOR THE GIVEN SOURCE-TARGET ONTOLOGIES."
 
 
 class RAGEncoder(BaseEncoder):
