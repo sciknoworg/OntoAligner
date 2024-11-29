@@ -17,7 +17,7 @@ Functions:
     postprocess_hybrid: Hybrid method for processing predictions by integrating IR and LLM results using matrix-based analysis.
 """
 
-from typing import Dict, List
+from typing import Dict, List, Any
 
 import numpy as np
 from tqdm import tqdm
@@ -67,6 +67,15 @@ def retriever_postprocessor(predicts: List) -> List:
         for target, score in zip(target_cands, score_cands):
             if score > 0:
                 predicts_temp.append({"source": source, "target": target, "score": score})
+    return predicts_temp
+
+def llm_postprocessor(predicts: List, mapper:Any, dataset: Any, interested_class: str = 'yes') -> List:
+    mapper.fit()
+    predicts = mapper.predict(predicts)
+    predicts_temp = []
+    for predict, data in zip(predicts, dataset):
+        if predict == interested_class:
+            predicts_temp.append({"source": data["iris"][0], "target": data["iris"][1]})
     return predicts_temp
 
 
