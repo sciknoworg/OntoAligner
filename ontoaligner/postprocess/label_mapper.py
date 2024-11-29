@@ -15,7 +15,7 @@ class LabelMapper:
     """
     Base class for label mapping, providing common functionality for derived classes.
     """
-    def __init__(self, label_dict: Dict[str, List[str]], iterator_no: int = 10):
+    def __init__(self, label_dict: Dict[str, List[str]] = None, iterator_no: int = 10):
         """
         Initializes the label mapper with training data and labels.
 
@@ -23,6 +23,11 @@ class LabelMapper:
         - label_dict (Dict[str, List[str]]): Dictionary mapping each label to a list of candidate phrases.
         - iterator_no (int): Number of iterations to replicate training data for better generalization.
         """
+        if label_dict is None:
+            label_dict = {
+                "yes": ["yes", "correct", "true"],
+                "no": ["no", "incorrect", "false"]
+            }
         self.labels = [label.lower() for label in list(label_dict.keys())]
         self.x_train, self.y_train = [], []
         for label, candidates in label_dict.items():
@@ -70,7 +75,7 @@ class TFIDFLabelMapper(LabelMapper):
     """
     LabelMapper subclass using a TF-IDF vectorizer and a classifier for label prediction.
     """
-    def __init__(self, classifier: Any, ngram_range: Tuple, label_dict: Dict[str, List[str]],
+    def __init__(self, classifier: Any, ngram_range: Tuple, label_dict: Dict[str, List[str]]=None,
                  analyzer: str = 'word', iterator_no: int = 10):
         """
         Initializes the TFIDFLabelMapper with a specified classifier and TF-IDF configuration.
