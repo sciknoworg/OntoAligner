@@ -20,3 +20,4 @@ setuptools
 wheel
 twine
 ruff
+setfit
