@@ -14,7 +14,7 @@ Welcome to OntoAligner!
     pip install OntoAligner
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 3
 
     introduction
     installation
