@@ -92,7 +92,7 @@ html_context = {
     "display_github": True,
     "github_user": "sciknoworg",
     "github_repo": "OntoAligner",
-    "github_version": "master/",
+    "github_version": "main/",
 }
 
 html_logo = 'img/logo-ontoaligner.png'
