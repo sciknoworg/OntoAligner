@@ -44,12 +44,12 @@ templates_path = ["_templates"]
 # List of patterns, relative to source directory, that match files and
 # directories to include when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-include_patterns = [
-    "**",
-    "../../ontoaligner/**/.py",
-    "../../examples/**",
-    "index.rst",
-]
+# include_patterns = [
+#     "**",
+#     "../../ontoaligner/**/.py",
+#     "../../examples/**",
+#     "index.rst",
+# ]
 # Ensure exclude_patterns doesn't exclude your master document accidentally
 exclude_patterns = []
 
