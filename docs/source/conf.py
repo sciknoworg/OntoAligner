@@ -48,6 +48,9 @@ include_patterns = [
     "ontoaligner/**/.py",
     "examples/**"
 ]
+# Ensure exclude_patterns doesn't exclude your master document accidentally
+exclude_patterns = []
+
 # -- Options for HTML output -------------------------------------------------
 
 # source_suffix = ['.rst', '.md']
