@@ -14,14 +14,16 @@ Welcome to OntoAligner!
     pip install OntoAligner
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 1
 
     introduction
     installation
 
-..
-    Indices and tables
-    ==================
+.. toctree::
+   :maxdepth: 3
+   :caption: Package Reference
+   :glob:
+   :hidden:
 
     * :ref:`genindex`
     * :ref:`modindex`
