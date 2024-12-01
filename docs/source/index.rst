@@ -35,7 +35,7 @@ OntoAligner Documentation
    :hidden:
 
    usage
-   ontology_matchers
+   ontologymatchers
    ontology
    encoders
 
@@ -45,12 +45,16 @@ OntoAligner Documentation
    :caption: Examples
    :hidden:
 
+   fuzzy
+   retriever
+   llm
+   rag
+   fewshot
+   incontextvectors
+
+
 .. toctree::
    :maxdepth: 3
    :caption: Package Reference
    :glob:
    :hidden:
-
-    * :ref:`genindex`
-    * :ref:`modindex`
-    * :ref:`search`
