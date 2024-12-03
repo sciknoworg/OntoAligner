@@ -13,7 +13,10 @@ from sphinx.writers.html5 import HTML5Translator
 # -- Project information -----------------------------------------------------
 
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
-
+sys.path.insert(0, 'modules/')
+sys.path.insert(0, 'tutorials/')
+sys.path.insert(0, 'howtouse/')
+sys.path.insert(0, 'gettingstarted/')
 project = 'OntoAligner'
 copyright = f'{str(datetime.datetime.now().year)} SciKnowOrg'
 author = 'Hamed Babaei Giglou'

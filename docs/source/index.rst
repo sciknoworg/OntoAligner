@@ -34,10 +34,10 @@ OntoAligner Documentation
    :caption: OntoAligner
    :hidden:
 
-   ontoaligner/usage
-   ontoaligner/ontologymatchers
-   ontoaligner/ontology
-   ontoaligner/encoders
+   howtouse/usage
+   howtouse/ontologymatchers
+   howtouse/ontology
+   howtouse/encoders
 
 
 .. toctree::
