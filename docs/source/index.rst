@@ -45,7 +45,7 @@ OntoAligner Documentation
    :caption: Examples
    :hidden:
 
-   fuzzy
+   lightweight
    retriever
    llm
    rag
