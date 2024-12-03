@@ -10,13 +10,22 @@ import posixpath
 from sphinx.application import Sphinx
 from sphinx.writers.html5 import HTML5Translator
 
-# -- Project information -----------------------------------------------------
 
+# -- Project information -----------------------------------------------------
+#
+sys.path.insert(0, pathlib.Path(__file__).parents[0].resolve().as_posix())
+# sys.path.insert(0, pathlib.Path(__file__).parents[1].resolve().as_posix())
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
-sys.path.insert(0, 'modules/')
-sys.path.insert(0, 'tutorials/')
-sys.path.insert(0, 'howtouse/')
-sys.path.insert(0, 'gettingstarted/')
+sys.path.insert(0, f"{pathlib.Path(__file__).parents[1].resolve().as_posix()}/docs/package_reference")
+# sys.path.insert(0, f"{pathlib.Path(__file__).parents[1].resolve().as_posix()}/tutorials")
+# sys.path.insert(0, f"{pathlib.Path(__file__).parents[1].resolve().as_posix()}/package_reference")
+# sys.path.insert(0, f"{pathlib.Path(__file__).parents[1].resolve().as_posix()}/gettingstarted")
+# print(f"{pathlib.Path(__file__).parents[2].resolve().as_posix()}/ontoaligner")
+# sys.path.insert(0, f"{pathlib.Path(__file__).parents[2].resolve().as_posix()}/ontoaligner")
+def setup(app: Sphinx):
+    app.add_css_file('_static/custom.css')
+
+
 project = 'OntoAligner'
 copyright = f'{str(datetime.datetime.now().year)} SciKnowOrg'
 author = 'Hamed Babaei Giglou'
@@ -29,8 +38,8 @@ release = '0.1.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "sphinx.ext.napoleon",
     "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
     "myst_parser",
     "sphinx_markdown_tables",
     "sphinx_copybutton",
@@ -38,16 +47,16 @@ extensions = [
     "sphinx.ext.linkcode",
     "sphinx_inline_tabs",
     "sphinxcontrib.mermaid",
+    # '_extensions.fix_static_path',
 ]
-autosummary_generate = True  # Turn on sphinx.ext.autosummary
-autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
-html_show_sourcelink = False  # Remove 'view source code' from top of page (for html, not python)
-autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
-set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
-nbsphinx_allow_errors = True  # Continue through Jupyter errors
+# autosummary_generate = True  # Turn on sphinx.ext.autosummary
+# autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
+# html_show_sourcelink = True  # Remove 'view source code' from top of page (for html, not python)
+# autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
+# set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
+# nbsphinx_allow_errors = True  # Continue through Jupyter errors
 # autodoc_typehints = "description" # Sphinx-native method. Not as good as sphinx_autodoc_typehints
-add_module_names = False  # Remove namespaces from class/method signatures
-
+# add_module_names = False  # Remove namespaces from class/method signatures
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -58,7 +67,7 @@ templates_path = ["_templates"]
 include_patterns = [
     "**",
     "../../ontoaligner/**/.py",
-    "../../examples/**",
+    # "../../examples/**",
     "index.rst",
 ]
 # Ensure exclude_patterns doesn't exclude your master document accidentally
@@ -111,6 +120,7 @@ autoclass_content = "both"
 # Required to get rid of some myst.xref_missing warnings
 myst_heading_anchors = 3
 
+html_copy_source = True
 
 # https://github.com/readthedocs/sphinx-autoapi/issues/202#issuecomment-907582382
 def linkcode_resolve(domain, info):
@@ -170,7 +180,3 @@ def visit_download_reference(self, node):
 
 
 HTML5Translator.visit_download_reference = visit_download_reference
-
-
-def setup(app: Sphinx):
-    pass

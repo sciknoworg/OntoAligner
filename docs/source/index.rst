@@ -24,15 +24,14 @@ OntoAligner Documentation
 .. toctree::
    :maxdepth: 1
    :caption: Getting Started
-   :hidden:
+   :glob:
 
    gettingstarted/installation
    gettingstarted/quickstart
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: OntoAligner
-   :hidden:
 
    howtouse/usage
    howtouse/ontologymatchers
@@ -41,9 +40,8 @@ OntoAligner Documentation
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Tutorials
-   :hidden:
 
    tutorials/lightweight
    tutorials/retriever
@@ -54,10 +52,9 @@ OntoAligner Documentation
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Package Reference
-   :hidden:
 
-   modules/base
-   modules/ontology
-   modules/encoder
+   package_reference/base
+   package_reference/ontology
+   package_reference/encoder
