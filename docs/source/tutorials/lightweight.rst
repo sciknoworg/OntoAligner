@@ -226,7 +226,7 @@ Example output:
     }
 
 
-Step 7: Export the Matchings as XML
+Step 7: Export the Matchings
 -----------------------------------
 
 Finally, save the matching results in an XML format for future use or integration into other systems.
@@ -245,7 +245,7 @@ Or save the results of ``matchings`` in ``json`` format:
         json.dump(matchings, json_file, indent=4, ensure_ascii=False)
 
 
-Step 8: Run all in Once
+Run all in Once
 ------------------------
 
 To execute the script, use the following command:

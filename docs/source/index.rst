@@ -26,35 +26,38 @@ OntoAligner Documentation
    :caption: Getting Started
    :hidden:
 
-   installation
-   quickstart
+   gettingstarted/installation
+   gettingstarted/quickstart
 
 .. toctree::
    :maxdepth: 2
    :caption: OntoAligner
    :hidden:
 
-   usage
-   ontologymatchers
-   ontology
-   encoders
+   ontoaligner/usage
+   ontoaligner/ontologymatchers
+   ontoaligner/ontology
+   ontoaligner/encoders
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: Examples
+   :caption: Tutorials
    :hidden:
 
-   lightweight
-   retriever
-   llm
-   rag
-   fewshot
-   incontextvectors
+   tutorials/lightweight
+   tutorials/retriever
+   tutorials/llm
+   tutorials/rag
+   tutorials/fewshot
+   tutorials/incontextvectors
 
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: Package Reference
-   :glob:
    :hidden:
+
+   modules/base
+   modules/ontology
+   modules/encoder
