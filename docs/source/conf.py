@@ -18,6 +18,7 @@ sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 
 def setup(app: Sphinx):
     app.add_css_file('_static/custom.css')
+    app.add_js_file('_static/custom.js')
 
 
 project = 'OntoAligner'
