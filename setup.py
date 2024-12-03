@@ -13,10 +13,8 @@ setup(
     install_requires=[
         "pathlib",
         "argparse",
-        "contextlib2==21.6.0",
         "datasets==2.19.1",
         "numpy==2.1.3",
-        "ontoaligner==0.1.1",
         "ontospy==2.1.1",
         "openai==1.56.0",
         "owlready2==0.44",
