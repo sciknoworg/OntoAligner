@@ -14,14 +14,8 @@ from sphinx.writers.html5 import HTML5Translator
 # -- Project information -----------------------------------------------------
 #
 sys.path.insert(0, pathlib.Path(__file__).parents[0].resolve().as_posix())
-# sys.path.insert(0, pathlib.Path(__file__).parents[1].resolve().as_posix())
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
-sys.path.insert(0, f"{pathlib.Path(__file__).parents[1].resolve().as_posix()}/docs/package_reference")
-# sys.path.insert(0, f"{pathlib.Path(__file__).parents[1].resolve().as_posix()}/tutorials")
-# sys.path.insert(0, f"{pathlib.Path(__file__).parents[1].resolve().as_posix()}/package_reference")
-# sys.path.insert(0, f"{pathlib.Path(__file__).parents[1].resolve().as_posix()}/gettingstarted")
-# print(f"{pathlib.Path(__file__).parents[2].resolve().as_posix()}/ontoaligner")
-# sys.path.insert(0, f"{pathlib.Path(__file__).parents[2].resolve().as_posix()}/ontoaligner")
+
 def setup(app: Sphinx):
     app.add_css_file('_static/custom.css')
 
@@ -56,7 +50,7 @@ extensions = [
 # set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
 # nbsphinx_allow_errors = True  # Continue through Jupyter errors
 # autodoc_typehints = "description" # Sphinx-native method. Not as good as sphinx_autodoc_typehints
-# add_module_names = False  # Remove namespaces from class/method signatures
+add_module_names = False  # Remove namespaces from class/method signatures
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -75,7 +69,6 @@ exclude_patterns = []
 
 # -- Options for HTML output -------------------------------------------------
 
-# source_suffix = ['.rst', '.md']
 source_suffix = '.rst'
 
 # specify the master doc, otherwise the build at read the docs fails
@@ -83,7 +76,6 @@ master_doc = "index"
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
 html_theme = "press"
 
 html_theme_options = {
