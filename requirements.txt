@@ -1,11 +1,11 @@
 pathlib
 argparse
+numpy
+pandas
 datasets==2.19.1
-numpy==2.1.3
 ontospy==2.1.1
 openai==1.56.0
 owlready2==0.44
-pandas==2.2.3
 rank_bm25==0.2.2
 rapidfuzz==3.5.2
 rdflib==7.1.1
