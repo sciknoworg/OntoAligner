@@ -5,7 +5,7 @@ from tqdm import tqdm
 from sklearn.linear_model import LogisticRegression
 
 # Import OntoAligner components for ontology matching
-from ontoaligner.encoder import ConceptChildrenLLMEncoder
+from ontoaligner.encoder import ConceptLLMEncoder
 from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
 from ontoaligner.utils import metrics, xmlify
 from ontoaligner.ontology_matchers import AutoModelDecoderLLM, ConceptLLMDataset
@@ -26,7 +26,7 @@ dataset = task.collect(
 )
 
 # Initialize an encoder model to extract embeddings for concepts in the ontologies
-encoder_model = ConceptChildrenLLMEncoder()
+encoder_model = ConceptLLMEncoder()
 
 # Encode the source and target ontologies
 source_onto, target_onto = encoder_model(source=dataset['source'], target=dataset['target'])
