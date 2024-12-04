@@ -174,7 +174,7 @@ An important argument for ``TFIDFLabelMapper`` is  ``label_dict`` which the defa
 
 Feel free to change this if you are willing to consider more classes (don't forget to change the prompting in this regard).
 
-The resulted ``matching`` will be as following:
+The resulted ``matchings`` will be as following:
 
 .. code-block:: javascript
 
