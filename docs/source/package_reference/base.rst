@@ -1,40 +1,32 @@
 Base
 ====================
 
-OMDataset
-----------
-.. automodule:: ontoaligner.base
-   :members: OMDataset
-   :undoc-members:
-   :show-inheritance:
-   :noindex:
-
-BaseEncoder
-------------------
-.. automodule:: ontoaligner.base
-   :members: BaseEncoder
-   :undoc-members:
-   :show-inheritance:
-
-BaseOMModel
-------------------
-.. automodule:: ontoaligner.base
-   :members: BaseOMModel
+Base Dataset Classes
+----------------------
+.. automodule:: ontoaligner.base.dataset
+   :members:
    :undoc-members:
    :show-inheritance:
 
 
-BaseOntologyParser
--------------------
-.. automodule:: ontoaligner.base
-   :members: BaseOntologyParser
+Base Encoder Classes
+---------------------
+.. automodule:: ontoaligner.base.encoder
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Base Model Classes
+---------------------
+.. automodule:: ontoaligner.base.model
+   :members:
    :undoc-members:
    :show-inheritance:
 
 
-BaseAlignmentsParser
----------------------------
-.. automodule:: ontoaligner.base
-   :members: BaseAlignmentsParser
+Base Ontology Classes
+----------------------
+.. automodule:: ontoaligner.base.ontology
+   :members:
    :undoc-members:
    :show-inheritance:
