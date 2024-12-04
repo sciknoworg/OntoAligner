@@ -24,8 +24,8 @@ Here:
 - ``retriever_postprocessor``: Refines matchings for better accuracy.
 
 
-Step 2: Initialize and Parse the Dataset
------------------------------------------
+Step 2: Initialize, Parse, and Encode Ontology
+-----------------------------------------------
 
 Define the ontology alignment task using the provided datasets and then load the ontologies and refrences.
 
@@ -40,25 +40,18 @@ Define the ontology alignment task using the provided datasets and then load the
         reference_matching_path="assets/MI-MatOnto/matchings.xml"
     )
 
-
-This step creates an object that organizes all the required data files and settings for the matching process and using the ``collect`` function it will load the source, target ontologies, and reference matching files. The ``print`` statement confirms that the task has been initialized successfully.
-
-Step 3: Encode the Ontology Data
--------------------------------------
-
-After loading the dataset, the encoder module processes and restructures the concepts from the source and target ontologies, preparing them as input for the matching model. For retrieval models the ``LightweightEncoder`` models are good to use.
-
-.. code-block:: python
-
-    # Initialize the encoder model
+    # Initialize the encoder model and encode the dataset.
     encoder_model = encoder.ConceptParentLightweightEncoder()
-
-    # Generate embeddings
     encoder_output = encoder_model(source=dataset['source'], target=dataset['target'])
 
 
-Step 4: Set Up the Retrieval Model
------------------------------------
+.. note::
+    For retrieval models the ``LightweightEncoder`` models are good to use.
+
+
+Step 3: Set Up the Retrieval Model and do the Matching
+--------------------------------------------------------
+
 Configure the retrieval model to align the source and target ontologies using semantic similarity. The `SBERTRetrieval` model leverages a pre-trained transformer for this task.
 
 .. code-block:: python
@@ -72,19 +65,15 @@ Configure the retrieval model to align the source and target ontologies using se
 
 The retrieval model computes semantic similarities between source and target embeddings, predicting potential alignments.
 
-Step 6: Post-process the Matchings
------------------------------------
+Step 4: Post-process and Evaluate the Matchings
+---------------------------------------------------
+
 Refine the predicted matchings using the `retriever_postprocessor`. Postprocessing improves alignment quality by filtering or adjusting the results.
 
 .. code-block:: python
 
     # Post-process matchings
     matchings = retriever_postprocessor(matchings)
-
-
-Step 7: Evaluate the Matchings
--------------------------------
-.. code-block:: python
 
     # Evaluate matchings
     evaluation = metrics.evaluation_report(
@@ -97,8 +86,9 @@ Step 7: Evaluate the Matchings
 
 
 
-Step 8: Export Matchings
+Step 5: Export Matchings
 -------------------------
+
 Save the matchings in both XML and JSON formats for further analysis or use. For convert matchings to XML format we use ``xmlify`` utility.
 
 .. code-block:: python
@@ -121,9 +111,7 @@ Save the matchings in both XML and JSON formats for further analysis or use. For
     print(f"Matchings in JSON format have been written to '{json_output_path}'.")
 
 Run All at Once
-===============
-
-To execute the entire script, use the following consolidated code block. This script performs ontology dataset collection, encoding, retrieval-based alignment, postprocessing, evaluation, and export.
+-------------------------
 
 .. code-block:: python
 
@@ -168,5 +156,4 @@ To execute the entire script, use the following consolidated code block. This sc
 After running the script, you should see:
 
 1. An evaluation report printed in the console.
-
 2. An XML file named matchings.xml saved in the current directory.
