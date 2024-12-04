@@ -46,7 +46,7 @@ Define the ontology alignment task using the provided datasets and then load the
 
 
 .. note::
-    For retrieval models the ``LightweightEncoder`` models are good to use.
+    For retrieval models the ``LightweightEncoder`` encoders are good to use.
 
 
 Step 3: Set Up the Retrieval Model and do the Matching
