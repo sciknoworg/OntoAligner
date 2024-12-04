@@ -22,8 +22,8 @@ Start by importing the necessary libraries and modules. These tools will help us
     from ontoaligner.postprocess import TFIDFLabelMapper, llm_postprocessor
 
 
-Step 2: Initialize and Parse the Dataset
------------------------------------------
+Step 2: Initialize, Parse, and Encode Ontology
+-----------------------------------------------
 
 Define the ontology alignment task using the provided datasets.
 
@@ -38,24 +38,12 @@ Define the ontology alignment task using the provided datasets.
         reference_matching_path="assets/MI-MatOnto/matchings.xml"
     )
 
-
-This step creates an object that organizes all the required data files and settings for the matching process and using the ``collect`` function it will load the source, target ontologies, and reference matching files. The ``print`` statement confirms that the task has been initialized successfully.
-
-For using different  alignment tasks see  :doc:`../package_reference/ontology`.
-
-Step 3: Encode the Ontology Data
----------------------------------
-
-After loading the dataset, use the encoder module to process and restructure the concepts from the source and target ontologies, preparing them as input for the matching model.
-
-.. code-block:: python
-
     encoder_model = ConceptLLMEncoder()
     source_onto, target_onto = encoder_model(source=dataset['source'], target=dataset['target'])
 
 The encoder module transforms the ontology concepts into a format suitable for the LLM-based matcher. Here the technique used is a concept where it only keeps the concept element from the ``dataset`` for further steps.
 
-Step 4: Create Dataset for LLM Matching
+Step 3: Create Dataset for LLM Matching
 ---------------------------------------
 
 Prepare the data for the LLM-based matcher by filling in the prompt template.
@@ -102,7 +90,7 @@ Here is another example sample output using concept-children representation (``C
 
 We will proceed with concept only representation!
 
-Step 5: Batch the Data
+Step 4: Batch the Data
 ----------------------
 
 Use a DataLoader to manage batching. Batching allows the model to process large datasets efficiently in smaller chunks.
@@ -118,7 +106,7 @@ Use a DataLoader to manage batching. Batching allows the model to process large 
 
 
 
-Step 6: Initialize and Load the LLM Model
+Step 5: Initialize and Load the LLM Model
 -----------------------------------------
 
 Set up the LLM-based model for generating alignments.
@@ -131,7 +119,7 @@ Set up the LLM-based model for generating alignments.
 
 Here we used ``Qwen/Qwen2-0.5B`` model, but feel free to use any LLM you like.
 
-Step 7: Generate Predictions
+Step 6: Generate Predictions
 ----------------------------
 
 Feed batched prompts to the LLM to predict alignments.
@@ -153,7 +141,7 @@ The LLM generates potential alignments between source and target concepts based 
 
 
 
-Step 8: Post-Process Predictions
+Step 7: Post-Process Predictions
 ---------------------------------
 As we see the output of LLM is a text, where it could be hard to determine whether there is a match or not. To ease the process in the Post-Process module we implement multiple label mappers to find the label classes in the output. Here, we refine the predictions using ``TFIDFLabelMapper`` which is based on TF-IDF and logistic regression classifier. The ``llm_postprocessor`` will take predictions and dataset and mapper to find the matchings by only keeping the interested class here (which in a default value is a ``yes`` class).
 
@@ -188,52 +176,29 @@ The resulted ``matchings`` will be as following:
       'target': 'http://ontology.dumontierlab.com/TertiaryAmineGroup'},
      ... ]
 
-Step 9: Evaluate the Results
------------------------------
+Step 8: Evaluate and Export the Matchings
+---------------------------------------------
 
-Compare the generated alignments with reference matchings.
+The following code will compare the generated alignments with reference matchings. Then save the matchings in both XML and JSON formats for further analysis or use. Feel free to use any of the techniques.
 
 .. code-block:: python
 
     evaluation = metrics.evaluation_report(predicts=matchings, references=dataset['reference'])
     print("Evaluation Report:", json.dumps(evaluation, indent=4))
 
-
-A report with metrics like intersection, precision, recall, F1-score, predictions-len, and reference-len which tell you how well the algorithm performed.
-
-Example output:
-
-.. code-block:: javascript
-
-    {
-        "intersection": 17,
-        "precision": 0.10756770437863833,
-        "recall": 5.629139072847682,
-        "f-score": 0.2111014528747051,
-        "predictions-len": 15804,
-        "reference-len": 302
-    }
-
-Step 10: Export the Matchings
------------------------------
-
-Finally, save the matching results in XML and JSON formats for future use or integration into other systems.
-
-.. code-block:: python
-
+    # Export matchings to XM
     xml_str = xmlify.xml_alignment_generator(matchings=matchings)
     with open("matchings.xml", "w", encoding="utf-8") as xml_file:
         xml_file.write(xml_str)
 
+    # Export matchings to JSON
     with open("matchings.json", "w", encoding="utf-8") as json_file:
         json.dump(matchings, json_file, indent=4, ensure_ascii=False)
 
 
 
 Run All at Once
-===============
-
-To execute the entire script at once, use the following consolidated code block. This script combines ontology encoding, LLM-based alignment, postprocessing, evaluation, and export in one streamlined process.
+--------------------------
 
 .. code-block:: python
 
