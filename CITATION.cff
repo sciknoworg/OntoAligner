@@ -3,16 +3,16 @@ message: "If you use this software, please cite it as below."
 authors:
   - family-names: "Babaei Giglou"
     given-names: "Hamed"
-  - family-names: "Sadruddin"
-    given-names: "Sameer"
   - family-names: "D'Souza"
     given-names: "Jennifer"
+  - family-names: "Karras"
+    given-names: "Oliver"
   - family-names: "Auer"
     given-names: "Sören"
-title: "OntoAligner: A Ontology Alignment Python Library"
-version: "0.1.0"
-date-released: "2024-10"
-url: "https://github.com/HamedBabaei/OntoAligner"
+title: "OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment"
+version: "1.0.0"
+date-released: "2024"
+url: "https://github.com/sciknoworg/OntoAligner"
 keywords:
   - Ontology Matching
   - Alignment
