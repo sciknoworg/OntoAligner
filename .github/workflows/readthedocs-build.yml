@@ -15,6 +15,6 @@ jobs:
         env:
           READTHEDOCS_TOKEN: ${{ secrets.READTHEDOCS_TOKEN }}
         run: |
-          curl -X POST -d "" \
+          curl -X POST \
           -H "Authorization: Token $READTHEDOCS_TOKEN" \
           https://readthedocs.org/api/v3/projects/ontoaligner/builds/
