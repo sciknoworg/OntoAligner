@@ -19,7 +19,6 @@
 
 **OntoAligner** is a Python library designed to simplify ontology alignment and matching for researchers, practitioners, and developers. With a modular architecture and robust features, OntoAligner provides powerful tools to bridge ontologies effectively.
 
----
 
 ## Installation
 
@@ -36,7 +35,6 @@ git clone git@github.com:sciknoworg/OntoAligner.git
 pip install ./ontoaligner
 ```
 
----
 
 ## Documentation
 
@@ -84,7 +82,8 @@ llm_config = {
 }
 
 # Step 5: Initialize Generate predictions using RAG-based ontology matcher
-model = MistralLLMBERTRetrieverRAG(retriever_config=retriever_config, llm_config=llm_config)
+model = MistralLLMBERTRetrieverRAG(retriever_config=retriever_config,
+                                   llm_config=llm_config)
 predicts = model.generate(input_data=encoded_ontology)
 
 # Step 6: Apply hybrid postprocessing
@@ -94,7 +93,8 @@ hybrid_matchings, hybrid_configs = rag_hybrid_postprocessor(
     llm_confidence_th=0.8
 )
 
-evaluation = metrics.evaluation_report(predicts=hybrid_matchings, references=dataset['reference'])
+evaluation = metrics.evaluation_report(predicts=hybrid_matchings,
+                                       references=dataset['reference'])
 print("Hybrid Matching Evaluation Report:", json.dumps(evaluation, indent=4))
 print("Hybrid Matching Obtained Configuration:", hybrid_configs)
 
@@ -104,19 +104,17 @@ with open("matchings.xml", "w", encoding="utf-8") as xml_file:
     xml_file.write(xml_str)
 ```
 
----
 
 ## Contribution
 
 We welcome contributions to enhance OntoAligner and make it even better! Please review our contribution guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) before getting started. Your support is greatly appreciated.
 
----
+
 
 ## Contact
 
 If you encounter any issues or have questions, please submit them in the [GitHub issues tracker](https://github.com/sciknoworg/OntoAligner/issues).
 
----
 
 ## Citation
 
