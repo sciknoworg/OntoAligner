@@ -62,7 +62,7 @@ class RAGDataset(Dataset):
             dict: A dictionary containing the processed text and IRIs for the sample.
         """
         return {
-            "texts": self.fill_one_sample(self.data[index]),
+            "prompts": self.fill_one_sample(self.data[index]),
             "iris": [self.data[index]["source"]["iri"], self.data[index]["target"]["iri"]]
         }
 
@@ -97,9 +97,9 @@ class RAGDataset(Dataset):
         Returns:
             dict: A dictionary containing lists of texts and IRIs for the batch.
         """
-        batchs_clear = {"texts": [], "iris": []}
+        batchs_clear = {"prompts": [], "iris": []}
         for batch in batchs:
-            batchs_clear["texts"].append(batch["texts"])
+            batchs_clear["prompts"].append(batch["v"])
             batchs_clear["iris"].append(batch["iris"])
         return batchs_clear
 
