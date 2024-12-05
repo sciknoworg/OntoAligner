@@ -15,3 +15,10 @@ Process
    :members:
    :undoc-members:
    :show-inheritance:
+
+Util
+------------------
+.. automodule:: ontoaligner.postprocess.util
+   :members:
+   :undoc-members:
+   :show-inheritance:
