@@ -110,13 +110,14 @@ Finally, convert the matchings to XML format for compatibility with ontology ali
         xml_file.write(xml_str)
 
 
-## Summary
+Summary
 ---------------------------------------------
 In this tutorial, we demonstrated:
-- Loading and encoding ontologies
-- Using Mistral LLM with RAG for ontology matching
-- Refining results with heuristic and hybrid postprocessing
-- Saving results in XML format
+
+* Loading and encoding ontologies
+* Using Mistral LLM with RAG for ontology matching
+* Refining results with heuristic and hybrid postprocessing
+* Saving results in XML format
 
 You can customize the configurations and thresholds based on your specific dataset and use case. For more details, refer to the :doc:`package_reference/postprocess`
 
