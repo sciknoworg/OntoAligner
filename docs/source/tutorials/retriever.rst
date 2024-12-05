@@ -110,8 +110,10 @@ Save the matchings in both XML and JSON formats for further analysis or use. For
 
     print(f"Matchings in JSON format have been written to '{json_output_path}'.")
 
-Run All at Once
--------------------------
+Full Code
+--------------------------
+Here is the complete script for reference:
+
 
 .. code-block:: python
 
@@ -152,8 +154,3 @@ Run All at Once
         json.dump(matchings, json_file, indent=4, ensure_ascii=False)
 
     print("Matchings in JSON format have been successfully written to 'matchings.json'.")
-
-After running the script, you should see:
-
-1. An evaluation report printed in the console.
-2. An XML file named matchings.xml saved in the current directory.

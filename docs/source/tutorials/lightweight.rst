@@ -245,10 +245,9 @@ Or save the results of ``matchings`` in ``json`` format:
         json.dump(matchings, json_file, indent=4, ensure_ascii=False)
 
 
-Run all in Once
-------------------------
-
-To execute the script, use the following command:
+Full Code
+--------------------------
+Here is the complete script for reference:
 
 .. code-block:: python
 
@@ -277,9 +276,3 @@ To execute the script, use the following command:
     xml_str = xmlify.xml_alignment_generator(matchings=matchings)
     with open("matchings.xml", "w", encoding="utf-8") as xml_file:
         xml_file.write(xml_str)
-
-
-After running the script, you should see:
-
-1. An evaluation report printed in the console.
-2. An XML file named `matchings.xml` saved in the current directory.
