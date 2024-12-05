@@ -30,9 +30,10 @@ jobs:
       - name: Build the package
         run: poetry build
 
-      - name: Publish to PyPI
-        env:
-          TWINE_API_TOKEN: ${{ secrets.PYPI_TOKEN }}
+      - name: Configure Poetry for PyPI
         run: |
-          poetry config pypi-token.pypi $TWINE_API_TOKEN
+          poetry config pypi-token.pypi ${{ secrets.TWINE_API_TOKEN }}
+
+      - name: Publish to PyPI
+        run: |
           poetry publish --no-interaction --no-ansi
