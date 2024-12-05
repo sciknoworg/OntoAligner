@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "OntoAligner"
 version = "1.0.0"
-description = "OntoAligner is a user-friendly Python library designed to simplify the process of ontology alignment/matching."
+description = "OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment."
 authors = ["Hamed Babaei Giglou <hamedbabaeigiglou@gmail.com>"]
 license = "MIT"
 readme = "README.md"
@@ -9,7 +9,7 @@ homepage = "https://ontoaligner.readthedocs.io/"
 repository = "https://github.com/sciknoworg/OntoAligner/"
 
 [tool.poetry.dependencies]
-python = ">=3.9"
+python = ">=3.10"
 pathlib = "*"
 argparse = "*"
 numpy = "*"
