@@ -24,7 +24,7 @@ def setup(app: Sphinx):
 project = 'OntoAligner'
 copyright = f'{str(datetime.datetime.now().year)} SciKnowOrg'
 author = 'Hamed Babaei Giglou'
-release = '0.1.0'
+release = '0.2.0'
 
 
 # -- General configuration ---------------------------------------------------
