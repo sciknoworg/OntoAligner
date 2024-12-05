@@ -9,7 +9,7 @@ homepage = "https://ontoaligner.readthedocs.io/"
 repository = "https://github.com/sciknoworg/OntoAligner/"
 
 [tool.poetry.dependencies]
-python = ">=3.9"
+python = ">=3.10,<4.0.0"
 pathlib = "*"
 argparse = "*"
 numpy = "*"
