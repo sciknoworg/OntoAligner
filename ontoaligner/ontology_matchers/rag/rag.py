@@ -17,7 +17,7 @@ Classes:
     - MambaSSMRAGLLM: A subclass of AutoModelDecoderRAGLLMV2 for MambaSSM-based generation with model loading and generation capabilities.
 """
 
-from typing import Any, List
+from typing import List, Any
 
 import torch
 from torch.utils.data import DataLoader
@@ -43,10 +43,7 @@ class RAGBasedDecoderLLMArch(DecoderLLMArch):
         answer_sets_token_id (dict): Mapping of token IDs for each answer set.
     """
 
-    ANSWER_SET = {
-        "yes": ["yes", "correct", "true", "positive", "valid", "right", "accurate", "ok"],
-        "no": ["no", "incorrect", "false", "negative", "invalid", "wrong", "not"],
-    }
+
 
     def __init__(self, **kwargs) -> None:
         """
@@ -56,19 +53,24 @@ class RAGBasedDecoderLLMArch(DecoderLLMArch):
             **kwargs: Arbitrary keyword arguments passed to the parent class.
         """
         super().__init__(**kwargs)
+        if "answer_set" in kwargs:
+            self.ANSWER_SET = kwargs["answer_set"]
+        else:
+            self.ANSWER_SET = {
+                "yes": ["yes", "correct", "true", "positive", "valid", "right", "accurate", "ok"],
+                "no": ["no", "incorrect", "false", "negative", "invalid", "wrong", "not"],
+            }
         self.index2label = {0: "yes", 1: "no"}
-        self.label2index = [
-            self.tokenizer("yes").input_ids[-1],
-            self.tokenizer("no").input_ids[-1],
-        ]
+
+    def load(self, path: str) -> None:
+        super().load(path=path)
+        self.label2index = [self.tokenizer("yes").input_ids[-1], self.tokenizer("no").input_ids[-1]]
         self.answer_sets_token_id = {}
         for label, answer_set in self.ANSWER_SET.items():
             self.answer_sets_token_id[label] = []
             for answer in answer_set:
                 if self.check_answer_set_tokenizer(answer):
-                    self.answer_sets_token_id[label].append(
-                        self.tokenizer(answer).input_ids[-1]
-                    )
+                    self.answer_sets_token_id[label].append(self.tokenizer(answer).input_ids[-1])
 
     def __str__(self):
         """
@@ -119,7 +121,7 @@ class RAGBasedDecoderLLMArch(DecoderLLMArch):
             outputs = self.model.generate(
                 **tokenized_input_data,
                 pad_token_id=self.tokenizer.eos_token_id,
-                max_new_tokens=self.kwargs["max_token_length"],
+                max_new_tokens=self.kwargs["max_new_tokens"],
                 do_sample=False,
                 output_scores=True,
                 return_dict_in_generate=True
@@ -210,14 +212,16 @@ class RAG(BaseOMModel):
     Retrieval = None
     LLM = None
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, retriever_config=None, llm_config=None) -> None:
         """
         Initializes the RAG model by loading the retriever and LLM components.
 
         Args:
             **kwargs: Arbitrary keyword arguments passed to the parent class.
         """
+        kwargs = {"retriever-config":retriever_config, "llm-config": llm_config}
         super().__init__(**kwargs)
+
         self.Retrieval = self.Retrieval(**self.kwargs["retriever-config"])
         self.LLM = self.LLM(**self.kwargs["llm-config"])
 
@@ -259,7 +263,11 @@ class RAG(BaseOMModel):
         """
         # IR generation
         ir_output = self.ir_generate(input_data=input_data)
-        ir_output_cleaned = process.retriever_postprocessor(predicts=ir_output)
+        if 'threshold' in self.kwargs['retriever-config']:
+            threshold = self.kwargs['retriever-config']['threshold']
+        else:
+            threshold = 0.0
+        ir_output_cleaned = process.retriever_postprocessor(predicts=ir_output, threshold=threshold)
         # LLm generation
         llm_predictions = self.llm_generate(input_data=input_data, ir_output=ir_output_cleaned)
         return [{"ir-outputs": ir_output}, {"llm-output": llm_predictions}]
