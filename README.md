@@ -1,13 +1,11 @@
 <div align="center">
   🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴Under Construction🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
+
+
+  <img src="images/logo-with-background.png" alt="OntoAligner Logo"/>
 </div>
 
-[//]: # (https://data.cochrane.org/ontologies/pico/index-en.html)
-<div align="center">
-  <img src="images/logo-with-background.png"/>
-</div>
-
-[//]: # (<h3><div align="center">OntoAligner: A Ontology Alignment Python Library </div> <br></h3>)
+<h3 align="center">OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment</h3>
 
 <div align="center">
 
@@ -15,92 +13,120 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/ontoaligner)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
-[![Documentation Status](https://readthedocs.org/projects/ontoaligner/badge/?version=latest)](http://ontoaligner.readthedocs.io/projects/ontoaligner/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/ontoaligner/badge/?version=latest)](https://ontoaligner.readthedocs.io/)
 
 </div>
 
-[//]: # ()
-[//]: # ()
-[//]: # (**OntoAligner** is a Python library built to make ontology alignment/matching easy to use for everyone!)
+**OntoAligner** is a Python library designed to simplify ontology alignment and matching for researchers, practitioners, and developers. With a modular architecture and robust features, OntoAligner provides powerful tools to bridge ontologies effectively.
 
-[//]: # ()
-[//]: # (## Installation)
+---
 
-[//]: # (OntoAligner is available on PyPI and can be installed with pip:)
+## Installation
 
-[//]: # (```)
+OntoAligner is available on PyPI and can be installed with pip:
 
-[//]: # (pip install ontoaligner)
+```bash
+pip install ontoaligner
+```
 
-[//]: # (```)
+Alternatively, install the latest version directly from the source:
 
-[//]: # ()
-[//]: # (You can also install the latest version from the source:)
+```bash
+git clone git@github.com:sciknoworg/OntoAligner.git
+pip install ./ontoaligner
+```
 
-[//]: # (```)
+---
 
-[//]: # (git clone git@github.com:sciknoworg/OntoAligner.git)
+## Documentation
 
-[//]: # (pip install ./ontoaligner)
+Comprehensive documentation for OntoAligner, including detailed guides and examples, is available at **[ontoaligner.readthedocs.io](https://ontoaligner.readthedocs.io/)**.
 
-[//]: # (```)
+---
 
-[//]: # (## Documentation)
+## Quick Tour
 
-[//]: # ()
-[//]: # (## Quick Tour)
+Below is an example of using Retrieval-Augmented Generation (RAG) for ontology matching:
 
-[//]: # ()
-[//]: # (## Contribution)
+```python
+import json
+from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
+from ontoaligner.utils import metrics, xmlify
+from ontoaligner.ontology_matchers import MistralLLMBERTRetrieverRAG
+from ontoaligner.encoder import ConceptParentRAGEncoder
+from ontoaligner.postprocess import rag_hybrid_postprocessor
 
-[//]: # (We welcome contributions of any and greatly value your support in enhancing OntoAligner.  Before getting started, please review our contribution guidelines in [CONTRIBUTING.md]&#40;CONTRIBUTING.md&#41;. Your involvement is sincerely appreciated!)
+# Step 1: Initialize the dataset object for MaterialInformation MatOnto dataset
+task = MaterialInformationMatOntoOMDataset()
+print("Test Task:", task)
 
-[//]: # ()
-[//]: # (## Contact)
+# Step 2: Load source and target ontologies along with reference matchings
+dataset = task.collect(
+    source_ontology_path="assets/MI-MatOnto/mi_ontology.xml",
+    target_ontology_path="assets/MI-MatOnto/matonto_ontology.xml",
+    reference_matching_path="assets/MI-MatOnto/matchings.xml"
+)
 
-[//]: # (We highly recommend to submit any issues or questions in the issues.)
+# Step 3: Encode the source and target ontologies
+encoder_model = ConceptParentRAGEncoder()
+encoded_ontology = encoder_model(source=dataset['source'], target=dataset['target'])
 
-[//]: # ()
-[//]: # (## Citation)
+# Step 4: Define configuration for retriever and LLM
+retriever_config = {
+    "device": 'cuda',
+    "top_k": 5,
+}
+llm_config = {
+    "device": "cuda",
+    "max_length": 300,
+    "max_new_tokens": 10,
+    "batch_size": 15,
+}
 
-[//]: # (If you found this project useful in your work or research please cite the following works:)
+# Step 5: Initialize Generate predictions using RAG-based ontology matcher
+model = MistralLLMBERTRetrieverRAG(retriever_config=retriever_config, llm_config=llm_config)
+predicts = model.generate(input_data=encoded_ontology)
 
-[//]: # ()
-[//]: # (```bibtex)
+# Step 6: Apply hybrid postprocessing
+hybrid_matchings, hybrid_configs = rag_hybrid_postprocessor(
+    predicts=predicts,
+    ir_score_threshold=0.1,
+    llm_confidence_th=0.8
+)
 
-[//]: # (@misc{giglou2024llms4om,)
+evaluation = metrics.evaluation_report(predicts=hybrid_matchings, references=dataset['reference'])
+print("Hybrid Matching Evaluation Report:", json.dumps(evaluation, indent=4))
+print("Hybrid Matching Obtained Configuration:", hybrid_configs)
 
-[//]: # (      title={LLMs4OM: Matching Ontologies with Large Language Models},)
+# Step 7: Convert matchings to XML format and save the XML representation
+xml_str = xmlify.xml_alignment_generator(matchings=hybrid_matchings)
+with open("matchings.xml", "w", encoding="utf-8") as xml_file:
+    xml_file.write(xml_str)
+```
 
-[//]: # (      author={Hamed Babaei Giglou and Jennifer D'Souza and Felix Engel and Sören Auer},)
+---
 
-[//]: # (      year={2024},)
+## Contribution
 
-[//]: # (      eprint={2404.10317},)
+We welcome contributions to enhance OntoAligner and make it even better! Please review our contribution guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) before getting started. Your support is greatly appreciated.
 
-[//]: # (      archivePrefix={arXiv},)
+---
 
-[//]: # (      primaryClass={cs.AI})
+## Contact
 
-[//]: # (})
+If you encounter any issues or have questions, please submit them in the [GitHub issues tracker](https://github.com/sciknoworg/OntoAligner/issues).
 
-[//]: # (```)
+---
 
-[//]: # ()
-[//]: # (```bibtex)
+## Citation
 
-[//]: # (@software{babaei_giglou_ontoaligner_2024,)
+If you use OntoAligner in your work or research, please cite the following:
 
-[//]: # (  author       = {Hamed Babaei Giglou and Sameer Sadruddin and Jennifer D'Souza and Sören Auer},)
-
-[//]: # (  title        = {OntoAligner: An Ontology Alignment Python Library},)
-
-[//]: # (  version      = {0.1.0},)
-
-[//]: # (  year         = {2024},)
-
-[//]: # (  url          = {https://github.com/HamedBabaei/OntoAligner},)
-
-[//]: # (})
-
-[//]: # (```)
+```bibtex
+@software{babaei_giglou_ontoaligner_2024,
+  author       = {Hamed Babaei Giglou and Jennifer D'Souza and Oliver Karras and S{"o}ren Auer},
+  title        = {OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment},
+  version      = {1.0.0},
+  year         = {2024},
+  url          = {https://github.com/HamedBabaei/OntoAligner},
+}
