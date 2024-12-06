@@ -19,9 +19,9 @@ class LabelMapper:
         """
         Initializes the label mapper with training data and labels.
 
-        Args:
-        - label_dict (Dict[str, List[str]]): Dictionary mapping each label to a list of candidate phrases.
-        - iterator_no (int): Number of iterations to replicate training data for better generalization.
+        Parameters:
+            label_dict (Dict[str, List[str]]): Dictionary mapping each label to a list of candidate phrases.
+            iterator_no (int): Number of iterations to replicate training data for better generalization.
         """
         if label_dict is None:
             label_dict = {
@@ -45,8 +45,8 @@ class LabelMapper:
         """
         Validates if predictions are among valid labels.
 
-        Args:
-        - preds (List[str]): List of predicted labels.
+        Parameters:
+            preds (List[str]): List of predicted labels.
         """
         for pred in preds:
             if pred.lower() not in self.labels:
@@ -56,11 +56,11 @@ class LabelMapper:
         """
         Predicts labels for the given input.
 
-        Args:
-        - X (List[str]): List of input texts to classify.
+        Parameters:
+            X (List[str]): List of input texts to classify.
 
         Returns:
-        - List[str]: Predicted labels.
+            List[str]: Predicted labels.
         """
         predictions = list(self._predict(X))
         self.validate_predicts(predictions)
@@ -80,12 +80,12 @@ class TFIDFLabelMapper(LabelMapper):
         """
         Initializes the TFIDFLabelMapper with a specified classifier and TF-IDF configuration.
 
-        Args:
-        - classifier (Any): Classifier object (e.g., LogisticRegression, SVC).
-        - ngram_range (Tuple): Range of n-grams for the TF-IDF vectorizer.
-        - label_dict (Dict[str, List[str]]): Dictionary mapping each label to a list of candidate phrases.
-        - analyzer (str): Specifies whether to analyze at the 'word' or 'char' level.
-        - iterator_no (int): Number of iterations to replicate training data.
+        Parameters:
+            classifier (Any): Classifier object (e.g., LogisticRegression, SVC).
+            ngram_range (Tuple): Range of n-grams for the TF-IDF vectorizer.
+            label_dict (Dict[str, List[str]]): Dictionary mapping each label to a list of candidate phrases.
+            analyzer (str): Specifies whether to analyze at the 'word' or 'char' level.
+            iterator_no (int): Number of iterations to replicate training data.
         """
         super().__init__(label_dict, iterator_no)
         self.model = Pipeline([
@@ -101,11 +101,11 @@ class TFIDFLabelMapper(LabelMapper):
         """
         Predicts labels for the given input using the TF-IDF pipeline.
 
-        Args:
-        - X (List[str]): List of input texts to classify.
+        Parameters:
+            X (List[str]): List of input texts to classify.
 
         Returns:
-        - List[str]: Predicted labels.
+            List[str]: Predicted labels.
         """
         return self.model.predict(X)
 
@@ -118,10 +118,10 @@ class SetFitShallowLabelMapper(LabelMapper):
         """
         Initializes the SetFitShallowLabelMapper with a specified SetFit model.
 
-        Args:
-        - model_id (str): Identifier for the pretrained SetFit model.
-        - label_dict (Dict[str, List[str]]): Dictionary mapping each label to a list of candidate phrases.
-        - iterator_no (int): Number of iterations to replicate training data.
+        Parameters:
+            model_id (str): Identifier for the pretrained SetFit model.
+            label_dict (Dict[str, List[str]]): Dictionary mapping each label to a list of candidate phrases.
+            iterator_no (int): Number of iterations to replicate training data.
         """
         super().__init__(label_dict, iterator_no)
         self.model = SetFitModel.from_pretrained(model_id)
@@ -134,10 +134,10 @@ class SetFitShallowLabelMapper(LabelMapper):
         """
         Predicts labels for the given input using the SetFit model.
 
-        Args:
-        - X (List[str]): List of input texts to classify.
+        Parameters:
+            X (List[str]): List of input texts to classify.
 
         Returns:
-        - List[str]: Predicted labels.
+            List[str]: Predicted labels.
         """
         return self.model.predict(X)

@@ -42,7 +42,7 @@ extensions = [
     "sphinx.ext.linkcode",
     "sphinx_inline_tabs",
     "sphinxcontrib.mermaid",
-    # '_extensions.fix_static_path',
+    "sphinx.ext.mathjax"
 ]
 # autosummary_generate = True  # Turn on sphinx.ext.autosummary
 # autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
@@ -51,7 +51,7 @@ extensions = [
 # set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
 # nbsphinx_allow_errors = True  # Continue through Jupyter errors
 # autodoc_typehints = "description" # Sphinx-native method. Not as good as sphinx_autodoc_typehints
-add_module_names = False  # Remove namespaces from class/method signatures
+# add_module_names = False  # Remove namespaces from class/method signatures
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -84,6 +84,7 @@ html_theme_options = {
           ("Github", "https://github.com/sciknoworg/OntoAligner"),
           ("Pypi", "https://pypi.org/project/OntoAligner/")
     ],
+    'show_source': True,
 }
 
 html_static_path = ["_static"]
@@ -98,7 +99,7 @@ html_css_files = [
     'custom.css',
 ]
 
-html_show_sourcelink = False
+html_show_sourcelink = True
 html_context = {
     "display_github": True,
     "github_user": "sciknoworg",
