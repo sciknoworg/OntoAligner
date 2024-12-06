@@ -3,7 +3,9 @@ Retrieval Augmented Generation
 
 This tutorial demonstrates how to use the OntoAligner library for ontology matching, leveraging Mistral LLM and RAG techniques. The process involves encoding ontologies, generating matches, and refining them using heuristic and hybrid postprocessing methods.
 
-### Step 1. Import Required Modules
+Step 1. Import Required Modules
+---------------------------------
+
 First, we import the necessary modules from the OntoAligner library and Python’s standard library:
 
 .. code-block:: python
@@ -171,7 +173,7 @@ Here is the complete script for reference:
 
     predicts = model.generate(input_data=encoded_ontology)
 
-    # heuristic postprocessor
+    # Heuristic postprocessor
     heuristic_matchings, heuristic_configs = rag_heuristic_postprocessor(predicts=predicts, topk_confidence_ratio=3, topk_confidence_score=3)
     evaluation = metrics.evaluation_report(predicts=heuristic_matchings, references=dataset['reference'])
     print("Heuristic Matching Evaluation Report:", json.dumps(evaluation, indent=4))
