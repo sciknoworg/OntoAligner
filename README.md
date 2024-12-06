@@ -13,7 +13,7 @@
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/ontoaligner)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
-[![Documentation Status](https://readthedocs.org/projects/ontoaligner/badge/?version=latest)](https://ontoaligner.readthedocs.io/)
+[![Documentation Status](https://readthedocs.org/projects/ontoaligner/badge/?version=main)](https://ontoaligner.readthedocs.io/)
 
 </div>
 
