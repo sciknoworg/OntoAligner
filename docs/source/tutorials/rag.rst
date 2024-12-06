@@ -122,7 +122,7 @@ In this tutorial, we demonstrated:
 * Refining results with heuristic and hybrid postprocessing
 * Saving results in XML format
 
-You can customize the configurations and thresholds based on your specific dataset and use case. For more details, refer to the :doc:`package_reference/postprocess`
+You can customize the configurations and thresholds based on your specific dataset and use case. For more details, refer to the :doc:`../package_reference/postprocess`
 
 Full Code
 --------------------------
