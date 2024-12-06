@@ -6,11 +6,9 @@
 .. image:: https://img.shields.io/badge/License-MIT-blue.svg
     :target: https://opensource.org/licenses/MIT
 
-.. image:: https://readthedocs.org/projects/ontoaligner/badge/?version=latest
-    :target: https://ontoaligner.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/ontoaligner/badge/?version=main
+    :target: https://ontoaligner.readthedocs.io/en/latest/?badge=main
 
-.. image:: https://badge.fury.io/py/ontoaligner.svg
-    :target: https://badge.fury.io/py/ontoaligner
 
 OntoAligner Documentation
 ==================================
