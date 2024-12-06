@@ -50,6 +50,7 @@ Step 4. Configure the Retriever and LLM
 Set up the configurations for the retriever and LLM modules. This example uses a CUDA device and defines thresholds for retrieval and LLM:
 
 .. code-block:: python
+
     retriever_config = {
         "device": 'cuda',
         "top_k": 5,
