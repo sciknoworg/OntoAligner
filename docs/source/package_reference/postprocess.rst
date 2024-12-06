@@ -7,7 +7,7 @@ Label Mapper
    :members:
    :undoc-members:
    :show-inheritance:
-   :noindex:
+   
 
 Process
 ------------------
