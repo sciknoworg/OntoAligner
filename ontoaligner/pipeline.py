@@ -1,122 +1,103 @@
-# -*- coding: utf-8 -*-
-"""
-This script defines the OMPipelines class, which handles the process of ontology matching by
-loading source and target ontologies, processing them through a dataset object, and generating
-matching results using an ontology matcher. The class also manages the integration of an encoder
-and handles parameters related to ontology matching, including thresholds for confidence and similarity.
-
-Functionality:
-    - Initializes with paths to ontologies and other optional configurations such as confidence
-      thresholds, output directories, and external modules (ontology matcher, dataset, encoder).
-    - Executes ontology matching by either loading from a JSON file or collecting data from
-      source and target ontologies.
-    - Encodes inputs using the specified encoder and generates matching results using the ontology matcher.
-    - Returns a dictionary containing dataset info, encoder info, response time, and the model output.
-
-Classes:
-    - OMPipelines: A class for orchestrating the ontology matching pipeline using external dataset
-      loading, encoding, and matching components.
-"""
-
-import time
+import json
+from pathlib import Path
+from torch.utils.data import DataLoader
+from torch.utils.data import Dataset
 from typing import Any
-from .base import BaseOMModel
-from .utils import metrics, xmlify
 
-class Pipeline:
-    """
-    This class defines a pipeline for ontology matching, where it takes in source and target ontologies,
-    processes them through a dataset object, and uses an ontology matcher to generate matching results.
+# Import necessary modules from the ontoaligner library
+from ontoaligner.base import BaseEncoder, BaseOMModel, OMDataset
+from ontoaligner.encoder import ConceptLightweightEncoder, ConceptLLMEncoder
+from ontoaligner.utils import metrics, xmlify
+from ontoaligner.ontology_matchers import SimpleFuzzySMLightweight, SBERTRetrieval, AutoModelDecoderLLM, ConceptLLMDataset
+from ontoaligner.postprocess import retriever_postprocessor, llm_postprocessor
 
-    Attributes:
-        ontology_matcher (Any): Matcher used to perform ontology matching.
-        om_encoder (Any): Encoder used to encode the ontology data.
-        kwargs (dict): Additional optional keyword arguments.
-    """
 
-    def __init__(self,
-                 ontology_matcher: BaseOMModel,
-                 om_encoder: Any = None,
-                 **kwargs) -> None:
-        """
-        Initializes the OMPipelines class with the required and optional parameters.
 
-        Parameters:
-            source_ontology_path (str): Path to the source ontology.
-            target_ontology_path (str): Path to the target ontology.
-            reference_matching_path (str, optional): Path to reference matching data (default is None).
-            owl_json_path (str, optional): Path to the owl JSON file (default is None).
-            llm_confidence_th (float): Confidence threshold for the LLM (default is 0.7).
-            ir_score_threshold (float): Information retrieval score threshold (default is 0.9).
-            output_dir (str, optional): Directory where the output will be stored (default is None).
-            ontology_matcher (Any, optional): Matcher used for ontology matching (default is None).
-            om_dataset (Any, optional): Dataset object for handling ontology data (default is None).
-            om_encoder (Any, optional): Encoder for encoding ontology data (default is None).
-            **kwargs (dict): Additional keyword arguments.
-        """
-        self.kwargs = kwargs
-        self.ontology_matcher = ontology_matcher
-        self.om_encoder = om_encoder()
+class OntoAlignerPipeline:
+    def __init__(self, task_class: OMDataset, source_ontology_path: str, target_ontology_path: str,
+                 reference_matching_path: str, output_path: str ="results", output_format: str ="xml"):
+        self.task_class = task_class
+        self.source_ontology_path = source_ontology_path
+        self.target_ontology_path = target_ontology_path
+        self.reference_matching_path = reference_matching_path
+        self.output_path = Path(output_path)
+        self.output_format = output_format.lower()
+        self.task = self._initialize_task()
+        self.dataset = self._collect_dataset()
 
-    def __call__(self,
-                 source_ontology_path: str,
-                 target_ontology_path: str,
-                 owl_json_path: str = None,
-                 om_dataset: Any = None,
-                 reference_matching_path: str = None,
-                 llm_confidence_th: float = 0.7,
-                 ir_score_threshold: float = 0.9,
-                 evaluation: bool = False,
-                 return_dict: bool = False,
-                 return_rdf: bool=False,
-                 relation: str = "=",
-                 digits: int=-2) -> Any:
-        """
-        Executes the ontology matching process. This includes loading data from files,
-        processing the ontologies through the dataset object, encoding the inputs using
-        the encoder, and generating matching results with the ontology matcher.
+    def _initialize_task(self):
+        return self.task_class()
 
-        Process:
-            1. Loads ontology data from a JSON file or collects from the source/target paths.
-            2. Encodes the input data using the specified encoder.
-            3. Generates ontology matching results.
-            4. Outputs the results along with relevant information such as the response time.
-        Parameters:
-            source_ontology_path (str): Path to the source ontology.
-            target_ontology_path (str): Path to the target ontology.
-            reference_matching_path (str, optional): Path to reference matching data (default is None).
-            owl_json_path (str, optional): Path to the owl JSON file (default is None).
-            llm_confidence_th (float): Confidence threshold for the LLM (default is 0.7).
-            ir_score_threshold (float): Information retrieval score threshold (default is 0.9).
-            om_dataset (Any, optional): Dataset object for handling ontology data (default is None).
-        Returns:
-            Matched ontologies
-        """
-        task = om_dataset()
-        if owl_json_path:
-            dataset = task.load_from_json(root_dir=owl_json_path)
+    def _collect_dataset(self):
+        return self.task.collect(
+            source_ontology_path=self.source_ontology_path,
+            target_ontology_path=self.target_ontology_path,
+            reference_matching_path=self.reference_matching_path
+        )
+
+    def __call__(self, method: str,  encoder_model: BaseEncoder =None, model_class: BaseOMModel=None, dataset_class:Dataset =None, postprocessor: Any=None,
+                 llm_path: str=None, retriever_path: str=None, device: str="cuda", batch_size: int=2048, max_length: int=300, max_new_tokens: int=10,
+                 top_k: int=10, fuzzy_sm_threshold: float=0.2, evaluate: bool=True, return_matching: bool=False):
+        if method == "lightweight":
+            return self._run_lightweight(encoder_model or ConceptLightweightEncoder(), model_class or SimpleFuzzySMLightweight,
+                                         postprocessor, fuzzy_sm_threshold, evaluate, return_matching)
+        elif method == "retriever":
+            return self._run_retriever(encoder_model or ConceptLightweightEncoder(), model_class or SBERTRetrieval,
+                                       postprocessor or retriever_postprocessor, retriever_path, top_k, evaluate, return_matching)
+        elif method == "llm":
+            return self._run_llm(encoder_model or ConceptLLMEncoder(), model_class or AutoModelDecoderLLM, dataset_class or ConceptLLMDataset,
+                                 postprocessor or llm_postprocessor, llm_path, device, batch_size, max_length, max_new_tokens, evaluate, return_matching)
         else:
-            dataset = task.collect(source_ontology_path=source_ontology_path,
-                                   target_ontology_path=target_ontology_path,
-                                   reference_matching_path=reference_matching_path)
-        output_dict = {
-            "dataset-info": dataset["dataset-info"],
-            "encoder-info": self.om_encoder.get_encoder_info(),
-        }
-        encoder_output = self.om_encoder(source=dataset['source'], target=dataset['target'])
-        print("\t\tWorking on generating response!")
-        start_time = time.time()
-        model_output = self.ontology_matcher.generate(input_data=encoder_output)
-        output_dict["response-time"] = time.time() - start_time
-        output_dict["generated-output"] = model_output
-        if evaluation:
-            output_dict['evaluation'] =metrics.evaluation_report(predicts=model_output,
-                                                                 references=dataset['reference'])
-        if return_dict:
-            return output_dict
+            raise ValueError(f"Unknown method: {method}")
+
+    def _run_lightweight(self, encoder_model, model_class, postprocessor, fuzzy_sm_threshold, evaluate, return_matching):
+        encoder_output = encoder_model(source=self.dataset['source'], target=self.dataset['target'])
+        model = model_class(fuzzy_sm_threshold=fuzzy_sm_threshold)
+        matchings = model.generate(input_data=encoder_output)
+        if postprocessor:
+            matchings = postprocessor(matchings)
+        return self._process_results(matchings, "lightweight", evaluate, return_matching)
+
+    def _run_retriever(self, encoder_model, model_class, postprocessor, retriever_path, top_k, evaluate, return_matching):
+        encoder_output = encoder_model(source=self.dataset['source'], target=self.dataset['target'])
+        model = model_class(device='cpu', top_k=top_k)
+        model.load(path=retriever_path)
+        matchings = model.generate(input_data=encoder_output)
+        matchings = postprocessor(matchings)
+        return self._process_results(matchings, "retriever", evaluate, return_matching)
+
+
+    def _run_llm(self, encoder_model, model_class, dataset_class, postprocessor, llm_path,
+                 device, batch_size, max_length, max_new_tokens, evaluate, return_matching):
+        encoder_output = encoder_model(source=self.dataset['source'], target=self.dataset['target'])
+        llm_dataset = dataset_class(source_onto=encoder_output[0], target_onto=encoder_output[1])
+        dataloader = DataLoader(llm_dataset, batch_size=batch_size, shuffle=False, collate_fn=llm_dataset.collate_fn)
+        model = model_class(device=device, max_length=max_length, max_new_tokens=max_new_tokens)
+        model.load(path=llm_path)
+        matchings = model.generate(input_data=dataloader)
+        matchings = postprocessor(matchings)
+        return self._process_results(matchings, "llm", evaluate, return_matching)
+
+    def _process_results(self, matchings, method, evaluate, return_matching):
+        output_dir = self.output_path / method
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        if self.output_format == "xml":
+            xml_str = xmlify.xml_alignment_generator(matchings=matchings)
+            with open(output_dir / "matchings.xml", "w", encoding="utf-8") as xml_file:
+                xml_file.write(xml_str)
+        elif self.output_format == "json":
+            with open(output_dir / "matchings.json", "w", encoding="utf-8") as json_file:
+                json.dump(matchings, json_file, indent=4, ensure_ascii=False)
         else:
-            xlm = xmlify.xml_alignment_generator(matchings=model_output,
-                                                 return_rdf=return_rdf,
-                                                 relation=relation,
-                                                 digits=digits)
-            return xlm
+            raise ValueError("Unsupported output format")
+
+        evaluation = None
+        if evaluate:
+            evaluation = metrics.evaluation_report(predicts=matchings, references=self.dataset['reference'])
+            print(f"{method.capitalize()} Evaluation Report:", json.dumps(evaluation, indent=4))
+
+        if return_matching:
+            return matchings
+
+        return evaluation
