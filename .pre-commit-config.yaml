@@ -16,8 +16,8 @@ repos:
     hooks:
       - id: flake8
         args:
-          - --max-line-length=88  # Example argument
-          - --docstring-convention=google  # Or numpy, pep257
+          - --max-line-length=120  # Example argument
+          - --select=D
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.1.1
