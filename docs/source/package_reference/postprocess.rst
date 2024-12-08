@@ -1,13 +1,7 @@
 Post-Process
 ====================
 
-Label Mapper
--------------
-.. automodule:: ontoaligner.postprocess.label_mapper
-   :members:
-   :undoc-members:
-   :show-inheritance:
-   
+
 
 Process
 ------------------
@@ -19,6 +13,14 @@ Process
 Util
 ------------------
 .. automodule:: ontoaligner.postprocess.util
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Label Mapper
+-------------
+.. automodule:: ontoaligner.postprocess.label_mapper
    :members:
    :undoc-members:
    :show-inheritance:
