@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="images/logo-with-background.png" alt="OntoAligner Logo"/>
+  <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/main/images/logo-with-background.png" alt="OntoAligner Logo"/>
 </div>
 
 <h3 align="center">OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment</h3>
