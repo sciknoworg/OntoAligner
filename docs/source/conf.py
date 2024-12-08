@@ -2,13 +2,8 @@
 import pathlib
 import sys
 import datetime
-import importlib
-import inspect
-import os
-import posixpath
 
 from sphinx.application import Sphinx
-from sphinx.writers.html5 import HTML5Translator
 
 
 # -- Project information -----------------------------------------------------
@@ -112,35 +107,35 @@ autoclass_content = "both"
 # Required to get rid of some myst.xref_missing warnings
 myst_heading_anchors = 3
 
-html_copy_source = False
-
-def linkcode_resolve(domain, info):
-    # print("linkcode_resolve:", domain, info)
-    if domain != "py" or not info["module"]:
-        return None
-    try:
-        # Import the module dynamically
-        mod = importlib.import_module(info["module"])
-
-        obj = mod
-        for attr in info["fullname"].split('.'):
-            obj = getattr(obj, attr)
-        obj = inspect.unwrap(obj)
-
-        # Get source file and line numbers
-        file = inspect.getsourcefile(obj)
-
-        lines = inspect.getsourcelines(obj)
-        start_line = lines[1]
-        # print(lines)
-        end_line = start_line + len(lines[0]) - 1
-
-        # Construct GitHub link
-        file_path = os.path.relpath(file, start=os.path.abspath(".."))
-        return f"https://github.com/sciknoworg/OntoAligner/blob/main/{file_path}#L{start_line}-L{end_line}"
-    except Exception as e:
-        print(f"Error in linkcode_resolve: {e}")  # Debugging line
-        return None
+html_copy_source = True
+#
+# def linkcode_resolve(domain, info):
+#     # print("linkcode_resolve:", domain, info)
+#     if domain != "py" or not info["module"]:
+#         return None
+#     try:
+#         # Import the module dynamically
+#         mod = importlib.import_module(info["module"])
+#
+#         obj = mod
+#         for attr in info["fullname"].split('.'):
+#             obj = getattr(obj, attr)
+#         obj = inspect.unwrap(obj)
+#
+#         # Get source file and line numbers
+#         file = inspect.getsourcefile(obj)
+#
+#         lines = inspect.getsourcelines(obj)
+#         start_line = lines[1]
+#         # print(lines)
+#         end_line = start_line + len(lines[0]) - 1
+#
+#         # Construct GitHub link
+#         file_path = os.path.relpath(file, start=os.path.abspath(".."))
+#         return f"https://github.com/sciknoworg/OntoAligner/blob/main/{file_path}#L{start_line}-L{end_line}"
+#     except Exception as e:
+#         print(f"Error in linkcode_resolve: {e}")  # Debugging line
+#         return None
 
 
 # https://github.com/readthedocs/sphinx-autoapi/issues/202#issuecomment-907582382
@@ -199,20 +194,20 @@ def linkcode_resolve(domain, info):
 #         self.context.append("</a>")
 #     else:
 #         self.context.append("")
-
-def visit_download_reference(self, node):
-    root = "https://github.com/sciknoworg/OntoAligner/tree/main"
-    atts = {"class": "reference download", "download": ""}
-
-    if "refuri" in node:
-        atts["href"] = node["refuri"]
-    elif "reftarget" in node and "refdoc" in node:
-        atts["href"] = posixpath.join(root, node["refdoc"], node["reftarget"])
-    else:
-        return  # Skip if no valid reference
-
-    atts["class"] += " external"
-    self.body.append(self.starttag(node, "a", "", **atts))
-    self.context.append("</a>")
-
-HTML5Translator.visit_download_reference = visit_download_reference
+#
+# def visit_download_reference(self, node):
+#     root = "https://github.com/sciknoworg/OntoAligner/tree/main"
+#     atts = {"class": "reference download", "download": ""}
+#
+#     if "refuri" in node:
+#         atts["href"] = node["refuri"]
+#     elif "reftarget" in node and "refdoc" in node:
+#         atts["href"] = posixpath.join(root, node["refdoc"], node["reftarget"])
+#     else:
+#         return  # Skip if no valid reference
+#
+#     atts["class"] += " external"
+#     self.body.append(self.starttag(node, "a", "", **atts))
+#     self.context.append("</a>")
+#
+# HTML5Translator.visit_download_reference = visit_download_reference
