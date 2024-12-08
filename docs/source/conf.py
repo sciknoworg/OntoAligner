@@ -114,41 +114,71 @@ myst_heading_anchors = 3
 
 html_copy_source = True
 
-# https://github.com/readthedocs/sphinx-autoapi/issues/202#issuecomment-907582382
 def linkcode_resolve(domain, info):
-    # Non-linkable objects from the starter kit in the tutorial.
-    if domain == "js" or info["module"] == "connect4":
-        return
-
-    assert domain == "py", "expected only Python objects"
-
-    mod = importlib.import_module(info["module"])
-    if "." in info["fullname"]:
-        objname, attrname = info["fullname"].split(".")
-        obj = getattr(mod, objname)
-        try:
-            # object is a method of a class
-            obj = getattr(obj, attrname)
-        except AttributeError:
-            # object is an attribute of a class
-            return None
-    else:
-        obj = getattr(mod, info["fullname"])
-    obj = inspect.unwrap(obj)
-
+    # print("linkcode_resolve:", domain, info)
+    if domain != "py" or not info["module"]:
+        return None
     try:
-        file = inspect.getsourcefile(obj)
-        lines = inspect.getsourcelines(obj)
-    except TypeError:
-        # e.g. object is a typing.Union
-        return None
-    file = os.path.relpath(file, os.path.abspath(".."))
-    if not file.startswith("ontoaligner"):
-        # e.g. object is a typing.NewType
-        return None
-    start, end = lines[1], lines[1] + len(lines[0]) - 1
+        # Import the module dynamically
+        mod = importlib.import_module(info["module"])
 
-    return f"https://github.com/sciknoworg/OntoAligner/blob/main/{file}#L{start}-L{end}"
+        obj = mod
+        for attr in info["fullname"].split('.'):
+            obj = getattr(obj, attr)
+        obj = inspect.unwrap(obj)
+
+        # Get source file and line numbers
+        file = inspect.getsourcefile(obj)
+
+        lines = inspect.getsourcelines(obj)
+        start_line = lines[1]
+        # print(lines)
+        end_line = start_line + len(lines[0]) - 1
+
+        # Construct GitHub link
+        file_path = os.path.relpath(file, start=os.path.abspath(".."))
+        return f"https://github.com/sciknoworg/OntoAligner/blob/main/{file_path}#L{start_line}-L{end_line}"
+    except Exception as e:
+        print(f"Error in linkcode_resolve: {e}")  # Debugging line
+        return None
+
+
+# https://github.com/readthedocs/sphinx-autoapi/issues/202#issuecomment-907582382
+# def linkcode_resolve(domain, info):
+#     # Non-linkable objects from the starter kit in the tutorial.
+#     # if domain == "js" or info["module"] == "connect4":
+#     if domain != "py" or not info["module"]:
+#         return
+#
+#     # assert domain == "py", "expected only Python objects"
+#
+#     mod = importlib.import_module(info["module"])
+#     if "." in info["fullname"]:
+#         objname, attrname = info["fullname"].split(".")
+#         obj = getattr(mod, objname)
+#         try:
+#             # object is a method of a class
+#             obj = getattr(obj, attrname)
+#         except AttributeError:
+#             # object is an attribute of a class
+#             return None
+#     else:
+#         obj = getattr(mod, info["fullname"])
+#     obj = inspect.unwrap(obj)
+#
+#     try:
+#         file = inspect.getsourcefile(obj)
+#         lines = inspect.getsourcelines(obj)
+#     except TypeError:
+#         # e.g. object is a typing.Union
+#         return None
+#     file = os.path.relpath(file, os.path.abspath(".."))
+#     if not file.startswith("ontoaligner"):
+#         # e.g. object is a typing.NewType
+#         return None
+#     start, end = lines[1], lines[1] + len(lines[0]) - 1
+#
+#     return f"https://github.com/sciknoworg/OntoAligner/blob/main/{file}#L{start}-L{end}"
 
 
 def visit_download_reference(self, node):
