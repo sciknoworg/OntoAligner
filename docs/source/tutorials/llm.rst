@@ -1,5 +1,5 @@
-LLM-Based Ontology Matching
-===========================
+Large Language Models Aligner
+===============================
 
 This module guides you through a step-by-step process for performing ontology alignment using a large language model (LLM) and the `OntoAligner` library. By the end, you'll understand how to preprocess data, encode ontologies, generate alignments, evaluate results, and save the outputs in XML and JSON formats.
 
@@ -194,68 +194,3 @@ The following code will compare the generated alignments with reference matching
     # Export matchings to JSON
     with open("matchings.json", "w", encoding="utf-8") as json_file:
         json.dump(matchings, json_file, indent=4, ensure_ascii=False)
-
-
-
-Full Code
---------------------------
-Here is the complete script for reference:
-
-.. code-block:: python
-
-    import json
-    from torch.utils.data import DataLoader
-    from tqdm import tqdm
-    from sklearn.linear_model import LogisticRegression
-    from ontoaligner.encoder import ConceptLLMEncoder
-    from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
-    from ontoaligner.utils import metrics, xmlify
-    from ontoaligner.ontology_matchers import AutoModelDecoderLLM, ConceptLLMDataset
-    from ontoaligner.postprocess import TFIDFLabelMapper
-    from ontoaligner.postprocess import llm_postprocessor
-
-    task = MaterialInformationMatOntoOMDataset()
-    print("Test Task:", task)
-
-    dataset = task.collect(
-        source_ontology_path="../assets/MI-MatOnto/mi_ontology.xml",
-        target_ontology_path="../assets/MI-MatOnto/matonto_ontology.xml",
-        reference_matching_path="../assets/MI-MatOnto/matchings.xml"
-    )
-
-    encoder_model = ConceptLLMEncoder()
-    source_onto, target_onto = encoder_model(source=dataset['source'], target=dataset['target'])
-
-    llm_dataset = ConceptLLMDataset(source_onto=source_onto, target_onto=target_onto)
-    dataloader = DataLoader(
-        llm_dataset,
-        batch_size=2048,
-        shuffle=False,
-        collate_fn=llm_dataset.collate_fn
-    )
-
-    model = AutoModelDecoderLLM(device='cuda', max_length=300, max_new_tokens=10)
-    model.load(path="Qwen/Qwen2-0.5B")
-
-    predictions = []
-    for batch in tqdm(dataloader):
-        prompts = batch["prompts"]
-        sequences = model.generate(prompts)
-        predictions.extend(sequences)
-
-    mapper = TFIDFLabelMapper(classifier=LogisticRegression(), ngram_range=(1, 1))
-    matchings = llm_postprocessor(predicts=predictions, mapper=mapper, dataset=llm_dataset)
-
-    evaluation = metrics.evaluation_report(predicts=matchings, references=dataset['reference'])
-    print("Evaluation Report:", json.dumps(evaluation, indent=4))
-
-    xml_str = xmlify.xml_alignment_generator(matchings=matchings)
-    with open("matchings.xml", "w", encoding="utf-8") as xml_file:
-        xml_file.write(xml_str)
-
-    print("Matchings in XML format have been successfully written to 'matchings.xml'.")
-
-    with open("matchings.json", "w", encoding="utf-8") as json_file:
-        json.dump(matchings, json_file, indent=4, ensure_ascii=False)
-
-    print("Matchings in JSON format have been successfully written to 'matchings.json'.")

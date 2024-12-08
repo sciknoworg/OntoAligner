@@ -1,15 +1,10 @@
 Retrieval Augmented Generation
 ================================
-
-This tutorial demonstrates how to use the OntoAligner library for ontology matching, leveraging Mistral LLM and RAG techniques. The process involves encoding ontologies, generating matches, and refining them using heuristic and hybrid postprocessing methods.
-
-Step 1. Import Required Modules
----------------------------------
-
-First, we import the necessary modules from the OntoAligner library and Python’s standard library:
+This tutorial walks you through the process of ontology matching using the OntoAligner library, leveraging retrieval-augmented generation (RAG) techniques. Starting with the necessary module imports, it defines a task and loads source and target ontologies along with reference matchings. The tutorial then encodes the ontologies using a specialized encoder, configures a retriever and an LLM, and generates predictions. Finally, it demonstrates two postprocessing techniques—heuristic and hybrid—followed by saving the matched alignments in XML format, ready for use or further analysis.
 
 .. code-block:: python
 
+    # Step1. Lets import Required Modules
     import json
     from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
     from ontoaligner.utils import metrics, xmlify
@@ -17,13 +12,7 @@ First, we import the necessary modules from the OntoAligner library and Python�
     from ontoaligner.encoder import ConceptParentRAGEncoder
     from ontoaligner.postprocess import rag_hybrid_postprocessor, rag_heuristic_postprocessor
 
-Step 2. Define the Task and Load Ontologies
----------------------------------------------
-
-We use the ``MaterialInformationMatOntoOMDataset`` class to load the source and target ontologies along with the reference matching file:
-
-.. code-block:: python
-
+    #Step 2. Define the Task and Load Ontologies
     task = MaterialInformationMatOntoOMDataset()
     print("Test Task:", task)
 
@@ -33,79 +22,38 @@ We use the ``MaterialInformationMatOntoOMDataset`` class to load the source and 
         reference_matching_path="../assets/MI-MatOnto/matchings.xml"
     )
 
-
-Step 3. Encode Ontologies
----------------------------------------------
-
-We use the ``ConceptParentRAGEncoder`` to encode the source and target ontologies:
-
-.. code-block:: python
-
+    # Step 3. Encode Ontologies
     encoder_model = ConceptParentRAGEncoder()
     encoded_ontology = encoder_model(source=dataset['source'], target=dataset['target'])
 
-Step 4. Configure the Retriever and LLM
----------------------------------------------
-
-Set up the configurations for the retriever and LLM modules. This example uses a CUDA device and defines thresholds for retrieval and LLM:
-
-.. code-block:: python
-
-    retriever_config = {
-        "device": 'cuda',
-        "top_k": 5,
-        "threshold": 0.1,
-    }
-
-    llm_config = {
-        "device": "cuda",
-        "max_length": 300,
-        "max_new_tokens": 10,
-        "huggingface_access_token": "",
-        "device_map": 'balanced',
-        "batch_size": 15,
-        "answer_set": {
-            "yes": ["yes", "correct", "true", "positive", "valid"],
-            "no": ["no", "incorrect", "false", "negative", "invalid"]
+    #Step 4. Configure the Retriever and LLM
+    config = {
+        "retriever_config": {"device": 'cuda', "top_k": 5, "threshold": 0.1},
+        "llm_config": {
+            "device": "cuda", "batch_size": 32,
+            "answer_set": {"yes": ["yes", "true"], "no": ["no", "false"]}
         }
     }
 
-Step 5. Generate Predictions
----------------------------------------------
-Create an instance of ``MistralLLMBERTRetrieverRAG`` and generate predictions:
-
-.. code-block:: python
-
+    # Step 5. Generate Predictions
     model = MistralLLMBERTRetrieverRAG(retriever_config=retriever_config, llm_config=llm_config)
+    model.load(llm_path = "mistralai/Mistral-7B-v0.3", ir_path="all-MiniLM-L6-v2")
     predicts = model.generate(input_data=encoded_ontology)
 
-Step 6. Postprocess Matches
----------------------------------------------
-
-**Heuristic Postprocessing**: Automatically determine thresholds for retrieval and LLM confidence using the heuristic method:
-
-.. code-block:: python
-
+    # Step 6. Postprocess Matches
+    # Heuristic Postprocessing
     heuristic_matchings, heuristic_configs = rag_heuristic_postprocessor(predicts=predicts, topk_confidence_ratio=3, topk_confidence_score=3)
     evaluation = metrics.evaluation_report(predicts=heuristic_matchings, references=dataset['reference'])
     print("Heuristic Matching Evaluation Report:", json.dumps(evaluation, indent=4))
     print("Heuristic Matching Obtained Configuration:", heuristic_configs)
 
-**Hybrid Postprocessing**: Apply fixed thresholds to filter matchings:
-
-.. code-block:: python
-
+    # Hybrid Postprocessing
     hybrid_matchings, hybrid_configs = rag_hybrid_postprocessor(predicts=predicts, ir_score_threshold=0.1, llm_confidence_th=0.8)
     evaluation = metrics.evaluation_report(predicts=hybrid_matchings, references=dataset['reference'])
     print("Hybrid Matching Evaluation Report:", json.dumps(evaluation, indent=4))
     print("Hybrid Matching Obtained Configuration:", hybrid_configs)
 
-Step 7. Save Matchings in XML Format
----------------------------------------------
-Finally, convert the matchings to XML format for compatibility with ontology alignment tools and save them:
-
-.. code-block:: python
-
+    # Step 7. Save Matchings in XML Format
     xml_str = xmlify.xml_alignment_generator(matchings=hybrid_matchings)
 
     output_file_path = "matchings.xml"
@@ -113,8 +61,7 @@ Finally, convert the matchings to XML format for compatibility with ontology ali
         xml_file.write(xml_str)
 
 
-Summary
----------------------------------------------
+
 In this tutorial, we demonstrated:
 
 * Loading and encoding ontologies
@@ -124,72 +71,25 @@ In this tutorial, we demonstrated:
 
 You can customize the configurations and thresholds based on your specific dataset and use case. For more details, refer to the :doc:`../package_reference/postprocess`
 
-Full Code
---------------------------
-Here is the complete script for reference:
+FewShot RAG
+===============
+This tutorial works based on FewShot RAG matching, an extension of the RAG model, designed for few-shot learning tasks. The FewShot RAG workflow is the same as RAG but with two differences:
+
+1. You only need to use FewShot encoders as follows, and since a fewshot model uses multiple examples you might also provide only specific examples from reference or other examples as a fewshot samples.
 
 .. code-block:: python
 
-    import json
-    from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
-    from ontoaligner.utils import metrics, xmlify
-    from ontoaligner.ontology_matchers import MistralLLMBERTRetrieverRAG
-    from ontoaligner.encoder import ConceptParentRAGEncoder
-    from ontoaligner.postprocess import rag_hybrid_postprocessor, rag_heuristic_postprocessor
+    from ontoaligner.encoder import ConceptParentFewShotEncoder
 
-    task = MaterialInformationMatOntoOMDataset()
+    encoder_model = ConceptParentFewShotEncoder()
+    encoded_ontology = encoder_model(source=dataset['source'],
+                                     target=dataset['target'],
+                                     reference=dataset['reference'])
 
-    print("Test Task:", task)
+2. Next, use a Fewshot Retrieval-Augmented Generation (RAG) model for ontology alignment.
 
-    dataset = task.collect(
-        source_ontology_path="../assets/MI-MatOnto/mi_ontology.xml",
-        target_ontology_path="../assets/MI-MatOnto/matonto_ontology.xml",
-        reference_matching_path="../assets/MI-MatOnto/matchings.xml"
-    )
+.. code-block:: python
 
-    encoder_model = ConceptParentRAGEncoder()
-    encoded_ontology = encoder_model(source=dataset['source'], target=dataset['target'])
+    from ontoaligner.ontology_matchers import MistralLLMBERTRetrieverFSRAG
 
-    retriever_config = {
-            "device":'cuda',
-            "top_k": 5,
-            "threshold": 0.1,
-            # openai_key = "" # set your OpenAI key if you are willing to use open AI model as a retriever module of RAG.
-    }
-    llm_config={
-        "device": "cuda",
-        "max_length":300,
-        "max_new_tokens":10,
-        "huggingface_access_token": "", # if the interested LLM requires access via Huggingface
-        "device_map": 'balanced',
-        "batch_size": 15,
-        "answer_set": {
-                "yes": ["yes", "correct", "true", "positive", "valid"],
-                "no": ["no", "incorrect", "false", "negative", "invalid"]
-        }
-        # "openai_key": "", # set your OpenAI key if you are willing to use open AI model as a LLM module of RAG.
-    }
-
-    model = MistralLLMBERTRetrieverRAG(retriever_config=retriever_config, llm_config=llm_config)
-
-    predicts = model.generate(input_data=encoded_ontology)
-
-    # Heuristic postprocessor
-    heuristic_matchings, heuristic_configs = rag_heuristic_postprocessor(predicts=predicts, topk_confidence_ratio=3, topk_confidence_score=3)
-    evaluation = metrics.evaluation_report(predicts=heuristic_matchings, references=dataset['reference'])
-    print("Heuristic Matching Evaluation Report:", json.dumps(evaluation, indent=4))
-    print("Heuristic Matching Obtained Configuration:", heuristic_configs)
-
-    # Hybrid postprocessor
-    hybrid_matchings, hybrid_configs = rag_hybrid_postprocessor(predicts=predicts, ir_score_threshold=0.1, llm_confidence_th=0.8)
-    evaluation = metrics.evaluation_report(predicts=hybrid_matchings, references=dataset['reference'])
-    print("Hybrid Matching Evaluation Report:", json.dumps(evaluation, indent=4))
-    print("Hybrid Matching Obtained Configuration:", hybrid_configs)
-
-
-    # Convert matchings to XML format for compatibility with ontology alignment tools
-    xml_str = xmlify.xml_alignment_generator(matchings=hybrid_matchings)
-
-    output_file_path = "matchings.xml"
-    with open(output_file_path, "w", encoding="utf-8") as xml_file:
-        xml_file.write(xml_str)
+    model = MistralLLMBERTRetrieverFSRAG(positive_ratio=0.7, n_shots=5, **config)

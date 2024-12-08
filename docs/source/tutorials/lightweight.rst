@@ -1,4 +1,4 @@
-Lightweight Matching
+Lightweight Aligner
 =======================
 
 This module demonstrates the process of aligning ontologies using the **OntoAligner** library. It uses a lightweight fuzzy matching algorithm to match concepts between two ontologies. The example includes data preprocessing, encoding, matching, evaluation, and exporting the matching results in XML or json formats.
@@ -243,36 +243,3 @@ Or save the results of ``matchings`` in ``json`` format:
 
     with open("matchings.json", "w", encoding="utf-8") as json_file:
         json.dump(matchings, json_file, indent=4, ensure_ascii=False)
-
-
-Full Code
---------------------------
-Here is the complete script for reference:
-
-.. code-block:: python
-
-    import json
-    from ontoaligner import ontology, encoder
-    from ontoaligner.ontology_matchers import SimpleFuzzySMLightweight
-    from ontoaligner.utils import metrics, xmlify
-
-    task = ontology.MaterialInformationMatOntoOMDataset()
-    print("Test Task:", task)
-    dataset = task.collect(source_ontology_path="../assets/MI-MatOnto/mi_ontology.xml",
-                           target_ontology_path="../assets/MI-MatOnto/matonto_ontology.xml",
-                           reference_matching_path="../assets/MI-MatOnto/matchings.xml")
-
-    encoder_model = encoder.ConceptParentLightweightEncoder()
-
-    encoder_output = encoder_model(source=dataset['source'], target=dataset['target'])
-
-    model = SimpleFuzzySMLightweight(fuzzy_sm_threshold=0.2)
-    matchings = model.generate(input_data=encoder_output)
-
-    evaluation = metrics.evaluation_report(predicts=matchings, references=dataset['reference'])
-
-    print("Evaluation Report:", json.dumps(evaluation, indent=4))
-
-    xml_str = xmlify.xml_alignment_generator(matchings=matchings)
-    with open("matchings.xml", "w", encoding="utf-8") as xml_file:
-        xml_file.write(xml_str)

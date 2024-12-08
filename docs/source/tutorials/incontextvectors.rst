@@ -1,2 +1,2 @@
-In-context Vectors RAG
+In-Context Vectors RAG
 ==================================
