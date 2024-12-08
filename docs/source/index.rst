@@ -38,7 +38,7 @@ OntoAligner Documentation
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Tutorials
 
    tutorials/lightweight
@@ -47,6 +47,8 @@ OntoAligner Documentation
    tutorials/rag
    tutorials/fewshot
    tutorials/incontextvectors
+
+
 
 
 .. toctree::
