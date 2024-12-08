@@ -45,8 +45,6 @@ OntoAligner Documentation
    tutorials/retriever
    tutorials/llm
    tutorials/rag
-   tutorials/fewshot
-   tutorials/incontextvectors
 
 
 
