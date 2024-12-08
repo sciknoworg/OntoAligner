@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "OntoAligner"
-version = "1.0.0"
+version = "1.1.0"
 description = "OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment."
 authors = ["Hamed Babaei Giglou <hamedbabaeigiglou@gmail.com>"]
 license = "MIT"
