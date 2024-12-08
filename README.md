@@ -1,7 +1,4 @@
 <div align="center">
-  🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴Under Construction🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴
-
-
   <img src="images/logo-with-background.png" alt="OntoAligner Logo"/>
 </div>
 
@@ -21,29 +18,37 @@
 **OntoAligner** is a Python library designed to simplify ontology alignment and matching for researchers, practitioners, and developers. With a modular architecture and robust features, OntoAligner provides powerful tools to bridge ontologies effectively.
 
 
-## Installation
+## 🧪 Installation
 
-OntoAligner is available on PyPI and can be installed with pip:
+You can install **OntoAligner** from PyPI using `pip`:
 
 ```bash
 pip install ontoaligner
 ```
 
-Alternatively, install the latest version directly from the source:
+Alternatively, to get the latest version directly from the source, use the following commands:
 
 ```bash
 git clone git@github.com:sciknoworg/OntoAligner.git
 pip install ./ontoaligner
 ```
 
-
-## Documentation
+## 📚 Documentation
 
 Comprehensive documentation for OntoAligner, including detailed guides and examples, is available at **[ontoaligner.readthedocs.io](https://ontoaligner.readthedocs.io/)**.
 
----
+**Tutorials**
 
-## Quick Tour
+| Example                        | Tutorial                                                                                                        |                                            Script                                             |
+|:-------------------------------|:----------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------:|
+| Lightweight                    | [📚 Fuzzy Matching](https://ontoaligner.readthedocs.io/tutorials/lightweight.html)                              |   [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/fuzzy_matching.py)   |
+| Retrieval                      | [📚 Retrieval Aligner](https://ontoaligner.readthedocs.io/tutorials/retriever.html)                             | [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/retriever_matching.py) |
+| Large Language Models          | [📚 Large Language Models Aligner](https://ontoaligner.readthedocs.io/tutorials/llm.html)                       |    [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/llm_matching.py)    |
+| Retrieval Augmented Generation | [📚 Retrieval Augmented Generation](https://ontoaligner.readthedocs.io/tutorials/rag.html)                      |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/rag_matching.py)|
+| FewShot                        | [📚 FewShot RAG](https://ontoaligner.readthedocs.io/tutorials/rag.html#fewshot-rag)                             |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/rag_matching.py)
+| In-Context Vectors Learning    | [📚 In-Context Vectors RAG](https://ontoaligner.readthedocs.io/tutorials/rag.html#in-context-vectors-rag)                  |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/icv_rag_matching.py)
+
+## 🚀 Quick Tour
 
 Below is an example of using Retrieval-Augmented Generation (RAG) for ontology matching:
 
@@ -71,16 +76,8 @@ encoder_model = ConceptParentRAGEncoder()
 encoded_ontology = encoder_model(source=dataset['source'], target=dataset['target'])
 
 # Step 4: Define configuration for retriever and LLM
-retriever_config = {
-    "device": 'cuda',
-    "top_k": 5,
-}
-llm_config = {
-    "device": "cuda",
-    "max_length": 300,
-    "max_new_tokens": 10,
-    "batch_size": 15,
-}
+retriever_config = {"device": 'cuda', "top_k": 5,}
+llm_config = {"device": "cuda", "max_length": 300, "max_new_tokens": 10, "batch_size": 15}
 
 # Step 5: Initialize Generate predictions using RAG-based ontology matcher
 model = MistralLLMBERTRetrieverRAG(retriever_config=retriever_config,
@@ -88,16 +85,13 @@ model = MistralLLMBERTRetrieverRAG(retriever_config=retriever_config,
 predicts = model.generate(input_data=encoded_ontology)
 
 # Step 6: Apply hybrid postprocessing
-hybrid_matchings, hybrid_configs = rag_hybrid_postprocessor(
-    predicts=predicts,
-    ir_score_threshold=0.1,
-    llm_confidence_th=0.8
-)
+hybrid_matchings, hybrid_configs = rag_hybrid_postprocessor(predicts=predicts,
+                                                            ir_score_threshold=0.1,
+                                                            llm_confidence_th=0.8)
 
 evaluation = metrics.evaluation_report(predicts=hybrid_matchings,
                                        references=dataset['reference'])
-print("Hybrid Matching Evaluation Report:", json.dumps(evaluation, indent=4))
-print("Hybrid Matching Obtained Configuration:", hybrid_configs)
+print("Hybrid Matching Evaluation Report:", evaluation)
 
 # Step 7: Convert matchings to XML format and save the XML representation
 xml_str = xmlify.xml_alignment_generator(matchings=hybrid_matchings)
@@ -106,18 +100,16 @@ with open("matchings.xml", "w", encoding="utf-8") as xml_file:
 ```
 
 
-## Contribution
+## ⭐ Contribution
 
 We welcome contributions to enhance OntoAligner and make it even better! Please review our contribution guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) before getting started. Your support is greatly appreciated.
 
-
-
-## Contact
+[//]: # (## 📧 Contact)
 
 If you encounter any issues or have questions, please submit them in the [GitHub issues tracker](https://github.com/sciknoworg/OntoAligner/issues).
 
 
-## Citation
+## 💡 Acknowledgements
 
 If you use OntoAligner in your work or research, please cite the following:
 
@@ -129,3 +121,12 @@ If you use OntoAligner in your work or research, please cite the following:
   year         = {2024},
   url          = {https://github.com/HamedBabaei/OntoAligner},
 }
+```
+
+<p>
+  This software is licensed under the
+  <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>.
+</p>
+<a href="https://opensource.org/licenses/MIT" target="_blank">
+  <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License">
+</a>
