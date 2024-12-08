@@ -39,6 +39,7 @@ Ontologies are a key building block for many applications, such as database inte
    howtouse/ontologymatchers
    howtouse/ontology
    howtouse/encoders
+   howtouse/catalog
 
 
 .. toctree::
