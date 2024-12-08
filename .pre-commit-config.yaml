@@ -10,6 +10,15 @@ repos:
       - id: mixed-line-ending
       - id: check-added-large-files
         args: [ "--maxkb=5000" ]
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+        args:
+          - --max-line-length=88  # Example argument
+          - --docstring-convention=google  # Or numpy, pep257
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.1.1
     hooks:

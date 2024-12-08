@@ -1,0 +1,3 @@
+[flake8]
+max-line-length = 88
+docstring-convention = google  # Options: google, numpy, or pep257
