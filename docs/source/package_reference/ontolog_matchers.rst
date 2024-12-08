@@ -5,7 +5,7 @@ Ontology Matchers
 
 Lightweight
 ------------------
-.. automodule:: ontoaligner.ontology_matchers.lightweight
+.. automodule:: ontoaligner.ontology_matchers.lightweight.lightweight
    :members:
    :undoc-members:
    :show-inheritance:
