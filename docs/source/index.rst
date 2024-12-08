@@ -38,15 +38,13 @@ OntoAligner Documentation
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Tutorials
 
    tutorials/lightweight
    tutorials/retriever
    tutorials/llm
    tutorials/rag
-
-
 
 
 .. toctree::

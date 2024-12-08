@@ -112,7 +112,7 @@ autoclass_content = "both"
 # Required to get rid of some myst.xref_missing warnings
 myst_heading_anchors = 3
 
-html_copy_source = True
+html_copy_source = False
 
 def linkcode_resolve(domain, info):
     # print("linkcode_resolve:", domain, info)
@@ -181,24 +181,38 @@ def linkcode_resolve(domain, info):
 #     return f"https://github.com/sciknoworg/OntoAligner/blob/main/{file}#L{start}-L{end}"
 
 
+# def visit_download_reference(self, node):
+#     root = "https://github.com/sciknoworg/OntoAligner/tree/main"
+#     atts = {"class": "reference download", "download": ""}
+#     print("WHAT:", node)
+#     if not self.builder.download_support:
+#         self.context.append("")
+#     elif "refuri" in node:
+#         atts["class"] += " external"
+#         atts["href"] = node["refuri"]
+#         self.body.append(self.starttag(node, "a", "", **atts))
+#         self.context.append("</a>")
+#     elif "reftarget" in node and "refdoc" in node:
+#         atts["class"] += " external"
+#         atts["href"] = posixpath.join(root, os.path.dirname(node["refdoc"]), node["reftarget"])
+#         self.body.append(self.starttag(node, "a", "", **atts))
+#         self.context.append("</a>")
+#     else:
+#         self.context.append("")
+
 def visit_download_reference(self, node):
     root = "https://github.com/sciknoworg/OntoAligner/tree/main"
     atts = {"class": "reference download", "download": ""}
 
-    if not self.builder.download_support:
-        self.context.append("")
-    elif "refuri" in node:
-        atts["class"] += " external"
+    if "refuri" in node:
         atts["href"] = node["refuri"]
-        self.body.append(self.starttag(node, "a", "", **atts))
-        self.context.append("</a>")
     elif "reftarget" in node and "refdoc" in node:
-        atts["class"] += " external"
-        atts["href"] = posixpath.join(root, os.path.dirname(node["refdoc"]), node["reftarget"])
-        self.body.append(self.starttag(node, "a", "", **atts))
-        self.context.append("</a>")
+        atts["href"] = posixpath.join(root, node["refdoc"], node["reftarget"])
     else:
-        self.context.append("")
+        return  # Skip if no valid reference
 
+    atts["class"] += " external"
+    self.body.append(self.starttag(node, "a", "", **atts))
+    self.context.append("</a>")
 
 HTML5Translator.visit_download_reference = visit_download_reference
