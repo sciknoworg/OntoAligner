@@ -1,4 +1,4 @@
-Retrieval Matching
+Retrieval Aligner
 ====================
 
 This tutorial provides a guide to performing ontology alignment using the Retriever based matching model. The process includes loading ontology datasets, generating embeddings, aligning concepts with retrieval models, post-processing the matches, and evaluating the results.
