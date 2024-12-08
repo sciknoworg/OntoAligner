@@ -1,4 +1,5 @@
 from .fewshot.models import *
+from .fewshot.dataset import *
 from .icv.models import *
 from .lightweight.models import *
 from .llm.models import *

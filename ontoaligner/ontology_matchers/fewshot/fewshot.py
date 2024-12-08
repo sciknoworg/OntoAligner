@@ -8,7 +8,7 @@ Classes:
 - FewShotRAG: Extends the RAG class to support few-shot learning with a specific ratio of positive to negative examples.
 
 """
-from ..rag.rag import RAG
+from ..rag import RAG
 from .dataset import *  # NOQA
 from ...postprocess import process
 from typing import List, Any, Dict
@@ -21,25 +21,23 @@ random.seed(444)
 class FewShotRAG(RAG):
     """
     A class for retrieval-augmented generation with few-shot learning, inheriting from the RAG base class.
-
-    Attributes:
-        positive_ratio (float): The ratio of positive examples in the few-shot samples.
-        n_shots (int): Number of shots to be used for few-shot learning, derived from input arguments.
     """
-    positive_ratio = 0.7
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, positive_ratio: float = 0.7, n_shots: int = 10, retriever_config=None, llm_config=None) -> None:
         """
         Initializes the FewShotRAG class with specified parameters.
 
         Parameters:
-            **kwargs: Arbitrary keyword arguments including 'nshots', which determines the number of few-shot examples.
+            **kwargs: Arbitrary keyword arguments.
+            positive_ratio (float): The ratio of positive examples in the few-shot samples.
+            n_shots (int): Number of shots to be used for few-shot learning, derived from input arguments.
 
         Returns:
             None
         """
-        super().__init__(**kwargs)
-        self.n_shots = int(self.kwargs['nshots'])
+        super().__init__(retriever_config=retriever_config, llm_config=llm_config)
+        self.n_shots = n_shots
+        self.positive_ratio = positive_ratio
 
     def __str__(self):
         """
@@ -67,13 +65,11 @@ class FewShotRAG(RAG):
         """
         # IR generation
         ir_output = self.ir_generate(input_data=input_data)
-        ir_output_cleaned = process.preprocess_ir_outputs(predicts=ir_output)
+        ir_output_cleaned = process.retriever_postprocessor(predicts=ir_output)
         examples = self.build_fewshots(input_data=input_data)
         input_data['examples'] = examples
         # LLm generation
-        llm_predictions = self.llm_generate(
-            input_data=input_data, ir_output=ir_output_cleaned
-        )
+        llm_predictions = self.llm_generate(input_data=input_data, ir_output=ir_output_cleaned)
         return [{"ir-outputs": ir_output}, {"llm-output": llm_predictions}, {"fewshot-samples": examples}]
 
     def build_llm_encoder(self, input_data: Any, llm_inputs: Any) -> Any:
@@ -106,12 +102,7 @@ class FewShotRAG(RAG):
             List: A list of dictionaries where each entry contains 'source', 'target', and 'answer' keys, with
                   answers indicating 'yes' for positive matches and 'no' for negative matches.
         """
-        track = input_data['task-args']['dataset-info']['track']
-        if track == 'bio-ml':
-            reference = input_data['task-args']['reference']['equiv']['train']
-        else:
-            reference = input_data['task-args']['reference']
-
+        reference = input_data['task-args']['reference']
         positive_example_no = math.floor(self.positive_ratio * self.n_shots)
         negative_example_no = self.n_shots - positive_example_no
 
@@ -136,8 +127,11 @@ class FewShotRAG(RAG):
             if safe_to_add:
                 random_negative_examples.append([source, target])
 
-        fewshot_examples = [{'source': source, 'target': target, 'answer': 'yes'} for source, target in random_positive_examples] + \
-                           [{'source': source, 'target': target, 'answer': 'no'} for source, target in random_negative_examples]
+        fewshot_examples = [
+            {'source': source, 'target': target, 'answer': answer}
+            for examples, answer in [(random_positive_examples, 'yes'), (random_negative_examples, 'no')]
+            for source, target in examples
+        ]
         random.shuffle(fewshot_examples)
         print("No of random_positive_examples examples:", len(random_positive_examples))
         print("No of random_negative_examples examples:", len(random_negative_examples))

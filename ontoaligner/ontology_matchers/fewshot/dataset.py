@@ -47,7 +47,7 @@ class ConceptFewShotDataset(FewShotDataset):
         exemplar_prompt (str): A template used for creating exemplars, including source and target concepts.
     """
     prompt: str = """Classify if two concepts refer to the same real world entity or not (answer only yes or no).
-
+Examples:
 {exemplars}
 ### First concept:
 {source}
@@ -86,29 +86,20 @@ class ConceptFewShotDataset(FewShotDataset):
 
     def fill_one_sample(self, input_data: Any) -> str:
         """
-        Populates the prompt with exemplars and the current input sample data for model prediction.
+        Formats the input data into a classification prompt comparing two concepts for similarity.
 
         Parameters:
-            input_data (Any): A dictionary containing 'source' and 'target' concept data to populate the prompt.
+            input_data (Any): The data sample containing source and target concepts to compare.
 
         Returns:
-            str: The completed prompt filled with exemplars and the current sample data.
+            str: The formatted classification prompt.
         """
         source = self.preprocess(input_data["source"]["label"])
         target = self.preprocess(input_data["target"]["label"])
-        return self.prompt.replace("{exemplars}", self.exemplar_prompt) \
-                          .replace("{source}", source) \
-                          .replace("{target}", target)
-
-
-class ConceptChildrenFewShotDataset(FewShotDataset):
-    """
-    A dataset class for handling few-shot learning tasks involving concept-child relationships.
-
-    Inherits from FewShotDataset but is specific to tasks where concept relationships are hierarchical, focusing
-    on child concepts in relation to parent concepts.
-    """
-    pass
+        prompt = self.prompt.replace("{source}", source).\
+                             replace("{target}", target).\
+                             replace("{exemplars}", self.exemplar_prompt)
+        return prompt
 
 
 class ConceptParentFewShotDataset(FewShotDataset):
@@ -118,4 +109,145 @@ class ConceptParentFewShotDataset(FewShotDataset):
     Inherits from FewShotDataset but is specific to tasks where concept relationships are hierarchical, focusing
     on parent concepts in relation to child concepts.
     """
-    pass
+    prompt: str = """Classify if two concepts refer to the same real world entity or not (answer only yes or no).
+Examples:
+{exemplars}
+### First concept:
+{source}
+Parents: {source_parents}
+### Second concept:
+{target}
+Parents: {target_parents}
+### Answer: """
+
+    exemplar_prompt: str = """### First concept:
+{source}
+Parents: {source_parents}
+### Second concept:
+{target}
+Parents: {target_parents}
+### Answer: {answer}
+
+"""
+    def build_exemplars(self, examples: List):
+        """
+        Constructs a prompt containing exemplars from provided concept examples, filling in placeholders
+        for the first and second concepts and their expected answer.
+
+        Parameters:
+            examples (List): A list of dictionaries, each containing 'source', 'target', and 'answer' for concept pairs.
+
+        Returns:
+            None
+        """
+        prompt = ""
+        for example in examples:
+            source = self.preprocess(example["source"]["label"])
+            target = self.preprocess(example["target"]["label"])
+            answer = example['answer']
+            source_parents = ", ".join([self.preprocess(parent["label"]) for parent in example["source"]["parents"]])
+            target_parents = ", ".join([self.preprocess(parent["label"]) for parent in example["target"]["parents"]])
+            prompt += self.exemplar_prompt.replace("{source}", source).\
+                                           replace("{target}", target).\
+                                           replace("{source_parents}", source_parents).\
+                                           replace("{target_parents}", target_parents). \
+                                           replace("{answer}", answer)
+        self.exemplar_prompt = prompt
+
+    def fill_one_sample(self, input_data: Any) -> str:
+        """
+        Formats the input data into a classification prompt comparing two concepts for similarity,
+        with additional context from their parent concepts.
+
+        Parameters:
+            input_data (Any): The data sample containing source and target concepts with parent information.
+
+        Returns:
+            str: The formatted classification prompt.
+        """
+        template = self.prompt
+        source = self.preprocess(input_data["source"]["label"])
+        target = self.preprocess(input_data["target"]["label"])
+        source_parents = ", ".join([self.preprocess(parent["label"]) for parent in input_data["source"]["parents"]])
+        target_parents = ", ".join([self.preprocess(parent["label"]) for parent in input_data["target"]["parents"]])
+        template = template.replace("{source}", source).\
+                            replace("{target}", target).\
+                            replace("{source_parents}", source_parents).\
+                            replace("{target_parents}", target_parents). \
+                            replace("{exemplars}", self.exemplar_prompt)
+        return template
+
+class ConceptChildrenFewShotDataset(FewShotDataset):
+    """
+    A dataset class for handling few-shot learning tasks involving concept-child relationships.
+
+    Inherits from FewShotDataset but is specific to tasks where concept relationships are hierarchical, focusing
+    on child concepts in relation to parent concepts.
+    """
+    prompt: str = """Classify if two concepts refer to the same real world entity or not (answer only yes or no).
+Examples:
+{exemplars}
+### First concept:
+{source}
+Children: {source_children}
+### Second concept:
+{target}
+Children: {target_children}
+### Answer:"""
+
+    exemplar_prompt: str = """### First concept:
+{source}
+Children: {source_children}
+### Second concept:
+{target}
+Children: {target_children}
+### Answer: {answer}
+
+"""
+    def build_exemplars(self, examples: List):
+        """
+        Constructs a prompt containing exemplars from provided concept examples, filling in placeholders
+        for the first and second concepts and their expected answer.
+
+        Parameters:
+            examples (List): A list of dictionaries, each containing 'source', 'target', and 'answer' for concept pairs.
+
+        Returns:
+            None
+        """
+        prompt = ""
+        for example in examples:
+            source = self.preprocess(example["source"]["label"])
+            target = self.preprocess(example["target"]["label"])
+            answer = example['answer']
+            source_parents = ", ".join([self.preprocess(parent["label"]) for parent in example["source"]["childrens"]])
+            target_parents = ", ".join([self.preprocess(parent["label"]) for parent in example["target"]["childrens"]])
+            prompt += self.exemplar_prompt.replace("{source}", source).\
+                                           replace("{target}", target).\
+                                           replace("{source_children}", source_parents).\
+                                           replace("{target_children}", target_parents). \
+                                           replace("{answer}", answer)
+        self.exemplar_prompt = prompt
+
+    def fill_one_sample(self, input_data: Any) -> str:
+        """
+        Formats the input data into a classification prompt comparing two concepts for similarity,
+        with additional context from their children concepts.
+
+        Parameters:
+            input_data (Any): The data sample containing source and target concepts with children information.
+
+        Returns:
+            str: The formatted classification prompt.
+        """
+        template = self.prompt
+        source = self.preprocess(input_data["source"]["label"])
+        target = self.preprocess(input_data["target"]["label"])
+        source_children = ", ".join([self.preprocess(children["label"]) for children in input_data["source"]["childrens"]])
+        target_children = ", ".join([self.preprocess(children["label"]) for children in input_data["target"]["childrens"]])
+        template = template.replace("{source}", source).\
+                            replace("{target}", target).\
+                            replace("{source_children}", source_children).\
+                            replace("{target_children}", target_children).\
+                            replace("{exemplars}", self.exemplar_prompt)
+        return template
