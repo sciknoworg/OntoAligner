@@ -44,10 +44,10 @@ extensions = [
     "sphinxcontrib.mermaid",
     "sphinx.ext.mathjax"
 ]
-# autosummary_generate = True  # Turn on sphinx.ext.autosummary
-# autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
-# html_show_sourcelink = True  # Remove 'view source code' from top of page (for html, not python)
-# autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
+autosummary_generate = True  # Turn on sphinx.ext.autosummary
+
+
+autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
 # set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
 # nbsphinx_allow_errors = True  # Continue through Jupyter errors
 # autodoc_typehints = "description" # Sphinx-native method. Not as good as sphinx_autodoc_typehints
@@ -61,8 +61,7 @@ templates_path = ["_templates"]
 # This pattern also affects html_static_path and html_extra_path.
 include_patterns = [
     "**",
-    "../../ontoaligner/**/.py",
-    # "../../examples/**",
+    "../../ontoaligner/",
     "index.rst",
 ]
 # Ensure exclude_patterns doesn't exclude your master document accidentally
@@ -84,7 +83,6 @@ html_theme_options = {
           ("Github", "https://github.com/sciknoworg/OntoAligner"),
           ("Pypi", "https://pypi.org/project/OntoAligner/")
     ],
-    'show_source': True,
 }
 
 html_static_path = ["_static"]
