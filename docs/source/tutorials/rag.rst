@@ -93,3 +93,6 @@ This tutorial works based on FewShot RAG matching, an extension of the RAG model
     from ontoaligner.ontology_matchers import MistralLLMBERTRetrieverFSRAG
 
     model = MistralLLMBERTRetrieverFSRAG(positive_ratio=0.7, n_shots=5, **config)
+
+In-Context Vectors RAG
+==================================
