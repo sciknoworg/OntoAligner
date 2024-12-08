@@ -266,13 +266,11 @@ class ICV(RAG):
         """
         # IR generation
         ir_output = self.ir_generate(input_data=input_data)
-        ir_output_cleaned = process.preprocess_ir_outputs(predicts=ir_output)
+        ir_output_cleaned = process.retriever_postprocessor(predicts=ir_output)
         examples = self.build_icv_examples(input_data=input_data)
         self.LLM.build_icv(examples=examples)
         # LLm generation
-        llm_predictions = self.llm_generate(
-            input_data=input_data, ir_output=ir_output_cleaned
-        )
+        llm_predictions = self.llm_generate(input_data=input_data, ir_output=ir_output_cleaned)
         return [{"ir-outputs": ir_output}, {"llm-output": llm_predictions}, {"icv-samples": examples}]
 
 
@@ -293,11 +291,7 @@ class ICV(RAG):
             concept = concept.lower()
             return concept
 
-        track = input_data['task-args']['dataset-info']['track']
-        if track == 'bio-ml':
-            reference = input_data['task-args']['reference']['equiv']['train']
-        else:
-            reference = input_data['task-args']['reference']
+        reference = input_data['task-args']['reference']
 
         random_positive_examples = []
         for ref in reference:
