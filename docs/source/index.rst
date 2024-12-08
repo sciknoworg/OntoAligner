@@ -53,6 +53,7 @@ OntoAligner Documentation
 
    package_reference/base
    package_reference/ontology
+   package_reference/ontolog_matchers
    package_reference/encoder
    package_reference/postprocess
    package_reference/utils
