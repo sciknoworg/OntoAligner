@@ -2,14 +2,15 @@
 import pathlib
 import sys
 import datetime
-
+import importlib
 from sphinx.application import Sphinx
-
-
+import inspect
+import os
 # -- Project information -----------------------------------------------------
 #
 sys.path.insert(0, pathlib.Path(__file__).parents[0].resolve().as_posix())
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
+sys.path.insert(0, pathlib.Path(__file__).parents[1].resolve().as_posix())
 
 def setup(app: Sphinx):
     app.add_css_file('_static/custom.css')
@@ -108,6 +109,35 @@ autoclass_content = "both"
 myst_heading_anchors = 3
 
 html_copy_source = True
+def linkcode_resolve(domain, info):
+    """
+    Resolve a GitHub link for the given domain and info dictionary.
+    """
+    if domain != "py" or not info["module"]:
+        return None
+
+    # Define the GitHub repository URL
+    repo_url = "https://github.com/sciknoworg/OntoAligner/blob/main"
+    branch = "main"  # Update if using a different branch
+
+    # Retrieve the module and object
+    try:
+        module = importlib.import_module(info["module"])
+    except ImportError:
+        return None
+
+    # Try to get the source file and line numbers
+    try:
+        file_path = inspect.getsourcefile(module)
+        source_lines, start_line = inspect.getsourcelines(getattr(module, info["fullname"]))
+    except (TypeError, AttributeError, OSError):
+        return None
+
+    # Generate the relative file path and GitHub link
+    relative_path = os.path.relpath(file_path, start=os.path.dirname(__file__))
+    end_line = start_line + len(source_lines) - 1
+    return f"{repo_url}/blob/{branch}/{relative_path}#L{start_line}-L{end_line}"
+
 #
 # def linkcode_resolve(domain, info):
 #     # print("linkcode_resolve:", domain, info)
