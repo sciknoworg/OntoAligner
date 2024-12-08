@@ -8,3 +8,10 @@
 .nav-item:nth-child(-n+4) {
     display: none; /* Hides the first four nav items */
 }
+
+.full-width {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+}

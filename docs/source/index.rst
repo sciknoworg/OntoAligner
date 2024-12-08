@@ -1,8 +1,7 @@
 OntoAligner Documentation
 ==================================
 .. image:: img/logo-ontoaligner.png
-   :scale: 100%
-   :align: center
+   :class: full-width
 
 .. image:: https://badge.fury.io/py/OntoAligner.svg
     :target: https://badge.fury.io/py/OntoAligner
