@@ -50,10 +50,9 @@ Comprehensive documentation for OntoAligner, including detailed guides and examp
 
 ## 🚀 Quick Tour
 
-Below is an example of using Retrieval-Augmented Generation (RAG) for ontology matching:
+Below is an example of using Retrieval-Augmented Generation (RAG) step-by-step approach for ontology matching:
 
 ```python
-import json
 from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
 from ontoaligner.utils import metrics, xmlify
 from ontoaligner.ontology_matchers import MistralLLMBERTRetrieverRAG
@@ -80,8 +79,7 @@ retriever_config = {"device": 'cuda', "top_k": 5,}
 llm_config = {"device": "cuda", "max_length": 300, "max_new_tokens": 10, "batch_size": 15}
 
 # Step 5: Initialize Generate predictions using RAG-based ontology matcher
-model = MistralLLMBERTRetrieverRAG(retriever_config=retriever_config,
-                                   llm_config=llm_config)
+model = MistralLLMBERTRetrieverRAG(retriever_config=retriever_config, llm_config=llm_config)
 predicts = model.generate(input_data=encoded_ontology)
 
 # Step 6: Apply hybrid postprocessing
@@ -89,17 +87,46 @@ hybrid_matchings, hybrid_configs = rag_hybrid_postprocessor(predicts=predicts,
                                                             ir_score_threshold=0.1,
                                                             llm_confidence_th=0.8)
 
-evaluation = metrics.evaluation_report(predicts=hybrid_matchings,
-                                       references=dataset['reference'])
+evaluation = metrics.evaluation_report(predicts=hybrid_matchings, references=dataset['reference'])
 print("Hybrid Matching Evaluation Report:", evaluation)
 
 # Step 7: Convert matchings to XML format and save the XML representation
 xml_str = xmlify.xml_alignment_generator(matchings=hybrid_matchings)
-with open("matchings.xml", "w", encoding="utf-8") as xml_file:
-    xml_file.write(xml_str)
+open("matchings.xml", "w", encoding="utf-8").write(xml_str)
 ```
 
+Ontology alignment pipeline using RAG method:
 
+```python
+import ontoaligner
+
+pipeline = ontoaligner.OntoAlignerPipeline(
+    task_class=ontoaligner.ontology.MouseHumanOMDataset,
+    source_ontology_path="assets/MI-MatOnto/mi_ontology.xml",
+    target_ontology_path="assets/MI-MatOnto/matonto_ontology.xml",
+    reference_matching_path="assets/MI-MatOnto/matchings.xml",
+)
+
+matchings, evaluation = pipeline(
+    method="rag",
+    encoder_model=ontoaligner.ConceptRAGEncoder(),
+    model_class=ontoaligner.ontology_matchers.MistralLLMBERTRetrieverRAG,
+    postprocessor=ontoaligner.postprocess.rag_hybrid_postprocessor,
+    llm_path='mistralai/Mistral-7B-v0.3',
+    retriever_path='all-MiniLM-L6-v2',
+    llm_threshold=0.5,
+    ir_threshold=0.7,
+    top_k=5,
+    max_length=512,
+    max_new_tokens=10,
+    device='cuda',
+    batch_size=32,
+    return_matching=True,
+    evaluate=True
+)
+
+print("Matching Evaluation Report:", evaluation)
+```
 ## ⭐ Contribution
 
 We welcome contributions to enhance OntoAligner and make it even better! Please review our contribution guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) before getting started. Your support is greatly appreciated.
@@ -119,7 +146,7 @@ If you use OntoAligner in your work or research, please cite the following:
   title        = {OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment},
   version      = {1.0.0},
   year         = {2024},
-  url          = {https://github.com/HamedBabaei/OntoAligner},
+  url          = {https://github.com/sciknoworg/OntoAligner},
 }
 ```
 
