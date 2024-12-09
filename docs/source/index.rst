@@ -60,6 +60,7 @@ Ontologies are a key building block for many applications, such as database inte
    :maxdepth: 1
    :caption: Package Reference
 
+   package_reference/pipeline
    package_reference/base
    package_reference/ontology
    package_reference/ontolog_matchers
