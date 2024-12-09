@@ -9,6 +9,7 @@ The anatomy real world case is about matching the Adult Mouse Anatomy (2744 clas
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
 
 
 Biodiversity and Ecology Track
@@ -20,7 +21,7 @@ The goal of the track is to find pairwise alignments between ontologies and thes
    :members:
    :undoc-members:
    :show-inheritance:
-
+   :no-index:
 
 
 Bio-ML Track
@@ -32,7 +33,7 @@ The Bio-ML track is a Machine Learning (ML) friendly Biomedical track for Equiva
    :members:
    :undoc-members:
    :show-inheritance:
-
+   :no-index:
 
 
 Common Knowledge Graphs Track
@@ -44,7 +45,7 @@ This track composes of a task aimed at matching the schema of two common and hig
    :members:
    :undoc-members:
    :show-inheritance:
-
+   :no-index:
 
 
 Food Nutritional Composition Track
@@ -56,7 +57,7 @@ This track consists of finding alignments between food concepts from CIQUAL, the
    :members:
    :undoc-members:
    :show-inheritance:
-
+   :no-index:
 
 Material Sciences and Engineering Track
 ------------------------------------------
@@ -67,7 +68,7 @@ The Material Sciences and Engineering (MSE) track contains the first benchmark f
    :members:
    :undoc-members:
    :show-inheritance:
-
+   :no-index:
 
 Disease and Phenotype Track
 ---------------------------------
@@ -78,3 +79,4 @@ The Pistoia Alliance Ontologies Mapping project team organises and sponsors this
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:

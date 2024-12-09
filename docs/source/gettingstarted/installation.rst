@@ -17,7 +17,7 @@ You can simply install the package from `PyPI <https://pypi.org/project/OntoAlig
     pip install OntoAligner
 
 Verify Installation
------------------
+---------------------
 Now you can verify your installation with the following line:
 
 .. code-block:: python
