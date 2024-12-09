@@ -23,3 +23,5 @@ Now you can verify your installation with the following line:
 .. code-block:: python
 
     import ontoaligner
+
+    print(ontoaligner.__version__)
