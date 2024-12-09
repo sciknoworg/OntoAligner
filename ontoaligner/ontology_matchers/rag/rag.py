@@ -341,7 +341,7 @@ class RAG(BaseOMModel):
         )
         predictions = []
         for batch in tqdm(dataloader):
-            texts, iris = batch["texts"], batch["iris"]
+            texts, iris = batch["prompts"], batch["iris"]
             sequences, sequence_probas = self.LLM.generate(texts)
             for label, proba, iri_pair in zip(sequences, sequence_probas, iris):
                 if label == "yes":

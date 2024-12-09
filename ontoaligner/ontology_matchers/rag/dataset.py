@@ -99,7 +99,7 @@ class RAGDataset(Dataset):
         """
         batchs_clear = {"prompts": [], "iris": []}
         for batch in batchs:
-            batchs_clear["prompts"].append(batch["v"])
+            batchs_clear["prompts"].append(batch["prompts"])
             batchs_clear["iris"].append(batch["iris"])
         return batchs_clear
 
