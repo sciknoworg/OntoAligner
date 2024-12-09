@@ -3,22 +3,26 @@ OntoAligner Documentation
 .. image:: img/logo-ontoaligner.png
    :class: full-width
 
-.. image:: https://badge.fury.io/py/OntoAligner.svg
-    :target: https://badge.fury.io/py/OntoAligner
+.. raw:: html
 
-.. image:: https://img.shields.io/pypi/dm/ontoaligner
-
-.. image:: https://img.shields.io/badge/License-MIT-blue.svg
-    :target: https://opensource.org/licenses/MIT
-
-.. image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
-    :target: https://github.com/pre-commit/pre-commit
-
-.. image:: https://readthedocs.org/projects/ontoaligner/badge/?version=main
-    :target: https://ontoaligner.readthedocs.io/en/latest/?badge=main
-
-.. image:: https://img.shields.io/badge/Maintained%3F-yes-green.svg
-    :target: https://github.com/sciknoworg/OntoAligner/graphs/commit-activity
+    <div style="text-align: center;">
+        <a href="https://badge.fury.io/py/OntoAligner">
+            <img src="https://badge.fury.io/py/OntoAligner.svg" alt="PyPI version">
+        </a>
+        <img src="https://img.shields.io/pypi/dm/ontoaligner" alt="PyPI downloads">
+        <a href="https://opensource.org/licenses/MIT">
+            <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
+        </a>
+        <a href="https://github.com/pre-commit/pre-commit">
+            <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit" alt="Pre-commit enabled">
+        </a>
+        <a href="https://ontoaligner.readthedocs.io/en/latest/?badge=main">
+            <img src="https://readthedocs.org/projects/ontoaligner/badge/?version=main" alt="Read the Docs">
+        </a>
+        <a href="https://github.com/sciknoworg/OntoAligner/graphs/commit-activity">
+            <img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" alt="Maintained">
+        </a>
+    </div>
 
 
 Ontologies are a key building block for many applications, such as database integration, knowledge graphs, e-commerce, semantic web services, or social networks. However, evolving systems within the semantic web generally adopt different ontologies. Hence, ontology alignment, the process of identifying correspondences between entities in different ontologies, is a critical task in knowledge engineering. To this endover, **OntoAligner** is a comprehensive modular and robust Python toolkit for ontology alignment built to make ontology alignment/matching easy to use for everyone.
