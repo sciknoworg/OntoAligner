@@ -38,7 +38,7 @@ extensions = [
     "sphinx.ext.linkcode",
     "sphinx_inline_tabs",
     "sphinxcontrib.mermaid",
-    "sphinx.ext.mathjax"
+    # "sphinx.ext.mathjax"
 
     # 'sphinx.ext.duration',
     # 'sphinx.ext.doctest',
