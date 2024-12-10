@@ -3,7 +3,6 @@ import pathlib
 import sys
 import datetime
 import importlib
-from sphinx.application import Sphinx
 import inspect
 import os
 # -- Project information -----------------------------------------------------
@@ -11,11 +10,6 @@ import os
 sys.path.insert(0, pathlib.Path(__file__).parents[0].resolve().as_posix())
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 sys.path.insert(0, pathlib.Path(__file__).parents[1].resolve().as_posix())
-
-def setup(app: Sphinx):
-    app.add_css_file('_static/custom.css')
-    app.add_js_file('_static/custom.js')
-
 
 project = 'OntoAligner'
 copyright = f'{str(datetime.datetime.now().year)} SciKnowOrg'
