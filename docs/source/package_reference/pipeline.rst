@@ -2,6 +2,6 @@ Pipeline
 ====================
 
 .. automodule:: ontoaligner.pipeline
-   :members:
+   :members: OntoAlignerPipeline
    :undoc-members:
    :show-inheritance:
