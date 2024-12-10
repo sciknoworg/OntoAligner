@@ -37,18 +37,7 @@ Ontologies are a key building block for many applications, such as database inte
 
 .. toctree::
    :maxdepth: 1
-   :caption: OntoAligner
-
-   howtouse/usage
-   howtouse/ontologymatchers
-   howtouse/ontology
-   howtouse/encoders
-   howtouse/catalog
-
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Tutorials
+   :caption: Aligners
 
    tutorials/lightweight
    tutorials/retriever
