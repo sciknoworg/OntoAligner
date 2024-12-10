@@ -9,7 +9,9 @@ OntoAligner Documentation
         <a href="https://badge.fury.io/py/OntoAligner">
             <img src="https://badge.fury.io/py/OntoAligner.svg" alt="PyPI version">
         </a>
-        <img src="https://img.shields.io/pypi/dm/ontoaligner" alt="PyPI downloads">
+        <a href="https://static.pepy.tech/badge/ontoaligner">
+            <img src="https://static.pepy.tech/badge/ontoaligner" alt="PyPI downloads">
+        </a>
         <a href="https://opensource.org/licenses/MIT">
             <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
         </a>
