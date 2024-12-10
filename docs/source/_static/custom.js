@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const navItems = document.querySelectorAll('.nav-item');
     navItems.forEach((item, index) => {
-        if (index < 2) {
+        if (index < 3) {
             item.style.display = 'none';
         }
     });
