@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .dataset import *
-from .encoder import *
-from .model import *
-from .ontology import *
+from .dataset import * # NOQA
+from .encoder import * # NOQA
+from .model import * # NOQA
+from .ontology import * # NOQA

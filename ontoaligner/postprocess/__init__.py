@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
-from .process import *
-from .label_mapper import *
-from .util import *
+from .process import * # NOQA
+from .label_mapper import * # NOQA
+from .util import * # NOQA

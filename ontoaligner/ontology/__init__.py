@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from .anatomy import *
-from .biodiv import *
-from .bioml import *
-from .commonkg import *
-from .food import *
-from .mse import *
-from .phenotype import *
+from .anatomy import * # NOQA
+from .biodiv import * # NOQA
+from .bioml import * # NOQA
+from .commonkg import * # NOQA
+from .food import * # NOQA
+from .mse import * # NOQA
+from .phenotype import * # NOQA

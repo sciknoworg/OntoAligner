@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .fewshot import *
-from .lightweight import *
-from .llm import *
-from .rag import *
+from .fewshot import * # NOQA
+from .lightweight import * # NOQA
+from .llm import * # NOQA
+from .rag import * # NOQA

@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-from .retrieval import *
+from .retrieval import * # NOQA
