@@ -109,7 +109,7 @@ pipeline = ontoaligner.OntoAlignerPipeline(
 
 matchings, evaluation = pipeline(
     method="rag",
-    encoder_model=ontoaligner.ConceptRAGEncoder(),
+    encoder_model=ontoaligner.encoder.ConceptRAGEncoder(),
     model_class=ontoaligner.ontology_matchers.MistralLLMBERTRetrieverRAG,
     postprocessor=ontoaligner.postprocess.rag_hybrid_postprocessor,
     llm_path='mistralai/Mistral-7B-v0.3',
