@@ -5,7 +5,7 @@
     height: auto;
 }
 
-.nav-item:nth-child(-n+4) {
+.nav-item:nth-child(-n+3) {
     display: none; /* Hides the first four nav items */
 }
 
