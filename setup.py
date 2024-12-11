@@ -30,7 +30,8 @@ setup(
         "setfit==1.0.3",
         "torch==2.5.0",
         "tqdm==4.66.3",
-        "transformers==4.46.0"
+        "transformers==4.46.0",
+        "huggingface_hub==0.23.5"
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
