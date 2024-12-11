@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 from .pipeline import OntoAlignerPipeline
 from ontoaligner import ontology, base, encoder, ontology_matchers, utils, postprocess
