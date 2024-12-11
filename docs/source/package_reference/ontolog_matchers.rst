@@ -9,7 +9,6 @@ Lightweight
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
 
 Lightweight Models
 ------------------
@@ -17,7 +16,6 @@ Lightweight Models
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
 
 Retrieval
 ------------------
@@ -32,7 +30,7 @@ Retrieval Models
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
+
 
 LLM
 -------------
@@ -40,7 +38,7 @@ LLM
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
+
 
 LLM Models
 ------------------
@@ -48,7 +46,7 @@ LLM Models
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
+
 
 RAG
 -------------
@@ -56,7 +54,7 @@ RAG
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
+
 
 RAG Models
 ------------------
@@ -64,7 +62,7 @@ RAG Models
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
+
 
 
 FewShotRAG
@@ -73,7 +71,7 @@ FewShotRAG
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
+
 
 FewShotRAG Models
 ------------------
@@ -81,7 +79,7 @@ FewShotRAG Models
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
+
 
 
 ICV RAG
@@ -90,7 +88,7 @@ ICV RAG
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
+
 
 ICVRAG Models
 ------------------
@@ -98,4 +96,3 @@ ICVRAG Models
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:

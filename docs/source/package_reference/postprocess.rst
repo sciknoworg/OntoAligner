@@ -21,7 +21,6 @@ Util
 Label Mapper
 -------------
 .. automodule:: ontoaligner.postprocess.label_mapper
-   :members: LabelMapper, TFIDFLabelMapper, SetFitShallowLabelMapper
+   :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
