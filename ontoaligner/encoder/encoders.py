@@ -117,7 +117,7 @@ class LLMEncoder(BaseEncoder):
         Returns:
             dict: A dictionary with the template and items_in_owl values.
         """
-        return {"LightweightEncoder": self.items_in_owl}
+        return {"LLMEncoder": self.items_in_owl}
 
     def get_owl_items(self, owl: Dict) -> str:
         """
