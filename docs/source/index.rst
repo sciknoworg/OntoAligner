@@ -37,6 +37,14 @@ Ontologies are a key building block for many applications, such as database inte
    gettingstarted/installation
    gettingstarted/quickstart
 
+
+.. toctree::
+   :maxdepth: 1
+   :caption: How to use?
+
+   howtouse/catalog
+
+
 .. toctree::
    :maxdepth: 1
    :caption: Aligners
