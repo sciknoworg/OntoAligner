@@ -92,7 +92,7 @@ ICV RAG
 
 ICVRAG Models
 ------------------
-.. automodule:: ontoaligner.ontology_matchers.rag.models
+.. automodule:: ontoaligner.ontology_matchers.icv.models
    :members:
    :undoc-members:
    :show-inheritance:
