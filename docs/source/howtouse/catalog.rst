@@ -1,13 +1,11 @@
 Models Catalog
 ===============
 
-Welcome to the **Models Catalog**! This catalog provides an organized list of models categorized by type. Each model is linked to its corresponding source code for easy navigation.
+This catalog provides an organized list of models categorized by type. The table below is structured with the following columns:
 
-The table below is structured with the following columns:
+- **Category**: The type or category of the aligners.
 
-- **Category**: The type or category of the model.
-
-- **Models with Links**: A list of models belonging to the category, with clickable links leading to their implementation.
+- **Models with Links**: A list of models belonging to the category.
 
 .. note::
    Use the links to access the implementation details for each model. This catalog helps quickly locate and explore the source code for different models in the **OntoAligner** repository.
