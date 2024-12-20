@@ -8,7 +8,7 @@
 
 [![PyPI version](https://badge.fury.io/py/OntoAligner.svg)](https://badge.fury.io/py/OntoAligner)
 [![PyPI Downloads](https://static.pepy.tech/badge/ontoaligner)](https://pepy.tech/projects/ontoaligner)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Documentation Status](https://readthedocs.org/projects/ontoaligner/badge/?version=main)](https://ontoaligner.readthedocs.io/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/sciknoworg/OntoAligner/graphs/commit-activity)
@@ -152,8 +152,8 @@ If you use OntoAligner in your work or research, please cite the following:
 
 <p>
   This software is licensed under the
-  <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>.
+  <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache 2.0</a>.
 </p>
-<a href="https://opensource.org/licenses/MIT" target="_blank">
-  <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License">
+<a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">
+  <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="Apache 2.0 License">
 </a>

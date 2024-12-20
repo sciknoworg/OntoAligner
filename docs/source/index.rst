@@ -12,8 +12,8 @@ OntoAligner Documentation
         <a href="https://static.pepy.tech/badge/ontoaligner">
             <img src="https://static.pepy.tech/badge/ontoaligner" alt="PyPI downloads">
         </a>
-        <a href="https://opensource.org/licenses/MIT">
-            <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
+        <a href="https://www.apache.org/licenses/LICENSE-2.0">
+            <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License">
         </a>
         <a href="https://github.com/pre-commit/pre-commit">
             <img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit" alt="Pre-commit enabled">
