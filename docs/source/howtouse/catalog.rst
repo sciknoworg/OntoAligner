@@ -30,3 +30,41 @@ This catalog provides an organized list of models categorized by type. The table
      - `FalconLLMAdaRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L105-L117>`__, `FalconLLMBERTRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L120-L132>`__, `GPTOpenAILLMAdaRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L75-L87>`__, `GPTOpenAILLMBERTRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L90-L102>`__, `LLaMALLMAdaRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L15-L27>`__, `LLaMALLMBERTRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L30-L42>`__, `MPTLLMAdaRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L165-L177>`__, `MPTLLMBERTRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L180-L192>`__, `MambaLLMAdaRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L195-L207>`__, `MambaLLMBERTRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L210-L222>`__, `MistralLLMAdaRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L45-L57>`__, `MistralLLMBERTRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L60-L72>`__, `VicunaLLMAdaRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L135-L147>`__, `VicunaLLMBERTRetrieverFSRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/fewshot/models.py#L150-L162>`__
    * - **ICV-RAG Aligners**
      - `FalconLLMAdaRetrieverICVRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/icv/models.py#L53-L69>`__, `FalconLLMBERTRetrieverICVRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/icv/models.py#L72-L88>`__, `LLaMALLMAdaRetrieverICVRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/icv/models.py#L15-L31>`__, `LLaMALLMBERTRetrieverICVRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/icv/models.py#L34-L50>`__, `MPTLLMAdaRetrieverICVRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/icv/models.py#L129-L145>`__, `MPTLLMBERTRetrieverICVRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/icv/models.py#L148-L164>`__, `VicunaLLMAdaRetrieverICVRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/icv/models.py#L91-L107>`__, `VicunaLLMBERTRetrieverICVRAG <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/ontology_matchers/icv/models.py#L110-L126>`__
+
+
+RAG Customization
+====================
+
+.. sidebar::
+
+    from ontoaligner.ontology_matchers import TFIDFRetrieval, SBERTRetrieval, AutoModelDecoderRAGLLM, AutoModelDecoderRAGLLMV2, RAG
+
+    class QwenLLMTFIDFRetrieverRAG(RAG):
+        Retrieval = TFIDFRetrieval
+
+        LLM = AutoModelDecoderRAGLLMV2
+
+    class MinistralLLMBERTRetrieverRAG(RAG):
+        Retrieval = SBERTRetrieval
+
+        LLM = AutoModelDecoderRAGLLM
+
+
+You can use custom LLMs with RAG for alignment. Below, we define two classes, each combining a retrieval mechanism with a LLMs to implement RAG aligner functionality. As you can see,  **QwenLLMTFIDFRetrieverRAG** Utilizes `TFIDFRetrieval` for lightweight retriever with Qwen LLM. While, **MinistralLLMBERTRetrieverRAG** Employs `SBERTRetrieval` for retriever using sentence transformers and Ministral LLM.
+
+
+
+**`AutoModelDecoderRAGLLMV2` and `AutoModelDecoderRAGLLM` Differences:** The primary distinction between `AutoModelDecoderRAGLLMV2` and `AutoModelDecoderRAGLLM` lies in the enhanced functionality of the former. `AutoModelDecoderRAGLLMV2` includes additional methods (as presented in the following) for better classification and token validation. Overall, these classes enable seamless integration of retrieval mechanisms with LLM-based generation, making them powerful tools for ontology alignment and other domain-specific applications.
+
+
+.. code-block:: python
+
+    def get_probas_yes_no(self, outputs):
+        """Retrieves the probabilities for the "yes" and "no" labels from model output."""
+        probas_yes_no = (outputs.scores[0][:, self.answer_sets_token_id["yes"] +
+                                              self.answer_sets_token_id["no"]].float().softmax(-1))
+        return probas_yes_no
+
+    def check_answer_set_tokenizer(self, answer: str) -> bool:
+        """Checks if the tokenizer produces a single token for a given answer string."""
+        return len(self.tokenizer(answer).input_ids) == 1
