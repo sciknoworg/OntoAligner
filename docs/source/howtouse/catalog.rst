@@ -35,26 +35,36 @@ This catalog provides an organized list of models categorized by type. The table
 RAG Customization
 ====================
 
-.. sidebar::
+.. sidebar:: Useful links:
 
-    from ontoaligner.ontology_matchers import TFIDFRetrieval, SBERTRetrieval, AutoModelDecoderRAGLLM, AutoModelDecoderRAGLLMV2, RAG
+    * `OntoAlignerPipeline Experimentation <https://github.com/sciknoworg/OntoAligner/blob/main/examples/OntoAlignerPipeline-Exp.ipynb>`_
+
+
+You can use custom LLMs with RAG for alignment. Below, we define two classes, each combining a retrieval mechanism with a LLMs to implement RAG aligner functionality.
+
+.. code-block:: python
+
+    from ontoaligner.ontology_matchers import (
+        TFIDFRetrieval,
+        SBERTRetrieval,
+        AutoModelDecoderRAGLLM,
+        AutoModelDecoderRAGLLMV2,
+        RAG
+    )
 
     class QwenLLMTFIDFRetrieverRAG(RAG):
         Retrieval = TFIDFRetrieval
-
         LLM = AutoModelDecoderRAGLLMV2
 
     class MinistralLLMBERTRetrieverRAG(RAG):
         Retrieval = SBERTRetrieval
-
         LLM = AutoModelDecoderRAGLLM
 
+As you can see,  **QwenLLMTFIDFRetrieverRAG** Utilizes ``TFIDFRetrieval`` for lightweight retriever with Qwen LLM. While, **MinistralLLMBERTRetrieverRAG** Employs ``SBERTRetrieval`` for retriever using sentence transformers and Ministral LLM.
 
-You can use custom LLMs with RAG for alignment. Below, we define two classes, each combining a retrieval mechanism with a LLMs to implement RAG aligner functionality. As you can see,  **QwenLLMTFIDFRetrieverRAG** Utilizes `TFIDFRetrieval` for lightweight retriever with Qwen LLM. While, **MinistralLLMBERTRetrieverRAG** Employs `SBERTRetrieval` for retriever using sentence transformers and Ministral LLM.
+**AutoModelDecoderRAGLLMV2 and AutoModelDecoderRAGLLM Differences:**
 
-
-
-**`AutoModelDecoderRAGLLMV2` and `AutoModelDecoderRAGLLM` Differences:** The primary distinction between `AutoModelDecoderRAGLLMV2` and `AutoModelDecoderRAGLLM` lies in the enhanced functionality of the former. `AutoModelDecoderRAGLLMV2` includes additional methods (as presented in the following) for better classification and token validation. Overall, these classes enable seamless integration of retrieval mechanisms with LLM-based generation, making them powerful tools for ontology alignment and other domain-specific applications.
+The primary distinction between ``AutoModelDecoderRAGLLMV2`` and ``AutoModelDecoderRAGLLM`` lies in the enhanced functionality of the former. ``AutoModelDecoderRAGLLMV2`` includes additional methods (as presented in the following) for better classification and token validation. Overall, these classes enable seamless integration of retrieval mechanisms with LLM-based generation, making them powerful tools for ontology alignment and other domain-specific applications.
 
 
 .. code-block:: python
