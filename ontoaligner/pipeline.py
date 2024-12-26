@@ -116,7 +116,7 @@ class OntoAlignerPipeline:
                                        postprocessor or llm_postprocessor, llm_mapper or TFIDFLabelMapper(classifier=LogisticRegression(), ngram_range=(1, 1)),
                                        llm_mapper_interested_class, llm_path, device, batch_size, max_length, max_new_tokens, llm_threshold)
         elif 'rag' in method:
-            retriever_config = {"device": device, "top_k": top_k, "threshold": ir_threshold, "openai_key": openai_key}
+            retriever_config = {"device": device, "top_k": top_k, "openai_key": openai_key}
             llm_config = {"device": device, "batch_size": batch_size, "answer_set": answer_set, "huggingface_access_token": huggingface_access_token,
                           "max_length": max_length, "max_new_tokens": max_new_tokens, "openai_key": openai_key, "device_map": device_map}
             rag_config = {"retriever_config": retriever_config, "llm_config": llm_config}
