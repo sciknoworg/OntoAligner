@@ -26,12 +26,12 @@ setup(
         "rank_bm25==0.2.2",
         "rapidfuzz==3.5.2",
         "rdflib==7.1.1",
-        "sentence-transformers==2.2.2",
+        "sentence-transformers==3.4.1",
         "setfit==1.1.1",
         "torch==2.5.0",
         "tqdm==4.66.3",
-        "transformers==4.46.0",
-        "huggingface_hub==0.23.5",
+        "transformers==4.48.2",
+        "huggingface_hub==0.28.1",
         "bitsandbytes==0.45.1"
     ],
     classifiers=[
