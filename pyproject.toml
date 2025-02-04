@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "OntoAligner"
-version = "1.2.2"
+version = "1.2.3"
 description = "OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment."
 authors = ["Hamed Babaei Giglou <hamedbabaeigiglou@gmail.com>"]
 license = "Apache Software License"
@@ -28,7 +28,8 @@ openai = "1.56.0"
 rank_bm25 = "0.2.2"
 huggingface_hub="0.23.5"
 sentence-transformers = "2.2.2"
-setfit = "1.0.3"
+setfit = "1.1.1"
+bitsandbytes="0.45.1"
 
 [tool.poetry.dev-dependencies]
 ruff = "*"

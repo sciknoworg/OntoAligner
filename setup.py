@@ -27,11 +27,12 @@ setup(
         "rapidfuzz==3.5.2",
         "rdflib==7.1.1",
         "sentence-transformers==2.2.2",
-        "setfit==1.0.3",
+        "setfit==1.1.1",
         "torch==2.5.0",
         "tqdm==4.66.3",
         "transformers==4.46.0",
-        "huggingface_hub==0.23.5"
+        "huggingface_hub==0.23.5",
+        "bitsandbytes==0.45.1"
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
