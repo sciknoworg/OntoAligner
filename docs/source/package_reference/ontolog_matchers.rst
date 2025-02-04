@@ -9,6 +9,7 @@ Lightweight
    :members:
    :undoc-members:
    :show-inheritance:
+   :special-members: __init__, generate
 
 Lightweight Models
 ------------------
@@ -16,6 +17,7 @@ Lightweight Models
    :members:
    :undoc-members:
    :show-inheritance:
+   :special-members: __init__, generate
 
 Retrieval
 ------------------
@@ -23,6 +25,7 @@ Retrieval
    :members:
    :undoc-members:
    :show-inheritance:
+   :special-members: __init__, generate
 
 Retrieval Models
 ------------------
@@ -30,6 +33,7 @@ Retrieval Models
    :members:
    :undoc-members:
    :show-inheritance:
+   :special-members: __init__, generate
 
 
 LLM
@@ -38,7 +42,7 @@ LLM
    :members:
    :undoc-members:
    :show-inheritance:
-
+   :special-members: __init__, generate
 
 LLM Models
 ------------------
@@ -46,7 +50,7 @@ LLM Models
    :members:
    :undoc-members:
    :show-inheritance:
-
+   :special-members: __init__, generate
 
 RAG
 -------------
@@ -54,7 +58,7 @@ RAG
    :members:
    :undoc-members:
    :show-inheritance:
-
+   :special-members: __init__, generate
 
 RAG Models
 ------------------
@@ -62,8 +66,7 @@ RAG Models
    :members:
    :undoc-members:
    :show-inheritance:
-
-
+   :special-members: __init__, generate
 
 FewShotRAG
 -------------
@@ -71,7 +74,7 @@ FewShotRAG
    :members:
    :undoc-members:
    :show-inheritance:
-
+   :special-members: __init__, generate
 
 FewShotRAG Models
 ------------------
@@ -79,7 +82,7 @@ FewShotRAG Models
    :members:
    :undoc-members:
    :show-inheritance:
-
+   :special-members: __init__, generate
 
 
 ICV RAG
@@ -88,7 +91,7 @@ ICV RAG
    :members:
    :undoc-members:
    :show-inheritance:
-
+   :special-members: __init__, generate
 
 ICVRAG Models
 ------------------
@@ -96,3 +99,4 @@ ICVRAG Models
    :members:
    :undoc-members:
    :show-inheritance:
+   :special-members: __init__, generate

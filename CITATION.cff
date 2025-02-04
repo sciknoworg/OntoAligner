@@ -10,11 +10,11 @@ authors:
   - family-names: "Auer"
     given-names: "Sören"
 title: "OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment"
-version: "1.0.0"
-date-released: "2024"
+version: "1.2.3"
+date-released: "2025"
 url: "https://github.com/sciknoworg/OntoAligner"
 keywords:
   - Ontology Matching
   - Alignment
   - Python Library
-license: "MIT"
+license: "Apache-2.0 license"

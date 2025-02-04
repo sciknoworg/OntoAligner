@@ -11,7 +11,7 @@
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Documentation Status](https://readthedocs.org/projects/ontoaligner/badge/?version=main)](https://ontoaligner.readthedocs.io/)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/sciknoworg/OntoAligner/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](MAINTANANCE.md)
 
 </div>
 
@@ -115,7 +115,7 @@ matchings, evaluation = pipeline(
     llm_path='mistralai/Mistral-7B-v0.3',
     retriever_path='all-MiniLM-L6-v2',
     llm_threshold=0.5,
-    ir_threshold=0.7,
+    ir_rag_threshold=0.7,
     top_k=5,
     max_length=512,
     max_new_tokens=10,
@@ -129,9 +129,8 @@ print("Matching Evaluation Report:", evaluation)
 ```
 ## ⭐ Contribution
 
-We welcome contributions to enhance OntoAligner and make it even better! Please review our contribution guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) before getting started. Your support is greatly appreciated.
+We welcome contributions to enhance OntoAligner and make it even better! Please review our contribution guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) before getting started.You are also welcome to assist with the ongoing maintenance by referring to [MAINTENANCE.md](MAINTENANCE.md). Your support is greatly appreciated.
 
-[//]: # (## 📧 Contact)
 
 If you encounter any issues or have questions, please submit them in the [GitHub issues tracker](https://github.com/sciknoworg/OntoAligner/issues).
 
@@ -144,16 +143,11 @@ If you use OntoAligner in your work or research, please cite the following:
 @software{babaei_giglou_ontoaligner_2024,
   author       = {Hamed Babaei Giglou and Jennifer D'Souza and Oliver Karras and S{"o}ren Auer},
   title        = {OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment},
-  version      = {1.0.0},
-  year         = {2024},
+  version      = {1.2.3},
+  year         = {2025},
   url          = {https://github.com/sciknoworg/OntoAligner},
+  doi          = https://doi.org/10.5281/zenodo.14533133
 }
 ```
 
-<p>
-  This software is licensed under the
-  <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache 2.0</a>.
-</p>
-<a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">
-  <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="Apache 2.0 License">
-</a>
+This software is archived in Zenodo under the DOI [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14533133.svg)](https://doi.org/10.5281/zenodo.14533133) and is licensed under [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0).

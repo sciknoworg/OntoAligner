@@ -24,7 +24,11 @@ OntoAligner Documentation
         <a href="https://github.com/sciknoworg/OntoAligner/graphs/commit-activity">
             <img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" alt="Maintained">
         </a>
+        <a href="https://doi.org/10.5281/zenodo.14533133">
+            <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.14533133.svg" alt="DOI">
+        </a>
     </div>
+
 
 
 Ontologies are a key building block for many applications, such as database integration, knowledge graphs, e-commerce, semantic web services, or social networks. However, evolving systems within the semantic web generally adopt different ontologies. Hence, ontology alignment, the process of identifying correspondences between entities in different ontologies, is a critical task in knowledge engineering. To this endover, **OntoAligner** is a comprehensive modular and robust Python toolkit for ontology alignment built to make ontology alignment/matching easy to use for everyone.
