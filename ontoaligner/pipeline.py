@@ -67,9 +67,9 @@ class OntoAlignerPipeline:
     def __call__(self, method: str, encoder_model: BaseEncoder = None, model_class: BaseOMModel = None, dataset_class: Dataset = None, postprocessor: Any = None,
                  llm_path: str = None, retriever_path: str = None, device: str = "cuda", batch_size: int = 2048, max_length: int = 300, max_new_tokens: int = 10,
                  top_k: int = 10, fuzzy_sm_threshold: float = 0.2, evaluate: bool = False, return_matching: bool = True, output_file_name: str = "matchings",
-                 save_matchings: bool = False, ir_threshold: float = 0.5, llm_threshold: float = 0.5, llm_mapper: LabelMapper = None, llm_mapper_interested_class: str = 'yes',
-                 answer_set: Dict = {"yes": ["yes", "true"], "no": ["no", "false"]}, huggingface_access_token: str = "", openai_key: str = "", device_map: str = "auto",
-                 positive_ratio: float = 0.7, n_shots: int = 5) -> [Any, Any]:
+                 save_matchings: bool = False, ir_threshold: float = 0.5, ir_rag_threshold: float = 0.7, llm_threshold: float = 0.5, llm_mapper: LabelMapper = None,
+                 llm_mapper_interested_class: str = 'yes', answer_set: Dict = {"yes": ["yes", "true"], "no": ["no", "false"]}, huggingface_access_token: str = "",
+                 openai_key: str = "", device_map: str = "auto", positive_ratio: float = 0.7, n_shots: int = 5) -> [Any, Any]:
         """
         Executes the ontology alignment process using the specified method.
 
@@ -92,6 +92,7 @@ class OntoAlignerPipeline:
             output_file_name (str, optional): Output file name without file type. Defaults to "matchings".
             save_matchings (bool, optional): Whether to save the matching results. Defaults to False.
             ir_threshold (float, optional): Retrieval postprocessor threshold.
+            ir_rag_threshold (float, optional): Retrieval postprocessor threshold in RAG module.
             llm_threshold (float, optional): LLM postprocessor threshold.
             llm_mapper (LabelMapper, optional): Mapper for LLM outputs.
             llm_mapper_interested_class (str, optional): Class to filter output pairs in LLM postprocessing.
@@ -127,7 +128,7 @@ class OntoAlignerPipeline:
             else:
                 encoder_model = encoder_model or ConceptRAGEncoder()
             matchings = self._run_rag(method, encoder_model, model_class, postprocessor or rag_hybrid_postprocessor,
-                                      llm_threshold,  ir_threshold, retriever_path, llm_path, rag_config)
+                                      llm_threshold,  ir_rag_threshold, retriever_path, llm_path, rag_config)
         else:
             raise ValueError(f"Unknown method: {method}")
         return self._process_results(matchings, method, evaluate, return_matching, output_file_name, save_matchings)

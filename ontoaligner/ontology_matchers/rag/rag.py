@@ -122,7 +122,6 @@ class RAGBasedDecoderLLMArch(DecoderLLMArch):
                 **tokenized_input_data,
                 pad_token_id=self.tokenizer.eos_token_id,
                 max_new_tokens=self.kwargs["max_new_tokens"],
-                do_sample=False,
                 output_scores=True,
                 return_dict_in_generate=True
             )
