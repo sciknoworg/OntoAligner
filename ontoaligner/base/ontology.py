@@ -234,7 +234,7 @@ class BaseOntologyParser(ABC):
         ontology.get_ontology(input_file_path).load()
         return ontology
 
-    def parse(self, input_file_path: str) -> List:
+    def parse(self, input_file_path: str) -> List[Dict[str, Any]]:
         """
         Loads and processes the ontology, extracting relevant data.
 
