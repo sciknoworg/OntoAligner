@@ -8,7 +8,7 @@ parsers and dataset configurations for specific datasets (e.g., Nell-DBpedia, Ya
 import os.path
 from typing import Any, List
 
-from ..base import BaseOntologyParser, OMDataset
+from ...base import BaseOntologyParser, OMDataset
 
 track = "commonkg"
 

@@ -5,7 +5,7 @@ This script defines ontology parsers for the Mouse and Human ontologies, extendi
 import os.path
 from typing import Any, List
 
-from ..base import BaseOntologyParser, OMDataset
+from ...base import BaseOntologyParser, OMDataset
 
 track = "anatomy"
 

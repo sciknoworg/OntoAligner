@@ -10,7 +10,7 @@ import pandas as pd
 
 from typing import Any, Dict, List
 
-from ..base import BaseAlignmentsParser, BaseOntologyParser, OMDataset
+from ...base import BaseAlignmentsParser, BaseOntologyParser, OMDataset
 
 track = "bio-ml"
 

@@ -8,7 +8,7 @@ for different phenotype-related datasets.
 import os.path
 from typing import Any, List
 
-from ..base import BaseOntologyParser, OMDataset
+from ...base import BaseOntologyParser, OMDataset
 
 track = "phenotype"
 
