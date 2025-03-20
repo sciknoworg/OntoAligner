@@ -37,6 +37,7 @@ Ontologies are a key building block for many applications, such as database inte
    :maxdepth: 1
    :caption: Getting Started
    :glob:
+   :hidden:
 
    gettingstarted/installation
    gettingstarted/quickstart
@@ -45,13 +46,16 @@ Ontologies are a key building block for many applications, such as database inte
 .. toctree::
    :maxdepth: 1
    :caption: How to use?
+   :hidden:
 
-   howtouse/catalog
+   howtouse/models
+   howtouse/parsers
 
 
 .. toctree::
    :maxdepth: 1
    :caption: Aligners
+   :hidden:
 
    tutorials/lightweight
    tutorials/retriever
@@ -62,6 +66,7 @@ Ontologies are a key building block for many applications, such as database inte
 .. toctree::
    :maxdepth: 1
    :caption: Package Reference
+   :hidden:
 
    package_reference/pipeline
    package_reference/base
