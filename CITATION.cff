@@ -11,7 +11,7 @@ authors:
     given-names: "Sören"
 title: "OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment"
 version: "1.3.0"
-date-released: "2025"
+date-released: "2025-03-20"
 url: "https://github.com/sciknoworg/OntoAligner"
 keywords:
   - Ontology Matching

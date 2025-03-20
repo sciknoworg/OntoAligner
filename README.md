@@ -140,10 +140,10 @@ If you encounter any issues or have questions, please submit them in the [GitHub
 If you use OntoAligner in your work or research, please cite the following:
 
 ```bibtex
-@software{babaei_giglou_ontoaligner_2024,
+@software{babaei_giglou_ontoaligner_2025,
   author       = {Hamed Babaei Giglou and Jennifer D'Souza and Oliver Karras and S{"o}ren Auer},
   title        = {OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment},
-  version      = {1.2.3},
+  version      = {1.3.0},
   year         = {2025},
   url          = {https://github.com/sciknoworg/OntoAligner},
   doi          = https://doi.org/10.5281/zenodo.14533133
