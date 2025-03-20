@@ -1,4 +1,4 @@
-Models Catalog
+Models
 ===============
 
 This catalog provides an organized list of models categorized by type. The table below is structured with the following columns:
@@ -11,6 +11,8 @@ This catalog provides an organized list of models categorized by type. The table
    Use the links to access the implementation details for each model. This catalog helps quickly locate and explore the source code for different models in the **OntoAligner** repository.
 
 
+Catalog
+-----------------------
 
 .. list-table:: **Model Catalog**
    :header-rows: 1
@@ -33,7 +35,7 @@ This catalog provides an organized list of models categorized by type. The table
 
 
 RAG Customization
-====================
+-----------------------
 
 .. sidebar:: Useful links:
 
@@ -78,3 +80,10 @@ The primary distinction between ``AutoModelDecoderRAGLLMV2`` and ``AutoModelDeco
     def check_answer_set_tokenizer(self, answer: str) -> bool:
         """Checks if the tokenizer produces a single token for a given answer string."""
         return len(self.tokenizer(answer).input_ids) == 1
+
+
+.. note::
+
+    Consider reading the following section next:
+
+    * `Package Reference > Ontology Matchers <../package_reference/ontologymatchers.html>`_
