@@ -5,7 +5,7 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name="OntoAligner",
-    version="1.2.3",
+    version="1.3.0",
     author="Hamed Babaei Giglou",
     author_email="hamedbabaeigiglou@gmail.com",
     description="OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment",
@@ -39,7 +39,7 @@ setup(
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: Apache Software License",
+        "License :: OSI Approved :: Apache-2.0",
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.10,<4.0.0",

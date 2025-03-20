@@ -1,5 +1,12 @@
 ## Changelog
 
+### V1.3.0 (March 21, 2025)
+- Added a GenericOntology and GenericOMDataset.
+- Added a documentation for OA tasks.
+- Added the test for GenericOntology.
+- Added the bug fix.
+
+
 ### V1.2.3 (Feb 4, 2025)
 - Minor fix to the CITATION.md, CONTRIBUTING.md, README.md, and documentations.
 - Added MAINTANENCE.md for maintanence plan.
