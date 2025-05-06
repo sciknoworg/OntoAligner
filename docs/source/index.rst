@@ -65,6 +65,14 @@ Ontologies are a key building block for many applications, such as database inte
 
 .. toctree::
    :maxdepth: 1
+   :caption: Usecase Examples
+   :hidden:
+
+   usecases/ecommerce
+
+
+.. toctree::
+   :maxdepth: 1
    :caption: Package Reference
    :hidden:
 
