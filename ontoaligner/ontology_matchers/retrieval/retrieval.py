@@ -114,7 +114,10 @@ class Retrieval(BaseOMModel):
         values = [(score, index) for index, score in enumerate(results)]
         dtype = [("score", float), ("index", int)]
         results = np.array(values, dtype=dtype)
-        top_k_items = np.sort(results, order="score")[-self.kwargs["top_k"] :][::-1]
+        try:
+            top_k_items = np.sort(results, order="score")[-self.kwargs["top_k"]:][::-1]
+        except IndexError:
+            top_k_items = np.sort(results, order="score")[::-1]
         top_k_indexes, top_k_scores = [], []
         for top_k in top_k_items:
             top_k_scores.append(top_k[0])
@@ -170,7 +173,7 @@ class BiEncoderRetrieval(Retrieval):
         Returns:
             None
         """
-        self.model = SentenceTransformer(path, device=self.kwargs["device"])
+        self.model = SentenceTransformer(path, device=self.kwargs["device"], trust_remote_code=True)
 
     def fit(self, inputs: Any) -> Any:
         """

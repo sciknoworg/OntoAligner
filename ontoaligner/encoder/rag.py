@@ -29,7 +29,7 @@ class ConceptRAGEncoder(RAGEncoder):
     """
     items_in_owl: str = "(Concept)"
     retrieval_encoder: Any = ConceptLightweightEncoder
-    llm_encoder: str = "LabelRAGDataset"
+    llm_encoder: str = "ConceptRAGDataset"
 
 
 class ConceptChildrenRAGEncoder(RAGEncoder):
@@ -47,7 +47,7 @@ class ConceptChildrenRAGEncoder(RAGEncoder):
     """
     items_in_owl: str = "(Concept, Children)"
     retrieval_encoder: Any = ConceptLightweightEncoder
-    llm_encoder: str = "LabelChildrenRAGDataset"
+    llm_encoder: str = "ConceptChildrenRAGDataset"
 
 
 class ConceptParentRAGEncoder(RAGEncoder):
@@ -65,4 +65,4 @@ class ConceptParentRAGEncoder(RAGEncoder):
     """
     items_in_owl: str = "(Concept, Parent)"
     retrieval_encoder: Any = ConceptLightweightEncoder
-    llm_encoder: str = "LabelParentRAGDataset"
+    llm_encoder: str = "ConceptParentRAGDataset"

@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-from .rag import *
+from .rag import * # NOQA

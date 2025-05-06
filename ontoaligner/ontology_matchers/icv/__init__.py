@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-from .icv import *
+from .icv import * # NOQA

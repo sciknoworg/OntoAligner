@@ -36,7 +36,11 @@ def xml_alignment_generator(matchings: List[Dict], return_rdf: bool = False, rel
     SubElement(alignment, "type").text = "??"  # Replace "??" with the specific alignment type if known
 
     for matching in matchings:
-        entity1, entity2, confidence = matching['source'], matching['target'], matching['score']
+        entity1, entity2 = matching['source'], matching['target']
+        try:
+            confidence = matching['score']
+        except KeyError:
+            confidence = None
         try:
             matching_relation = matching['relation']
         except KeyError:
@@ -46,8 +50,9 @@ def xml_alignment_generator(matchings: List[Dict], return_rdf: bool = False, rel
         SubElement(cell, "entity1", {"rdf:resource": entity1}) # Add the source entity
         SubElement(cell, "entity2", {"rdf:resource": entity2}) # Add the source entity
         SubElement(cell, "relation").text = matching_relation  # Add the relation
-        formatted_confidence = str(confidence)[:-1 if digits < 0 else digits + 2]
-        SubElement(cell, "measure", {"rdf:datatype": "xsd:float"}).text =  formatted_confidence # Add the confidence measure
+        if confidence is not None:
+            formatted_confidence = str(confidence)[:-1 if digits < 0 else digits + 2]
+            SubElement(cell, "measure", {"rdf:datatype": "xsd:float"}).text =  formatted_confidence # Add the confidence measure
     if return_rdf:
         return rdf
     else:

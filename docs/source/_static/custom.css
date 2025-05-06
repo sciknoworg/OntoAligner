@@ -1,0 +1,38 @@
+/* for logo */
+.document img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+}
+
+.nav-item:nth-child(-n+4) {
+    display: none; /* Hides the first four nav items */
+}
+
+.full-width {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    align-content: center;
+}
+.catalog-table {
+   border-collapse: collapse;
+   width: 100%;
+   margin: 1em 0;
+}
+.catalog-table th, .catalog-table td {
+   border: 1px solid #ddd;
+   text-align: left;
+   padding: 8px;
+}
+.catalog-table th {
+   background-color: #f4f4f4;
+   font-weight: bold;
+}
+.catalog-table tr:nth-child(even) {
+   background-color: #f9f9f9;
+}
+.catalog-table tr:hover {
+   background-color: #f1f1f1;
+}

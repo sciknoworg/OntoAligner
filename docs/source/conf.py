@@ -1,19 +1,21 @@
 # Configuration file for the Sphinx documentation builder.
-# -- Project information
 import pathlib
 import sys
-
+import datetime
+import importlib
+import inspect
+import os
+# -- Project information -----------------------------------------------------
+#
+sys.path.insert(0, pathlib.Path(__file__).parents[0].resolve().as_posix())
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
+sys.path.insert(0, pathlib.Path(__file__).parents[1].resolve().as_posix())
 
 project = 'OntoAligner'
-copyright = '2024, SciKnowOrg'
+copyright = f'{str(datetime.datetime.now().year)} SciKnowOrg'
 author = 'Hamed Babaei Giglou'
-html_logo = '../../images/logo-ontoaligner.png'
+release = '0.2.0'
 
-def setup(app):
-    app.add_css_file('_static/custom.css')
-
-release = '0.1.0'
 
 # -- General configuration ---------------------------------------------------
 
@@ -21,58 +23,111 @@ release = '0.1.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    "sphinx.ext.autodoc",  # Core Sphinx library for auto html doc generation from docstrings
-    "sphinx.ext.autosummary",  # Create neat summary tables for modules/classes/methods etc
-    "sphinx.ext.intersphinx",  # Link to other project's documentation (see mapping below)
-    "sphinx.ext.viewcode",  # Add a link to the Python source code for classes, functions etc.
-    "sphinx_autodoc_typehints",  # Automatically document param types (less noise in class signature)
-    # 'nbsphinx',  # Integrate Jupyter Notebooks and Sphinx
-    # 'IPython.sphinxext.ipython_console_highlighting'
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+    "myst_parser",
+    "sphinx_markdown_tables",
+    "sphinx_copybutton",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.linkcode",
+    "sphinx_inline_tabs",
+    "sphinxcontrib.mermaid",
+    # "sphinx.ext.mathjax"
+
+    # 'sphinx.ext.duration',
+    # 'sphinx.ext.doctest',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
+    # 'sphinx.ext.intersphinx',
 ]
-autosummary_generate = True  # Turn on sphinx.ext.autosummary
-autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
-html_show_sourcelink = False  # Remove 'view source code' from top of page (for html, not python)
-autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
-set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
-nbsphinx_allow_errors = True  # Continue through Jupyter errors
-# autodoc_typehints = "description" # Sphinx-native method. Not as good as sphinx_autodoc_typehints
-add_module_names = False  # Remove namespaces from class/method signatures
+
+# autosummary_generate = True  # Turn on sphinx.ext.autosummary
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
-# specify the master doc, otherwise the build at read the docs fails
-master_doc = "index"
-
 # List of patterns, relative to source directory, that match files and
-# directories to ignore when looking for source files.
+# directories to include when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
+include_patterns = [
+    "**",
+    "../../ontoaligner/",
+    "index.rst",
+]
+# Ensure exclude_patterns doesn't exclude your master document accidentally
 exclude_patterns = []
-
 
 # -- Options for HTML output -------------------------------------------------
 
+source_suffix = '.rst'
+
+# specify the master doc, otherwise the build at read the docs fails
+master_doc = "index"
+
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
 html_theme = "press"
 
 html_theme_options = {
-    'repository_url': 'https://github.com/sciknoworg/OntoAligner',
-    'use_repository_button': False,
-    'use_issues_button': False,
-    'use_version_button': False,
-    'use_doc_button': True,
-    'logo_only': True,
-    # 'extra_navbar': '<div class="custom-footer">Custom Footer Text</div>',  # Custom footer example
+    "external_links": [
+          ("Github", "https://github.com/sciknoworg/OntoAligner"),
+          ("Pypi", "https://pypi.org/project/OntoAligner/")
+    ],
 }
-html_theme_options.update({
-    'light_mode': True
-})
 
-
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-# https://stackoverflow.com/questions/23211695/modifying-content-width-of-the-sphinx-theme-read-the-docs
 html_static_path = ["_static"]
+
+html_js_files = [
+    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js',
+    'custom.js'
+]
+
+html_css_files = [
+    # 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
+    'custom.css',
+]
+
+html_show_sourcelink = True
+html_context = {
+    "display_github": True,
+    "github_user": "sciknoworg",
+    "github_repo": "OntoAligner",
+    "github_version": "main/",
+}
+
+html_logo = 'img/logo-ontoaligner.png'
+html_favicon = "img/logo-ontoaligner.ico"
+autoclass_content = "both"
+
+# Required to get rid of some myst.xref_missing warnings
+myst_heading_anchors = 3
+
+html_copy_source = True
+def linkcode_resolve(domain, info):
+    """
+    Resolve a GitHub link for the given domain and info dictionary.
+    """
+    if domain != "py" or not info["module"]:
+        return None
+
+    # Define the GitHub repository URL
+    repo_url = "https://github.com/sciknoworg/OntoAligner/blob/main"
+    branch = "main"  # Update if using a different branch
+
+    # Retrieve the module and object
+    try:
+        module = importlib.import_module(info["module"])
+    except ImportError:
+        return None
+
+    # Try to get the source file and line numbers
+    try:
+        file_path = inspect.getsourcefile(module)
+        source_lines, start_line = inspect.getsourcelines(getattr(module, info["fullname"]))
+    except (TypeError, AttributeError, OSError):
+        return None
+
+    # Generate the relative file path and GitHub link
+    relative_path = os.path.relpath(file_path, start=os.path.dirname(__file__))
+    end_line = start_line + len(source_lines) - 1
+    return f"{repo_url}/blob/{branch}/{relative_path}#L{start_line}-L{end_line}"

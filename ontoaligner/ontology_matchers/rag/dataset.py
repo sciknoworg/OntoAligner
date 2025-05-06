@@ -62,7 +62,7 @@ class RAGDataset(Dataset):
             dict: A dictionary containing the processed text and IRIs for the sample.
         """
         return {
-            "texts": self.fill_one_sample(self.data[index]),
+            "prompts": self.fill_one_sample(self.data[index]),
             "iris": [self.data[index]["source"]["iri"], self.data[index]["target"]["iri"]]
         }
 
@@ -97,14 +97,14 @@ class RAGDataset(Dataset):
         Returns:
             dict: A dictionary containing lists of texts and IRIs for the batch.
         """
-        batchs_clear = {"texts": [], "iris": []}
+        batchs_clear = {"prompts": [], "iris": []}
         for batch in batchs:
-            batchs_clear["texts"].append(batch["texts"])
+            batchs_clear["prompts"].append(batch["prompts"])
             batchs_clear["iris"].append(batch["iris"])
         return batchs_clear
 
 
-class LabelRAGDataset(RAGDataset):
+class ConceptRAGDataset(RAGDataset):
     """
     A subclass of RAGDataset used for real-world entity classification tasks comparing two concepts
     for similarity. It formats the input data into a classification prompt with the question of whether
@@ -135,7 +135,7 @@ class LabelRAGDataset(RAGDataset):
         return self.prompt.replace("{source}", source).replace("{target}", target)
 
 
-class LabelParentRAGDataset(RAGDataset):
+class ConceptParentRAGDataset(RAGDataset):
     """
     A subclass of RAGDataset used for real-world entity classification tasks comparing two concepts,
     considering the parent concepts of each.
@@ -177,7 +177,7 @@ Parents: {target_parents}
         return template
 
 
-class LabelChildrenRAGDataset(RAGDataset):
+class ConceptChildrenRAGDataset(RAGDataset):
     """
     A subclass of RAGDataset used for real-world entity classification tasks comparing two concepts,
     considering the children concepts of each.

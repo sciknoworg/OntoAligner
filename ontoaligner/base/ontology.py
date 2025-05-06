@@ -234,7 +234,7 @@ class BaseOntologyParser(ABC):
         ontology.get_ontology(input_file_path).load()
         return ontology
 
-    def parse(self, input_file_path: str) -> List:
+    def parse(self, input_file_path: str) -> List[Dict[str, Any]]:
         """
         Loads and processes the ontology, extracting relevant data.
 
@@ -300,7 +300,7 @@ class BaseAlignmentsParser(ABC):
         ontology.get_ontology(input_file_path).load()
         return ontology
 
-    def parse(self, input_file_path: str) -> List:
+    def parse(self, input_file_path: str="") -> List:
         """
         Loads and processes the RDF alignment file, extracting relevant data.
 
@@ -310,5 +310,8 @@ class BaseAlignmentsParser(ABC):
         Returns:
             List: A list of extracted alignment data.
         """
-        reference = self.load_ontology(input_file_path=input_file_path)
-        return self.extract_data(reference)
+        try:
+            reference = self.load_ontology(input_file_path=input_file_path)
+            return self.extract_data(reference)
+        except Exception:
+            return []

@@ -31,7 +31,6 @@ class OMDataset(ABC):
         source_ontology (Any): The source ontology object.
         target_ontology (Any): The target ontology object.
         alignments (Any): The alignments parser object, using `BaseAlignmentsParser`.
-        working_dir (str): The directory where the dataset files are stored.
     """
 
     track: str = ""
@@ -42,9 +41,7 @@ class OMDataset(ABC):
 
     alignments: Any = BaseAlignmentsParser()
 
-    working_dir: str = ""
-
-    def collect(self, source_ontology_path: str, target_ontology_path: str, reference_matching_path: str) -> Dict:
+    def collect(self, source_ontology_path: str, target_ontology_path: str, reference_matching_path: str="") -> Dict:
         """
         Collects data from the source ontology, target ontology, and reference alignments.
 

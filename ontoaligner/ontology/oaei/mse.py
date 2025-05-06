@@ -11,7 +11,7 @@ from typing import Any, List
 
 import ontospy
 
-from ..base import BaseOntologyParser, OMDataset
+from ...base import BaseOntologyParser, OMDataset
 
 track = "mse"
 

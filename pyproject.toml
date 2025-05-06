@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "OntoAligner"
+version = "1.3.0"
+description = "OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment."
+authors = ["Hamed Babaei Giglou <hamedbabaeigiglou@gmail.com>"]
+license="Apache-2.0"
+readme = "README.md"
+homepage = "https://ontoaligner.readthedocs.io/"
+repository = "https://github.com/sciknoworg/OntoAligner/"
+include = ["images/logo-with-background.png"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0.0"
+pathlib = "*"
+argparse = "*"
+numpy = "*"
+pandas = "*"
+datasets = "*"
+scikit-learn = "*"
+tqdm = "4.66.3"
+owlready2 = "0.44"
+rdflib = "7.1.1"
+ontospy = "2.1.1"
+torch = "2.5.0"
+transformers = "4.48.2"
+rapidfuzz = "3.5.2"
+openai = "1.56.0"
+rank_bm25 = "0.2.2"
+huggingface_hub="0.28.1"
+sentence-transformers = "3.4.1"
+setfit = "1.1.1"
+bitsandbytes="0.45.1"
+
+[tool.poetry.dev-dependencies]
+ruff = "*"
+pre-commit = "*"
+setuptools = "*"
+wheel = "*"
+twine = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

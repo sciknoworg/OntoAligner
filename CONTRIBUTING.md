@@ -5,37 +5,20 @@ We appreciate your interest in contributing to this project. Whether you're a de
 
 ## 1. How to Contribute?
 
-### 1.1. Reporting Bugs
 
-If you encounter a bug or unexpected behavior, please help us by reporting it. Use the [GitHub Issue Tracker](https://github.com/HamedBabaei/OntoAligner/issues) to create a detailed bug report. Include the following information:
-- A descriptive title
-- Clear instructions on how to reproduce the bug
-- A screenshot of the bug or unexpected behavior
-- The expected behavior
-- The actual behavior
-- Your operating system and Python version
+| Contribution      | How?                                                                                                                                                                                                                                                                                                                                          |
+|:------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1. Reporting Bugs | If you encounter a bug or unexpected behavior, please report it via [GitHub Issue Tracker](https://github.com/sciknoworg/ontoaligner/issues) with details and  screenshots of the bug report. Also mention what was your expected behavior and also your operating system and python version that you are using.                              |
+| 2. Adding a New Ontology Matching System | If you have developed a new ontology matching system and want to add it to the library, we would love to hear from you. Please open an [issue](https://github.com/sciknoworg/ontoaligner/issues) and provide a clear description, suggestions on how to integrate it, your implementation details, and any related publications if available. |
+| 3. Improving Documentation| If you have suggestions to make our documentation clearer or more professional, or if you think additional sections are needed, feel free to let us know. Alternatively, you can make the changes directly and submit a pull request for us to review.                                                                                        |
 
-### 1.2. Adding a New Ontology Matching System
-If you have developed a new ontology matching system and want to add it to the library, we would love to hear from you. Please open an issue and provide a clear description, suggestions on how to integrate it, your implementation details, and any related publications if available.
 
-### 1.3. Improving Documentation
-If you have suggestions to make our documentation clearer or more professional, or if you think additional sections are needed, feel free to let us know. Alternatively, you can make the changes directly and submit a pull request for us to review.
+## 2. Commit Guidelines
 
-### 1.4. Commit Guidelines
+For efficient code review, *`make one commit per logical change`* and keep changes small to speed up the process and simplify troubleshooting. Avoid mixing whitespace changes with functional updates, and separate unrelated functional changes into distinct commits. Use the imperative mood in commit messages (e.g., "Add preprocessing step") and keep the subject concise, ideally under 60 characters. Focus on what the change does, not how it’s done, and format references to issues or PRs like "Add LLaMA-3.2 [#2]". Optionally, use emoji codes for clarity.
 
-#### 1.4.1. Functional Best Practices
 
-- Use **one commit per logical change** for efficient review.
-- Make smaller code changes to facilitate quicker reviews and easier troubleshooting.
-- Avoid mixing whitespace changes with functional code changes, and keep unrelated functional changes in separate commits to speed up the review process.
-
-#### 1.4.2. Stylistic Best Practices
-
-- Use the imperative mood in the commit subject (e.g., "Add preprocessing step" instead of "Adding preprocessing step").
-- Keep the subject line concise, preferably under 60 characters.
-- Focus on **what** the change does in the commit message, and avoid explaining **how** (which belongs in the code or documentation).
-- If a commit references an issue or pull request, format it as follows: "Add LLaMA-3 [#42]".
-- Optionally, prepend your commit message with one of the following emoji codes for clarity:
+**This is an Optional** but feel free to use the following emoji codes in your message.
 
 | Code           | Emoji | Use for                        |
 |----------------|-------|--------------------------------|
@@ -51,23 +34,36 @@ If you have suggestions to make our documentation clearer or more professional, 
 | `:test_tube:`  | 🧪    | Test-related changes           |
 | `:boom:`       | 💥    | Introduce breaking changes     |
 
-## 2. How to Submit a Pull Request (PR)
+## 3. How to Submit a Pull Request (PR)
 
 To contribute changes to the library, please follow these steps:
 
 1. Fork the `OntoAligner` repository.
-2. Create a new branch for your changes.
-3. Implement your changes.
-4. Update the documentation to reflect your changes.
-5. Ensure your code adheres to the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html).
-6. Format the code using `ruff` (`ruff check --fix .`).
-7. Write tests to validate the functionality if necessary.
-8. If your changes involve code, run the tests and ensure they all pass.
-9. Open a pull request with your changes to the `dev` branch.
-10. Be responsive to feedback during the review process.
+2. Clone your forked repository.
+```bash
+git clone git@github.com:USERNAME/OntoAligner.git
+cd OntoAligner
+```
+3. Create a virtual environment with python=3.10, activate it, install the required dependencies and install the pre-commit configuration:
+```bash
+conda create -n my_env python=3.9
+conda activate my_env
+pip install -r requirements.txt
+pre-commit install
+```
+4. Create a branch and commit your changes:
+```bash
+git switch -c <name-your-branch>
+# do your changes
+git add .
+git commit -m "your commit msg"
+git push
+```
+5. Update the documentation to reflect your changes.
+6. Ensure your code adheres to the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html).
+7. Format the code using `ruff check --fix .`.
+8. Open a pull request with your changes to the `dev` branch.
+9. Be responsive to feedback during the review process.
 
-## 3. License
 
-By contributing to OntoAligner, you agree that your contributions will be licensed under the [MIT License](https://github.com/HamedBabaei/OntoAligner/blob/main/LICENSE).
-
-We look forward to your contributions!
+By contributing to OntoAligner, you agree that your contributions will be licensed under the ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg).  We look forward to your contributions!

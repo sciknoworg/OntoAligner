@@ -7,7 +7,7 @@ It includes a class for parsing the `FoodOntology` and a dataset configurations.
 import os
 from typing import Any, List
 
-from ..base import BaseOntologyParser, OMDataset
+from ...base import BaseOntologyParser, OMDataset
 
 track = "food"
 
