@@ -1,10 +1,15 @@
-Lightweight Aligner
-=======================
+
+.. raw:: html
+
+   <h1>Lightweight</h1>
+
 
 This module demonstrates the process of aligning ontologies using the **OntoAligner** library. It uses a lightweight fuzzy matching algorithm to match concepts between two ontologies. The example includes data preprocessing, encoding, matching, evaluation, and exporting the matching results in XML or json formats.
 
-Step 1: Import the Required Modules
------------------------------------
+.. raw:: html
+
+   <h3>Step 1: Import the Required Modules</h3>
+
 
 Start by importing the necessary libraries and modules. These tools will help us process and align the ontologies.
 
@@ -27,8 +32,10 @@ You can change ``SimpleFuzzySMLightweight`` with other lightweight fuzzy matchin
 
 These models leverage the efficient and robust `rapidfuzz <https://rapidfuzz.github.io/RapidFuzz/index.html>`_ library in the backend, ensuring high-speed and accurate lightweight fuzzy matching for various alignment needs.
 
-Step 2: Initialize the Task
----------------------------
+
+.. raw:: html
+
+   <h3>Step 2: Initialize the Task</h3>
 
 Define the ontology alignment task using the provided datasets. This task specifies the source and target ontologies that we will work with.
 
@@ -40,8 +47,10 @@ Define the ontology alignment task using the provided datasets. This task specif
 
 This step creates an object that organizes all the required data files and settings for the matching process. The ``print`` statement confirms that the task has been initialized successfully. The ``MaterialInformationMatOntoOMDataset`` class in ``ontology`` endpoint of *OntoAligner* supports source, target, and reference processing of for ``MaterialInformation-MathOnto`` task from `MSE <https://github.com/EngyNasr/MSE-Benchmark>`_ track.
 
-Step 3: Parse the Dataset
----------------------------
+.. raw:: html
+
+   <h3>Step 3: Parse the Dataset</h3>
+
 
 Next, we load the source ontology, target ontology, and reference matching files. These files are the foundation of our matching process.
 
@@ -122,8 +131,10 @@ Next, we load the source ontology, target ontology, and reference matching files
     }
 
 
-Step 4: Encode the Ontology Data
---------------------------------
+.. raw:: html
+
+   <h3>Step 4: Encode the Ontology Data</h3>
+
 
 After loading the dataset, the ``encoder`` module processes and restructures the concepts from the source and target ontologies, preparing them as input for the matching model.
 
@@ -167,8 +178,9 @@ The ``ConceptParentLightweightEncoder`` utilizes both ``concepts`` and their ``p
 
 
 
-Step 5: Apply Matcher Model
-----------------------------
+.. raw:: html
+
+   <h3>Step 5: Apply Matcher Model</h3>
 
 Use the ``SimpleFuzzySMLightweight`` matcher to align concepts by comparing their fuzzy matching scores. The matcher uses a similarity threshold (``0.2`` in this case) to decide which concepts in the source and target ontologies are close enough to be considered a match.
 
@@ -196,8 +208,11 @@ The ``matchings`` output format will be as follows:
         ...
     ]
 
-Step 6: Evaluate the Matchings
-------------------------------
+
+.. raw:: html
+
+   <h3>Step 6: Evaluate the Matchings</h3>
+
 
 Evaluate the performance of the fuzzy matcher by comparing the predicted matchings with the reference data.
 
@@ -226,8 +241,11 @@ Example output:
     }
 
 
-Step 7: Export the Matchings
------------------------------------
+
+.. raw:: html
+
+   <h3>Step 7: Export the Matchings</h3>
+
 
 Finally, save the matching results in an XML format for future use or integration into other systems.
 

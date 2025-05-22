@@ -1,10 +1,16 @@
-Large Language Models Aligner
-===============================
+
+.. raw:: html
+
+   <h1>Large Language Models</h1>
+
 
 This module guides you through a step-by-step process for performing ontology alignment using a large language model (LLM) and the `OntoAligner` library. By the end, you'll understand how to preprocess data, encode ontologies, generate alignments, evaluate results, and save the outputs in XML and JSON formats.
 
-Step 1: Import the Required Modules
-------------------------------------
+.. raw:: html
+
+   <h3>Step 1: Import the Required Modules</h3>
+
+
 
 Start by importing the necessary libraries and modules. These tools will help us process and align the ontologies.
 
@@ -22,8 +28,11 @@ Start by importing the necessary libraries and modules. These tools will help us
     from ontoaligner.postprocess import TFIDFLabelMapper, llm_postprocessor
 
 
-Step 2: Initialize, Parse, and Encode Ontology
------------------------------------------------
+
+.. raw:: html
+
+   <h3>Step 2: Initialize, Parse, and Encode Ontology</h3>
+
 
 Define the ontology alignment task using the provided datasets.
 
@@ -43,8 +52,10 @@ Define the ontology alignment task using the provided datasets.
 
 The encoder module transforms the ontology concepts into a format suitable for the LLM-based matcher. Here the technique used is a concept where it only keeps the concept element from the ``dataset`` for further steps.
 
-Step 3: Create Dataset for LLM Matching
----------------------------------------
+
+.. raw:: html
+
+   <h3>Step 3: Create Dataset for LLM Matching</h3>
 
 Prepare the data for the LLM-based matcher by filling in the prompt template.
 
@@ -90,8 +101,10 @@ Here is another example sample output using concept-children representation (``C
 
 We will proceed with concept only representation!
 
-Step 4: Batch the Data
-----------------------
+
+.. raw:: html
+
+   <h3>Step 4: Batch the Data</h3>
 
 Use a DataLoader to manage batching. Batching allows the model to process large datasets efficiently in smaller chunks.
 
@@ -106,8 +119,10 @@ Use a DataLoader to manage batching. Batching allows the model to process large 
 
 
 
-Step 5: Initialize and Load the LLM Model
------------------------------------------
+.. raw:: html
+
+   <h3>Step 5: Initialize and Load the LLM Model</h3>
+
 
 Set up the LLM-based model for generating alignments.
 
@@ -119,8 +134,12 @@ Set up the LLM-based model for generating alignments.
 
 Here we used ``Qwen/Qwen2-0.5B`` model, but feel free to use any LLM you like.
 
-Step 6: Generate Predictions
-----------------------------
+
+
+.. raw:: html
+
+   <h3>Step 6: Generate Predictionsl</h3>
+
 
 Feed batched prompts to the LLM to predict alignments.
 
@@ -141,8 +160,11 @@ The LLM generates potential alignments between source and target concepts based 
 
 
 
-Step 7: Post-Process Predictions
----------------------------------
+.. raw:: html
+
+   <h3>Step 7: Post-Process Predictions</h3>
+
+
 As we see the output of LLM is a text, where it could be hard to determine whether there is a match or not. To ease the process in the Post-Process module we implement multiple label mappers to find the label classes in the output. Here, we refine the predictions using ``TFIDFLabelMapper`` which is based on TF-IDF and logistic regression classifier. The ``llm_postprocessor`` will take predictions and dataset and mapper to find the matchings by only keeping the interested class here (which in a default value is a ``yes`` class).
 
 .. code-block:: python
@@ -176,8 +198,11 @@ The resulted ``matchings`` will be as following:
       'target': 'http://ontology.dumontierlab.com/TertiaryAmineGroup'},
      ... ]
 
-Step 8: Evaluate and Export the Matchings
----------------------------------------------
+
+.. raw:: html
+
+   <h3>Step 8: Evaluate and Export the Matchings</h3>
+
 
 The following code will compare the generated alignments with reference matchings. Then save the matchings in both XML and JSON formats for further analysis or use. Feel free to use any of the techniques.
 

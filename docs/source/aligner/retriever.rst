@@ -1,10 +1,15 @@
-Retrieval Aligner
-====================
+
+.. raw:: html
+
+   <h1>Retrieval</h1>
+
 
 This tutorial provides a guide to performing ontology alignment using the Retriever based matching model. The process includes loading ontology datasets, generating embeddings, aligning concepts with retrieval models, post-processing the matches, and evaluating the results.
 
-Step 1: Import the Required Modules
-------------------------------------
+.. raw:: html
+
+   <h3>Step 1: Import the Required Modules</h3>
+
 
 Start by importing the necessary libraries and modules. These tools will help us process and align the ontologies.
 
@@ -24,8 +29,11 @@ Here:
 - ``retriever_postprocessor``: Refines matchings for better accuracy.
 
 
-Step 2: Initialize, Parse, and Encode Ontology
------------------------------------------------
+
+.. raw:: html
+
+   <h3>Step 2: Initialize, Parse, and Encode Ontology</h3>
+
 
 Define the ontology alignment task using the provided datasets and then load the ontologies and refrences.
 
@@ -49,8 +57,9 @@ Define the ontology alignment task using the provided datasets and then load the
     For retrieval models the ``LightweightEncoder`` encoders are good to use.
 
 
-Step 3: Set Up the Retrieval Model and do the Matching
---------------------------------------------------------
+.. raw:: html
+
+   <h3>Step 3: Set Up the Retrieval Model and do the Matching</h3>
 
 Configure the retrieval model to align the source and target ontologies using semantic similarity. The `SBERTRetrieval` model leverages a pre-trained transformer for this task.
 
@@ -65,8 +74,10 @@ Configure the retrieval model to align the source and target ontologies using se
 
 The retrieval model computes semantic similarities between source and target embeddings, predicting potential alignments.
 
-Step 4: Post-process and Evaluate the Matchings
----------------------------------------------------
+.. raw:: html
+
+   <h3>Step 4: Post-process and Evaluate the Matchings</h3>
+
 
 Refine the predicted matchings using the `retriever_postprocessor`. Postprocessing improves alignment quality by filtering or adjusting the results.
 
@@ -86,8 +97,10 @@ Refine the predicted matchings using the `retriever_postprocessor`. Postprocessi
 
 
 
-Step 5: Export Matchings
--------------------------
+.. raw:: html
+
+   <h3>Step 5: Export Matchings</h3>
+
 
 Save the matchings in both XML and JSON formats for further analysis or use. For convert matchings to XML format we use ``xmlify`` utility.
 
