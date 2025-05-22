@@ -2,7 +2,7 @@ import json
 
 # Import necessary modules from the 'ontoaligner' library
 from ontoaligner import ontology, encoder
-from ontoaligner.ontology_matchers import SimpleFuzzySMLightweight
+from ontoaligner.aligner import SimpleFuzzySMLightweight
 from ontoaligner.utils import metrics, xmlify
 
 # Create a task object for material information ontology matching using a predefined dataset

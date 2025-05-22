@@ -2,7 +2,7 @@
 import json
 from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
 from ontoaligner.utils import metrics, xmlify
-from ontoaligner.ontology_matchers import MistralLLMBERTRetrieverFSRAG
+from ontoaligner.aligner import MistralLLMBERTRetrieverFSRAG
 from ontoaligner.encoder import ConceptParentFewShotEncoder
 from ontoaligner.postprocess import rag_hybrid_postprocessor
 

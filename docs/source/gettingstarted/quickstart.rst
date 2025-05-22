@@ -45,7 +45,7 @@ Once you have `installed <installation.html>`_ OntoAligner, you can easily use O
     retriever_config = {"top_k": 5}
     llm_config = {"max_new_tokens": 10, "batch_size": 32}
 
-    model = ontoaligner.ontology_matchers.MistralLLMBERTRetrieverRAG(retriever_config=retriever_config,
+    model = ontoaligner.aligner.MistralLLMBERTRetrieverRAG(retriever_config=retriever_config,
                                                                      llm_config=llm_config)
     model.load(llm_path="mistralai/Mistral-7B-v0.3", ir_path="all-MiniLM-L6-v2")
     predicts = model.generate(input_data=encoded_ontology)
@@ -94,7 +94,7 @@ The usage for ``OntoAlignerPipeline``:
    matchings, evaluation = pipeline(method="rag",
                     llm_path='mistralai/Mistral-7B-v0.3',
                     retriever_path='all-MiniLM-L6-v2',
-                    model_class=ontoaligner.ontology_matchers.MistralLLMBERTRetrieverRAG,
+                    model_class=ontoaligner.aligner.MistralLLMBERTRetrieverRAG,
                     device='cuda',
                     batch_size=15,
                     return_matching=True,

@@ -8,7 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from ontoaligner.encoder import ConceptLLMEncoder
 from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
 from ontoaligner.utils import metrics, xmlify
-from ontoaligner.ontology_matchers import AutoModelDecoderLLM, ConceptLLMDataset
+from ontoaligner.aligner import AutoModelDecoderLLM, ConceptLLMDataset
 from ontoaligner.postprocess import TFIDFLabelMapper
 from ontoaligner.postprocess import llm_postprocessor
 

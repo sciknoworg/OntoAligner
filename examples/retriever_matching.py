@@ -4,7 +4,7 @@ import json
 # The library provides tools for ontology alignment tasks, including dataset management, encoding, retrieval models, and postprocessing.
 from ontoaligner import ontology, encoder
 from ontoaligner.utils import metrics, xmlify
-from ontoaligner.ontology_matchers import SBERTRetrieval  # Other available modules: AdaRetrieval, SVMBERTRetrieval, BM25Retrieval
+from ontoaligner.aligner import SBERTRetrieval  # Other available modules: AdaRetrieval, SVMBERTRetrieval, BM25Retrieval
 from ontoaligner.postprocess import retriever_postprocessor
 
 # Step 1: Initialize the ontology matching task

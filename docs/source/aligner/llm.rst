@@ -16,7 +16,7 @@ Start by importing the necessary libraries and modules. These tools will help us
     from ontoaligner.utils import metrics, xmlify
 
     # ontology matchers imports
-    from ontoaligner.ontology_matchers import AutoModelDecoderLLM, ConceptLLMDataset
+    from ontoaligner.aligner import AutoModelDecoderLLM, ConceptLLMDataset
 
     # post-processing imports
     from ontoaligner.postprocess import TFIDFLabelMapper, llm_postprocessor

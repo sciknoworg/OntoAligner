@@ -57,10 +57,18 @@ Ontologies are a key building block for many applications, such as database inte
    :caption: Aligners
    :hidden:
 
-   tutorials/lightweight
-   tutorials/retriever
-   tutorials/llm
-   tutorials/rag
+   aligner/lightweight
+   aligner/retriever
+   aligner/llm
+   aligner/rag
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Use Cases
+   :hidden:
+
+   usecases/ecommerce
 
 
 .. toctree::
@@ -71,7 +79,7 @@ Ontologies are a key building block for many applications, such as database inte
    package_reference/pipeline
    package_reference/base
    package_reference/ontology
-   package_reference/ontolog_matchers
+   package_reference/aligner
    package_reference/encoder
    package_reference/postprocess
    package_reference/utils
