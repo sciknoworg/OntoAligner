@@ -57,15 +57,15 @@ Ontologies are a key building block for many applications, such as database inte
    :caption: Aligners
    :hidden:
 
-   tutorials/lightweight
-   tutorials/retriever
-   tutorials/llm
-   tutorials/rag
+   aligner/lightweight
+   aligner/retriever
+   aligner/llm
+   aligner/rag
 
 
 .. toctree::
    :maxdepth: 1
-   :caption: Usecase Examples
+   :caption: Use Cases
    :hidden:
 
    usecases/ecommerce

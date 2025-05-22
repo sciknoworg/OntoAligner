@@ -1,5 +1,5 @@
 Product Alignment in eCommerce
-==============================
+================================
 
 This tutorial explains how to align product categories between two e‑commerce ontologies (Amazon vs. eBay)
 using a hybrid pipeline of fuzzy matching, SBERT‑style retrieval, and LLM‑based decoding. We illustrate
