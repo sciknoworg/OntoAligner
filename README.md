@@ -129,7 +129,7 @@ print("Matching Evaluation Report:", evaluation)
 ```
 ## ⭐ Contribution
 
-We welcome contributions to enhance OntoAligner and make it even better! Please review our contribution guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) before getting started.You are also welcome to assist with the ongoing maintenance by referring to [MAINTENANCE.md](MAINTENANCE.md). Your support is greatly appreciated.
+We welcome contributions to enhance OntoAligner and make it even better! Please review our contribution guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) before getting started. You are also welcome to assist with the ongoing maintenance by referring to [MAINTENANCE.md](MAINTENANCE.md). Your support is greatly appreciated.
 
 
 If you encounter any issues or have questions, please submit them in the [GitHub issues tracker](https://github.com/sciknoworg/OntoAligner/issues).
@@ -137,16 +137,14 @@ If you encounter any issues or have questions, please submit them in the [GitHub
 
 ## 💡 Acknowledgements
 
-If you use OntoAligner in your work or research, please cite the following:
+If you use OntoAligner in your work or research, please cite the following preprint:
 
 ```bibtex
-@software{babaei_giglou_ontoaligner_2025,
-  author       = {Hamed Babaei Giglou and Jennifer D'Souza and Oliver Karras and S{"o}ren Auer},
-  title        = {OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment},
-  version      = {1.3.0},
-  year         = {2025},
-  url          = {https://github.com/sciknoworg/OntoAligner},
-  doi          = https://doi.org/10.5281/zenodo.14533133
+@article{giglou2025ontoaligner,
+  title={Ontoaligner: A comprehensive modular and robust python toolkit for ontology alignment},
+  author={Giglou, Hamed Babaei and D'Souza, Jennifer and Karras, Oliver and Auer, S{\"o}ren},
+  journal={arXiv preprint arXiv:2503.21902},
+  year={2025}
 }
 ```
 
