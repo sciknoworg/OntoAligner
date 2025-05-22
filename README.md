@@ -55,7 +55,7 @@ Below is an example of using Retrieval-Augmented Generation (RAG) step-by-step a
 ```python
 from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
 from ontoaligner.utils import metrics, xmlify
-from ontoaligner.ontology_matchers import MistralLLMBERTRetrieverRAG
+from ontoaligner.aligner import MistralLLMBERTRetrieverRAG
 from ontoaligner.encoder import ConceptParentRAGEncoder
 from ontoaligner.postprocess import rag_hybrid_postprocessor
 
@@ -110,7 +110,7 @@ pipeline = ontoaligner.OntoAlignerPipeline(
 matchings, evaluation = pipeline(
     method="rag",
     encoder_model=ontoaligner.encoder.ConceptRAGEncoder(),
-    model_class=ontoaligner.ontology_matchers.MistralLLMBERTRetrieverRAG,
+    model_class=ontoaligner.aligner.MistralLLMBERTRetrieverRAG,
     postprocessor=ontoaligner.postprocess.rag_hybrid_postprocessor,
     llm_path='mistralai/Mistral-7B-v0.3',
     retriever_path='all-MiniLM-L6-v2',

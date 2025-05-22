@@ -11,7 +11,7 @@ Start by importing the necessary libraries and modules. These tools will help us
 .. code-block:: python
 
     from ontoaligner import ontology, encoder
-    from ontoaligner.ontology_matchers import SimpleFuzzySMLightweight
+    from ontoaligner.aligner import SimpleFuzzySMLightweight
     from ontoaligner.utils import metrics, xmlify
 
 **What does this do?**

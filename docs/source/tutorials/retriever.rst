@@ -15,7 +15,7 @@ Start by importing the necessary libraries and modules. These tools will help us
     # Import modules from OntoAligner
     from ontoaligner import ontology, encoder
     from ontoaligner.utils import metrics, xmlify
-    from ontoaligner.ontology_matchers import SBERTRetrieval
+    from ontoaligner.aligner import SBERTRetrieval
     from ontoaligner.postprocess import retriever_postprocessor
 
 

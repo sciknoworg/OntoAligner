@@ -136,7 +136,7 @@ We apply a fuzzy string matching algorithm to identify potential correspondences
 
 .. code-block:: python
 
-    from ontoaligner.ontology_matchers import SimpleFuzzySMLightweight
+    from ontoaligner.aligner import SimpleFuzzySMLightweight
     fuzzy = SimpleFuzzySMLightweight(fuzzy_sm_threshold=0.4)
     fuzzy_matches = fuzzy.generate(input_data=encoder_output)
 
@@ -157,7 +157,7 @@ To capture semantic similarities beyond lexical matching, we utilize a Sentence-
 
 .. code-block:: python
 
-    from ontoaligner.ontology_matchers import SBERTRetrieval
+    from ontoaligner.aligner import SBERTRetrieval
     sbert = SBERTRetrieval(device="cpu", top_k=3)
     sbert.load(path="all-MiniLM-L6-v2")
     sbert_matches = sbert.generate(input_data=encoder_output)
@@ -202,7 +202,7 @@ For complex or ambiguous cases where previous methods may fall short, we employ 
 .. code-block:: python
 
     from ontoaligner.encoder import ConceptLLMEncoder
-    from ontoaligner.ontology_matchers import AutoModelDecoderLLM, ConceptLLMDataset
+    from ontoaligner.aligner import AutoModelDecoderLLM, ConceptLLMDataset
 
     llm_enc = ConceptLLMEncoder()
     src_ctx, tgt_ctx = llm_enc(source=src_onto, target=tgt_onto)

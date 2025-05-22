@@ -10,11 +10,11 @@ from torch.utils.data import Dataset
 from typing import Any, Dict
 from sklearn.linear_model import LogisticRegression
 
-from ontoaligner.base import BaseEncoder, BaseOMModel, OMDataset
-from ontoaligner.encoder import ConceptLightweightEncoder, ConceptLLMEncoder, ConceptRAGEncoder, ConceptParentFewShotEncoder
-from ontoaligner.utils import metrics, xmlify
-from ontoaligner.ontology_matchers import SimpleFuzzySMLightweight, SBERTRetrieval, AutoModelDecoderLLM, ConceptLLMDataset
-from ontoaligner.postprocess import retriever_postprocessor, llm_postprocessor, rag_hybrid_postprocessor, TFIDFLabelMapper, LabelMapper
+from .base import BaseEncoder, BaseOMModel, OMDataset
+from .encoder import ConceptLightweightEncoder, ConceptLLMEncoder, ConceptRAGEncoder, ConceptParentFewShotEncoder
+from .utils import metrics, xmlify
+from .aligner import SimpleFuzzySMLightweight, SBERTRetrieval, AutoModelDecoderLLM, ConceptLLMDataset
+from .postprocess import retriever_postprocessor, llm_postprocessor, rag_hybrid_postprocessor, TFIDFLabelMapper, LabelMapper
 
 class OntoAlignerPipeline:
     """
