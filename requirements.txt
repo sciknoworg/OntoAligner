@@ -11,9 +11,9 @@ rank_bm25==0.2.2
 rapidfuzz==3.5.2
 rdflib==7.1.1
 sentence_transformers==3.4.1
-torch==2.5.0
+torch==2.6.0
 tqdm==4.66.3
-transformers==4.48.2
+transformers==4.50.0
 huggingface_hub==0.28.1
 setfit==1.1.1
 bitsandbytes==0.45.1
