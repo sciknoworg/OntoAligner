@@ -1,5 +1,14 @@
 ## Changelog
 
+### V1.4.0 Changelog (May 2025)
+- Fixed a security vulnerability by updating the Torch and Transformers dependency version.
+- Integrated pytest into the pyproject.toml to enable testing support.
+- Resolved Python version compatibility issues in the continuous integration (CI) pipeline for stable test runs.
+- Included a preprint citation to enhance academic referencing.
+- Made cosmetic and informational updates to the documentation and readme to improve readability.
+- Renamed the module ontology_matchers to aligner for better clrity and consistency.
+- Added ecommerce use-case examples and documentation to demonstrate real-world applications.
+
 ### V1.3.0 (March 21, 2025)
 - Added a GenericOntology and GenericOMDataset.
 - Added a documentation for OA tasks.
