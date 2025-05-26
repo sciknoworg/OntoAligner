@@ -9,9 +9,8 @@ and other ontology-related information.
 import re
 from typing import Any, List
 
-import ontospy
-
 from ...base import BaseOntologyParser, OMDataset
+from ..generic import GenericOntology
 
 track = "mse"
 
@@ -120,137 +119,14 @@ class EMMOOntology(BaseOntologyParser):
         return []
 
 
-class MaterialInformationOntoOntology(BaseOntologyParser):
+class MaterialInformationOntoOntology(GenericOntology):
     """
     A parser for the Material Information Ontology.
 
     This class provides methods for handling ontology items such as labels, names, IRIs,
     parents, children, and more. It also provides functionality to load the ontology from a file.
     """
-    def is_contain_label(self, owl_class: Any) -> bool:
-        """
-        Checks if the ontology class has a label.
-
-        Parameters:
-            owl_class (Any): The ontology class whose label presence is to be checked.
-
-        Returns:
-            bool: Always returns True as all classes are assumed to have labels.
-        """
-        return True
-
-    def get_name(self, owl_class: Any) -> str:
-        """
-        Retrieves the name of the ontology class.
-
-        Parameters:
-            owl_class (Any): The ontology class whose name is to be retrieved.
-
-        Returns:
-            str: The name of the ontology class.
-        """
-        return str(owl_class.uri).split("#")[1]
-
-    def get_label(self, owl_class: Any) -> str:
-        """
-        Retrieves and formats the label of the ontology class.
-
-        Parameters:
-            owl_class (Any): The ontology class whose label is to be retrieved.
-
-        Returns:
-            str: The formatted label of the ontology class.
-        """
-        preprocessed_str = (
-            self.get_iri(owl_class).split("#")[1].replace("_", " ").replace("-", "")
-        )
-        return split_string(preprocessed_str)
-
-    def get_iri(self, owl_class: Any) -> str:
-        """
-        Retrieves the IRI of the ontology class.
-
-        Parameters:
-            owl_class (Any): The ontology class whose IRI is to be retrieved.
-
-        Returns:
-            str: The IRI of the ontology class.
-        """
-        return str(owl_class.uri)
-
-    def get_childrens(self, owl_class: Any) -> List:
-        """
-        Retrieves the children of the ontology class.
-
-        Parameters:
-            owl_class (Any): The ontology class whose children are to be retrieved.
-
-        Returns:
-            List: A list of child classes for the given ontology class.
-        """
-        return self.get_owl_items(owl_class.children())
-
-    def get_parents(self, owl_class: Any) -> List:
-        """
-        Retrieves the parents of the ontology class.
-
-        Parameters:
-            owl_class (Any): The ontology class whose parents are to be retrieved.
-
-        Returns:
-            List: A list of parent classes for the given ontology class.
-        """
-        return self.get_owl_items(owl_class.parents())
-
-    def get_synonyms(self, owl_class: Any) -> List:
-        """
-        Retrieves synonyms for the ontology class.
-
-        Parameters:
-            owl_class (Any): The ontology class whose synonyms are to be retrieved.
-
-        Returns:
-            List: An empty list as no synonyms are implemented for this ontology class.
-        """
-        return []
-
-    def get_comments(self, owl_class: Any) -> List:
-        """
-        Retrieves comments for the ontology class.
-
-        Parameters:
-            owl_class (Any): The ontology class whose comments are to be retrieved.
-
-        Returns:
-            List: An empty list as no comments are implemented for this ontology class.
-        """
-        return []
-
-    def get_owl_classes(self, ontology: Any) -> Any:
-        """
-        Retrieves all classes from the ontology.
-
-        Parameters:
-            ontology (Any): The ontology whose classes are to be retrieved.
-
-        Returns:
-            Any: The classes of the ontology.
-        """
-        return ontology.all_classes
-
-    def load_ontology(self, input_file_path: str) -> Any:
-        """
-        Loads an ontology from the specified file.
-
-        Parameters:
-            input_file_path (str): The path to the ontology file to be loaded.
-
-        Returns:
-            Any: The loaded ontology.
-        """
-        ontology = ontospy.Ontospy(input_file_path, verbose=False)
-        return ontology
-
+    pass
 
 class MatOntoOntology(BaseOntologyParser):
     """
