@@ -4,6 +4,7 @@
 - Fixed an issue related to #25 and #36.
 - Sentence-transformer v4.1.0 is supported.
 - Adding Python 3.12 and 3.13 for automated testing.
+- Remove the dependency with ontospy since it is not being maintained. Initially it was used for `MaterialInformationOntoOntology` class.
 
 ### V1.4.0 Changelog (May 22, 2025)
 - Fixed a security vulnerability by updating the Torch and Transformers dependency version.
