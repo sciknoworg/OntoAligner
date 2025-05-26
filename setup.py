@@ -21,7 +21,6 @@ setup(
         "pandas",
         "scikit-learn",
         "tqdm",
-        "ontospy==2.1.1",
         "openai==1.56.0",
         "owlready2==0.44",
         "rank_bm25==0.2.2",
