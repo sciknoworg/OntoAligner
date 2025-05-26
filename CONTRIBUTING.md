@@ -46,7 +46,7 @@ cd OntoAligner
 ```
 3. Create a virtual environment with python=3.10, activate it, install the required dependencies and install the pre-commit configuration:
 ```bash
-conda create -n my_env python=3.9
+conda create -n my_env python=3.10
 conda activate my_env
 pip install -r requirements.txt
 pre-commit install
