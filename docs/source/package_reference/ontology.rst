@@ -2,7 +2,7 @@ Ontology
 ====================
 
 Generic Ontology Alignment Track
----------------
+-----------------------------------------
 The generic OA aims to provide a manual parsing of desired ontologies as a source and target to do the alignment.
 
 .. automodule:: ontoaligner.ontology.generic

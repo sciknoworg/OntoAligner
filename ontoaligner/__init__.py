@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-__version__ = "1.3.0"
+__version__ = "1.4.1"
 
 from .pipeline import OntoAlignerPipeline
-from ontoaligner import ontology, base, encoder, ontology_matchers, utils, postprocess
+from ontoaligner import ontology, base, encoder, aligner, utils, postprocess
 
 __all__ = [
     "ontology",
     "base",
     "encoder",
-    "ontology_matchers",
+    "aligner",
     "utils",
     "postprocess",
     "OntoAlignerPipeline"

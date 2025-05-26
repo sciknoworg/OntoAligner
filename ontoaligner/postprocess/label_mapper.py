@@ -4,11 +4,12 @@ It defines a base `LabelMapper` class and two specific subclasses:
 - `TFIDFLabelMapper`: Uses a TfidfVectorizer and a classifier for label prediction.
 - `SetFitShallowLabelMapper`: Uses a pretrained SetFit model for label prediction.
 """
-
 from typing import Dict, List, Tuple, Any
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.pipeline import Pipeline
-from setfit import SetFitModel
+from sentence_transformers import SentenceTransformer
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import LabelEncoder
 
 
 class LabelMapper:
@@ -110,29 +111,43 @@ class TFIDFLabelMapper(LabelMapper):
         return self.model.predict(X)
 
 
-class SetFitShallowLabelMapper(LabelMapper):
+class SBERTLabelMapper(LabelMapper):
     """
-    LabelMapper subclass using a pretrained SetFit model for label prediction.
+    LabelMapper subclass using SentenceTransformer embeddings and a classifier for label prediction.
+
+    Example usage:
+    >>> label_dict = {
+    >>>        "yes":["yes", "correct", "true"],
+    >>>        "no":["no", "incorrect", "false"]
+    >>>    }
+    >>> mapper = SBERTLabelMapper("all-MiniLM-L12-v2", label_dict)
+    >>> mapper.fit()
+    >>> mapper.predict(["yes", "correct", "false", "nice", "too bad", "very good"])
+    ['yes', 'yes', 'no', 'yes', 'no', 'yes']
     """
-    def __init__(self, model_id: str, label_dict: Dict[str, List[str]], iterator_no: int = 10):
+    def __init__(self, model_id: str, label_dict: Dict[str, List[str]], classifier=None, iterator_no: int = 10):
         """
-        Initializes the SetFitShallowLabelMapper with a specified SetFit model.
+        Initializes the SBERTLabelMapper.
 
         Parameters:
-            model_id (str): Identifier for the pretrained SetFit model.
+            model_id (str): Name of the pretrained SentenceTransformer model.
             label_dict (Dict[str, List[str]]): Dictionary mapping each label to a list of candidate phrases.
             iterator_no (int): Number of iterations to replicate training data.
         """
         super().__init__(label_dict, iterator_no)
-        self.model = SetFitModel.from_pretrained(model_id)
+        self.embedder = SentenceTransformer(model_id)
+        self.classifier = classifier or LogisticRegression()
+        self.label_encoder = LabelEncoder()
 
     def fit(self):
-        """Fits the SetFit model on the training data."""
-        self.model.fit(self.x_train, self.y_train, num_epochs=10)
+        """Fits the classifier on the sentence embeddings."""
+        embeddings = self.embedder.encode(self.x_train, convert_to_numpy=True)
+        y_encoded = self.label_encoder.fit_transform(self.y_train)
+        self.classifier.fit(embeddings, y_encoded)
 
     def _predict(self, X: List[str]) -> List[str]:
         """
-        Predicts labels for the given input using the SetFit model.
+        Predicts labels using the sentence transformer + classifier pipeline
 
         Parameters:
             X (List[str]): List of input texts to classify.
@@ -140,4 +155,6 @@ class SetFitShallowLabelMapper(LabelMapper):
         Returns:
             List[str]: Predicted labels.
         """
-        return self.model.predict(X)
+        embeddings = self.embedder.encode(X, convert_to_numpy=True)
+        y_pred_encoded = self.classifier.predict(embeddings)
+        return [str(pred) for pred in self.label_encoder.inverse_transform(y_pred_encoded)]

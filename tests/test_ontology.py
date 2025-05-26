@@ -1,13 +1,13 @@
 import unittest
 import os
-from ontoaligner.ontology import GenericOntology
+import ontoaligner
 from rdflib import URIRef, RDFS
 
 class TestOntology(unittest.TestCase):
 
     def test_generic_ontology_parser(self):
         """Test that the parse function loads an ontology correctly."""
-        ontology = GenericOntology()
+        ontology = ontoaligner.ontology.GenericOntology()
         ontology_path = os.path.join(os.path.dirname(__file__), "data/test-case1.owl")
         data = ontology.parse(ontology_path)
 

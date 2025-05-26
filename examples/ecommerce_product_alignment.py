@@ -1,10 +1,10 @@
 # Import necessary modules
 from ontoaligner.ontology import GenericOntology
 from ontoaligner import encoder
-from ontoaligner.ontology_matchers import SimpleFuzzySMLightweight, SBERTRetrieval
+from ontoaligner.aligner import SimpleFuzzySMLightweight, SBERTRetrieval
 from ontoaligner.postprocess import retriever_postprocessor
 from ontoaligner.encoder import ConceptLLMEncoder
-from ontoaligner.ontology_matchers import AutoModelDecoderLLM, ConceptLLMDataset
+from ontoaligner.aligner import AutoModelDecoderLLM, ConceptLLMDataset
 from ontoaligner.postprocess import TFIDFLabelMapper, llm_postprocessor
 
 from torch.utils.data import DataLoader

@@ -5,7 +5,7 @@ Ontology Matchers
 
 Lightweight
 ------------------
-.. automodule:: ontoaligner.ontology_matchers.lightweight.lightweight
+.. automodule:: ontoaligner.aligner.lightweight.lightweight
    :members:
    :undoc-members:
    :show-inheritance:
@@ -13,7 +13,7 @@ Lightweight
 
 Lightweight Models
 ------------------
-.. automodule:: ontoaligner.ontology_matchers.lightweight.models
+.. automodule:: ontoaligner.aligner.lightweight.models
    :members:
    :undoc-members:
    :show-inheritance:
@@ -21,7 +21,7 @@ Lightweight Models
 
 Retrieval
 ------------------
-.. automodule:: ontoaligner.ontology_matchers.retrieval.retrieval
+.. automodule:: ontoaligner.aligner.retrieval.retrieval
    :members:
    :undoc-members:
    :show-inheritance:
@@ -29,7 +29,7 @@ Retrieval
 
 Retrieval Models
 ------------------
-.. automodule:: ontoaligner.ontology_matchers.retrieval.models
+.. automodule:: ontoaligner.aligner.retrieval.models
    :members:
    :undoc-members:
    :show-inheritance:
@@ -38,7 +38,7 @@ Retrieval Models
 
 LLM
 -------------
-.. automodule:: ontoaligner.ontology_matchers.llm.llm
+.. automodule:: ontoaligner.aligner.llm.llm
    :members:
    :undoc-members:
    :show-inheritance:
@@ -46,7 +46,7 @@ LLM
 
 LLM Models
 ------------------
-.. automodule:: ontoaligner.ontology_matchers.llm.models
+.. automodule:: ontoaligner.aligner.llm.models
    :members:
    :undoc-members:
    :show-inheritance:
@@ -54,7 +54,7 @@ LLM Models
 
 RAG
 -------------
-.. automodule:: ontoaligner.ontology_matchers.rag.rag
+.. automodule:: ontoaligner.aligner.rag.rag
    :members:
    :undoc-members:
    :show-inheritance:
@@ -62,7 +62,7 @@ RAG
 
 RAG Models
 ------------------
-.. automodule:: ontoaligner.ontology_matchers.rag.models
+.. automodule:: ontoaligner.aligner.rag.models
    :members:
    :undoc-members:
    :show-inheritance:
@@ -70,7 +70,7 @@ RAG Models
 
 FewShotRAG
 -------------
-.. automodule:: ontoaligner.ontology_matchers.fewshot.fewshot
+.. automodule:: ontoaligner.aligner.fewshot.fewshot
    :members:
    :undoc-members:
    :show-inheritance:
@@ -78,7 +78,7 @@ FewShotRAG
 
 FewShotRAG Models
 ------------------
-.. automodule:: ontoaligner.ontology_matchers.fewshot.models
+.. automodule:: ontoaligner.aligner.fewshot.models
    :members:
    :undoc-members:
    :show-inheritance:
@@ -87,7 +87,7 @@ FewShotRAG Models
 
 ICV RAG
 -------------
-.. automodule:: ontoaligner.ontology_matchers.icv.icv
+.. automodule:: ontoaligner.aligner.icv.icv
    :members:
    :undoc-members:
    :show-inheritance:
@@ -95,7 +95,7 @@ ICV RAG
 
 ICVRAG Models
 ------------------
-.. automodule:: ontoaligner.ontology_matchers.icv.models
+.. automodule:: ontoaligner.aligner.icv.models
    :members:
    :undoc-members:
    :show-inheritance:

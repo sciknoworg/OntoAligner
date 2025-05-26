@@ -1,7 +1,7 @@
 import json
 from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
 from ontoaligner.utils import metrics, xmlify
-from ontoaligner.ontology_matchers import FalconLLMBERTRetrieverICVRAG
+from ontoaligner.aligner import FalconLLMBERTRetrieverICVRAG
 from ontoaligner.encoder import ConceptRAGEncoder
 from ontoaligner.postprocess import rag_hybrid_postprocessor
 

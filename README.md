@@ -35,18 +35,19 @@ pip install ./ontoaligner
 
 ## 📚 Documentation
 
-Comprehensive documentation for OntoAligner, including detailed guides and examples, is available at **[ontoaligner.readthedocs.io](https://ontoaligner.readthedocs.io/)**.
+Comprehensive documentation for OntoAligner, including detailed guides and examples, is available at **[ontoaligner.readthedocs.io](https://ontoaligner.readthedocs.io/)**. Below are some key tutorials with links to both the documentation and the corresponding example codes.
 
-**Tutorials**
 
-| Example                        | Tutorial                                                                                                        |                                            Script                                             |
-|:-------------------------------|:----------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------:|
-| Lightweight                    | [📚 Fuzzy Matching](https://ontoaligner.readthedocs.io/tutorials/lightweight.html)                              |   [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/fuzzy_matching.py)   |
-| Retrieval                      | [📚 Retrieval Aligner](https://ontoaligner.readthedocs.io/tutorials/retriever.html)                             | [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/retriever_matching.py) |
-| Large Language Models          | [📚 Large Language Models Aligner](https://ontoaligner.readthedocs.io/tutorials/llm.html)                       |    [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/llm_matching.py)    |
-| Retrieval Augmented Generation | [📚 Retrieval Augmented Generation](https://ontoaligner.readthedocs.io/tutorials/rag.html)                      |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/rag_matching.py)|
-| FewShot                        | [📚 FewShot RAG](https://ontoaligner.readthedocs.io/tutorials/rag.html#fewshot-rag)                             |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/rag_matching.py)
-| In-Context Vectors Learning    | [📚 In-Context Vectors RAG](https://ontoaligner.readthedocs.io/tutorials/rag.html#in-context-vectors-rag)                  |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/icv_rag_matching.py)
+
+| Example                                 | Tutorial                                                                                                |                                            Script                                             |
+|:----------------------------------------|:--------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------:|
+| Lightweight                             | [📚 Fuzzy Matching](https://ontoaligner.readthedocs.io/aligner/lightweight.html)                        |   [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/fuzzy_matching.py)   |
+| Retrieval                               | [📚 Retrieval Aligner](https://ontoaligner.readthedocs.io/aligner/retriever.html)                       | [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/retriever_matching.py) |
+| Large Language Models                   | [📚 Large Language Models Aligner](https://ontoaligner.readthedocs.io/aligner/llm.html)                 |    [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/llm_matching.py)    |
+| Retrieval Augmented Generation          | [📚 Retrieval Augmented Generation](https://ontoaligner.readthedocs.io/aligner/rag.html)                |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/rag_matching.py)|
+| FewShot                                 | [📚 FewShot RAG](https://ontoaligner.readthedocs.io/aligner/rag.html#fewshot-rag)                       |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/rag_matching.py)
+| In-Context Vectors Learning             | [📚 In-Context Vectors RAG](https://ontoaligner.readthedocs.io/aligner/rag.html#in-context-vectors-rag) |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/icv_rag_matching.py)
+| eCommerce  | [📚 Product Alignment in eCommerce](https://ontoaligner.readthedocs.io/usecases/ecommerce.html)                  |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/dev/examples/ecommerce_product_alignment.py)
 
 ## 🚀 Quick Tour
 
@@ -55,7 +56,7 @@ Below is an example of using Retrieval-Augmented Generation (RAG) step-by-step a
 ```python
 from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
 from ontoaligner.utils import metrics, xmlify
-from ontoaligner.ontology_matchers import MistralLLMBERTRetrieverRAG
+from ontoaligner.aligner import MistralLLMBERTRetrieverRAG
 from ontoaligner.encoder import ConceptParentRAGEncoder
 from ontoaligner.postprocess import rag_hybrid_postprocessor
 
@@ -110,7 +111,7 @@ pipeline = ontoaligner.OntoAlignerPipeline(
 matchings, evaluation = pipeline(
     method="rag",
     encoder_model=ontoaligner.encoder.ConceptRAGEncoder(),
-    model_class=ontoaligner.ontology_matchers.MistralLLMBERTRetrieverRAG,
+    model_class=ontoaligner.aligner.MistralLLMBERTRetrieverRAG,
     postprocessor=ontoaligner.postprocess.rag_hybrid_postprocessor,
     llm_path='mistralai/Mistral-7B-v0.3',
     retriever_path='all-MiniLM-L6-v2',
@@ -129,7 +130,7 @@ print("Matching Evaluation Report:", evaluation)
 ```
 ## ⭐ Contribution
 
-We welcome contributions to enhance OntoAligner and make it even better! Please review our contribution guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) before getting started.You are also welcome to assist with the ongoing maintenance by referring to [MAINTENANCE.md](MAINTENANCE.md). Your support is greatly appreciated.
+We welcome contributions to enhance OntoAligner and make it even better! Please review our contribution guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) before getting started. You are also welcome to assist with the ongoing maintenance by referring to [MAINTENANCE.md](MAINTENANCE.md). Your support is greatly appreciated.
 
 
 If you encounter any issues or have questions, please submit them in the [GitHub issues tracker](https://github.com/sciknoworg/OntoAligner/issues).
@@ -137,16 +138,14 @@ If you encounter any issues or have questions, please submit them in the [GitHub
 
 ## 💡 Acknowledgements
 
-If you use OntoAligner in your work or research, please cite the following:
+If you use OntoAligner in your work or research, please cite the following preprint:
 
 ```bibtex
-@software{babaei_giglou_ontoaligner_2025,
-  author       = {Hamed Babaei Giglou and Jennifer D'Souza and Oliver Karras and S{"o}ren Auer},
-  title        = {OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment},
-  version      = {1.3.0},
-  year         = {2025},
-  url          = {https://github.com/sciknoworg/OntoAligner},
-  doi          = https://doi.org/10.5281/zenodo.14533133
+@article{giglou2025ontoaligner,
+  title={Ontoaligner: A comprehensive modular and robust python toolkit for ontology alignment},
+  author={Giglou, Hamed Babaei and D'Souza, Jennifer and Karras, Oliver and Auer, S{\"o}ren},
+  journal={arXiv preprint arXiv:2503.21902},
+  year={2025}
 }
 ```
 

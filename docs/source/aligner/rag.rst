@@ -8,7 +8,7 @@ This tutorial walks you through the process of ontology matching using the OntoA
     import json
     from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
     from ontoaligner.utils import metrics, xmlify
-    from ontoaligner.ontology_matchers import MistralLLMBERTRetrieverRAG
+    from ontoaligner.aligner import MistralLLMBERTRetrieverRAG
     from ontoaligner.encoder import ConceptParentRAGEncoder
     from ontoaligner.postprocess import rag_hybrid_postprocessor, rag_heuristic_postprocessor
 
@@ -90,7 +90,7 @@ This tutorial works based on FewShot RAG matching, an extension of the RAG model
 
 .. code-block:: python
 
-    from ontoaligner.ontology_matchers import MistralLLMBERTRetrieverFSRAG
+    from ontoaligner.aligner import MistralLLMBERTRetrieverFSRAG
 
     model = MistralLLMBERTRetrieverFSRAG(positive_ratio=0.7, n_shots=5, **config)
 
@@ -111,7 +111,7 @@ This RAG variant performs ontology matching using ``ConceptRAGEncoder`` only. Th
 
 .. code-block:: python
 
-    from ontoaligner.ontology_matchers import FalconLLMBERTRetrieverICVRAG
+    from ontoaligner.aligner import FalconLLMBERTRetrieverICVRAG
     model = FalconLLMBERTRetrieverICVRAG(**config)
 
     model.load(llm_path="tiiuae/falcon-7b", ir_path="all-MiniLM-L6-v2")

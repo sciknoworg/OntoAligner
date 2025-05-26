@@ -1,8 +1,8 @@
 Quickstart
 ===========
 
-OntoAligner
---------------------
+User Guide
+-------------
 
 Characteristics of OntoAligner (a.k.a Ontology Alignment) Toolkit:
 
@@ -11,20 +11,6 @@ Characteristics of OntoAligner (a.k.a Ontology Alignment) Toolkit:
 3. Integration with Advanced Models: Applicable for a **wide range of models** with five distinct categories such as Lightweight, Retrieval, Large Language Models, Retrieval Augmented Generation, FewShots RAG, and In-Context Vectors RAG.
 4. Postprocessing and Evaluation: Different postprocessing methods are implemented to refine the predicted matches.
 5. Export Capability: The final matching results are saved in a standardized XML format or JSON or will be returned, ensuring compatibility with external tools or workflows that use tools like XML for ontology alignment.
-
-
-.. sidebar:: Useful links:
-
-    * `Package Reference > Ontology <../package_reference/ontology.html>`_
-    * `Package Reference > Pipeline <../package_reference/pipeline.html>`_
-    * `Package Reference > Encoder <../package_reference/encoder.html>`_
-    * `Package Reference > Post-Process > Process <../package_reference/postprocess.html#module-ontoaligner.postprocess.process>`_
-    * `Package Reference > Utils > Metrics <../package_reference/utils.html#module-ontoaligner.utils.metrics>`_
-    * `Package Reference > Utils > XMLify <../package_reference/utils.html#module-ontoaligner.utils.xmlify>`_
-    * `Aligners > Lightweight Aligner <../tutorials/lightweight.html>`_
-    * `Aligners > Retrieval Aligner <../tutorials/retriever.html>`_
-    * `Aligners > Large Language Models Aligner <../tutorials/llm.html>`_
-    * `Aligners > Retrieval Augmented Generation <../tutorials/rag.html>`_
 
 
 Once you have `installed <installation.html>`_ OntoAligner, you can easily use OntoAligner models:
@@ -45,7 +31,7 @@ Once you have `installed <installation.html>`_ OntoAligner, you can easily use O
     retriever_config = {"top_k": 5}
     llm_config = {"max_new_tokens": 10, "batch_size": 32}
 
-    model = ontoaligner.ontology_matchers.MistralLLMBERTRetrieverRAG(retriever_config=retriever_config,
+    model = ontoaligner.aligner.MistralLLMBERTRetrieverRAG(retriever_config=retriever_config,
                                                                      llm_config=llm_config)
     model.load(llm_path="mistralai/Mistral-7B-v0.3", ir_path="all-MiniLM-L6-v2")
     predicts = model.generate(input_data=encoded_ontology)
@@ -59,10 +45,26 @@ Once you have `installed <installation.html>`_ OntoAligner, you can easily use O
     xml_str = ontoaligner.utils.xmlify.xml_alignment_generator(matchings=matchings)
     open("matchings.xml", "w", encoding="utf-8").write(xml_str)
 
+
+.. sidebar:: Useful links:
+
+    * `Package Reference > Ontology <../package_reference/ontology.html>`_
+    * `Package Reference > Pipeline <../package_reference/pipeline.html>`_
+    * `Package Reference > Encoder <../package_reference/encoder.html>`_
+    * `Package Reference > Post-Process > Process <../package_reference/postprocess.html#module-ontoaligner.postprocess.process>`_
+    * `Package Reference > Utils > Metrics <../package_reference/utils.html#module-ontoaligner.utils.metrics>`_
+    * `Package Reference > Utils > XMLify <../package_reference/utils.html#module-ontoaligner.utils.xmlify>`_
+    * `Aligners > Lightweight Aligner <../aligner/lightweight.html>`_
+    * `Aligners > Retrieval Aligner <../aligner/retriever.html>`_
+    * `Aligners > Large Language Models Aligner <../aligner/llm.html>`_
+    * `Aligners > Retrieval Augmented Generation <../aligner/rag.html>`_
+
+
+
 With ``ontoaligner`` library, we perform ontology matching between a source and target ontology with loading a dataset using the `MaterialInformationMatOntoOMDataset <../package_reference/ontology.html#material-sciences-and-engineering-track>`_ class that considers ``MaterialInformation`` as source ontology, and ``MatOnto`` as target ontology. This followed by encoding the ontologies using `ConceptRAGEncoder <../package_reference/encoder.html#retrieval-augmented-generation-encoders>`_. Next, using ``MaterialInformationMatOntoOMDataset`` that configures a retriever and a large language model (LLM) for generating predictions, using a pre-trained Mistral-7B (``mistralai/Mistral-7B-v0.3``) model and an Sentence Transformer model (``all-MiniLM-L6-v2``). After RAG module prediction for matching, a ``hybrid`` postprocessing is applied to filter and refine the predictions , and evaluates the resulting matchings against a reference set. Finally, it generates an evaluation report and exports the matching results as an XML file. This process automates ontology alignment, making it easier to compare and merge knowledge structures. The postprocessing, a cardinality based filter runes using IR threshold to filter retriever outputs and then applies LLM based confidence score filtering.
 
-OntoAligner Pipeline
--------------
+Aligner Pipeline
+--------------------------
 
 .. sidebar:: Useful links:
 
@@ -94,7 +96,7 @@ The usage for ``OntoAlignerPipeline``:
    matchings, evaluation = pipeline(method="rag",
                     llm_path='mistralai/Mistral-7B-v0.3',
                     retriever_path='all-MiniLM-L6-v2',
-                    model_class=ontoaligner.ontology_matchers.MistralLLMBERTRetrieverRAG,
+                    model_class=ontoaligner.aligner.MistralLLMBERTRetrieverRAG,
                     device='cuda',
                     batch_size=15,
                     return_matching=True,
@@ -116,11 +118,11 @@ Next Steps
 
 Consider reading one of the following sections next:
 
-* `Aligners > Lightweight Aligner <../tutorials/lightweight.html>`_
-* `Aligners > Retrieval Aligner <../tutorials/retriever.html>`_
-* `Aligners > Large Language Models Aligner <../tutorials/llm.html>`_
-* `Aligners > Retrieval Augmented Generation <../tutorials/rag.html>`_
-* `Aligners > FewShot RAG <../tutorials/rag.html#fewshot-rag>`_
-* `Aligners > In-Context Vectors RAG <../tutorials/rag.html#in-context-vectors-rag>`_
+* `Aligners > Lightweight Aligner <../aligner/lightweight.html>`_
+* `Aligners > Retrieval Aligner <../aligner/retriever.html>`_
+* `Aligners > Large Language Models Aligner <../aligner/llm.html>`_
+* `Aligners > Retrieval Augmented Generation <../aligner/rag.html>`_
+* `Aligners > FewShot RAG <../aligner/rag.html#fewshot-rag>`_
+* `Aligners > In-Context Vectors RAG <../aligner/rag.html#in-context-vectors-rag>`_
 * `Package Reference > Pipeline <../package_reference/pipeline.html>`_
 * `Package Reference > Ontology Matchers <./package_reference/ontolog_matchers.html>`_
