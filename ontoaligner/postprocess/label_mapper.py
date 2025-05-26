@@ -117,9 +117,9 @@ class SBERTLabelMapper(LabelMapper):
 
     Example usage:
     >>> label_dict = {
-            "yes":["yes", "correct", "true"],
-            "no":["no", "incorrect", "false"]
-        }
+    >>>        "yes":["yes", "correct", "true"],
+    >>>        "no":["no", "incorrect", "false"]
+    >>>    }
     >>> mapper = SBERTLabelMapper("all-MiniLM-L12-v2", label_dict)
     >>> mapper.fit()
     >>> mapper.predict(["yes", "correct", "false", "nice", "too bad", "very good"])
