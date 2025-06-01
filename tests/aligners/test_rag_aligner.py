@@ -8,6 +8,8 @@ from ontoaligner.aligner.rag.rag import (
     RAG,
     AutoModelDecoderRAGLLM,
     AutoModelDecoderRAGLLMV2,
+    OpenAIRAGLLM,
+    MambaSSMRAGLLM,
 )
 
 
@@ -163,64 +165,18 @@ class TestRAG(unittest.TestCase):
                         "llm-config": self.llm_config,
                     }
 
-    # def test_initialization(self):
-    #     """Test RAG initialization with configs"""
-    #     self.assertEqual(self.rag.kwargs["retriever-config"], self.retriever_config)
-    #     self.assertEqual(self.rag.kwargs["llm-config"], self.llm_config)
-
-    # @patch("ontoaligner.aligner.rag.rag.RAGBasedDecoderLLMArch")
-    # def test_load(self, mock_llm_class):
-    #     """Test model loading"""
-    #     # Set up mock LLM instance
-    #     mock_llm = MagicMock()
-    #     mock_llm_class.return_value = mock_llm
-
-    #     # Set up mock Retrieval
-    #     self.rag.Retrieval = MagicMock()
-    #     self.rag.LLM = mock_llm_class
-
-    #     self.rag.load("llm_path", "ir_path")
-
-    #     # Verify both retrieval and LLM models are loaded
-    #     self.rag.Retrieval.return_value.load.assert_called_once_with("ir_path")
-    #     mock_llm.load.assert_called_once_with("llm_path")
-
-    # def test_generate(self):
-    #     """Test the generate method"""
-    #     # Mock necessary components
-    #     ir_output = "ir_output"
-    #     llm_output = "llm_output"
-    #     self.rag.ir_generate = MagicMock(return_value=ir_output)
-    #     self.rag.llm_generate = MagicMock(return_value=llm_output)
-    #     self.rag.kwargs = {
-    #         "retriever-config": {"threshold": 0.5},
-    #         "llm-config": self.llm_config,
-    #     }
-
-    #     input_data = ["test_input"]
-    #     result = self.rag.generate(input_data)
-
-    #     # Verify the generation pipeline
-    #     self.rag.ir_generate.assert_called_once_with(input_data)
-    #     self.rag.llm_generate.assert_called_once()
-
-    #     # Check the result structure
-    #     self.assertEqual(
-    #         result, [{"ir-outputs": ir_output}, {"llm-output": llm_output}]
-    #     )
-
 
 class TestAutoModelDecoderRAGLLM(unittest.TestCase):
     def setUp(self):
         self.model = AutoModelDecoderRAGLLM()
 
-    # def test_initialization(self):
-    #     """Test initialization and attributes"""
-    #     self.assertEqual(
-    #         str(self.model), "RAGBasedDecoderLLMArch-AutoModel"
-    #     )  # Updated to match actual implementation
-    #     self.assertEqual(self.model.tokenizer, AutoTokenizer)
-    #     self.assertEqual(self.model.model, AutoModelForCausalLM)
+    def test_initialization(self):
+        """Test initialization and attributes"""
+        self.assertEqual(
+            str(self.model), "RAGBasedDecoderLLMArch-AutoModel"
+        )  # Updated to match actual implementation
+        self.assertEqual(self.model.tokenizer, AutoTokenizer)
+        self.assertEqual(self.model.model, AutoModelForCausalLM)
 
 
 class TestAutoModelDecoderRAGLLMV2(unittest.TestCase):
@@ -246,6 +202,26 @@ class TestAutoModelDecoderRAGLLMV2(unittest.TestCase):
 
         probas = self.model.get_probas_yes_no(mock_outputs)
         self.assertIsInstance(probas, torch.Tensor)
+
+
+class TestOpenAIRAGLLM(unittest.TestCase):
+    def setUp(self):
+        self.model = OpenAIRAGLLM()
+
+    def test_initialization(self):
+        """Test initialization and string representation"""
+        self.assertEqual(str(self.model), "RAGBasedOpenAILLMArch-OpenAILLM")
+
+
+class TestMambaSSMRAGLLM(unittest.TestCase):
+    def setUp(self):
+        self.model = MambaSSMRAGLLM()
+
+    def test_initialization(self):
+        """Test initialization and string representation"""
+        self.assertEqual(str(self.model), "RAGBasedDecoderLLMArch-AutoModelV2-MambaSSM")
+        self.assertEqual(self.model.tokenizer, AutoTokenizer)
+        self.assertEqual(self.model.model, AutoModelForCausalLM)
 
 
 if __name__ == "__main__":

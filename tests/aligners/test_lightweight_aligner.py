@@ -1,5 +1,10 @@
 import unittest
 from ontoaligner.aligner.lightweight.lightweight import Lightweight, FuzzySMLightweight
+from ontoaligner.aligner.lightweight.models import (
+    SimpleFuzzySMLightweight,
+    WeightedFuzzySMLightweight,
+    TokenSetFuzzySMLightweight,
+)
 from rapidfuzz import fuzz
 
 
@@ -183,6 +188,30 @@ class TestLightweightAligner(unittest.TestCase):
                 expected_match,
                 f"Failed with threshold {threshold} for {test_case['source']['text']} -> {test_case['target']['text']}",
             )
+
+
+def test_simple_fuzzy_lightweight():
+    """Test SimpleFuzzySMLightweight class."""
+    aligner = SimpleFuzzySMLightweight()
+    assert aligner is not None
+    assert str(aligner) == "Lightweight-SimpleFuzzySMLightweight"
+    assert aligner.ratio_estimate() == fuzz.ratio
+
+
+def test_weighted_fuzzy_lightweight():
+    """Test WeightedFuzzySMLightweight class."""
+    aligner = WeightedFuzzySMLightweight()
+    assert aligner is not None
+    assert str(aligner) == "Lightweight-WeightedFuzzySMLightweight"
+    assert aligner.ratio_estimate() == fuzz.WRatio
+
+
+def test_token_set_fuzzy_lightweight():
+    """Test TokenSetFuzzySMLightweight class."""
+    aligner = TokenSetFuzzySMLightweight()
+    assert aligner is not None
+    assert str(aligner) == "Lightweight-TokenSetFuzzySMLightweight"
+    assert aligner.ratio_estimate() == fuzz.token_set_ratio
 
 
 if __name__ == "__main__":
