@@ -81,6 +81,7 @@ llm_config = {"device": "cuda", "max_length": 300, "max_new_tokens": 10, "batch_
 
 # Step 5: Initialize Generate predictions using RAG-based ontology matcher
 model = MistralLLMBERTRetrieverRAG(retriever_config=retriever_config, llm_config=llm_config)
+model.load(llm_path = "mistralai/Mistral-7B-v0.3", ir_path="all-MiniLM-L6-v2")
 predicts = model.generate(input_data=encoded_ontology)
 
 # Step 6: Apply hybrid postprocessing
