@@ -1,9 +1,10 @@
 import pytest
-import os
 import shutil
 from pathlib import Path
 from ontoaligner.pipeline import OntoAlignerPipeline
 from ontoaligner.ontology import GenericOMDataset
+import sys
+import gc
 
 
 @pytest.fixture
@@ -36,15 +37,25 @@ def test_pipeline_error_recovery(complex_pipeline):
     assert result is not None
     assert Path("test_output/test.xml").exists()
 
+def get_total_size(objects):
+    """Estimate total size of objects in memory."""
+    seen = set()
+    size = 0
+    for obj in objects:
+        if id(obj) not in seen:
+            seen.add(id(obj))
+            try:
+                size += sys.getsizeof(obj)
+            except TypeError:
+                pass  # Some built-in objects don't support getsizeof
+    return size
 
 def test_pipeline_resource_cleanup(complex_pipeline):
-    """Test proper resource cleanup after pipeline execution."""
-    import psutil
+    """Test for potential memory leaks without external libraries."""
+    gc.collect()
+    initial_objects = gc.get_objects()
+    initial_size = get_total_size(initial_objects)
 
-    process = psutil.Process(os.getpid())
-    initial_memory = process.memory_info().rss
-
-    # Run pipeline multiple times
     for i in range(5):
         result = complex_pipeline(
             method="lightweight",
@@ -54,11 +65,17 @@ def test_pipeline_resource_cleanup(complex_pipeline):
         )
         assert result is not None
 
-    final_memory = process.memory_info().rss
-    memory_increase = final_memory - initial_memory
+    gc.collect()
+    final_objects = gc.get_objects()
+    final_size = get_total_size(final_objects)
 
-    # Check that memory usage increase is reasonable
-    assert memory_increase < 200 * 1024 * 1024  # 200MB in bytes
+    # Print difference (you can assert if needed)
+    print(f"Initial size: {initial_size / 1024:.2f} KB")
+    print(f"Final size: {final_size / 1024:.2f} KB")
+    print(f"Size difference: {(final_size - initial_size) / 1024:.2f} KB")
+
+    # Allow some leeway (e.g. 10 MB) for object growth
+    assert (final_size - initial_size) < 10 * 1024 * 1024  # 10MB in bytes
 
 
 def test_pipeline_large_ontology(tmp_path):
