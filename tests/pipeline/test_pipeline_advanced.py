@@ -32,7 +32,7 @@ def test_pipeline_error_recovery(complex_pipeline):
     # Test with missing output directory
     shutil.rmtree("test_output", ignore_errors=True)
     result = complex_pipeline(
-        method="lightweight", save_matchings=True, output_file_name="test.xml"
+        method="lightweight", save_matchings=True, output_file_name="test"
     )
     assert result is not None
     assert Path("test_output/test.xml").exists()
