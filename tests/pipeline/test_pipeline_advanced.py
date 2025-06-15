@@ -16,6 +16,7 @@ def complex_pipeline():
         target_ontology_path="tests/data/test-case1.owl",
         reference_matching_path=None,
         output_dir="test_output",
+        output_format="xml"
     )
 
 
