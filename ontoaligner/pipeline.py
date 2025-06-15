@@ -122,7 +122,7 @@ class OntoAlignerPipeline:
         if not (0 <= fuzzy_sm_threshold <= 1):
             raise ValueError(f"fuzzy_sm_threshold must be between 0 and 1. Got {fuzzy_sm_threshold}")
 
-        if method not in {"lightweight", "retrieval", "llm"} or "rag" not in method:
+        if method not in ["lightweight", "retrieval", "llm"] and "rag" not in method:
             raise ValueError(f"Unknown method: {method}")
 
         if method == "lightweight":
