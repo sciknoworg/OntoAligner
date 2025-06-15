@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ class LabelMapper:
         """
         for pred in preds:
             if pred.lower() not in self.labels:
-                print(f"{pred} in prediction is not a valid label!")
+                raise AssertionError(f"{pred} in prediction is not a valid label!")
 
     def predict(self, X: List[str]) -> List[str]:
         """
