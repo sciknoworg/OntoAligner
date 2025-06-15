@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -119,17 +119,23 @@ class OntoAlignerPipeline:
         Returns:
             dict or None: Evaluation report if `evaluate` is True. Matching results if `return_matching` is True.
         """
+        if not (0 <= fuzzy_sm_threshold <= 1):
+            raise ValueError(f"fuzzy_sm_threshold must be between 0 and 1. Got {fuzzy_sm_threshold}")
+
+        if method not in {"lightweight", "retrieval", "llm"} or "rag" not in method:
+            raise ValueError(f"Unknown method: {method}")
+
         if method == "lightweight":
             matchings = self._run_lightweight(encoder_model or ConceptLightweightEncoder(), model_class or SimpleFuzzySMLightweight,
                                               postprocessor, fuzzy_sm_threshold)
-        elif method == "retrieval":
+        if method == "retrieval":
             matchings = self._run_retriever(encoder_model or ConceptLightweightEncoder(), model_class or SBERTRetrieval, postprocessor or retriever_postprocessor,
                                              retriever_path, device, top_k, ir_threshold)
-        elif method == "llm":
+        if method == "llm":
             matchings = self._run_llm(encoder_model or ConceptLLMEncoder(), model_class or AutoModelDecoderLLM, dataset_class or ConceptLLMDataset,
                                        postprocessor or llm_postprocessor, llm_mapper or TFIDFLabelMapper(classifier=LogisticRegression(), ngram_range=(1, 1)),
                                        llm_mapper_interested_class, llm_path, device, batch_size, max_length, max_new_tokens, llm_threshold)
-        elif 'rag' in method:
+        if 'rag' in method:
             retriever_config = {"device": device, "top_k": top_k, "openai_key": openai_key}
             llm_config = {"device": device, "batch_size": batch_size, "answer_set": answer_set, "huggingface_access_token": huggingface_access_token,
                           "max_length": max_length, "max_new_tokens": max_new_tokens, "openai_key": openai_key, "device_map": device_map}
@@ -142,8 +148,6 @@ class OntoAlignerPipeline:
                 encoder_model = encoder_model or ConceptRAGEncoder()
             matchings = self._run_rag(method, encoder_model, model_class, postprocessor or rag_hybrid_postprocessor,
                                       llm_threshold,  ir_rag_threshold, retriever_path, llm_path, rag_config)
-        else:
-            raise ValueError(f"Unknown method: {method}")
         return self._process_results(matchings, method, evaluate, return_matching, output_file_name, save_matchings)
 
     def _run_lightweight(self, encoder_model, model_class, postprocessor, fuzzy_sm_threshold):
