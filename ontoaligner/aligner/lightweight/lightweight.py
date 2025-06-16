@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -120,7 +120,7 @@ class FuzzySMLightweight(Lightweight):
         Returns:
             List: A list containing the index of the most similar candidate and the normalized similarity score.
         """
-        selected_candid = rapidfuzz.process_cpp.extractOne(
+        selected_candid = rapidfuzz.process.extractOne(
             source,
             candidates,
             scorer=self.ratio_estimate(),
