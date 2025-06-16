@@ -142,11 +142,13 @@ If you encounter any issues or have questions, please submit them in the [GitHub
 If you use OntoAligner in your work or research, please cite the following preprint:
 
 ```bibtex
-@article{giglou2025ontoaligner,
-  title={Ontoaligner: A comprehensive modular and robust python toolkit for ontology alignment},
-  author={Giglou, Hamed Babaei and D'Souza, Jennifer and Karras, Oliver and Auer, S{\"o}ren},
-  journal={arXiv preprint arXiv:2503.21902},
-  year={2025}
+@inproceedings{babaei2025ontoaligner,
+  title={OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment},
+  author={Babaei Giglou, Hamed and D’Souza, Jennifer and Karras, Oliver and Auer, S{\"o}ren},
+  booktitle={European Semantic Web Conference},
+  pages={174--191},
+  year={2025},
+  organization={Springer}
 }
 ```
 

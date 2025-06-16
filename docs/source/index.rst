@@ -97,15 +97,17 @@ Working with OntoAligner is straightforward:
 Citing
 =========
 
-If you find this repository helpful, feel free to cite our publication `OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment <https://arxiv.org/abs/2503.21902>`_:
+If you find this repository helpful, feel free to cite our publication `OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment <https://link.springer.com/chapter/10.1007/978-3-031-94578-6_10>`_:
 
  .. code-block:: bibtex
 
-    @article{giglou2025ontoaligner,
-      title={Ontoaligner: A comprehensive modular and robust python toolkit for ontology alignment},
-      author={Giglou, Hamed Babaei and D'Souza, Jennifer and Karras, Oliver and Auer, S{\"o}ren},
-      journal={arXiv preprint arXiv:2503.21902},
-      year={2025}
+    @inproceedings{babaei2025ontoaligner,
+      title={OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment},
+      author={Babaei Giglou, Hamed and D’Souza, Jennifer and Karras, Oliver and Auer, S{\"o}ren},
+      booktitle={European Semantic Web Conference},
+      pages={174--191},
+      year={2025},
+      organization={Springer}
     }
 
 or our related work `LLMs4OM: Matching Ontologies with Large Language Models <https://link.springer.com/chapter/10.1007/978-3-031-78952-6_3>`_:
