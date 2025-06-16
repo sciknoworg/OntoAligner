@@ -1,5 +1,11 @@
 ## Changelog
 
+### V1.4.2 Changelog (June 16, 2025)
+- Add license headers.
+- Add comprehensive unittests.
+- Bug fixing in fuzzy matching (convert `process_cpp` to `process`)
+- Unittest bug fixing.
+
 ### V1.4.1 Changelog (May 26, 2025)
 - Fixed an issue related to #25 and #36.
 - Sentence-transformer v4.1.0 is supported.
