@@ -36,7 +36,7 @@ def test_pipeline_error_recovery(complex_pipeline):
         method="lightweight", save_matchings=True, output_file_name="test"
     )
     assert result is not None
-    assert Path("test_output/test.xml").exists()
+    assert Path("test_output/lightweight/test.xml").exists()
 
 def get_total_size(objects):
     """Estimate total size of objects in memory."""
@@ -62,7 +62,7 @@ def test_pipeline_resource_cleanup(complex_pipeline):
             method="lightweight",
             fuzzy_sm_threshold=0.5,
             save_matchings=True,
-            output_file_name=f"cleanup_test_{i}.xml",
+            output_file_name=f"cleanup_test_{i}",
         )
         assert result is not None
 
@@ -97,7 +97,7 @@ def test_pipeline_large_ontology(tmp_path):
         method="lightweight",
         fuzzy_sm_threshold=0.5,
         save_matchings=True,
-        output_file_name="large_test.xml",
+        output_file_name="large_test",
     )
 
     assert result is not None
