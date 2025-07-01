@@ -27,7 +27,7 @@ setup(
         "rapidfuzz==3.5.2",
         "rdflib==7.1.1",
         "sentence-transformers==4.1.0",
-        "torch==2.7.0",
+        "torch==2.6.0",
         "transformers==4.50.0",
         "huggingface_hub==0.28.1",
         "bitsandbytes==0.45.1",
