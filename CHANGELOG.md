@@ -1,5 +1,8 @@
 ## Changelog
 
+### V1.4.3 Changelog (July 1, 2025)
+- Convert `torch==2.7.0` to `torch==2.6.0`
+
 ### V1.4.2 Changelog (June 16, 2025)
 - Add license headers.
 - Add comprehensive unittests.
