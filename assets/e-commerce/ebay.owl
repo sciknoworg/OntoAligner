@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://example.org/ebay#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+  <!-- Root: Computers -->
+  <owl:Class rdf:about="http://example.org/ebay#Computers">
+    <skos:prefLabel>Computers</skos:prefLabel>
+  </owl:Class>
+
+  <!-- Notebook Hierarchy -->
+  <owl:Class rdf:about="http://example.org/ebay#Notebook">
+    <skos:prefLabel>Notebook</skos:prefLabel>
+    <skos:broader rdf:resource="http://example.org/ebay#Computers"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/ebay#Computers"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="http://example.org/ebay#GamingNotebook">
+    <skos:prefLabel>Gaming Notebook</skos:prefLabel>
+    <skos:broader rdf:resource="http://example.org/ebay#Notebook"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/ebay#Notebook"/>
+    <owl:disjointWith rdf:resource="http://example.org/ebay#BusinessNotebook"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="http://example.org/ebay#BusinessNotebook">
+    <skos:prefLabel>Business Notebook</skos:prefLabel>
+    <skos:broader rdf:resource="http://example.org/ebay#Notebook"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/ebay#Notebook"/>
+  </owl:Class>
+
+  <!-- Property Hierarchy -->
+  <owl:ObjectProperty rdf:about="http://example.org/ebay#manufacturer">
+    <rdfs:label>manufacturer</rdfs:label>
+    <rdfs:subPropertyOf rdf:resource="http://example.org/ebay#producer"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://example.org/ebay#producer">
+    <rdfs:label>producer</rdfs:label>
+  </owl:ObjectProperty>
+
+  <owl:DatatypeProperty rdf:about="http://example.org/ebay#displaySize">
+    <rdfs:label>displaySize</rdfs:label>
+    <rdfs:domain rdf:resource="http://example.org/ebay#Notebook"/>
+  </owl:DatatypeProperty>
+
+</rdf:RDF>
