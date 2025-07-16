@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ types of information such as synonyms, comments, and labels for different biolog
 categories.
 """
 
-import os.path
 from typing import Any, List
 
 from ...base import BaseOntologyParser, OMDataset
@@ -127,7 +126,6 @@ class EnvoSweetOMDataset(OMDataset):
     ontology_name = "envo-sweet"
     source_ontology = EnvoOntology()
     target_ontology = SweetOntology()
-    working_dir = os.path.join(track, ontology_name)
 
 
 class SeaLifeOntology(BaseOntologyParser):
@@ -196,7 +194,6 @@ class FishZooplanktonOMDataset(OMDataset):
     ontology_name = "fish-zooplankton"
     source_ontology = SeaLifeOntology()
     target_ontology = SeaLifeOntology()
-    working_dir = os.path.join(track, ontology_name)
 
 
 class MacroalgaeMacrozoobenthosOMDataset(OMDataset):
@@ -208,7 +205,6 @@ class MacroalgaeMacrozoobenthosOMDataset(OMDataset):
     ontology_name = "macroalgae-macrozoobenthos"
     source_ontology = SeaLifeOntology()
     target_ontology = SeaLifeOntology()
-    working_dir = os.path.join(track, ontology_name)
 
 
 class TAXREFLDOntology(BaseOntologyParser):
@@ -221,7 +217,6 @@ class TAXREFLDOntology(BaseOntologyParser):
         ontology_name (str): The name of the ontology dataset, set to "macroalgae-macrozoobenthos".
         source_ontology (SeaLifeOntology): The source ontology parser (SeaLife).
         target_ontology (SeaLifeOntology): The target ontology parser (SeaLife).
-        working_dir (str): The directory where the dataset files are stored, based on the track and ontology name.
     """
     def get_synonyms(self, owl_class: Any) -> List:
         """
@@ -286,7 +281,6 @@ class TaxrefldBacteriaNcbitaxonBacteriaOMDataset(OMDataset):
     ontology_name = "taxrefldBacteria-ncbitaxonBacteria"
     source_ontology = TAXREFLDOntology()
     target_ontology = NCBIOntology()
-    working_dir = os.path.join(track, ontology_name)
 
 
 class TaxrefldChromistaNcbitaxonChromistaOMDataset(OMDataset):
@@ -297,7 +291,6 @@ class TaxrefldChromistaNcbitaxonChromistaOMDataset(OMDataset):
     ontology_name = "taxrefldChromista-ncbitaxonChromista"
     source_ontology = TAXREFLDOntology()
     target_ontology = NCBIOntology()
-    working_dir = os.path.join(track, ontology_name)
 
 
 class TaxrefldFungiNcbitaxonFungiOMDataset(OMDataset):
@@ -308,7 +301,6 @@ class TaxrefldFungiNcbitaxonFungiOMDataset(OMDataset):
     ontology_name = "taxrefldFungi-ncbitaxonFungi"
     source_ontology = TAXREFLDOntology()
     target_ontology = NCBIOntology()
-    working_dir = os.path.join(track, ontology_name)
 
 
 class TaxrefldPlantaeNcbitaxonPlantaeOMDataset(OMDataset):
@@ -319,7 +311,6 @@ class TaxrefldPlantaeNcbitaxonPlantaeOMDataset(OMDataset):
     ontology_name = "taxrefldPlantae-ncbitaxonPlantae"
     source_ontology = TAXREFLDOntology()
     target_ontology = NCBIOntology()
-    working_dir = os.path.join(track, ontology_name)
 
 
 class TaxrefldProtozoaNcbitaxonProtozoaOMDataset(OMDataset):
@@ -330,4 +321,3 @@ class TaxrefldProtozoaNcbitaxonProtozoaOMDataset(OMDataset):
     ontology_name = "taxrefldProtozoa-ncbitaxonProtozoa"
     source_ontology = TAXREFLDOntology()
     target_ontology = NCBIOntology()
-    working_dir = os.path.join(track, ontology_name)

@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 """
 This script defines ontology parsers for the Mouse and Human ontologies, extending the base ontology parser.
 """
-import os.path
 from typing import Any, List
 
 from ...base import BaseOntologyParser, OMDataset
@@ -70,8 +69,5 @@ class MouseHumanOMDataset(OMDataset):
     """
     track = track
     ontology_name = "mouse-human"
-
     source_ontology = MouseOntology()
     target_ontology = HumanOntology()
-
-    working_dir = os.path.join(track, ontology_name)

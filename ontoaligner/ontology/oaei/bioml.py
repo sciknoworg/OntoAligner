@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ processing disease-related ontologies and alignment data. The main objective is 
 files for specific bio-entities, and provide aligned datasets for various ontology combinations.
 """
 
-import os.path
 import pandas as pd
 
 from typing import Any, Dict, List
@@ -160,7 +159,6 @@ class NCITDOIDDiseaseOMDataset(OMDataset):
     ontology_name = "ncit-doid.disease"
     source_ontology = BioOntology()
     target_ontology = BioOntology()
-    working_dir = os.path.join(track, ontology_name)
     alignments: BaseAlignmentsParser = BioMLAlignmentsParser()
 
 
@@ -173,7 +171,6 @@ class OMIMORDODiseaseOMDataset(OMDataset):
     ontology_name = "omim-ordo.disease"
     source_ontology = BioOntology()
     target_ontology = BioOntology()
-    working_dir = os.path.join(track, ontology_name)
     alignments: BaseAlignmentsParser = BioMLAlignmentsParser()
 
 
@@ -188,7 +185,6 @@ class SNOMEDFMABodyOMDataset(OMDataset):
     ontology_name = "snomed-fma.body"
     source_ontology = BioOntology()
     target_ontology = BioOntology()
-    working_dir = os.path.join(track, ontology_name)
     alignments: BaseAlignmentsParser = BioMLAlignmentsParser()
 
 
@@ -203,7 +199,6 @@ class SNOMEDNCITNeoplasOMDataset(OMDataset):
     ontology_name = "snomed-ncit.neoplas"
     source_ontology = BioOntology()
     target_ontology = BioOntology()
-    working_dir = os.path.join(track, ontology_name)
     alignments: BaseAlignmentsParser = BioMLAlignmentsParser()
 
 
@@ -218,7 +213,6 @@ class SNOMEDNCITPharmOMDataset(OMDataset):
     ontology_name = "snomed-ncit.pharm"
     source_ontology = BioOntology()
     target_ontology = BioOntology()
-    working_dir = os.path.join(track, ontology_name)
     alignments: BaseAlignmentsParser = BioMLAlignmentsParser()
 
 
@@ -233,7 +227,6 @@ class SNOMEDFMABodyLLMOMDataset(OMDataset):
     ontology_name = "snomed-fma.body"
     source_ontology = BioOntology()
     target_ontology = BioOntology()
-    working_dir = os.path.join(track, ontology_name)
     alignments: BaseAlignmentsParser = BioMLAlignmentsParser()
 
 
@@ -248,5 +241,4 @@ class NCITDOIDDiseaseLLMOMDataset(OMDataset):
     ontology_name = "ncit-doid.disease"
     source_ontology = BioOntology()
     target_ontology = BioOntology()
-    working_dir = os.path.join(track, ontology_name)
     alignments: BaseAlignmentsParser = BioMLAlignmentsParser()
