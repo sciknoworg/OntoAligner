@@ -63,4 +63,4 @@ You can install OntoAligner directly from source to take advantage of the bleedi
 
 Install PyTorch with CUDA support
 --------------------------------------------
-To use a GPU/CUDA for learners, you must install PyTorch with CUDA support. Follow `PyTorch - Get Started <https://pytorch.org/get-started/locally/>`_ for installation steps.
+To use a GPU/CUDA for aligner models, you must install PyTorch with CUDA support. Follow `PyTorch - Get Started <https://pytorch.org/get-started/locally/>`_ for installation steps. We recommend installing the `PEFT library <https://pypi.org/project/peft/>`_, especially if you plan to perform parameter-efficient fine-tuning or run inference with models fine-tuned using PEFT

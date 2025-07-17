@@ -4,7 +4,7 @@ eCommerce
 
         **We are using small sample ontologies within this tutorial.**
 
-.. sidebar:: Codalab Notebook
+.. sidebar:: Colab Notebook
 
     .. raw:: html
 

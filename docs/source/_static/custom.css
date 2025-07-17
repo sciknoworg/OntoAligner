@@ -36,3 +36,38 @@
 .catalog-table tr:hover {
    background-color: #f1f1f1;
 }
+
+.training-arguments > .table {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+}
+
+.training-arguments > .table > a {
+    padding: 0.5rem;
+    border: 1px solid #e1e4e5;
+}
+
+.content{
+    max-width: 840px;
+}
+
+
+/* Default (for large screens) */
+.content:not(.custom) {
+    max-width: 65%;
+    margin: 0 auto;
+}
+
+/* Medium screens (e.g. tablets) */
+@media (max-width: 1024px) {
+    .content:not(.custom) {
+        max-width: 90%;
+    }
+}
+
+/* Small screens (e.g. smartphones) */
+@media (max-width: 600px) {
+    .content:not(.custom) {
+        max-width: 100%;
+    }
+}

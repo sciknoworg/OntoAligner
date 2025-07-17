@@ -5,6 +5,9 @@ import datetime
 import importlib
 import inspect
 import os
+from sphinx.application import Sphinx
+from sphinx.writers.html5 import HTML5Translator
+import posixpath
 # -- Project information -----------------------------------------------------
 #
 sys.path.insert(0, pathlib.Path(__file__).parents[0].resolve().as_posix())
@@ -13,7 +16,6 @@ sys.path.insert(0, pathlib.Path(__file__).parents[1].resolve().as_posix())
 
 project = 'OntoAligner'
 copyright = f'{str(datetime.datetime.now().year)} SciKnowOrg'
-author = 'Hamed Babaei Giglou'
 release = '0.2.0'
 
 
@@ -23,6 +25,7 @@ release = '0.2.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "sphinx_toolbox.collapse",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "myst_parser",
@@ -32,13 +35,8 @@ extensions = [
     "sphinx.ext.linkcode",
     "sphinx_inline_tabs",
     "sphinxcontrib.mermaid",
-    # "sphinx.ext.mathjax"
-
-    # 'sphinx.ext.duration',
-    # 'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    # 'sphinx.ext.intersphinx',
 ]
 
 # autosummary_generate = True  # Turn on sphinx.ext.autosummary
@@ -73,6 +71,9 @@ html_theme_options = {
           ("Github", "https://github.com/sciknoworg/OntoAligner"),
           ("Pypi", "https://pypi.org/project/OntoAligner/")
     ],
+    "navigation_depth": 4,
+    "collapse_navigation": True,
+    "logo_only": True,
 }
 
 html_static_path = ["_static"]
@@ -131,3 +132,27 @@ def linkcode_resolve(domain, info):
     relative_path = os.path.relpath(file_path, start=os.path.dirname(__file__))
     end_line = start_line + len(source_lines) - 1
     return f"{repo_url}/blob/{branch}/{relative_path}#L{start_line}-L{end_line}"
+
+def visit_download_reference(self, node):
+    root = "https://github.com/sciknoworg/OntoAligner/tree/main"
+    atts = {"class": "reference download", "download": ""}
+
+    if not self.builder.download_support:
+        self.context.append("")
+    elif "refuri" in node:
+        atts["class"] += " external"
+        atts["href"] = node["refuri"]
+        self.body.append(self.starttag(node, "a", "", **atts))
+        self.context.append("</a>")
+    elif "reftarget" in node and "refdoc" in node:
+        atts["class"] += " external"
+        atts["href"] = posixpath.join(root, os.path.dirname(node["refdoc"]), node["reftarget"])
+        self.body.append(self.starttag(node, "a", "", **atts))
+        self.context.append("</a>")
+    else:
+        self.context.append("")
+
+HTML5Translator.visit_download_reference = visit_download_reference
+
+def setup(app: Sphinx):
+    pass
