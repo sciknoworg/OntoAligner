@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ HP (Human Phenotype Ontology), and MP (Mammalian Phenotype Ontology). It also de
 for different phenotype-related datasets.
 """
 
-import os.path
 from typing import Any, List
 
 from ...base import BaseOntologyParser, OMDataset
@@ -124,7 +123,6 @@ class DoidOrdoOMDataset(OMDataset):
     ontology_name = "doid-ordo"
     source_ontology = DoidOntology()
     target_ontology = OrdoOntology()
-    working_dir = os.path.join(track, ontology_name)
 
 
 class HpOntology(DoidOntology):
@@ -194,4 +192,3 @@ class HpMpOMDataset(OMDataset):
     ontology_name = "hp-mp"
     source_ontology = HpOntology()
     target_ontology = MpOntology()
-    working_dir = os.path.join(track, ontology_name)

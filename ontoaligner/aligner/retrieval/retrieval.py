@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -311,15 +311,7 @@ class MLRetrieval(Retrieval):
         queries_embedding = self.transform(inputs=[source["text"] for source in source_ontology])
         queries_embedding = queries_embedding / np.sqrt((queries_embedding**2).sum(1, keepdims=True))
 
-        # q_len = len(source_ontology)
         c_len = len(target_ontology)
-        # dim = queries_embedding.shape[1]
-        # y = np.zeros(q_len+c_len)
-        # y[0:q_len] = 1
-        # x = np.concatenate([queries_embedding, candidates_embedding])
-        # clf = svm.LinearSVC(class_weight='balanced', verbose=False, max_iter=10000, tol=1e-6, C=0.1)
-        # clf.fit(x, y)
-        # estimated_similarity = cosine_similarity(queries_embedding, candidates_embedding)
 
         for source_id, query_embed in tqdm(enumerate(queries_embedding)):
             x = np.concatenate([[query_embed], candidates_embedding])

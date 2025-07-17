@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,18 +28,9 @@ class LLaMALLMAdaRetrieverICVRAG(ICV):
     """
     Class for pairing LLaMA-based LLM with AdaRetrieval for ICV-based ontology matching.
     """
-
     Retrieval = AdaRetrieval
     LLM = AutoModelDecoderICVLLM
-
     def __str__(self):
-        """
-        Returns a string representation of the class instance, indicating the LLM-Retrieval pairing.
-
-        Returns:
-            str
-                String format representing the class and the paired models.
-        """
         return super().__str__() + "-LLaMALLMAdaRetrieverICVRAG"
 
 
@@ -47,18 +38,9 @@ class LLaMALLMBERTRetrieverICVRAG(ICV):
     """
     Class for pairing LLaMA-based LLM with BERTRetrieval for ICV-based ontology matching.
     """
-
     Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderICVLLM
-
     def __str__(self):
-        """
-        Returns a string representation of the class instance, indicating the LLM-Retrieval pairing.
-
-        Returns:
-            str
-                String format representing the class and the paired models.
-        """
         return super().__str__() + "-LLaMALLMBERTRetrieverICVRAG"
 
 
@@ -66,18 +48,9 @@ class FalconLLMAdaRetrieverICVRAG(ICV):
     """
     Class for pairing Falcon-based LLM with AdaRetrieval for ICV-based ontology matching.
     """
-
     Retrieval = AdaRetrieval
     LLM = AutoModelDecoderICVLLMV2
-
     def __str__(self):
-        """
-        Returns a string representation of the class instance, indicating the LLM-Retrieval pairing.
-
-        Returns:
-            str
-                String format representing the class and the paired models.
-        """
         return super().__str__() + "-FalconLLMAdaRetrieverICVRAG"
 
 
@@ -85,18 +58,9 @@ class FalconLLMBERTRetrieverICVRAG(ICV):
     """
     Class for pairing Falcon-based LLM with BERTRetrieval for ICV-based ontology matching.
     """
-
     Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderICVLLMV2
-
     def __str__(self):
-        """
-        Returns a string representation of the class instance, indicating the LLM-Retrieval pairing.
-
-        Returns:
-            str
-                String format representing the class and the paired models.
-        """
         return super().__str__() + "-FalconLLMBERTRetrieverICVRAG"
 
 
@@ -104,18 +68,9 @@ class VicunaLLMAdaRetrieverICVRAG(ICV):
     """
     Class for pairing Vicuna-based LLM with AdaRetrieval for ICV-based ontology matching.
     """
-
     Retrieval = AdaRetrieval
     LLM = AutoModelDecoderICVLLM
-
     def __str__(self):
-        """
-        Returns a string representation of the class instance, indicating the LLM-Retrieval pairing.
-
-        Returns:
-            str
-                String format representing the class and the paired models.
-        """
         return super().__str__() + "-VicunaLLMAdaRetrieverICVRAG"
 
 
@@ -123,18 +78,9 @@ class VicunaLLMBERTRetrieverICVRAG(ICV):
     """
     Class for pairing Vicuna-based LLM with BERTRetrieval for ICV-based ontology matching.
     """
-
     Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderICVLLM
-
     def __str__(self):
-        """
-        Returns a string representation of the class instance, indicating the LLM-Retrieval pairing.
-
-        Returns:
-            str
-                String format representing the class and the paired models.
-        """
         return super().__str__() + "-VicunaLLMBERTRetrieverICVRAG"
 
 
@@ -142,18 +88,9 @@ class MPTLLMAdaRetrieverICVRAG(ICV):
     """
     Class for pairing MPT-based LLM with AdaRetrieval for ICV-based ontology matching.
     """
-
     Retrieval = AdaRetrieval
     LLM = AutoModelDecoderICVLLMV2
-
     def __str__(self):
-        """
-        Returns a string representation of the class instance, indicating the LLM-Retrieval pairing.
-
-        Returns:
-            str
-                String format representing the class and the paired models.
-        """
         return super().__str__() + "-MPTLLMAdaRetrieverICVRAG"
 
 
@@ -161,16 +98,7 @@ class MPTLLMBERTRetrieverICVRAG(ICV):
     """
     Class for pairing MPT-based LLM with BERTRetrieval for ICV-based ontology matching.
     """
-
     Retrieval = SBERTRetrieval
     LLM = AutoModelDecoderICVLLMV2
-
     def __str__(self):
-        """
-        Returns a string representation of the class instance, indicating the LLM-Retrieval pairing.
-
-        Returns:
-            str
-                String format representing the class and the paired models.
-        """
         return super().__str__() + "-MPTLLMBERTRetrieverICVRAG"

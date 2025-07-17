@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@ This script defines classes for parsing and processing datasets related to food 
 It includes a class for parsing the `FoodOntology` and a dataset configurations.
 """
 
-import os
 from typing import Any, List
 
 from ...base import BaseOntologyParser, OMDataset
@@ -103,8 +102,5 @@ class CiqualSirenOMDataset(OMDataset):
     """
     track = track
     ontology_name = "ciqual-siren"
-
     source_ontology = FoodOntology()
     target_ontology = FoodOntology()
-
-    working_dir = os.path.join(track, ontology_name)

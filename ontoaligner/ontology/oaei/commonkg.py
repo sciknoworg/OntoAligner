@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ CommonKG (Common Knowledge Graph) ontology. The main objective is to provide ont
 parsers and dataset configurations for specific datasets (e.g., Nell-DBpedia, Yago-Wikidata).
 """
 
-import os.path
 from typing import Any, List
 
 from ...base import BaseOntologyParser, OMDataset
@@ -72,7 +71,6 @@ class NellDbpediaOMDataset(OMDataset):
     ontology_name = "nell-dbpedia"
     source_ontology = CommonKGOntology()
     target_ontology = CommonKGOntology()
-    working_dir = os.path.join(track, ontology_name)
 
 
 class YagoWikidataOMDataset(OMDataset):
@@ -86,4 +84,3 @@ class YagoWikidataOMDataset(OMDataset):
     ontology_name = "yago-wikidata"
     source_ontology = CommonKGOntology()
     target_ontology = CommonKGOntology()
-    working_dir = os.path.join(track, ontology_name)

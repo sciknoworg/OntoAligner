@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -178,7 +178,6 @@ class MaterialInformationEMMOOMDataset(OMDataset):
     """
     track = track
     ontology_name = "MaterialInformation-EMMO"
-
     source_ontology = MaterialInformationOntoOntology()
     target_ontology = EMMOOntology()
 
@@ -192,7 +191,6 @@ class MaterialInformationMatOntoOMDataset(OMDataset):
     """
     track = track
     ontology_name = "MaterialInformation-MatOnto"
-
     source_ontology = MaterialInformationOntoOntology()
     target_ontology = MatOntoOntology()
 
@@ -206,6 +204,5 @@ class MaterialInformationMatOntoReducedOMDataset(OMDataset):
     """
     track = track
     ontology_name = "MaterialInformationReduced-MatOnto"
-
     source_ontology = MaterialInformationOntoOntology()
     target_ontology = MatOntoOntology()

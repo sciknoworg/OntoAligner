@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,9 +54,6 @@ class RAGBasedDecoderLLMArch(DecoderLLMArch):
         label2index (list): List of token IDs for "yes" and "no".
         answer_sets_token_id (dict): Mapping of token IDs for each answer set.
     """
-
-
-
     def __init__(self, **kwargs) -> None:
         """
         Initializes the RAGBasedDecoderLLMArch model.
@@ -180,7 +177,6 @@ class RAGBasedOpenAILLMArch(OpenAILLMArch):
     RAGBasedOpenAILLMArch is a class implementing an OpenAI-specific architecture for a RAG-based model
     with a post-processing step to extract yes/no predictions from the generated text.
     """
-
     def __str__(self):
         """
         Returns a string representation of the RAGBasedOpenAILLMArch.
@@ -218,7 +214,6 @@ class RAG(BaseOMModel):
     RAG is a retrieval-augmented generation (RAG) model that integrates both retrieval and generation components
     to answer questions based on retrieved documents and a language model.
     """
-
     path: str = "NO MODEL LOADING IN RAG MODELS"
     Retrieval = None
     LLM = None
@@ -380,6 +375,7 @@ class RAG(BaseOMModel):
         retrieval_predicts = self.Retrieval.generate(input_data=retrieval_input)
         return retrieval_predicts
 
+
 class AutoModelDecoderRAGLLM(RAGBasedDecoderLLMArch):
     """
     AutoModelDecoderRAGLLM is a subclass of RAGBasedDecoderLLMArch.
@@ -457,6 +453,7 @@ class OpenAIRAGLLM(RAGBasedOpenAILLMArch):
             str: "RAGBasedOpenAILLMArch-OpenAILLM".
         """
         return super().__str__() + "-OpenAILLM"
+
 
 class MambaSSMRAGLLM(AutoModelDecoderRAGLLMV2):
     """

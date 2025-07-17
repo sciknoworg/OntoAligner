@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,14 +36,7 @@ class SimpleFuzzySMLightweight(FuzzySMLightweight):
     """
     A subclass of `FuzzySMLightweight` that uses the basic string similarity ratio from RapidFuzz.
     """
-
     def __str__(self):
-        """
-        Returns a string representation of the `SimpleFuzzySMLightweight` class.
-
-        Returns:
-            str: A string that indicates the class name with the suffix "-SimpleFuzzySMLightweight".
-        """
         return super().__str__() + "-SimpleFuzzySMLightweight"
 
     def ratio_estimate(self) -> Any:
@@ -63,14 +56,7 @@ class WeightedFuzzySMLightweight(FuzzySMLightweight):
     """
     A subclass of `FuzzySMLightweight` that uses a weighted string similarity ratio from RapidFuzz.
     """
-
     def __str__(self):
-        """
-        Returns a string representation of the `WeightedFuzzySMLightweight` class.
-
-        Returns:
-            str: A string that indicates the class name with the suffix "-WeightedFuzzySMLightweight".
-        """
         return super().__str__() + "-WeightedFuzzySMLightweight"
 
     def ratio_estimate(self) -> Any:
@@ -90,14 +76,7 @@ class TokenSetFuzzySMLightweight(FuzzySMLightweight):
     """
     A subclass of `FuzzySMLightweight` that uses the token set ratio for string similarity from RapidFuzz.
     """
-
     def __str__(self):
-        """
-        Returns a string representation of the `TokenSetFuzzySMLightweight` class.
-
-        Returns:
-            str: A string that indicates the class name with the suffix "-TokenSetFuzzySMLightweight".
-        """
         return super().__str__() + "-TokenSetFuzzySMLightweight"
 
     def ratio_estimate(self) -> Any:

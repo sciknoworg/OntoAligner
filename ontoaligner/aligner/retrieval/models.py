@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,14 +43,7 @@ class SBERTRetrieval(BiEncoderRetrieval):
     for retrieval tasks. This class implements a method for returning the string representation
     of the retrieval model, appending the specific model's name.
     """
-
     def __str__(self):
-        """
-        Returns the string representation of the BERTRetrieval model.
-
-        Returns:
-            str: The string "+SBERTRetrieval" appended to the superclass string.
-        """
         return super().__str__() + "+SBERTRetrieval"
 
 
@@ -189,14 +182,7 @@ class SVMBERTRetrieval(MLRetrieval):
     SVMBERTRetrieval is a subclass of MLRetrieval that uses a Support Vector Machine (SVM)
     combined with BERT-based embeddings for retrieval tasks.
     """
-
     def __str__(self):
-        """
-        Returns the string representation of the SVMBERTRetrieval model.
-
-        Returns:
-            str: The string "+SVMBERTRetrieval" appended to the superclass string.
-        """
         return super().__str__() + "+SVMBERTRetrieval"
 
 
@@ -205,14 +191,7 @@ class AdaRetrieval(BiEncoderRetrieval):
     AdaRetrieval is a subclass of BiEncoderRetrieval that uses pre-trained embeddings from OpenAI.
     It is designed to load embeddings from files, fit them, and transform input data into corresponding embeddings.
     """
-
     def __str__(self):
-        """
-        Returns the string representation of the AdaRetrieval model.
-
-        Returns:
-            str: The string "+AdaRetrieval" appended to the superclass string.
-        """
         return super().__str__() + "+AdaRetrieval"
 
     def load(self, path: str):

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://example.org/amazon#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+
+  <!-- Root: Electronics -->
+  <owl:Class rdf:about="http://example.org/amazon#Electronics">
+    <skos:prefLabel>Electronics</skos:prefLabel>
+  </owl:Class>
+
+  <!-- Laptop Hierarchy -->
+  <owl:Class rdf:about="http://example.org/amazon#Laptop">
+    <skos:prefLabel>Laptop</skos:prefLabel>
+    <skos:broader rdf:resource="http://example.org/amazon#Electronics"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/amazon#Electronics"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="http://example.org/amazon#GamingLaptop">
+    <skos:prefLabel>Gaming Laptop</skos:prefLabel>
+    <skos:broader rdf:resource="http://example.org/amazon#Laptop"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/amazon#Laptop"/>
+    <owl:disjointWith rdf:resource="http://example.org/amazon#Ultrabook"/>
+  </owl:Class>
+
+  <owl:Class rdf:about="http://example.org/amazon#Ultrabook">
+    <skos:prefLabel>Ultrabook</skos:prefLabel>
+    <skos:broader rdf:resource="http://example.org/amazon#Laptop"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/amazon#Laptop"/>
+  </owl:Class>
+
+  <!-- Smartphone Hierarchy -->
+  <owl:Class rdf:about="http://example.org/amazon#Smartphone">
+    <skos:prefLabel>Smartphone</skos:prefLabel>
+    <skos:altLabel>Mobile Phone</skos:altLabel>
+    <skos:broader rdf:resource="http://example.org/amazon#Electronics"/>
+  </owl:Class>
+
+  <!-- Property Hierarchy -->
+  <owl:ObjectProperty rdf:about="http://example.org/amazon#hasBrand">
+    <rdfs:label>hasBrand</rdfs:label>
+    <rdfs:subPropertyOf rdf:resource="http://example.org/amazon#hasManufacturer"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:about="http://example.org/amazon#hasManufacturer">
+    <rdfs:label>hasManufacturer</rdfs:label>
+  </owl:ObjectProperty>
+
+  <owl:DatatypeProperty rdf:about="http://example.org/amazon#screenSize">
+    <rdfs:label>screenSize</rdfs:label>
+    <rdfs:domain rdf:resource="http://example.org/amazon#Laptop"/>
+  </owl:DatatypeProperty>
+
+</rdf:RDF>
