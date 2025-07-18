@@ -14,9 +14,6 @@ Usage
     See the `Quickstart <gettingstarted/quickstart.html>`_ for more quick information on how to use OntoAligner.
 
 
-Working with OntoAligner is straightforward:
-
-
 .. tip::
 
     You can install **OntoAligner** using pip:
@@ -27,6 +24,7 @@ Working with OntoAligner is straightforward:
     We recommend **Python 3.10+** and `PyTorch 1.4.0+ <https://pytorch.org/get-started/locally/>`_, and `transformers v4.41.0+ <https://github.com/huggingface/transformers>`_. See `installation <gettingstarted/installation.html>`_ for further installation options.
 
 
+Working with OntoAligner is straightforward:
 
 .. code-block:: python
 
