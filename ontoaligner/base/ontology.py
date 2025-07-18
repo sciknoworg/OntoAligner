@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ Classes:
     - BaseAlignmentsParser: A base class for parsing alignment data, extracting relationships between
                             entities and their corresponding RDF data.
 """
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import Any, Dict, List
 
 
@@ -126,7 +126,6 @@ class BaseOntologyParser(ABC):
         """
         return self.get_owl_items(owl_class.hasRelatedSynonym)
 
-    @abstractmethod
     def get_comments(self, owl_class: Any) -> List:
         """
         Abstract method to retrieve comments for the given ontology class.
