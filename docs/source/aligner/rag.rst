@@ -1,5 +1,6 @@
 Retrieval Augmented Generation
 ================================
+
 This tutorial walks you through the process of ontology matching using the OntoAligner library, leveraging retrieval-augmented generation (RAG) techniques. Starting with the necessary module imports, it defines a task and loads source and target ontologies along with reference matchings. The tutorial then encodes the ontologies using a specialized encoder, configures a retriever and an LLM, and generates predictions. Finally, it demonstrates two postprocessing techniques—heuristic and hybrid—followed by saving the matched alignments in XML format, ready for use or further analysis.
 
 .. code-block:: python
@@ -72,7 +73,7 @@ In this tutorial, we demonstrated:
 You can customize the configurations and thresholds based on your specific dataset and use case. For more details, refer to the :doc:`../package_reference/postprocess`
 
 FewShot RAG
-===============
+------------------------
 This tutorial works based on FewShot RAG matching, an extension of the RAG model, designed for few-shot learning tasks. The FewShot RAG workflow is the same as RAG but with two differences:
 
 1. You only need to use FewShot encoders as follows, and since a fewshot model uses multiple examples you might also provide only specific examples from reference or other examples as a fewshot samples.
@@ -95,7 +96,7 @@ This tutorial works based on FewShot RAG matching, an extension of the RAG model
     model = MistralLLMBERTRetrieverFSRAG(positive_ratio=0.7, n_shots=5, **config)
 
 In-Context Vectors RAG
-==================================
+------------------------
 This RAG variant performs ontology matching using ``ConceptRAGEncoder`` only. The In-Contect Vectors introduced by [1](https://github.com/shengliu66/ICV) tackle in-context learning as in-context vectors (ICV). We used LLMs in this perspective in the RAG module. The workflow is the same as RAG or FewShot RAG with the following differences:
 
 
@@ -117,4 +118,4 @@ This RAG variant performs ontology matching using ``ConceptRAGEncoder`` only. Th
     model.load(llm_path="tiiuae/falcon-7b", ir_path="all-MiniLM-L6-v2")
 
 
-[1] Liu, S., Ye, H., Xing, L., & Zou, J. (2023). [In-context vectors: Making in context learning more effective and controllable through latent space steering](https://arxiv.org/abs/2311.06668>). arXiv preprint arXiv:2311.06668.
+[1] Liu, S., Ye, H., Xing, L., & Zou, J. (2023). `In-context vectors: Making in context learning more effective and controllable through latent space steering <https://arxiv.org/abs/2311.06668>`_. arXiv preprint arXiv:2311.06668.
