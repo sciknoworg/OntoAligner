@@ -1,53 +1,32 @@
 
+OntoAligner Documentation
+===========================
 
-.. raw:: html
-
-   <div align="center">
-     <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/main/docs/source/img/logo-ontoaligner.png" alt="OntoLearner Logo" width="700"/>
-   </div>
-
-
-.. raw:: html
-
-    <div style="text-align: center;">
-        <a href="https://badge.fury.io/py/OntoAligner">
-            <img src="https://badge.fury.io/py/OntoAligner.svg" alt="PyPI version">
-        </a>
-        <a href="https://static.pepy.tech/badge/ontoaligner">
-            <img src="https://static.pepy.tech/badge/ontoaligner" alt="PyPI downloads">
-        </a>
-        <a href="https://www.apache.org/licenses/LICENSE-2.0">
-            <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License">
-        </a>
-    </div>
-
-
-Ontologies are a key building block for many applications, such as database integration, knowledge graphs, e-commerce, semantic web services, or social networks. However, evolving systems within the semantic web generally adopt different ontologies. Hence, ontology alignment, the process of identifying correspondences between entities in different ontologies, is a critical task in knowledge engineering. To this endover, **OntoAligner** is a comprehensive modular and robust Python toolkit for ontology alignment built to make ontology alignment/matching easy to use for everyone.
+Ontology Alignment (OA) is fundamental for achieving semantic interoperability across diverse knowledge systems. **OntoAligner** (a.k.a Ontology Aligner), a modular Python toolkit for ontology alignment, designed to address current limitations with existing tools faced by practitioners. Existing tools are limited in scalability, modularity, and ease of integration with recent AI advances. OntoAligner provides a flexible architecture integrating existing lightweight OA techniques such as fuzzy matching but goes beyond by supporting contemporary methods with retrieval-augmented generation and large language models for OA. The current framework prioritizes extensibility, enabling researchers to integrate custom alignment algorithms and datasets. With OntoAligner you can handle large-scale ontologies efficiently with few lines of code while delivering high alignment quality. By making OntoAligner open-source, we aim to provide a resource that fosters innovation and collaboration within the OA community, empowering researchers and practitioners with a toolkit for reproducible OA research and real-world applications.
 
 OntoAligner was created by `Scientific Knowledge Organization (SciKnowOrg group) <https://github.com/sciknoworg/>`_ at `Technische Informationsbibliothek (TIB) <https://www.tib.eu/de/>`_. Don't hesitate to open an issue on the `OntoAligner repository <https://github.com/sciknoworg/OntoAligner>`_ if something is broken or if you have further questions.
-
-
-
-.. tab:: Quickstart
-
-    See the `Quickstart <gettingstarted/quickstart.html>`_ for more quick information on how to use OntoAligner.
-    ::
-
-
-
-.. tab:: Installation
-
-    You can install *ontoaligner* using pip:
-    ::
-
-       pip install -U ontoaligner
-
-    See `installation <gettingstarted/installation.html>`_ for further installation options.
 
 Usage
 =====
 
+.. note::
+
+    See the `Quickstart <gettingstarted/quickstart.html>`_ for more quick information on how to use OntoAligner.
+
+
 Working with OntoAligner is straightforward:
+
+
+.. tip::
+
+    You can install **OntoAligner** using pip:
+
+    .. code-block:: cmd
+
+        pip install -U OntoAligner
+    We recommend **Python 3.10+** and `PyTorch 1.4.0+ <https://pytorch.org/get-started/locally/>`_, and `transformers v4.41.0+ <https://github.com/huggingface/transformers>`_. See `installation <gettingstarted/installation.html>`_ for further installation options.
+
+
 
 .. code-block:: python
 
@@ -92,6 +71,25 @@ Working with OntoAligner is straightforward:
     # Step 7: Convert matchings to XML format and save the XML representation
     xml_str = xmlify.xml_alignment_generator(matchings=hybrid_matchings)
     open("matchings.xml", "w", encoding="utf-8").write(xml_str)
+
+What is Next?
+===============
+
+**Parsers**:
+
+* How to parse ontologies for ontology aligment? `How to use? > Parsers <howtouse/parsers.html>`_.
+
+**Aligner Models**:
+
+* How to use *Lightweight* Aligner? `Aligners > Lightweight <aligner/lightweight.html>`_
+* How to use *Retrieval* Aligner? `Aligners > Retrieval <aligner/retriever.html>`_
+* How to use *Large Language Model* Aligner? `Aligners > Large Language Model <aligner/llm.html>`_
+* How to use *Retrieval Augmented Generation* Aligner? `Aligners > Retrieval Augmented Generation <aligner/rag.html>`_
+* What is the existing Aligners? `How to use? > Models <howtouse/models.html>`_
+
+**Use Casses**:
+
+* How OntoAligner can be used in e-Commerce? `Use Cases > eCommerce <usecases/ecommerce.html>`_
 
 
 Citing
