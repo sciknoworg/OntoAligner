@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,3 +13,4 @@
 # limitations under the License.
 from .oaei import * # NOQA
 from .generic import GenericOntology, GenericOMDataset
+from .triple import GraphTripleOntology, GraphTripleOMDataset
