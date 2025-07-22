@@ -123,4 +123,3 @@ Consider reading one of the following sections next:
 * `Aligners > FewShot RAG <../aligner/rag.html#fewshot-rag>`_
 * `Aligners > In-Context Vectors RAG <../aligner/rag.html#in-context-vectors-rag>`_
 * `Package Reference > Pipeline <../package_reference/pipeline.html>`_
-* `Package Reference > Aligners <./package_reference/aligners.html>`_

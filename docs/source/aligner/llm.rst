@@ -219,3 +219,18 @@ The following code will compare the generated alignments with reference matching
     # Export matchings to JSON
     with open("matchings.json", "w", encoding="utf-8") as json_file:
         json.dump(matchings, json_file, indent=4, ensure_ascii=False)
+
+Encoder-Decoder Aligner
+-----------------------------
+
+Uses models like Flan-T5 that encode input and generate alignments in a decoder-only step.
+
+Decoder-Only Aligner
+-----------------------
+
+Wraps decoder-only models (e.g., GPT2-style) from Hugging Face for alignment using prompt-based generation.
+
+OpenAI Aligner
+--------------------------
+
+Interfaces with OpenAI’s GPT models via API (e.g., gpt-4, gpt-3.5-turbo) for alignment through conversational prompts.

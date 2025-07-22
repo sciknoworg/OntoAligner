@@ -71,3 +71,11 @@
         max-width: 100%;
     }
 }
+
+.project-vision {
+  background-color: #e6f7ff;
+  padding: 1em;
+  border-left: 5px solid #ffbe18;
+  margin-bottom: 1.2em;
+  font-size: 1.1em;
+}

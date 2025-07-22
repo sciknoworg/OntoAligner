@@ -76,7 +76,57 @@ In this tutorial, we demonstrated:
 You can customize the configurations and thresholds based on your specific dataset and use case. For more details, refer to the :doc:`../package_reference/postprocess`
 
 
-RAG Customization
+
+FewShot-RAG Aligner
+------------------------
+This tutorial works based on FewShot RAG matching, an extension of the RAG model, designed for few-shot learning tasks. The FewShot RAG workflow is the same as RAG but with two differences:
+
+1. You only need to use FewShot encoders as follows, and since a fewshot model uses multiple examples you might also provide only specific examples from reference or other examples as a fewshot samples.
+
+.. code-block:: python
+
+    from ontoaligner.encoder import ConceptParentFewShotEncoder
+
+    encoder_model = ConceptParentFewShotEncoder()
+    encoded_ontology = encoder_model(source=dataset['source'],
+                                     target=dataset['target'],
+                                     reference=dataset['reference'])
+
+2. Next, use a Fewshot Retrieval-Augmented Generation (RAG) model for ontology alignment.
+
+.. code-block:: python
+
+    from ontoaligner.aligner import MistralLLMBERTRetrieverFSRAG
+
+    model = MistralLLMBERTRetrieverFSRAG(positive_ratio=0.7, n_shots=5, **config)
+
+ICV-RAG Aligner
+---------------------------------
+This RAG variant performs ontology matching using ``ConceptRAGEncoder`` only. The In-Contect Vectors introduced by [1](https://github.com/shengliu66/ICV) tackle in-context learning as in-context vectors (ICV). We used LLMs in this perspective in the RAG module. The workflow is the same as RAG or FewShot RAG with the following differences:
+
+
+1. Incorporate the ``ConceptRAGEncoder`` and also provide reference (or examples to build up the ICV vectors).
+
+.. code-block:: python
+
+    from ontoaligner.encoder import ConceptRAGEncoder
+    encoder_model = ConceptRAGEncoder()
+    encoded_ontology = encoder_model(source=dataset['source'], target=dataset['target'], reference=dataset['reference'])
+
+2. Next, import an ICVRAG model, here we use Falcon model:
+
+.. code-block:: python
+
+    from ontoaligner.aligner import FalconLLMBERTRetrieverICVRAG
+    model = FalconLLMBERTRetrieverICVRAG(**config)
+
+    model.load(llm_path="tiiuae/falcon-7b", ir_path="all-MiniLM-L6-v2")
+
+
+[1] Liu, S., Ye, H., Xing, L., & Zou, J. (2023). `In-context vectors: Making in context learning more effective and controllable through latent space steering <https://arxiv.org/abs/2311.06668>`_. arXiv preprint arXiv:2311.06668.
+
+
+Customized-RAG Aligner
 -----------------------
 
 .. sidebar:: Useful links:
@@ -128,52 +178,3 @@ The primary distinction between ``AutoModelDecoderRAGLLMV2`` and ``AutoModelDeco
     Consider reading the following section next:
 
     * `Package Reference > Ontology Matchers <../package_reference/aligners.html>`_
-
-
-FewShot RAG
-------------------------
-This tutorial works based on FewShot RAG matching, an extension of the RAG model, designed for few-shot learning tasks. The FewShot RAG workflow is the same as RAG but with two differences:
-
-1. You only need to use FewShot encoders as follows, and since a fewshot model uses multiple examples you might also provide only specific examples from reference or other examples as a fewshot samples.
-
-.. code-block:: python
-
-    from ontoaligner.encoder import ConceptParentFewShotEncoder
-
-    encoder_model = ConceptParentFewShotEncoder()
-    encoded_ontology = encoder_model(source=dataset['source'],
-                                     target=dataset['target'],
-                                     reference=dataset['reference'])
-
-2. Next, use a Fewshot Retrieval-Augmented Generation (RAG) model for ontology alignment.
-
-.. code-block:: python
-
-    from ontoaligner.aligner import MistralLLMBERTRetrieverFSRAG
-
-    model = MistralLLMBERTRetrieverFSRAG(positive_ratio=0.7, n_shots=5, **config)
-
-In-Context Vectors RAG
-------------------------
-This RAG variant performs ontology matching using ``ConceptRAGEncoder`` only. The In-Contect Vectors introduced by [1](https://github.com/shengliu66/ICV) tackle in-context learning as in-context vectors (ICV). We used LLMs in this perspective in the RAG module. The workflow is the same as RAG or FewShot RAG with the following differences:
-
-
-1. Incorporate the ``ConceptRAGEncoder`` and also provide reference (or examples to build up the ICV vectors).
-
-.. code-block:: python
-
-    from ontoaligner.encoder import ConceptRAGEncoder
-    encoder_model = ConceptRAGEncoder()
-    encoded_ontology = encoder_model(source=dataset['source'], target=dataset['target'], reference=dataset['reference'])
-
-2. Next, import an ICVRAG model, here we use Falcon model:
-
-.. code-block:: python
-
-    from ontoaligner.aligner import FalconLLMBERTRetrieverICVRAG
-    model = FalconLLMBERTRetrieverICVRAG(**config)
-
-    model.load(llm_path="tiiuae/falcon-7b", ir_path="all-MiniLM-L6-v2")
-
-
-[1] Liu, S., Ye, H., Xing, L., & Zou, J. (2023). `In-context vectors: Making in context learning more effective and controllable through latent space steering <https://arxiv.org/abs/2311.06668>`_. arXiv preprint arXiv:2311.06668.
