@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,74 @@ Classes:
 """
 from typing import Any, Dict
 
-from .encoders import LightweightEncoder
+from ..base import BaseEncoder
+
+class LightweightEncoder(BaseEncoder):
+    """
+    A lightweight encoder for parsing ontology data and preprocessing it.
+
+    This class provides methods for parsing ontological data, applying text preprocessing,
+    and formatting the data into a structure suitable for further processing.
+    """
+    def parse(self, **kwargs) -> Any:
+        """
+        Parses the source and target ontologies, applying preprocessing.
+
+        This method extracts ontology items (IRI and label) from the source and target ontologies,
+        applies text preprocessing to the labels, and returns the encoded data.
+
+        Parameters:
+            **kwargs: Contains the source and target ontologies as keyword arguments.
+
+        Returns:
+            list: A list containing two elements, the processed source and target ontologies.
+        """
+        source_onto, target_onto = kwargs["source"], kwargs["target"]
+        source_ontos = []
+        for source in source_onto:
+            encoded_source = self.get_owl_items(owl=source)
+            encoded_source["text"] = self.preprocess(encoded_source["text"])
+            source_ontos.append(encoded_source)
+        target_ontos = []
+        for target in target_onto:
+            encoded_target = self.get_owl_items(owl=target)
+            encoded_target["text"] = self.preprocess(encoded_target["text"])
+            target_ontos.append(encoded_target)
+        return [source_ontos, target_ontos]
+
+    def __str__(self):
+        """
+        Returns a string representation of the encoder.
+
+        Returns:
+            dict: A dictionary with the class name as key and items_in_owl as value.
+        """
+        return {"LightweightEncoder": self.items_in_owl}
+
+    def get_owl_items(self, owl: Dict) -> Any:
+        """
+        Abstract method for extracting ontology data.
+
+        This method should be implemented by subclasses to extract specific ontology data
+        (e.g., IRI and label) from the provided ontology item.
+
+        Parameters:
+            owl (Dict): A dictionary representing an ontology item.
+
+        Returns:
+            Any: The extracted ontology data.
+        """
+        pass
+
+    def get_encoder_info(self):
+        """
+        Provides information about the encoder.
+
+        Returns:
+            str: A description of the encoder's function in the overall pipeline.
+        """
+        return "INPUT CONSIST OF COMBINED INFORMATION TO FUZZY STRING MATCHING"
+
 
 class ConceptLightweightEncoder(LightweightEncoder):
     """

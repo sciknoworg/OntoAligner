@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -189,6 +189,5 @@ class GenericOMDataset(OMDataset):
     """
     track = track
     ontology_name = "Source-Target"
-
     source_ontology = GenericOntology()
     target_ontology = GenericOntology()

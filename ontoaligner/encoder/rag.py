@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,8 +23,67 @@ Classes:
 """
 from typing import Any
 
-from .encoders import RAGEncoder
+from ..base import BaseEncoder
 from .lightweight import ConceptLightweightEncoder
+
+
+class RAGEncoder(BaseEncoder):
+    """
+    A retrieval-augmented generation (RAG) encoder for ontology mapping.
+
+    This class leverages retrieval-augmented generation for encoding ontology data,
+    allowing for both retrieval of relevant data and generation of encoded information.
+    """
+    retrieval_encoder: Any = None
+    llm_encoder: str = None
+
+    def parse(self, **kwargs) -> Any:
+        """
+        Processes the source and target ontologies into indices for retrieval and encoding.
+
+        This method converts the source and target ontologies into mappings of IRI to index,
+        preparing them for use in a retrieval-augmented generation model.
+
+        Parameters:
+            **kwargs: Contains the source and target ontologies as keyword arguments.
+
+        Returns:
+            dict: A dictionary with the retrieval encoder, LLM encoder, task arguments,
+                  and the source and target ontology index mappings.
+        """
+        # self.dataset_module = kwargs["dataset-module"]
+        source_onto_iri2index = {
+            source["iri"]: index for index, source in enumerate(kwargs["source"])
+        }
+        target_onto_iri2index = {
+            target["iri"]: index for index, target in enumerate(kwargs["target"])
+        }
+        return {
+            "retriever-encoder": self.retrieval_encoder,
+            "llm-encoder": self.llm_encoder,
+            "task-args": kwargs,
+            "source-onto-iri2index": source_onto_iri2index,
+            "target-onto-iri2index": target_onto_iri2index,
+        }
+
+    def __str__(self):
+        """
+        Returns a string representation of the encoder.
+
+        Returns:
+            dict: A dictionary with the encoder's name as key and items_in_owl as value.
+        """
+        return {"RagEncoder": self.items_in_owl}
+
+    def get_encoder_info(self) -> str:
+        """
+        Provides information about the encoder and its usage.
+
+        Returns:
+            str: A description of the encoder's components.
+        """
+        return "PROMPT-TEMPLATE USES:" + self.llm_encoder + " ENCODER"
+
 
 class ConceptRAGEncoder(RAGEncoder):
     """

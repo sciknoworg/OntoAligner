@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ Classes:
     - OMDataset: A base class for handling ontology matching datasets, including parsing ontologies and alignments
                 and collecting dataset-related information.
 """
-import os
 import json
 from abc import ABC
 from typing import Any, Dict
@@ -95,17 +94,6 @@ class OMDataset(ABC):
             json_data = json.load(f)
         return json_data
 
-    def __dir__(self):
-        """
-        Returns the directory structure for the dataset.
-
-        This method constructs the directory path based on the track and ontology name.
-
-        Returns:
-            str: The constructed directory path for the dataset.
-        """
-        return os.path.join(self.track, self.ontology_name)
-
     def __str__(self):
         """
         Returns a string representation of the dataset's ontology name.
@@ -115,4 +103,4 @@ class OMDataset(ABC):
         Returns:
             str: The ontology name as a string.
         """
-        return f"{self.ontology_name}"
+        return f"Track: {self.track}, Source-Target sets: {self.ontology_name}"

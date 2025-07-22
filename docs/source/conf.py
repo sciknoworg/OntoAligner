@@ -70,10 +70,7 @@ html_theme_options = {
     "external_links": [
           ("Github", "https://github.com/sciknoworg/OntoAligner"),
           ("Pypi", "https://pypi.org/project/OntoAligner/")
-    ],
-    "navigation_depth": 4,
-    "collapse_navigation": True,
-    "logo_only": True,
+    ]
 }
 
 html_static_path = ["_static"]
