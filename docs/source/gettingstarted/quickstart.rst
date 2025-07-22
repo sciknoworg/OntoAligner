@@ -48,12 +48,10 @@ Once you have `installed <installation.html>`_ OntoAligner, you can easily use O
 
 .. sidebar:: Useful links:
 
-    * `Package Reference > Ontology <../package_reference/ontology.html>`_
+    * `Package Reference > Ontology <../package_reference/parsers.html>`_
     * `Package Reference > Pipeline <../package_reference/pipeline.html>`_
-    * `Package Reference > Encoder <../package_reference/encoder.html>`_
+    * `Package Reference > Encoder <../package_reference/encoders.html>`_
     * `Package Reference > Post-Process > Process <../package_reference/postprocess.html#module-ontoaligner.postprocess.process>`_
-    * `Package Reference > Utils > Metrics <../package_reference/utils.html#module-ontoaligner.utils.metrics>`_
-    * `Package Reference > Utils > XMLify <../package_reference/utils.html#module-ontoaligner.utils.xmlify>`_
     * `Aligners > Lightweight Aligner <../aligner/lightweight.html>`_
     * `Aligners > Retrieval Aligner <../aligner/retriever.html>`_
     * `Aligners > Large Language Models Aligner <../aligner/llm.html>`_
@@ -61,7 +59,7 @@ Once you have `installed <installation.html>`_ OntoAligner, you can easily use O
 
 
 
-With ``ontoaligner`` library, we perform ontology matching between a source and target ontology with loading a dataset using the `MaterialInformationMatOntoOMDataset <../package_reference/ontology.html#material-sciences-and-engineering-track>`_ class that considers ``MaterialInformation`` as source ontology, and ``MatOnto`` as target ontology. This followed by encoding the ontologies using `ConceptRAGEncoder <../package_reference/encoder.html#retrieval-augmented-generation-encoders>`_. Next, using ``MaterialInformationMatOntoOMDataset`` that configures a retriever and a large language model (LLM) for generating predictions, using a pre-trained Mistral-7B (``mistralai/Mistral-7B-v0.3``) model and an Sentence Transformer model (``all-MiniLM-L6-v2``). After RAG module prediction for matching, a ``hybrid`` postprocessing is applied to filter and refine the predictions , and evaluates the resulting matchings against a reference set. Finally, it generates an evaluation report and exports the matching results as an XML file. This process automates ontology alignment, making it easier to compare and merge knowledge structures. The postprocessing, a cardinality based filter runes using IR threshold to filter retriever outputs and then applies LLM based confidence score filtering.
+With ``ontoaligner`` library, we perform ontology matching between a source and target ontology with loading a dataset using the `MaterialInformationMatOntoOMDataset <../package_reference/parsers.html#material-sciences-and-engineering-track>`_ class that considers ``MaterialInformation`` as source ontology, and ``MatOnto`` as target ontology. This followed by encoding the ontologies using `ConceptRAGEncoder <../package_reference/encoders.html#retrieval-augmented-generation-encoders>`_. Next, using ``MaterialInformationMatOntoOMDataset`` that configures a retriever and a large language model (LLM) for generating predictions, using a pre-trained Mistral-7B (``mistralai/Mistral-7B-v0.3``) model and an Sentence Transformer model (``all-MiniLM-L6-v2``). After RAG module prediction for matching, a ``hybrid`` postprocessing is applied to filter and refine the predictions , and evaluates the resulting matchings against a reference set. Finally, it generates an evaluation report and exports the matching results as an XML file. This process automates ontology alignment, making it easier to compare and merge knowledge structures. The postprocessing, a cardinality based filter runes using IR threshold to filter retriever outputs and then applies LLM based confidence score filtering.
 
 Aligner Pipeline
 --------------------------
@@ -125,4 +123,4 @@ Consider reading one of the following sections next:
 * `Aligners > FewShot RAG <../aligner/rag.html#fewshot-rag>`_
 * `Aligners > In-Context Vectors RAG <../aligner/rag.html#in-context-vectors-rag>`_
 * `Package Reference > Pipeline <../package_reference/pipeline.html>`_
-* `Package Reference > Ontology Matchers <./package_reference/ontolog_matchers.html>`_
+* `Package Reference > Aligners <./package_reference/aligners.html>`_

@@ -1,7 +1,10 @@
-Retrieval Augmented Generation
+Retrieval-Augmented Generation
 ================================
 
-This tutorial walks you through the process of ontology matching using the OntoAligner library, leveraging retrieval-augmented generation (RAG) techniques. Starting with the necessary module imports, it defines a task and loads source and target ontologies along with reference matchings. The tutorial then encodes the ontologies using a specialized encoder, configures a retriever and an LLM, and generates predictions. Finally, it demonstrates two postprocessing techniques—heuristic and hybrid—followed by saving the matched alignments in XML format, ready for use or further analysis.
+Usage
+----------------
+
+This guide walks you through the process of ontology matching using the OntoAligner library, leveraging **retrieval-augmented generation (RAG)** techniques. Starting with the necessary module imports, it defines a task and loads source and target ontologies along with reference matchings. The tutorial then encodes the ontologies using a specialized encoder, configures a retriever and an LLM, and generates predictions. Finally, it demonstrates two postprocessing techniques—heuristic and hybrid—followed by saving the matched alignments in XML format, ready for use or further analysis.
 
 .. code-block:: python
 
@@ -71,6 +74,61 @@ In this tutorial, we demonstrated:
 * Saving results in XML format
 
 You can customize the configurations and thresholds based on your specific dataset and use case. For more details, refer to the :doc:`../package_reference/postprocess`
+
+
+RAG Customization
+-----------------------
+
+.. sidebar:: Useful links:
+
+    * `OntoAlignerPipeline Experimentation <https://github.com/sciknoworg/OntoAligner/blob/main/examples/OntoAlignerPipeline-Exp.ipynb>`_
+
+You can use custom LLMs with RAG for alignment. Below, we define two classes, each combining a retrieval mechanism with a LLMs to implement RAG aligner functionality.
+
+.. code-block:: python
+
+    from ontoaligner.aligner import (
+        TFIDFRetrieval,
+        SBERTRetrieval,
+        AutoModelDecoderRAGLLM,
+        AutoModelDecoderRAGLLMV2,
+        RAG
+    )
+
+    class QwenLLMTFIDFRetrieverRAG(RAG):
+        Retrieval = TFIDFRetrieval
+        LLM = AutoModelDecoderRAGLLMV2
+
+    class MinistralLLMBERTRetrieverRAG(RAG):
+        Retrieval = SBERTRetrieval
+        LLM = AutoModelDecoderRAGLLM
+
+As you can see,  **QwenLLMTFIDFRetrieverRAG** Utilizes ``TFIDFRetrieval`` for lightweight retriever with Qwen LLM. While, **MinistralLLMBERTRetrieverRAG** Employs ``SBERTRetrieval`` for retriever using sentence transformers and Ministral LLM.
+
+**AutoModelDecoderRAGLLMV2 and AutoModelDecoderRAGLLM Differences:**
+
+The primary distinction between ``AutoModelDecoderRAGLLMV2`` and ``AutoModelDecoderRAGLLM`` lies in the enhanced functionality of the former. ``AutoModelDecoderRAGLLMV2`` includes additional methods (as presented in the following) for better classification and token validation. Overall, these classes enable seamless integration of retrieval mechanisms with LLM-based generation, making them powerful tools for ontology alignment and other domain-specific applications.
+
+
+.. code-block:: python
+
+    def get_probas_yes_no(self, outputs):
+        """Retrieves the probabilities for the "yes" and "no" labels from model output."""
+        probas_yes_no = (outputs.scores[0][:, self.answer_sets_token_id["yes"] +
+                                              self.answer_sets_token_id["no"]].float().softmax(-1))
+        return probas_yes_no
+
+    def check_answer_set_tokenizer(self, answer: str) -> bool:
+        """Checks if the tokenizer produces a single token for a given answer string."""
+        return len(self.tokenizer(answer).input_ids) == 1
+
+
+.. note::
+
+    Consider reading the following section next:
+
+    * `Package Reference > Ontology Matchers <../package_reference/aligners.html>`_
+
 
 FewShot RAG
 ------------------------

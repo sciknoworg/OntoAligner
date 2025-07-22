@@ -1,14 +1,14 @@
+Large Language Models
+=============================
 
-.. raw:: html
-
-   <h1>Large Language Models</h1>
-
+Usage
+------------
 
 This module guides you through a step-by-step process for performing ontology alignment using a large language model (LLM) and the `OntoAligner` library. By the end, you'll understand how to preprocess data, encode ontologies, generate alignments, evaluate results, and save the outputs in XML and JSON formats.
 
 .. raw:: html
 
-   <h3>Step 1: Import the Required Modules</h3>
+   <h4>Step 1: Import the Required Modules</h4>
 
 
 
@@ -31,7 +31,7 @@ Start by importing the necessary libraries and modules. These tools will help us
 
 .. raw:: html
 
-   <h3>Step 2: Initialize, Parse, and Encode Ontology</h3>
+   <h4>Step 2: Initialize, Parse, and Encode Ontology</h4>
 
 
 Define the ontology alignment task using the provided datasets.
@@ -55,7 +55,7 @@ The encoder module transforms the ontology concepts into a format suitable for t
 
 .. raw:: html
 
-   <h3>Step 3: Create Dataset for LLM Matching</h3>
+   <h4>Step 3: Create Dataset for LLM Matching</h4>
 
 Prepare the data for the LLM-based matcher by filling in the prompt template.
 
@@ -104,7 +104,7 @@ We will proceed with concept only representation!
 
 .. raw:: html
 
-   <h3>Step 4: Batch the Data</h3>
+   <h4>Step 4: Batch the Data</h4>
 
 Use a DataLoader to manage batching. Batching allows the model to process large datasets efficiently in smaller chunks.
 
@@ -121,7 +121,7 @@ Use a DataLoader to manage batching. Batching allows the model to process large 
 
 .. raw:: html
 
-   <h3>Step 5: Initialize and Load the LLM Model</h3>
+   <h4>Step 5: Initialize and Load the LLM Model</h4>
 
 
 Set up the LLM-based model for generating alignments.
@@ -138,7 +138,7 @@ Here we used ``Qwen/Qwen2-0.5B`` model, but feel free to use any LLM you like.
 
 .. raw:: html
 
-   <h3>Step 6: Generate Predictionsl</h3>
+   <h4>Step 6: Generate Predictionsl</h4>
 
 
 Feed batched prompts to the LLM to predict alignments.
@@ -162,7 +162,7 @@ The LLM generates potential alignments between source and target concepts based 
 
 .. raw:: html
 
-   <h3>Step 7: Post-Process Predictions</h3>
+   <h4>Step 7: Post-Process Predictions</h4>
 
 
 As we see the output of LLM is a text, where it could be hard to determine whether there is a match or not. To ease the process in the Post-Process module we implement multiple label mappers to find the label classes in the output. Here, we refine the predictions using ``TFIDFLabelMapper`` which is based on TF-IDF and logistic regression classifier. The ``llm_postprocessor`` will take predictions and dataset and mapper to find the matchings by only keeping the interested class here (which in a default value is a ``yes`` class).
@@ -201,7 +201,7 @@ The resulted ``matchings`` will be as following:
 
 .. raw:: html
 
-   <h3>Step 8: Evaluate and Export the Matchings</h3>
+   <h4>Step 8: Evaluate and Export the Matchings</h4>
 
 
 The following code will compare the generated alignments with reference matchings. Then save the matchings in both XML and JSON formats for further analysis or use. Feel free to use any of the techniques.

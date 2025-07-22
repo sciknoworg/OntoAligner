@@ -1,14 +1,21 @@
+Lightweight
+==========================
 
-.. raw:: html
 
-   <h1>Lightweight</h1>
+Usage
+-----------------
 
+.. sidebar:: Checkout Package References for Lightweight base and models:
+
+        * See `Package Reference > Lightweight <../package_reference/aligners.html#module-ontoaligner.aligner.lightweight.lightweight>`_.
+        * See `Package Reference > Lightweight Models <../package_reference/aligners.html#module-ontoaligner.aligner.lightweight.models>`_.
 
 This module demonstrates the process of aligning ontologies using the **OntoAligner** library. It uses a lightweight fuzzy matching algorithm to match concepts between two ontologies. The example includes data preprocessing, encoding, matching, evaluation, and exporting the matching results in XML or json formats.
 
+
 .. raw:: html
 
-   <h3>Step 1: Import the Required Modules</h3>
+   <h4>Step 1: Import the Required Modules</h4>
 
 
 Start by importing the necessary libraries and modules. These tools will help us process and align the ontologies.
@@ -35,7 +42,7 @@ These models leverage the efficient and robust `rapidfuzz <https://rapidfuzz.git
 
 .. raw:: html
 
-   <h3>Step 2: Initialize the Task</h3>
+   <h4>Step 2: Initialize the Task</h4>
 
 Define the ontology alignment task using the provided datasets. This task specifies the source and target ontologies that we will work with.
 
@@ -49,7 +56,7 @@ This step creates an object that organizes all the required data files and setti
 
 .. raw:: html
 
-   <h3>Step 3: Parse the Dataset</h3>
+   <h4>Step 3: Parse the Dataset</h4>
 
 
 Next, we load the source ontology, target ontology, and reference matching files. These files are the foundation of our matching process.
@@ -133,7 +140,7 @@ Next, we load the source ontology, target ontology, and reference matching files
 
 .. raw:: html
 
-   <h3>Step 4: Encode the Ontology Data</h3>
+   <h4>Step 4: Encode the Ontology Data</h4>
 
 
 After loading the dataset, the ``encoder`` module processes and restructures the concepts from the source and target ontologies, preparing them as input for the matching model.
@@ -180,7 +187,7 @@ The ``ConceptParentLightweightEncoder`` utilizes both ``concepts`` and their ``p
 
 .. raw:: html
 
-   <h3>Step 5: Apply Matcher Model</h3>
+   <h4>Step 5: Apply Matcher Model</h4>
 
 Use the ``SimpleFuzzySMLightweight`` matcher to align concepts by comparing their fuzzy matching scores. The matcher uses a similarity threshold (``0.2`` in this case) to decide which concepts in the source and target ontologies are close enough to be considered a match.
 
@@ -211,7 +218,7 @@ The ``matchings`` output format will be as follows:
 
 .. raw:: html
 
-   <h3>Step 6: Evaluate the Matchings</h3>
+   <h4>Step 6: Evaluate the Matchings</h4>
 
 
 Evaluate the performance of the fuzzy matcher by comparing the predicted matchings with the reference data.
@@ -244,7 +251,7 @@ Example output:
 
 .. raw:: html
 
-   <h3>Step 7: Export the Matchings</h3>
+   <h4>Step 7: Export the Matchings</h4>
 
 
 Finally, save the matching results in an XML format for future use or integration into other systems.
@@ -261,3 +268,41 @@ Or save the results of ``matchings`` in ``json`` format:
 
     with open("matchings.json", "w", encoding="utf-8") as json_file:
         json.dump(matchings, json_file, indent=4, ensure_ascii=False)
+
+Fuzzy Aligners
+------------------------
+The ``ontoaligner.aligner.lightweight`` module provides a collection of fuzzy string matching aligners optimized for speed and simplicity. These aligners are ideal for scenarios where fast, lexical-level matching is preferred over complex semantic reasoning.
+
+List of Lightweight Fuzzy Aligners are presented in the following table:
+
+.. list-table::
+   :widths: 20 70 10
+   :header-rows: 1
+
+   * - Aligner Name
+     - Description
+     - Link
+   * - ``SimpleFuzzySMLightweight``
+     - Uses basic string similarity (e.g., Levenshtein, Jaccard) for direct label matching.
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/lightweight/models.py#L35-L52>`__
+   * - ``WeightedFuzzySMLightweight``
+     - Applies weights to label, synonyms, and other features to compute a weighted similarity score.
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/lightweight/models.py#L55-L72>`__
+   * - ``TokenSetFuzzySMLightweight``
+     - Uses token set overlap to align terms with partially matching or rephrased labels.
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/lightweight/models.py#L75-L92>`__
+
+**Example Usage**
+
+.. code-block:: python
+
+   from ontoaligner.aligner import TokenSetFuzzySMLightweight
+
+   aligner = TokenSetFuzzySMLightweight(threshold=0.8)
+
+   matchings = model.generate(input_data=encoder_output)
+
+.. note::
+
+    - All aligners support a configurable ``threshold`` parameter to control match confidence.
+    - These models do not require external embeddings or deep models, making them highly interpretable and lightweight.

@@ -1,3 +1,4 @@
+> **The vision is to create a unified hub that brings together a wide range of ontology alignment models, making integration seamless for researchers and practitioners.**
 
 OntoAligner Documentation
 ===========================
@@ -5,6 +6,11 @@ OntoAligner Documentation
 Ontology Alignment (OA) is fundamental for achieving semantic interoperability across diverse knowledge systems. **OntoAligner** (a.k.a Ontology Aligner), a modular Python toolkit for ontology alignment, designed to address current limitations with existing tools faced by practitioners. Existing tools are limited in scalability, modularity, and ease of integration with recent AI advances. OntoAligner provides a flexible architecture integrating existing lightweight OA techniques such as fuzzy matching but goes beyond by supporting contemporary methods with retrieval-augmented generation and large language models for OA. The current framework prioritizes extensibility, enabling researchers to integrate custom alignment algorithms and datasets. With OntoAligner you can handle large-scale ontologies efficiently with few lines of code while delivering high alignment quality. By making OntoAligner open-source, we aim to provide a resource that fosters innovation and collaboration within the OA community, empowering researchers and practitioners with a toolkit for reproducible OA research and real-world applications.
 
 OntoAligner was created by `Scientific Knowledge Organization (SciKnowOrg group) <https://github.com/sciknoworg/>`_ at `Technische Informationsbibliothek (TIB) <https://www.tib.eu/de/>`_. Don't hesitate to open an issue on the `OntoAligner repository <https://github.com/sciknoworg/OntoAligner>`_ if something is broken or if you have further questions.
+
+
+.. note::
+
+    OntoAligner was  awarded the `🏆 Best Resource Paper Award at ESWC 2025 <https://2025.eswc-conferences.org/eswc-2025-best-paper-reviewer-awards/>`_
 
 Usage
 =====
@@ -75,7 +81,7 @@ What is Next?
 
 **Parsers**:
 
-* How to parse ontologies for ontology aligment? `How to use? > Parsers <howtouse/parsers.html>`_.
+* How to parse ontologies for ontology aligment? `Getting Started > Ontology Parsers <gettingstarted/parsers.html>`_.
 
 **Aligner Models**:
 
@@ -83,7 +89,6 @@ What is Next?
 * How to use *Retrieval* Aligner? `Aligners > Retrieval <aligner/retriever.html>`_
 * How to use *Large Language Model* Aligner? `Aligners > Large Language Model <aligner/llm.html>`_
 * How to use *Retrieval Augmented Generation* Aligner? `Aligners > Retrieval Augmented Generation <aligner/rag.html>`_
-* What is the existing Aligners? `How to use? > Models <howtouse/models.html>`_
 
 **Use Casses**:
 
@@ -126,30 +131,22 @@ or our related work `LLMs4OM: Matching Ontologies with Large Language Models <ht
    :glob:
    :hidden:
 
+   gettingstarted/overview
    gettingstarted/installation
    gettingstarted/quickstart
-
-
-.. toctree::
-   :caption: How to use?
-   :hidden:
-   :maxdepth: 1
-
-   howtouse/models
-   howtouse/parsers
+   gettingstarted/parsers
 
 
 .. toctree::
    :caption: Aligners
-   :glob:
    :titlesonly:
    :hidden:
    :maxdepth: 1
 
-   Lightweight <aligner/lightweight>
-   Retrieval <aligner/retriever>
-   Large Language Models <aligner/llm>
-   Retrieval Augmented Generation <aligner/rag>
+   aligner/lightweight
+   aligner/retriever
+   aligner/llm
+   aligner/rag
 
 
 
@@ -167,9 +164,7 @@ or our related work `LLMs4OM: Matching Ontologies with Large Language Models <ht
    :hidden:
 
    package_reference/pipeline
-   package_reference/base
-   package_reference/ontology
-   package_reference/aligner
-   package_reference/encoder
+   package_reference/parsers
+   package_reference/encoders
+   package_reference/aligners
    package_reference/postprocess
-   package_reference/utils
