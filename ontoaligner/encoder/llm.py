@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,72 @@
 # limitations under the License.
 from typing import Any, Dict
 
-from .encoders import LLMEncoder
+from ..base import BaseEncoder
+
+
+class LLMEncoder(BaseEncoder):
+    """
+    A naive encoder for ontology alignment.
+    """
+    def parse(self, **kwargs) -> Any:
+        """
+        Processes the source and target ontologies into a prompt for ontology alignment.
+
+        This method formats the source and target ontologies into a string representation,
+        filling in a pre-defined template that includes ontology items (IRI and label).
+
+        Parameters:
+            **kwargs: Contains the source and target ontologies as keyword arguments.
+
+        Returns:
+            list: A list containing the formatted prompt string for ontology matching.
+        """
+        source_onto, target_onto = kwargs["source"], kwargs["target"]
+        source_ontos = []
+        for source in source_onto:
+            encoded_source = self.get_owl_items(owl=source)
+            # encoded_source["concept"] = self.preprocess(encoded_source["text"])
+            source_ontos.append(encoded_source)
+        target_ontos = []
+        for target in target_onto:
+            encoded_target = self.get_owl_items(owl=target)
+            # encoded_target["concept"] = self.preprocess(encoded_target["text"])
+            target_ontos.append(encoded_target)
+        return [source_ontos, target_ontos]
+
+    def __str__(self):
+        """
+        Returns a string representation of the encoder.
+
+        Returns:
+            dict: A dictionary with the template and items_in_owl values.
+        """
+        return {"LLMEncoder": self.items_in_owl}
+
+    def get_owl_items(self, owl: Dict) -> str:
+        """
+        Abstract method to extract ontology data as a string.
+
+        This method should be implemented by subclasses to extract specific ontology data
+        (e.g., IRI and label) from the provided ontology item.
+
+        Parameters:
+            owl (Dict): A dictionary representing an ontology item.
+
+        Returns:
+            str: The extracted ontology data as a string.
+        """
+        pass
+
+    def get_encoder_info(self) -> str:
+        """
+        Provides information about the encoder and its prompt template.
+
+        Returns:
+            str: A description of the encoder's components.
+        """
+        return "INPUT CONSIST OF A DICTIONARY THAT CONSIST OF INFORMATION FOR THE GIVEN SOURCE-TARGET ONTOLOGIES."
+
 
 class ConceptLLMEncoder(LLMEncoder):
     """
