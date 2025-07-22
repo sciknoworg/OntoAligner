@@ -31,6 +31,7 @@ setup(
         "transformers==4.50.0",
         "huggingface_hub==0.28.1",
         "bitsandbytes==0.45.1",
+        "pykeen==1.11.1"
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
