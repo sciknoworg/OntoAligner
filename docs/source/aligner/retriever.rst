@@ -6,122 +6,115 @@ Usage
 
 This tutorial provides a guide to performing ontology alignment using the Retriever based matching model. The process includes loading ontology datasets, generating embeddings, aligning concepts with retrieval models, post-processing the matches, and evaluating the results.
 
-.. raw:: html
-
-   <h4>Step 1: Import the Required Modules</h4>
+.. tab:: 1: Import
 
 
-Start by importing the necessary libraries and modules. These tools will help us process and align the ontologies.
+    Start by importing the necessary libraries and modules. These tools will help us process and align the ontologies.
 
-.. code-block:: python
+    .. code-block:: python
 
-    import json
+        import json
 
-    # Import modules from OntoAligner
-    from ontoaligner import ontology, encoder
-    from ontoaligner.utils import metrics, xmlify
-    from ontoaligner.aligner import SBERTRetrieval
-    from ontoaligner.postprocess import retriever_postprocessor
-
-
-Here:
-- ``SBERTRetrieval``: Pre-trained retrieval model for semantic matching were you can load any sentence-transformer model and use it for matching.
-- ``retriever_postprocessor``: Refines matchings for better accuracy.
+        # Import modules from OntoAligner
+        from ontoaligner import ontology, encoder
+        from ontoaligner.utils import metrics, xmlify
+        from ontoaligner.aligner import SBERTRetrieval
+        from ontoaligner.postprocess import retriever_postprocessor
 
 
+    Here:
+    - ``SBERTRetrieval``: Pre-trained retrieval model for semantic matching were you can load any sentence-transformer model and use it for matching.
+    - ``retriever_postprocessor``: Refines matchings for better accuracy.
 
-.. raw:: html
+    ::
 
-   <h4>Step 2: Initialize, Parse, and Encode Ontology</h4>
-
-
-Define the ontology alignment task using the provided datasets and then load the ontologies and refrences.
-
-.. code-block:: python
-
-    task = MaterialInformationMatOntoOMDataset()
-    print("Test Task:", task)
-
-    dataset = task.collect(
-        source_ontology_path="assets/MI-MatOnto/mi_ontology.xml",
-        target_ontology_path="assets/MI-MatOnto/matonto_ontology.xml",
-        reference_matching_path="assets/MI-MatOnto/matchings.xml"
-    )
-
-    # Initialize the encoder model and encode the dataset.
-    encoder_model = encoder.ConceptParentLightweightEncoder()
-    encoder_output = encoder_model(source=dataset['source'], target=dataset['target'])
+.. tab:: 2: Parse and Encode
 
 
-.. note::
-    For retrieval models the ``LightweightEncoder`` encoders are good to use.
+    Define the ontology alignment task using the provided datasets and then load the ontologies and refrences.
+
+    .. code-block:: python
+
+        task = MaterialInformationMatOntoOMDataset()
+        print("Test Task:", task)
+
+        dataset = task.collect(
+            source_ontology_path="assets/MI-MatOnto/mi_ontology.xml",
+            target_ontology_path="assets/MI-MatOnto/matonto_ontology.xml",
+            reference_matching_path="assets/MI-MatOnto/matchings.xml"
+        )
+
+        # Initialize the encoder model and encode the dataset.
+        encoder_model = encoder.ConceptParentLightweightEncoder()
+        encoder_output = encoder_model(source=dataset['source'], target=dataset['target'])
 
 
-.. raw:: html
+    .. note::
+        For retrieval models the ``LightweightEncoder`` encoders are good to use.
 
-   <h4>Step 3: Set Up the Retrieval Model and do the Matching</h4>
+    ::
 
-Configure the retrieval model to align the source and target ontologies using semantic similarity. The `SBERTRetrieval` model leverages a pre-trained transformer for this task.
+.. tab:: 3: Retrieval Aligner
 
-.. code-block:: python
+    Configure the retrieval model to align the source and target ontologies using semantic similarity. The `SBERTRetrieval` model leverages a pre-trained transformer for this task.
 
-    # Initialize retrieval model
-    model = SBERTRetrieval(device='cpu', top_k=10)
-    model.load(path="all-MiniLM-L6-v2")
+    .. code-block:: python
 
-    # Generate matchings
-    matchings = model.generate(input_data=encoder_output)
+        # Initialize retrieval model
+        model = SBERTRetrieval(device='cpu', top_k=10)
+        model.load(path="all-MiniLM-L6-v2")
 
-The retrieval model computes semantic similarities between source and target embeddings, predicting potential alignments.
+        # Generate matchings
+        matchings = model.generate(input_data=encoder_output)
 
-.. raw:: html
+    The retrieval model computes semantic similarities between source and target embeddings, predicting potential alignments.
 
-   <h4>Step 4: Post-process and Evaluate the Matchings</h4>
+    ::
 
-
-Refine the predicted matchings using the `retriever_postprocessor`. Postprocessing improves alignment quality by filtering or adjusting the results.
-
-.. code-block:: python
-
-    # Post-process matchings
-    matchings = retriever_postprocessor(matchings)
-
-    # Evaluate matchings
-    evaluation = metrics.evaluation_report(
-        predicts=matchings,
-        references=dataset['reference']
-    )
-
-    # Print evaluation report
-    print("Evaluation Report:", json.dumps(evaluation, indent=4))
+.. tab:: 4: Post-process and Evaluate
 
 
+    Refine the predicted matchings using the `retriever_postprocessor`. Postprocessing improves alignment quality by filtering or adjusting the results.
 
-.. raw:: html
+    .. code-block:: python
 
-   <h4>Step 5: Export Matchings</h4>
+        # Post-process matchings
+        matchings = retriever_postprocessor(matchings)
 
+        # Evaluate matchings
+        evaluation = metrics.evaluation_report(
+            predicts=matchings,
+            references=dataset['reference']
+        )
 
-Save the matchings in both XML and JSON formats for further analysis or use. For convert matchings to XML format we use ``xmlify`` utility.
+        # Print evaluation report
+        print("Evaluation Report:", json.dumps(evaluation, indent=4))
 
-.. code-block:: python
+    ::
 
-    # Export matchings to XML
-    xml_str = xmlify.xml_alignment_generator(matchings=matchings)
-    xml_output_path = "matchings.xml"
+.. tab:: 5: Export
 
-    with open(xml_output_path, "w", encoding="utf-8") as xml_file:
-        xml_file.write(xml_str)
+    Save the matchings in both XML and JSON formats for further analysis or use. For convert matchings to XML format we use ``xmlify`` utility.
 
-    print(f"Matchings in XML format have been written to '{xml_output_path}'.")
+    .. code-block:: python
 
-    # Export matchings to JSON
-    json_output_path = "matchings.json"
+        # Export matchings to XML
+        xml_str = xmlify.xml_alignment_generator(matchings=matchings)
+        xml_output_path = "matchings.xml"
 
-    with open(json_output_path, "w", encoding="utf-8") as json_file:
-        json.dump(matchings, json_file, indent=4, ensure_ascii=False)
+        with open(xml_output_path, "w", encoding="utf-8") as xml_file:
+            xml_file.write(xml_str)
 
-    print(f"Matchings in JSON format have been written to '{json_output_path}'.")
+        print(f"Matchings in XML format have been written to '{xml_output_path}'.")
+
+        # Export matchings to JSON
+        json_output_path = "matchings.json"
+
+        with open(json_output_path, "w", encoding="utf-8") as json_file:
+            json.dump(matchings, json_file, indent=4, ensure_ascii=False)
+
+        print(f"Matchings in JSON format have been written to '{json_output_path}'.")
+    ::
 
 Transformer Aligner
 -----------------------------------
