@@ -1,4 +1,4 @@
-Encoder
+Encoders
 ====================
 
 Base Encoders

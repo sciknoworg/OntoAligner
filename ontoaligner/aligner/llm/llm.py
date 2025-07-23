@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -305,6 +305,15 @@ class OpenAILLMArch(LLM):
             str: The string representation of the OpenAILLM class.
         """
         return "OpenAILLM"
+
+    def load(self, path: str) -> None:
+        """
+        Loads the tokenizer and model from the specified path.
+
+        Args:
+            path (str): The path to the pretrained model and tokenizer.
+        """
+        self.path = path
 
     def tokenize(self, input_data: List) -> Any:
         """

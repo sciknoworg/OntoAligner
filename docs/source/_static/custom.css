@@ -5,9 +5,9 @@
     height: auto;
 }
 
-.nav-item:nth-child(-n+5) {
-    display: none; /* Hides the first four nav items */
-}
+/*.nav-item:nth-child(-n+4) {*/
+/*    display: none; !* Hides the first four nav items *!*/
+/*}*/
 
 .full-width {
     display: block;
@@ -61,7 +61,7 @@
 /* Medium screens (e.g. tablets) */
 @media (max-width: 1024px) {
     .content:not(.custom) {
-        max-width: 90%;
+        max-width: 100%;
     }
 }
 
@@ -70,4 +70,12 @@
     .content:not(.custom) {
         max-width: 100%;
     }
+}
+
+.project-vision {
+  background-color: #e6f7ff;
+  padding: 1em;
+  border-left: 5px solid #ffbe18;
+  margin-bottom: 1.2em;
+  font-size: 1.1em;
 }

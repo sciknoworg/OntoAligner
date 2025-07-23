@@ -28,6 +28,7 @@ rank_bm25 = "0.2.2"
 huggingface_hub="0.28.1"
 sentence-transformers = "4.1.0"
 bitsandbytes="0.45.1"
+pykeen="1.11.1"
 
 [tool.poetry.dev-dependencies]
 ruff = "*"

@@ -1,9 +1,13 @@
 Parsers
 ==================
 
-The ``ontology`` module in OntoAligner provides essential ``oaei`` (track ontologies) and ``generic`` ontology parsers for handling ontologies for ontology alignment tasks. This tutorial explains the structure, key components, and how to utilize these modules in your ontology alignment workflows.
+.. hint::
 
-OMDataset
+    Different aligner models may require specific types of parsers and encoders. The **Aligners** section clearly outlines these dependencies, detailing which parser and encoder components are used by each aligner type.
+
+The ``parser`` module in OntoAligner provides essential ``oaei`` (track ontologies) and ``generic`` ontology parsers for handling ontologies for ontology alignment tasks. This tutorial explains the structure, key components, and how to utilize these modules in your ontology alignment workflows.
+
+Usage
 -----------------------
 
 To be able to run an alignment task, you need to create an ``OMDataset`` for your work. The ``OMDataset`` class is responsible for managing ontology matching datasets, handling the source and target ontologies, and parsing reference alignments. This class utilizes ontology parsers for parsing ontologies and ``BaseAlignmentsParser`` for handling reference alignments, allowing users to define custom datasets by specifying track names, ontology names, and parsing methods.
@@ -85,7 +89,7 @@ In the final ``OMDataset`` will form a parsed ontology alignment task using sour
     If you dont specify the ``reference_matching_path``, in the ``OMDataset`` it will be assumed as a empty list ``[]``.
 
 
-Generic Ontology Parser
+Generic Parser
 -------------------------
 
 .. sidebar:: Materials:
@@ -157,6 +161,6 @@ For a simpler import, use:
 
 .. note::
 
-    Consider reading the following section next for more details on list of possible OAEI datasets.
+    Consider reading the following section next for more details on list of possible OAEI Parsers.
 
-    * `Package Reference > Ontology <../package_reference/ontology.html>`_
+    * `Package Reference > Parsers <../package_reference/parsers.html>`_

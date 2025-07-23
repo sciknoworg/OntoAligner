@@ -20,3 +20,4 @@ setuptools
 wheel
 twine
 ruff
+pykeen==1.11.1
