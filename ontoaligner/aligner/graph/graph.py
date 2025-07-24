@@ -14,7 +14,6 @@
 from typing import Any, List, Dict
 from pykeen.triples import TriplesFactory
 from pykeen.pipeline import pipeline
-from sklearn.model_selection import train_test_split
 from torch.nn.functional import normalize
 import numpy as np
 import torch
@@ -23,6 +22,30 @@ from ...base import BaseOMModel
 
 
 class GraphEmbeddingAligner(BaseOMModel):
+    """
+    A model for aligning entities between two ontologies using knowledge graph embeddings.
+
+    This class leverages PyKEEN to train a knowledge graph embedding model on input triples
+    and aligns entities from a source ontology to a target ontology based on cosine similarity
+    between their learned embeddings.
+
+    Attributes:
+        model (str): The name of the knowledge graph embedding model to use (must be set before training).
+        graph_embedder (Any): The trained embedding model pipeline from PyKEEN.
+
+    Example:
+        >>> source_onto = {
+        ...     "entity2iri": {"source1": "http://source.org/1", "source2": "http://source.org/2"},
+        ...     "triplets": [("source1", "relatedTo", "source2")]
+        ... }
+        >>> target_onto = {
+        ...     "entity2iri": {"target1": "http://target.org/1", "target2": "http://target.org/2"},
+        ...     "triplets": [("target1", "relatedTo", "target2")]
+        ... }
+        >>> predictions = aligner.generate([source_onto, target_onto])
+        >>> print(predictions)
+        ... [{'source': 'http://source.org/1', 'target': 'http://target.org/2', 'score': 0.87}, ...]
+    """
 
     model: str = ""
     graph_embedder: Any = None
@@ -34,25 +57,36 @@ class GraphEmbeddingAligner(BaseOMModel):
                  train_batch_size: int=128,
                  eval_batch_size: int=64,
                  num_negs_per_pos: int=5,
-                 random_seed: int=42,
-                 test_split: float=0.1):
+                 random_seed: int=42):
+        """
+        Initializes the GraphEmbeddingAligner with training configuration.
+
+        Args:
+            device (str): Device to run the model on ('cpu' or 'cuda').
+            embedding_dim (int): Dimensionality of the entity embeddings.
+            num_epochs (int): Number of training epochs.
+            train_batch_size (int): Batch size for training.
+            eval_batch_size (int): Batch size for evaluation.
+            num_negs_per_pos (int): Number of negative samples per positive triple.
+            random_seed (int): Random seed for reproducibility.
+        """
         super().__init__(device=device,
                          embedding_dim=embedding_dim,
                          num_epochs=num_epochs,
                          train_batch_size=train_batch_size,
                          eval_batch_size=eval_batch_size,
                          num_negs_per_pos=num_negs_per_pos,
-                         random_seed=random_seed,
-                         test_split=test_split)
+                         random_seed=random_seed)
 
     def fit(self, triplets: List):
-        triples_array = np.array(triplets, dtype=str)
+        """
+        Trains a knowledge graph embedding model on the given triples.
 
-        # Split into training and testing
-        train_triples, test_triples = train_test_split(triples_array,
-                                                       test_size=self.kwargs['test_split'],
-                                                       random_state=self.kwargs['random_seed'],
-                                                       shuffle=True)
+        Args:
+            triplets (List): A list of triples, where each triple is a (head, relation, tail) tuple.
+        """
+        triples_array = np.array(triplets, dtype=str)
+        train_triples, test_triples = triples_array, triples_array
 
         training_factory = TriplesFactory.from_labeled_triples(train_triples, create_inverse_triples=True)
         testing_factory = TriplesFactory.from_labeled_triples(test_triples,
@@ -73,6 +107,17 @@ class GraphEmbeddingAligner(BaseOMModel):
 
 
     def predict(self, source_onto: Dict, target_onto: Dict):
+        """
+        Aligns entities from the source ontology to entities in the target ontology
+        based on embedding similarity.
+
+        Args:
+            source_onto (Dict): Dictionary containing 'entity2iri' and 'triplets' for the source ontology.
+            target_onto (Dict): Dictionary containing 'entity2iri' and 'triplets' for the target ontology.
+
+        Returns:
+            List[Dict]: A list of alignment mappings with source IRI, target IRI, and similarity score.
+        """
         source_ent2iri, target_ent2iri = source_onto['entity2iri'], target_onto['entity2iri']
 
         embedding = self.graph_embedder.model.entity_representations[0](indices=None)
@@ -80,7 +125,7 @@ class GraphEmbeddingAligner(BaseOMModel):
         source_ents, target_ents = list(source_ent2iri.keys()), list(target_ent2iri.keys())
 
         source_onto_tensor = torch.stack([embedding[embedding_entity2id[ent]] for ent in source_ents])
-        target_onto_tensor = torch.stack([embedding[embedding_entity2id[ent]] for ent in source_ents])
+        target_onto_tensor = torch.stack([embedding[embedding_entity2id[ent]] for ent in target_ents])
 
         source_onto_tensor = normalize(source_onto_tensor, dim=1)  # shape: (n1, d)
         target_onto_tensor = normalize(target_onto_tensor, dim=1)  # shape: (n2, d)
@@ -92,22 +137,52 @@ class GraphEmbeddingAligner(BaseOMModel):
         matches = [
             {
                 "source": source_ent2iri[source_ents[index]],
-                "target": target_ents[target_ents[best_indices[index].item()]],
+                "target": target_ent2iri[target_ents[best_indices[index].item()]],
                 "score": best_scores[index].item()
             }
             for index in range(len(source_ents))
         ]
         return matches
-        #
-        # topk_scores, topk_indices = similarity_matrix.topk(k=5, dim=1)
-        #
-        # # For each O1 entity, get top-5 aligned O2 entities
-        # topk_matches = [
-        #     (O1_entities[i], [(O2_entities[topk_indices[i][j]], topk_scores[i][j].item()) for j in range(5)])
-        #     for i in range(len(O1_entities))
-        # ]
+
+    def get_embeddings(self):
+        """
+        Returns the internal PyKEEN pipeline object containing the trained embedding model.
+
+        Returns:
+            Any: The PyKEEN pipeline object.
+        """
+        return self.graph_embedder
+
+    def encode(self, input: str) -> np.ndarray:
+        """
+        Retrieves the embedding vector for a given entity.
+
+        Args:
+            input (str): The entity ID or label as used in training.
+
+        Returns:
+            np.ndarray: The embedding vector for the input entity.
+
+        Raises:
+            Exception: If the entity is not found in the trained model.
+        """
+        try:
+            embedding = self.graph_embedder.model.entity_representations[0](indices=None)
+            embedding_entity2id = self.graph_embedder.training.entity_to_id
+            return embedding[embedding_entity2id[input]]
+        except Exception as error:
+            raise error
 
     def generate(self, input_data: List) -> List:
+        """
+        Full pipeline to train on combined triplets and predict alignments.
+
+        Args:
+            input_data (List): A list with two elements, each a dictionary representing a source and target ontology.
+
+        Returns:
+            List[Dict]: A list of predicted alignments with source IRI, target IRI, and similarity score.
+        """
         source_onto, target_onto = input_data
         triplets = source_onto['triplets'] + target_onto['triplets']
         self.fit(triplets)
