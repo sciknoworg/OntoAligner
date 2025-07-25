@@ -105,6 +105,8 @@ class GraphEmbeddingAligner(BaseOMModel):
                                       random_seed=self.kwargs['random_seed'],
                                       device=self.kwargs['device'])
 
+    def _similarity_matrix(self, source_onto_tensor, target_onto_tensor):
+        return torch.matmul(source_onto_tensor, target_onto_tensor.T)
 
     def predict(self, source_onto: Dict, target_onto: Dict):
         """
@@ -130,7 +132,7 @@ class GraphEmbeddingAligner(BaseOMModel):
         source_onto_tensor = normalize(source_onto_tensor, dim=1)  # shape: (n1, d)
         target_onto_tensor = normalize(target_onto_tensor, dim=1)  # shape: (n2, d)
 
-        similarity_matrix = torch.matmul(source_onto_tensor, target_onto_tensor.T)  # shape: (n1, n2)
+        similarity_matrix = self._similarity_matrix(source_onto_tensor, target_onto_tensor) # shape: (n1, n2)
 
         best_scores, best_indices = similarity_matrix.max(dim=1)
 
