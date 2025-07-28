@@ -1,10 +1,29 @@
 Retrieval-Augmented Generation
 ================================
 
+LLMs4OM
+----------------------------------
+**LLMs4OM: Matching Ontologies with Large Language Models**
+
+.. sidebar:: **Reference:**
+
+    `LLMs4OM: Matching Ontologies with Large Language Models <https://link.springer.com/chapter/10.1007/978-3-031-78952-6_3>`_
+
+The retrieval augmented generation (RAG) module at OntoAligner is driven by a ``LLMs4OM`` framework, a novel approach for effective ontology  alignment using LLMs. This framework utilizes two modules for retrieval and matching, respectively, enhanced by zero-shot prompting across three ontology representations: concept, concept-parent, and concept-children.  The ``LLMs4OM`` framework, can match and even surpass the performance of traditional OM systems, particularly in complex matching scenarios. The following diagram represent the ``LLMs4OM`` framework.
+
+.. raw:: html
+
+    <div align="center">
+     <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/LLMs4OM.jpg" width="80%"/>
+    </div>
+
+The ``LLMs4OM`` framework offers a RAG approach within LLMs for OM. LLMs4OM uses :math:`O_{source}` as query :math:`Q(O_{source})` to retrieve possible matches for for any :math:`C_s \in C_{source}` from :math:`C_{target} \in O_{target}`. Where, :math:`C_{target}` is stored in the knowledge base :math:`KB(O_{target})`. Later, :math:`C_{s}` and obtained :math:`C_t \in C_{target}` are used to query the LLM to check whether the :math:`(C_s, C_t)` pair is a match. As shown in above diagram, the framework comprises four main steps: 1) Concept representation, 2) Retriever model, 3) LLM, and 4) Post-processing. But within the OntoAligner we we adapted the workflow into a parser, encoder, alignment, post-processing, evaluate, and export steps.
+
+
 Usage
 ----------------
 
-This guide walks you through the process of ontology matching using the OntoAligner library, leveraging **retrieval-augmented generation (RAG)** techniques. Starting with the necessary module imports, it defines a task and loads source and target ontologies along with reference matchings. The tutorial then encodes the ontologies using a specialized encoder, configures a retriever and an LLM, and generates predictions. Finally, it demonstrates two postprocessing techniques—heuristic and hybrid—followed by saving the matched alignments in XML format, ready for use or further analysis.
+This guide walks you through the process of ontology matching using the OntoAligner library, leveraging RAG techniques. Starting with the necessary module imports, it defines a task and loads source and target ontologies along with reference matchings. The tutorial then encodes the ontologies using a specialized encoder, configures a retriever and an LLM, and generates predictions. Finally, it demonstrates two postprocessing techniques—heuristic and hybrid—followed by saving the matched alignments in XML format, ready for use or further analysis.
 
 .. code-block:: python
 

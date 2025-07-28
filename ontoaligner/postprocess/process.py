@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -204,3 +204,73 @@ def rag_hybrid_postprocessor(predicts: List, ir_score_threshold: float = 0.9, ll
         "ir-score-th": ir_score_threshold,
     }
     return final_predict, configs
+
+def graph_postprocessor(predicts, threshold):
+    """
+    Post-processes raw alignment predictions to enforce one-to-one mappings
+    between source and target entities based on confidence scores.
+
+    This function groups candidate matches by target entities and selects
+    the highest-scoring unique source-target pairs, filtering out predictions
+    below a specified similarity threshold.
+
+    Args:
+        predicts (List[Dict]): A list of predicted alignments, where each prediction is a dictionary
+                               with keys: "source" (str), "target" (str), and "score" (float).
+        threshold (float): Minimum similarity score required for a prediction to be retained.
+
+    Returns:
+        List[Dict]: A filtered list of one-to-one alignments, each containing:
+                    - "source": the source entity IRI
+                    - "target": the target entity IRI
+                    - "score" : the similarity/confidence score
+
+    Example:
+        >>> raw_preds = [
+        ...     {"source": "A", "target": "X", "score": 0.9},
+        ...     {"source": "B", "target": "X", "score": 0.8},
+        ...     {"source": "A", "target": "Y", "score": 0.7}
+        ... ]
+        >>> graph_postprocessor(raw_preds, threshold=0.75)
+        ... [{'source': 'A', 'target': 'X', 'score': 0.9}]
+    """
+    predicts_cands = {}
+
+    # Step 1: Group candidates per target
+    for predict in tqdm(predicts):
+        source, target, score = predict["source"], predict["target"], predict["score"]
+        if target not in predicts_cands:
+            predicts_cands[target] = []
+        predicts_cands[target].append([source, score])
+
+    # Step 2: Resolve unique one-to-one mappings
+    used_sources = set()
+    source_to_score = {}
+    target_to_source = {}
+
+    # Flatten all predictions and sort by descending score
+    all_preds = []
+    for target, cand_list in predicts_cands.items():
+        for source, score in cand_list:
+            all_preds.append((score, source, target))
+    all_preds.sort(reverse=True)  # highest score first
+
+    for score, source, target in all_preds:
+        if source in used_sources:
+            continue
+        if target not in target_to_source:
+            target_to_source[target] = source
+            used_sources.add(source)
+            source_to_score[source] = score
+
+    # Step 3: Format the result
+    final_predicts = []
+    for target, source in target_to_source.items():
+        if source_to_score[source] > threshold:
+            final_predicts.append({
+                "source": source,
+                "target": target,
+                "score": source_to_score[source]
+            })
+
+    return final_predicts

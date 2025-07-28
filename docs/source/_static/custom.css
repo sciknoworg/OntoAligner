@@ -54,7 +54,7 @@
 
 /* Default (for large screens) */
 .content:not(.custom) {
-    max-width: 65%;
+    max-width: 80%;
     margin: 0 auto;
 }
 

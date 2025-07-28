@@ -1,11 +1,13 @@
 Overview
 ===========
 
+Introduction
+--------------------
 
 .. raw:: html
 
    <div align="center">
-     <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/ontoaligner-pip.jpg" alt="OntoAligner Overview" width="840px"/>
+     <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/ontoaligner-pip.jpg" alt="OntoAligner Overview" width="90%"/>
    </div>
 
 OntoAligner is a modular, extensible, and efficient framework for ontology alignment that integrates classical heuristics, retrieval-based methods, and large language models (LLMs). It is designed to support a wide range of ontology alignment (OA) scenarios—from lightweight matching to advanced semantic reasoning—with built-in support for evaluation and export.

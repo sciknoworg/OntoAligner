@@ -26,8 +26,10 @@ class GraphTripleEncoder(BaseEncoder):
             pred = self.preprocess(pred)
             obj = self.preprocess(obj)
             ontology_dict['triplets'].append((sub, pred, obj))
-            ontology_dict['entity2iri'][sub] = sub_iri
-            ontology_dict['entity2iri'][obj] = sub_iri
+            if item['subject_is_class']:
+                ontology_dict['entity2iri'][sub] = sub_iri
+            if item['object_is_class']:
+                ontology_dict['entity2iri'][obj] = obj_iri
         return ontology_dict
 
     def parse(self, **kwargs) -> Any:

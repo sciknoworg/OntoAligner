@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,3 +20,4 @@ from .llm.dataset import * # NOQA
 from .rag.models import * # NOQA
 from .rag.dataset import * # NOQA
 from .retrieval.models import * # NOQA
+from .graph.models import * # NOQA

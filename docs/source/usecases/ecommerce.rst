@@ -80,7 +80,7 @@ We begin by parsing the RDF/XML representations of the Amazon and eBay ontologie
 
 Sample Parsed Output:
 
-.. code-block:: json
+.. code-block:: javascript
 
     [
       {
@@ -114,7 +114,7 @@ To facilitate efficient matching, we encode each concept by concatenating its la
 
 Sample Encoder Output:
 
-.. code-block:: json
+.. code-block:: javascript
 
     [
       [
