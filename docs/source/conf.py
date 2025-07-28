@@ -28,7 +28,9 @@ extensions = [
     "sphinx_toolbox.collapse",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
+
     "myst_parser",
+    'sphinx.ext.mathjax',
     "sphinx_markdown_tables",
     "sphinx_copybutton",
     "sphinx.ext.intersphinx",
@@ -37,9 +39,13 @@ extensions = [
     "sphinxcontrib.mermaid",
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
+
 ]
 
 # autosummary_generate = True  # Turn on sphinx.ext.autosummary
+myst_enable_extensions = [
+    "amsmath",               # Enables $$...$$ block math
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -54,6 +60,7 @@ include_patterns = [
 ]
 # Ensure exclude_patterns doesn't exclude your master document accidentally
 exclude_patterns = []
+# Enable math support
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -77,6 +84,7 @@ html_static_path = ["_static"]
 
 html_js_files = [
     'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js',
+    'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
     'custom.js'
 ]
 
