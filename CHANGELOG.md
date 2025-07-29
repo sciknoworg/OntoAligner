@@ -1,5 +1,13 @@
 ## Changelog
 
+### V1.5.0 Changelog (July 29, 2025)
+- Added 17 Knowledge Graph Embedding (KGE) aligner models.
+- Major documentation update: improved structure, clarity, sectioning, etc.
+- Introduced a dedicated documentation page for KGE.
+- Added example use cases for KGE models.
+- Applied cosmetic improvements to code formatting and style.
+- Update requirements with `pykeen=1.11.1`
+
 ### V1.4.3 Changelog (July 1, 2025)
 - Convert `torch==2.7.0` to `torch==2.6.0`
 
