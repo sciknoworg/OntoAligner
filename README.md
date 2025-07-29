@@ -39,14 +39,15 @@ Comprehensive documentation for OntoAligner, including detailed guides and examp
 
 
 
-| Example                                 | Tutorial                                                                                                |                                            Script                                             |
-|:----------------------------------------|:--------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------:|
-| Lightweight                             | [📚 Fuzzy Matching](https://ontoaligner.readthedocs.io/aligner/lightweight.html)                        |   [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/fuzzy_matching.py)   |
-| Retrieval                               | [📚 Retrieval Aligner](https://ontoaligner.readthedocs.io/aligner/retriever.html)                       | [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/retriever_matching.py) |
-| Large Language Models                   | [📚 Large Language Models Aligner](https://ontoaligner.readthedocs.io/aligner/llm.html)                 |    [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/llm_matching.py)    |
-| Retrieval Augmented Generation          | [📚 Retrieval Augmented Generation](https://ontoaligner.readthedocs.io/aligner/rag.html)                |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/rag_matching.py)|
-| FewShot                                 | [📚 FewShot RAG](https://ontoaligner.readthedocs.io/aligner/rag.html#fewshot-rag)                       |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/rag_matching.py)
-| In-Context Vectors Learning             | [📚 In-Context Vectors RAG](https://ontoaligner.readthedocs.io/aligner/rag.html#in-context-vectors-rag) |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/icv_rag_matching.py)
+| Example                        | Tutorial                                                                                                |                                            Script                                             |
+|:-------------------------------|:--------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------:|
+| Lightweight                    | [📚 Fuzzy Matching](https://ontoaligner.readthedocs.io/aligner/lightweight.html)                        |   [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/fuzzy_matching.py)   |
+| Retrieval                      | [📚 Retrieval Aligner](https://ontoaligner.readthedocs.io/aligner/retriever.html)                       | [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/retriever_matching.py) |
+| Large Language Models          | [📚 LLM Aligner](https://ontoaligner.readthedocs.io/aligner/llm.html)                                   |    [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/llm_matching.py)    |
+| Retrieval Augmented Generation | [📚 RAG Aligner](https://ontoaligner.readthedocs.io/aligner/rag.html)                                   |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/rag_matching.py)|
+| FewShot                        | [📚 FewShot-RAG Aligner](https://ontoaligner.readthedocs.io/aligner/rag.html#fewshot-rag)               |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/rag_matching.py)
+| In-Context Vectors Learning    | [📚 In-Context Vectors RAG](https://ontoaligner.readthedocs.io/aligner/rag.html#in-context-vectors-rag) |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/icv_rag_matching.py)
+| Knowledge Graph Embedding      | [📚 KGE Aligner](https://ontoaligner.readthedocs.io/aligner/kge.html)            |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/main/examples/kge.py)
 | eCommerce  | [📚 Product Alignment in eCommerce](https://ontoaligner.readthedocs.io/usecases/ecommerce.html)                  |       [📝 Code](https://github.com/sciknoworg/OntoAligner/blob/dev/examples/ecommerce_product_alignment.py)
 
 ## 🚀 Quick Tour
