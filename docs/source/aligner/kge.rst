@@ -26,7 +26,14 @@ OntoAligner's KGE-based alignment process involves several key components that w
 
 Usage
 ------------
+
+.. sidebar::
+
+    Full code is available at `OntoAligner Repository. <https://github.com/sciknoworg/OntoAligner/blob/main/examples/kge.py>`_
+
+
 This module guides you through a step-by-step process for performing ontology alignment using a KGEs and the OntoAligner library. By the end, you’ll understand how to preprocess data, encode ontologies, generate alignments, evaluate results, and save the outputs in XML and JSON formats.
+
 
 .. tab:: ➡️ 1: Parser
 
@@ -86,7 +93,7 @@ This module guides you through a step-by-step process for performing ontology al
 
     .. code-block:: python
 
-        from ontoaligner.aligner import CovEAligner
+        from ontoaligner.aligner import ConvEAligner
 
         kge_params = {
             'device': 'cpu',                  # str: Device to use for training ('cpu' or 'cuda')
@@ -124,7 +131,9 @@ This module guides you through a step-by-step process for performing ontology al
 
     The following code will compare the generated alignments with reference matchings. Then save the matchings in both XML and JSON formats for further analysis or use. Feel free to use any of the techniques.
 
-    .. code-block::
+    .. code-block:: python
+
+        from ontoaligner.utils import metrics
 
         evaluation = metrics.evaluation_report(predicts=matchings, references=dataset['reference'])
         print("Matching Evaluation Report:\n", evaluation)
@@ -151,8 +160,16 @@ This module guides you through a step-by-step process for performing ontology al
                 json.dump(processed_matchings, json_file, indent=4, ensure_ascii=False)
     ::
 
+
+
+
+
+
+
 KGE Aligners
 ----------------------
+
+
 
 The ``ontoaligner.aligner.graph`` module provides a suite of graph embedding-based aligners built on top of popular KGE models. These aligners leverage link prediction objectives and low-dimensional vector spaces to learn semantic representations of entities, facilitating accurate ontology alignment even across heterogeneous structures. Each aligner wraps a specific KGE model implemented through the PyKEEN framework, allowing plug-and-play integration and consistent similarity scoring across models. Some models include custom similarity functions to better capture semantic distance in complex embedding spaces (e.g., complex numbers or quaternions).
 
