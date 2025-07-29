@@ -6,6 +6,7 @@ Usage
 
 This module guides you through a step-by-step process for performing ontology alignment using a large language model (LLM) and the `OntoAligner` library. By the end, you'll understand how to preprocess data, encode ontologies, generate alignments, evaluate results, and save the outputs in XML and JSON formats.
 
+
 .. tab:: ➡️ 1: Import
 
     Start by importing the necessary libraries and modules. These tools will help us process and align the ontologies.
@@ -55,6 +56,7 @@ This module guides you through a step-by-step process for performing ontology al
 
 
     .. note::
+
         The dataset formats the encoded concepts into prompts for the LLM to process. Here it is important to have the same type of Encode and Datasets as they operate based on different scenarios. For example, you can not use ``ConceptChildrenLLMEncoder`` with ``ConceptParentLLMDataset``, because ``ConceptChildrenLLMEncoder`` will only keep concept and children for the further step where ``ConceptParentLLMDataset`` only uses concept and parents where due to the missing value here (which is the parent) it will break the pipeline.
 
     .. tab:: 1️⃣ Sample outputs-1
@@ -108,7 +110,6 @@ This module guides you through a step-by-step process for performing ontology al
             shuffle=False,
             collate_fn=llm_dataset.collate_fn
         )
-
     ::
 
 .. tab:: ➡️ 5: LLM Aligner
@@ -118,12 +119,10 @@ This module guides you through a step-by-step process for performing ontology al
 
     .. tab:: ⚙️ Simple setup
 
-
         ::
 
             model = AutoModelDecoderLLM(device='cuda', max_length=300, max_new_tokens=10)
             model.load(path="Qwen/Qwen2-0.5B")
-
 
     .. tab:: 🛠️ More complex setup
 
@@ -143,7 +142,6 @@ This module guides you through a step-by-step process for performing ontology al
                                 device_map: str='balanced'
                        )
                 model.load(path="Qwen/Qwen2-0.5B")
-
 
 
     Here we used ``Qwen/Qwen2-0.5B`` model, but feel free to use any LLM you like.
@@ -169,7 +167,6 @@ This module guides you through a step-by-step process for performing ontology al
     .. code-block:: python
 
         [' \nNo', ' \nNo', ' \nNo',  ' No\n\nConcept 1: Aisi 1',  ' \nYes\nThe Reason is']
-
     ::
 
 .. tab:: ➡️ 7: Post-Process
@@ -209,12 +206,11 @@ This module guides you through a step-by-step process for performing ontology al
          ... ]
     ::
 
-.. raw:: ➡️ 8: Evaluate and Export
-
+.. tab:: ➡️ 8: Evaluate and Export
 
     The following code will compare the generated alignments with reference matchings. Then save the matchings in both XML and JSON formats for further analysis or use. Feel free to use any of the techniques.
 
-    .. code-block:: python
+    .. code-block::
 
         evaluation = metrics.evaluation_report(predicts=matchings, references=dataset['reference'])
         print("Evaluation Report:", json.dumps(evaluation, indent=4))
@@ -227,13 +223,14 @@ This module guides you through a step-by-step process for performing ontology al
             with open("matchings.xml", "w", encoding="utf-8") as xml_file:
                 xml_file.write(xml_str)
 
-    .. tab:: 🧾 {} Export matchings to JSON
+    .. tab::  # 🧾 {} Export matchings to JSON
 
         ::
 
             with open("matchings.json", "w", encoding="utf-8") as json_file:
                 json.dump(matchings, json_file, indent=4, ensure_ascii=False)
     ::
+
 
 .. hint::
 

@@ -12,6 +12,17 @@ The generic OA aims to provide a manual parsing of desired ontologies as a sourc
    :no-index:
 
 
+Graph Triple Ontology Alignment Track
+-----------------------------------------
+The graph triplet parser that aims to provide triplet representations of ontologies for KGEs.
+
+.. automodule:: ontoaligner.ontology.triple
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :no-index:
+
+
 OAEI: Anatomy Track
 ---------------
 The anatomy real world case is about matching the Adult Mouse Anatomy (2744 classes) and the NCI Thesaurus (3304 classes) describing the human anatomy.

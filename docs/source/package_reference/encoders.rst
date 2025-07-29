@@ -46,3 +46,11 @@ FewShot-RAG Encoders
    :undoc-members:
    :show-inheritance:
    :noindex:
+
+Graph Encoders
+---------------------
+.. automodule:: ontoaligner.encoder.graph
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :noindex:
