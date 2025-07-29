@@ -76,6 +76,7 @@ or our related work `LLMs4OM: Matching Ontologies with Large Language Models <ht
    aligner/retriever
    aligner/llm
    aligner/rag
+   aligner/kge
 
 
 

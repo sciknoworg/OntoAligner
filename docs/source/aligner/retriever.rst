@@ -6,7 +6,7 @@ Usage
 
 This tutorial provides a guide to performing ontology alignment using the Retriever based matching model. The process includes loading ontology datasets, generating embeddings, aligning concepts with retrieval models, post-processing the matches, and evaluating the results.
 
-.. tab:: 1: Import
+.. tab:: ➡️ 1: Import
 
 
     Start by importing the necessary libraries and modules. These tools will help us process and align the ontologies.
@@ -28,7 +28,7 @@ This tutorial provides a guide to performing ontology alignment using the Retrie
 
     ::
 
-.. tab:: 2: Parse and Encode
+.. tab:: ➡️ 2: Parse and Encode
 
 
     Define the ontology alignment task using the provided datasets and then load the ontologies and refrences.
@@ -54,7 +54,7 @@ This tutorial provides a guide to performing ontology alignment using the Retrie
 
     ::
 
-.. tab:: 3: Retrieval Aligner
+.. tab:: ➡️ 3: Retrieval Aligner
 
     Configure the retrieval model to align the source and target ontologies using semantic similarity. The `SBERTRetrieval` model leverages a pre-trained transformer for this task.
 
@@ -71,7 +71,7 @@ This tutorial provides a guide to performing ontology alignment using the Retrie
 
     ::
 
-.. tab:: 4: Post-process and Evaluate
+.. tab:: ➡️ 4: Post-process and Evaluate
 
 
     Refine the predicted matchings using the `retriever_postprocessor`. Postprocessing improves alignment quality by filtering or adjusting the results.
@@ -92,7 +92,7 @@ This tutorial provides a guide to performing ontology alignment using the Retrie
 
     ::
 
-.. tab:: 5: Export
+.. tab:: ➡️ 5: Export
 
     Save the matchings in both XML and JSON formats for further analysis or use. For convert matchings to XML format we use ``xmlify`` utility.
 

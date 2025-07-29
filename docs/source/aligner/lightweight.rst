@@ -14,7 +14,8 @@ This module demonstrates the process of aligning ontologies using the **OntoAlig
         * See `Package Reference > Lightweight <../package_reference/aligners.html#module-ontoaligner.aligner.lightweight.lightweight>`_.
         * See `Package Reference > Lightweight Models <../package_reference/aligners.html#module-ontoaligner.aligner.lightweight.models>`_.
 
-.. tab:: 1: Import
+
+.. tab:: ➡️ 1: Import
 
 
     Start by importing the necessary libraries and modules. These tools will help us process and align the ontologies.
@@ -38,7 +39,8 @@ This module demonstrates the process of aligning ontologies using the **OntoAlig
         Refer to `Fuzzy Aligners <ightweight.html#fuzzy-aligners>`_ section to read more on Fuzzy Aligners. These models leverage the efficient and robust `rapidfuzz <https://rapidfuzz.github.io/RapidFuzz/index.html>`_ library in the backend, ensuring high-speed and accurate lightweight fuzzy matching for various alignment needs.
     ::
 
-.. tab:: 2: Initialize the Task
+
+.. tab:: ➡️ 2: Initialize the Task
 
     Define the ontology alignment task using the provided datasets. This task specifies the source and target ontologies that we will work with.
 
@@ -52,7 +54,7 @@ This module demonstrates the process of aligning ontologies using the **OntoAlig
 
     ::
 
-.. tab:: 3: Parse the Dataset
+.. tab:: ➡️ 3: Parse the Dataset
 
 
     Next, we load the source ontology, target ontology, and reference matching files. These files are the foundation of our matching process.
@@ -131,7 +133,7 @@ This module demonstrates the process of aligning ontologies using the **OntoAlig
         }
     :::
 
-.. tab:: 4: Encode
+.. tab:: ➡️ 4: Encode
 
 
     After loading the dataset, the ``encoder`` module processes and restructures the concepts from the source and target ontologies, preparing them as input for the matching model.
@@ -168,7 +170,7 @@ This module demonstrates the process of aligning ontologies using the **OntoAlig
     ::
 
 
-.. tab:: 5: Aligner
+.. tab:: ➡️ 5: Aligner
 
     Use the ``SimpleFuzzySMLightweight`` matcher to align concepts by comparing their fuzzy matching scores. The matcher uses a similarity threshold (``0.2`` in this case) to decide which concepts in the source and target ontologies are close enough to be considered a match.
 
@@ -192,7 +194,7 @@ This module demonstrates the process of aligning ontologies using the **OntoAlig
         ]
     :::
 
-.. tab:: 6: Evaluate
+.. tab:: ➡️ 6: Evaluate
 
 
     Evaluate the performance of the fuzzy matcher by comparing the predicted matchings with the reference data.
@@ -222,7 +224,7 @@ This module demonstrates the process of aligning ontologies using the **OntoAlig
         }
     ::
 
-.. tab:: 7: Export
+.. tab:: ➡️ 7: Export
 
 
     Finally, save the matching results in an XML format for future use or integration into other systems.

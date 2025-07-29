@@ -6,7 +6,7 @@ Usage
 
 This module guides you through a step-by-step process for performing ontology alignment using a large language model (LLM) and the `OntoAligner` library. By the end, you'll understand how to preprocess data, encode ontologies, generate alignments, evaluate results, and save the outputs in XML and JSON formats.
 
-.. tab:: 1: Import
+.. tab:: ➡️ 1: Import
 
     Start by importing the necessary libraries and modules. These tools will help us process and align the ontologies.
 
@@ -24,7 +24,7 @@ This module guides you through a step-by-step process for performing ontology al
         from ontoaligner.postprocess import TFIDFLabelMapper, llm_postprocessor
     ::
 
-.. tab:: 2: Parse and Encode
+.. tab:: ➡️ 2: Parse and Encode
 
     Define the ontology alignment task using the provided datasets.
 
@@ -45,7 +45,7 @@ This module guides you through a step-by-step process for performing ontology al
     The encoder module transforms the ontology concepts into a format suitable for the LLM-based matcher. Here the technique used is a concept where it only keeps the concept element from the ``dataset`` for further steps.
     ::
 
-.. tab:: 3: Create Dataset
+.. tab:: ➡️ 3: Create Dataset
 
     Prepare the data for the LLM-based matcher by filling in the prompt template.
 
@@ -96,7 +96,7 @@ This module guides you through a step-by-step process for performing ontology al
     ::
 
 
-.. tab:: 4: Batching
+.. tab:: ➡️ 4: Batching
 
     Use a DataLoader to manage batching. Batching allows the model to process large datasets efficiently in smaller chunks.
 
@@ -111,7 +111,7 @@ This module guides you through a step-by-step process for performing ontology al
 
     ::
 
-.. tab:: 5: LLM Aligner
+.. tab:: ➡️ 5: LLM Aligner
 
     Set up the LLM-based model for generating alignments.
 
@@ -150,7 +150,7 @@ This module guides you through a step-by-step process for performing ontology al
 
     ::
 
-.. tab:: 6: Generate
+.. tab:: ➡️ 6: Generate
 
 
     Feed batched prompts to the LLM to predict alignments.
@@ -172,7 +172,7 @@ This module guides you through a step-by-step process for performing ontology al
 
     ::
 
-.. tab:: 7: Post-Process
+.. tab:: ➡️ 7: Post-Process
 
 
     As we see the output of LLM is a text, where it could be hard to determine whether there is a match or not. To ease the process in the Post-Process module we implement multiple label mappers to find the label classes in the output. Here, we refine the predictions using ``TFIDFLabelMapper`` which is based on TF-IDF and logistic regression classifier. The ``llm_postprocessor`` will take predictions and dataset and mapper to find the matchings by only keeping the interested class here (which in a default value is a ``yes`` class).
@@ -209,7 +209,7 @@ This module guides you through a step-by-step process for performing ontology al
          ... ]
     ::
 
-.. raw:: 8: Evaluate and Export
+.. raw:: ➡️ 8: Evaluate and Export
 
 
     The following code will compare the generated alignments with reference matchings. Then save the matchings in both XML and JSON formats for further analysis or use. Feel free to use any of the techniques.
