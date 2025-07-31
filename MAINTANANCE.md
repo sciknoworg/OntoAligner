@@ -21,7 +21,7 @@ A core team will be responsible for the ongoing maintenance of OntoAligner, incl
   -  [Dr. Jennifer D'Souza](https://sites.google.com/view/jen-web) and [Prof. Dr. Sören Auer](https://www.tib.eu/en/research-development/research-groups-and-labs/data-science-and-digital-libraries/staff/soeren-auer) – Project Supervisors and Principal Investigators (PI) – Responsible for guiding ideation, refining ideas, and defining the project's high-level direction to align the library's goals with broader academic and research objectives.
 - **Assistants**:
   - [Mahsa Sanaei](https://www.linkedin.com/in/sanaei-mahsa/) – Contributes to the code-level documentation, use-case study, and ensures clarity and consistency across the library's functions and modules.
-  - [Mike Ashley Cedric Gill](https://www.linkedin.com/in/mike-ashley-cedric/) - Assists with activities such as maintaining the codebase for the smooth operation of the project. Mike is a Master's student in Computer Science at Leibniz Universität Hannover.
+  - [Mike Ashley Cedric Gill](https://www.linkedin.com/in/mike-ashley-cedric/) - Assists with activities such as maintaining the codebase for the smooth operation of the project. 
 - **Alumni**:
   - [Amirreza Alasti](https://www.linkedin.com/in/amirreza-alasti-61450b1aa)
 
