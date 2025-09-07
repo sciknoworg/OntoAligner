@@ -1,11 +1,12 @@
 from setuptools import setup, find_packages
+import os
 
 with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
     name="OntoAligner",
-    version="1.5.0",
+    version=open(os.path.join(os.path.dirname(__file__), 'ontoaligner/VERSION')).read().strip(),
     author="Hamed Babaei Giglou",
     author_email="hamedbabaeigiglou@gmail.com",
     description="OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment",

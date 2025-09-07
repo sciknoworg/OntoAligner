@@ -11,7 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-__version__ = "1.5.0"
+from pathlib import Path
+
+# Load version from VERSION file
+__version__ = (Path(__file__).parent / "VERSION").read_text().strip()
 
 from .pipeline import OntoAlignerPipeline
 from ontoaligner import ontology, base, encoder, aligner, utils, postprocess
