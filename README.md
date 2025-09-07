@@ -33,6 +33,14 @@ git clone git@github.com:sciknoworg/OntoAligner.git
 pip install ./ontoaligner
 ```
 
+Next, verify the installation:
+
+```python
+import ontoaligner
+
+print(ontoaligner.__version__)
+```
+
 ## 📚 Documentation
 
 Comprehensive documentation for OntoAligner, including detailed guides and examples, is available at **[ontoaligner.readthedocs.io](https://ontoaligner.readthedocs.io/)**. Below are some key tutorials with links to both the documentation and the corresponding example codes.

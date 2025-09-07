@@ -1,11 +1,12 @@
 from setuptools import setup, find_packages
+import os
 
 with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
     name="OntoAligner",
-    version="1.5.0",
+    version=open(os.path.join(os.path.dirname(__file__), 'ontoaligner/VERSION')).read().strip(),
     author="Hamed Babaei Giglou",
     author_email="hamedbabaeigiglou@gmail.com",
     description="OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment",
@@ -26,11 +27,11 @@ setup(
         "rank_bm25==0.2.2",
         "rapidfuzz==3.5.2",
         "rdflib==7.1.1",
-        "sentence-transformers==4.1.0",
-        "torch==2.6.0",
-        "transformers==4.50.0",
-        "huggingface_hub==0.28.1",
-        "bitsandbytes==0.45.1",
+        "sentence-transformers>=5.1.0,<6.0.0",
+        "torch>=2.8.0,<3.0.0",
+        "transformers>=4.56.0,<5.0.0",
+        "huggingface-hub>=0.34.4,<1.0.0",
+        "bitsandbytes>=0.45.1,<1.0.0",
         "pykeen==1.11.1"
     ],
     classifiers=[

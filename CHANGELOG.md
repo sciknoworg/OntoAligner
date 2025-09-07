@@ -1,5 +1,11 @@
 ## Changelog
 
+### V1.5.1 Changelog (September 7, 2025)
+- Update dependencies.
+- Make versioning standardized.
+- Minor fix to the readme.
+- Add bash script for requirement update based on pyproject.toml
+
 ### V1.5.0 Changelog (July 29, 2025)
 - Added 17 Knowledge Graph Embedding (KGE) aligner models.
 - Major documentation update: improved structure, clarity, sectioning, etc.
