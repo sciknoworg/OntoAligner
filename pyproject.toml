@@ -20,14 +20,14 @@ scikit-learn = "*"
 tqdm = "*"
 owlready2 = "0.44"
 rdflib = "7.1.1"
-torch = "2.6.0"
+torch = "^2.8.0"
 transformers = "4.50.0"
 rapidfuzz = "3.5.2"
 openai = "1.56.0"
 rank_bm25 = "0.2.2"
-huggingface_hub="0.28.1"
-sentence-transformers = "4.1.0"
-bitsandbytes="0.45.1"
+huggingface-hub = "^0.34.4"
+sentence-transformers = "^5.1.0"
+bitsandbytes="^0.45.1"
 pykeen="1.11.1"
 
 [tool.poetry.dev-dependencies]
@@ -38,6 +38,12 @@ wheel = "*"
 twine = "*"
 pytest = "*"
 
+[tool.poetry-dynamic-versioning]
+enable = true
+style = "semver"
+source = "attr"
+attr = "ontoaligner.__version__"
+
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.4.0"]
+build-backend = "poetry_dynamic_versioning.backend"
