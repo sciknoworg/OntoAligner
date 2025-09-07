@@ -8,7 +8,7 @@ tqdm
 owlready2==0.44
 rdflib==7.1.1
 torch==2.8.0
-transformers==4.50.0
+transformers==4.56.0
 rapidfuzz==3.5.2
 openai==1.56.0
 rank_bm25==0.2.2
