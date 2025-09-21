@@ -2,8 +2,6 @@
   <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/main/images/logo-with-background.png" alt="OntoAligner Logo"/>
 </div>
 
-<h3 align="center">OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment</h3>
-
 <div align="center">
 
 [![PyPI version](https://badge.fury.io/py/OntoAligner.svg)](https://badge.fury.io/py/OntoAligner)
@@ -12,8 +10,11 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Documentation Status](https://readthedocs.org/projects/ontoaligner/badge/?version=main)](https://ontoaligner.readthedocs.io/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](MAINTANANCE.md)
+ [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14533133.svg)](https://doi.org/10.5281/zenodo.14533133)
 
 </div>
+
+<h3 align="center">OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment</h3>
 
 **OntoAligner** is a Python library designed to simplify ontology alignment and matching for researchers, practitioners, and developers. With a modular architecture and robust features, OntoAligner provides powerful tools to bridge ontologies effectively.
 
@@ -85,7 +86,7 @@ encoder_model = ConceptParentRAGEncoder()
 encoded_ontology = encoder_model(source=dataset['source'], target=dataset['target'])
 
 # Step 4: Define configuration for retriever and LLM
-retriever_config = {"device": 'cuda', "top_k": 5,}
+retriever_config = {"device": 'cuda', "top_k": 5}
 llm_config = {"device": "cuda", "max_length": 300, "max_new_tokens": 10, "batch_size": 15}
 
 # Step 5: Initialize Generate predictions using RAG-based ontology matcher
@@ -115,7 +116,7 @@ pipeline = ontoaligner.OntoAlignerPipeline(
     task_class=ontoaligner.ontology.MouseHumanOMDataset,
     source_ontology_path="assets/MI-MatOnto/mi_ontology.xml",
     target_ontology_path="assets/MI-MatOnto/matonto_ontology.xml",
-    reference_matching_path="assets/MI-MatOnto/matchings.xml",
+    reference_matching_path="assets/MI-MatOnto/matchings.xml"
 )
 
 matchings, evaluation = pipeline(
@@ -138,7 +139,7 @@ matchings, evaluation = pipeline(
 
 print("Matching Evaluation Report:", evaluation)
 ```
-## ⭐ Contribution
+## 👥 Contact & Contributions
 
 We welcome contributions to enhance OntoAligner and make it even better! Please review our contribution guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) before getting started. You are also welcome to assist with the ongoing maintenance by referring to [MAINTENANCE.md](MAINTENANCE.md). Your support is greatly appreciated.
 
@@ -146,19 +147,48 @@ We welcome contributions to enhance OntoAligner and make it even better! Please 
 If you encounter any issues or have questions, please submit them in the [GitHub issues tracker](https://github.com/sciknoworg/OntoAligner/issues).
 
 
-## 💡 Acknowledgements
+## 📚 Citing this Work
 
 If you use OntoAligner in your work or research, please cite the following preprint:
 
-```bibtex
-@inproceedings{babaei2025ontoaligner,
-  title={OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment},
-  author={Babaei Giglou, Hamed and D’Souza, Jennifer and Karras, Oliver and Auer, S{\"o}ren},
-  booktitle={European Semantic Web Conference},
-  pages={174--191},
-  year={2025},
-  organization={Springer}
-}
-```
+- OntoAligner Library:
+    > Babaei Giglou, H., D’Souza, J., Karras, O., Auer, S. (2025). OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment. In: Curry, E., et al. The Semantic Web. ESWC 2025. Lecture Notes in Computer Science, vol 15719. Springer, Cham. https://doi.org/10.1007/978-3-031-94578-6_10
 
-This software is archived in Zenodo under the DOI [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14533133.svg)](https://doi.org/10.5281/zenodo.14533133) and is licensed under [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0).
+    📌 BibTeX
+    ```bibtex
+    @InProceedings{10.1007/978-3-031-94578-6_10,
+        author="Babaei Giglou, Hamed and D'Souza, Jennifer and Karras, Oliver and Auer, S{\"o}ren",
+        editor="Curry, Edward and Acosta, Maribel and Poveda-Villal{\'o}n, Maria and van Erp, Marieke and Ojo, Adegboyega and Hose, Katja and Shimizu, Cogan and Lisena, Pasquale",
+        title="OntoAligner: A Comprehensive Modular and Robust Python Toolkit for Ontology Alignment",
+        booktitle="The Semantic Web",
+        year="2025",
+        publisher="Springer Nature Switzerland",
+        address="Cham",
+        pages="174--191"
+    }
+    ```
+
+- LLMs4OM (for RAG module)
+    >   Babaei Giglou, H., D’Souza, J., Engel, F., Auer, S. (2025). LLMs4OM: Matching Ontologies with Large Language Models. In: Meroño Peñuela, A., et al. The Semantic Web: ESWC 2024 Satellite Events. ESWC 2024. Lecture Notes in Computer Science, vol 15344. Springer, Cham. https://doi.org/10.1007/978-3-031-78952-6_3
+
+    📌 BibTeX
+    ```bibtex
+    @InProceedings{10.1007/978-3-031-78952-6_3,
+      author="Babaei Giglou, Hamed and D'Souza, Jennifer and Engel, Felix and Auer, S{\"o}ren",
+      editor="Mero{\~{n}}o Pe{\~{n}}uela, Albert and Corcho, Oscar and Groth, Paul and Simperl, Elena and Tamma, Valentina and Nuzzolese, Andrea Giovanni and Poveda-Villal{\'o}n, Maria and Sabou, Marta and Presutti, Valentina and Celino, Irene and Revenko, Artem and Raad, Joe and Sartini, Bruno and Lisena, Pasquale",
+      title="LLMs4OM: Matching Ontologies with Large Language Models",
+      booktitle="The Semantic Web: ESWC 2024 Satellite Events",
+      year="2025",
+      publisher="Springer Nature Switzerland",
+      address="Cham",
+      pages="25--35",
+      isbn="978-3-031-78952-6"
+      }
+    ```
+
+## 📃 License
+
+This software is licensed under [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0).
+
+[//]: # (This work is licensed under a MIT License)
+[//]: # (is archived in Zenodo under the DOI [![DOI]&#40;https://zenodo.org/badge/DOI/10.5281/zenodo.14533133.svg&#41;]&#40;https://doi.org/10.5281/zenodo.14533133&#41; and )
