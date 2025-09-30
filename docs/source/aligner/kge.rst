@@ -263,3 +263,77 @@ Here ``RESCAL`` is our custom KGE model.
 .. note::
 
     For possible models please take a look at `PyKEEN > Models <https://pykeen.readthedocs.io/en/latest/reference/models.html#classes>`_.
+
+KGE Retriever
+----------------------
+
+.. sidebar:: Key Parameters:
+
+		- ``retruever``: boolean
+		- ``top_K``: integer
+
+In addition to one-to-one alignments, OntoAligner also supports retriever-based alignment. When retriever mode is enabled (``retriever=True``), the aligner returns the top-k candidate target entities for each source entity, along with their similarity scores (similar to retriever aligner). This model is useful if you want to build downstream candidate filtering pipelines, apply human-in-the-loop validation, or integrate with reranking modules (e.g., LLMs or supervised classifiers).
+
+Here is the example on how to use KGE Aligner as a retriever model:
+
+.. code-block:: python
+
+    from ontoaligner.aligner import TransEAligner
+
+    # Enable retriever mode and request top-3 candidates per source entity
+    aligner = TransEAligner(retriever=True, top_k=3)
+
+    matchings = aligner.generate(input_data=encoded_dataset)
+
+    # Example output:
+    # [
+    #   {
+    #     "source": "http://mouse.owl#MA_0000143",
+    #     "target-cands": [
+    #         "http://human.owl#HBA_0000214",
+    #         "http://human.owl#HBA_0000762",
+    #         "http://human.owl#HBA_0000891"
+    #     ],
+    #     "score-cands": [0.87, 0.82, 0.77]
+    #   },
+    #   ...
+    # ]
+
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Mode
+     - Description
+
+   * - **KGE Default mode**
+     - In KGE aligners, the default mode is ``retriever=False``, where it produces **one-to-one** alignments, where each source entity is matched to the single most similar target entity.
+
+
+   * - **KGE Retriever mode**
+	 - In KGE aligners, the default mode is ``retriever=True``, where it produces **one-to-many** alignments, where each source entity is matched to the single most similar target entity.  Example output:
+
+
+
+.. tab:: ➡️ KGE Default Mode Example output
+
+	 ::
+
+		{
+		    'source': 'http://mouse.owl#MA_0000143',
+		    'target-cands': [...],
+		    'score-cands': [...]
+		}
+
+
+
+.. tab:: ➡️ KGE Retriever Mode Example output
+
+	::
+
+		{
+		    'source': 'http://mouse.owl#MA_0000143',
+		    'target': 'http://human.owl#HBA_0000214',
+		    'score': 0.87
+		}
