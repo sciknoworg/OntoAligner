@@ -31,7 +31,7 @@ setup(
         "torch>=2.8.0,<3.0.0",
         "transformers>=4.56.0,<5.0.0",
         "huggingface-hub>=0.34.4,<1.0.0",
-        "bitsandbytes>=0.45.1,<1.0.0",
+        "bitsandbytes>=0.45.1,<1.0.0; platform_system == 'Linux'",
         "pykeen==1.11.1"
     ],
     classifiers=[
