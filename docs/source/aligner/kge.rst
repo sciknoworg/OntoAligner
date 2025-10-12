@@ -4,6 +4,11 @@ Knowledge Graph Embedding
 Graph Embeddings
 ---------------------------------
 
+.. sidebar:: **Reference:**
+
+    `OntoAligner Meets Knowledge Graph Embedding Aligners <https://arxiv.org/abs/2509.26417>`_
+
+
 Ontology alignment involves finding correspondences between entities in different ontologies. OntoAligner addresses this challenge by leveraging **Knowledge Graph Embedding (KGE)** models. The core idea of KGE is to represent entities (like classes, properties, individuals) and relations within an ontology as **low-dimensional vectors** in a continuous vector space. These numerical representations (embeddings) are learned to preserve semantic relationships from the original ontology geometrically in the embedding space.
 
 .. hint::
@@ -285,21 +290,6 @@ Here is the example on how to use KGE Aligner as a retriever model:
 
     matchings = aligner.generate(input_data=encoded_dataset)
 
-    # Example output:
-    # [
-    #   {
-    #     "source": "http://mouse.owl#MA_0000143",
-    #     "target-cands": [
-    #         "http://human.owl#HBA_0000214",
-    #         "http://human.owl#HBA_0000762",
-    #         "http://human.owl#HBA_0000891"
-    #     ],
-    #     "score-cands": [0.87, 0.82, 0.77]
-    #   },
-    #   ...
-    # ]
-
-
 .. list-table::
    :widths: 20 80
    :header-rows: 1
@@ -309,26 +299,31 @@ Here is the example on how to use KGE Aligner as a retriever model:
 
    * - **KGE Default mode**
      - In KGE aligners, the default mode is ``retriever=False``, where it produces **one-to-one** alignments, where each source entity is matched to the single most similar target entity.
-
-
    * - **KGE Retriever mode**
-	 - In KGE aligners, the default mode is ``retriever=True``, where it produces **one-to-many** alignments, where each source entity is matched to the single most similar target entity.  Example output:
-
-
-
-.. tab:: ➡️ KGE Default Mode Example output
-
-	 ::
-
-		{
-		    'source': 'http://mouse.owl#MA_0000143',
-		    'target-cands': [...],
-		    'score-cands': [...]
-		}
+     - In KGE aligners, the default mode is ``retriever=True``, where it produces **one-to-many** alignments, where each source entity is matched to multiple target entities. Example output:
 
 
 
 .. tab:: ➡️ KGE Retriever Mode Example output
+
+	::
+
+		[
+		   {
+		     "source": "http://mouse.owl#MA_0000143",
+		     "target-cands": [
+		         "http://human.owl#HBA_0000214",
+		         "http://human.owl#HBA_0000762",
+		         "http://human.owl#HBA_0000891"
+		     ],
+		     "score-cands": [0.87, 0.82, 0.77]
+		   },
+		   ...
+		]
+
+
+
+.. tab:: ➡️ KGE Default Mode Example output
 
 	::
 
@@ -337,3 +332,10 @@ Here is the example on how to use KGE Aligner as a retriever model:
 		    'target': 'http://human.owl#HBA_0000214',
 		    'score': 0.87
 		}
+
+
+.. note::
+
+    Consider reading the following section next:
+
+    * `Package Reference > Aligners <../package_reference/aligners.html>`_
