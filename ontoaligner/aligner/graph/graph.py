@@ -52,11 +52,13 @@ class GraphEmbeddingAligner(BaseOMModel):
 
     def __init__(self,
                  device: str='cpu',
+                 retriever: bool = False,
                  embedding_dim: int=300,
                  num_epochs: int=50,
                  train_batch_size: int=128,
                  eval_batch_size: int=64,
                  num_negs_per_pos: int=5,
+                 top_k: int=5,
                  random_seed: int=42):
         """
         Initializes the GraphEmbeddingAligner with training configuration.
@@ -71,11 +73,13 @@ class GraphEmbeddingAligner(BaseOMModel):
             random_seed (int): Random seed for reproducibility.
         """
         super().__init__(device=device,
+                         retriever=retriever,
                          embedding_dim=embedding_dim,
                          num_epochs=num_epochs,
                          train_batch_size=train_batch_size,
                          eval_batch_size=eval_batch_size,
                          num_negs_per_pos=num_negs_per_pos,
+                         top_k=top_k,
                          random_seed=random_seed)
 
     def fit(self, triplets: List):
@@ -108,6 +112,7 @@ class GraphEmbeddingAligner(BaseOMModel):
     def _similarity_matrix(self, source_onto_tensor, target_onto_tensor):
         return torch.matmul(source_onto_tensor, target_onto_tensor.T)
 
+
     def predict(self, source_onto: Dict, target_onto: Dict):
         """
         Aligns entities from the source ontology to entities in the target ontology
@@ -134,16 +139,45 @@ class GraphEmbeddingAligner(BaseOMModel):
 
         similarity_matrix = self._similarity_matrix(source_onto_tensor, target_onto_tensor) # shape: (n1, n2)
 
-        best_scores, best_indices = similarity_matrix.max(dim=1)
+        if self.kwargs['retriever']:
+            matches = self._retriever_predict(similarity_matrix=similarity_matrix,
+                                              source_ent2iri=source_ent2iri,
+                                              target_ent2iri=target_ent2iri,
+                                              source_ents=source_ents,
+                                              target_ents=target_ents,
+                                              top_k=self.kwargs['top_k'])
+        else:
+            matches = self._predict(similarity_matrix=similarity_matrix,
+                                    source_ent2iri=source_ent2iri,
+                                    target_ent2iri=target_ent2iri,
+                                    source_ents=source_ents,
+                                    target_ents=target_ents)
+        return matches
 
-        matches = [
-            {
+    def _retriever_predict(self, similarity_matrix, source_ent2iri, target_ent2iri, source_ents, target_ents, top_k):
+        best_scores, best_indices = similarity_matrix.topk(k=top_k, dim=1)
+        matches = []
+        for i, src in enumerate(source_ents):
+            target_cands, score_cands = [], []
+            for j in range(top_k):
+                target_cands.append(target_ent2iri[target_ents[best_indices[i][j].item()]])
+                score_cands.append(best_scores[i][j].item())
+            matches.append({
+                "source": source_ent2iri[src],
+                "target-cands": target_cands,
+                "score-cands": score_cands
+            })
+        return matches
+
+    def _predict(self, similarity_matrix, source_ent2iri, target_ent2iri, source_ents, target_ents):
+        best_scores, best_indices = similarity_matrix.max(dim=1)
+        matches = []
+        for index in range(len(source_ents)):
+            matches.append({
                 "source": source_ent2iri[source_ents[index]],
                 "target": target_ent2iri[target_ents[best_indices[index].item()]],
                 "score": best_scores[index].item()
-            }
-            for index in range(len(source_ents))
-        ]
+            })
         return matches
 
     def get_embeddings(self):

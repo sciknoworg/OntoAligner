@@ -63,4 +63,4 @@ KGE Aligners
    :members:
    :undoc-members:
    :show-inheritance:
-   :special-members:
+   :special-members: __init__, generate

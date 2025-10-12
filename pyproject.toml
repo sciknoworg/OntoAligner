@@ -27,7 +27,7 @@ openai = "1.56.0"
 rank_bm25 = "0.2.2"
 huggingface-hub = "^0.34.4"
 sentence-transformers = "^5.1.0"
-bitsandbytes = "^0.45.1"
+bitsandbytes = { version = ">=0.45.1,<1.0.0", markers = "platform_system == 'Linux'" }
 pykeen = "1.11.1"
 
 [tool.poetry.dev-dependencies]
