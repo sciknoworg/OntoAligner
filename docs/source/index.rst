@@ -17,6 +17,11 @@ OntoAligner was created by `Scientific Knowledge Organization (SciKnowOrg group)
       <strong>The vision is to create a unified hub that brings together a wide range of ontology alignment models, making integration seamless for researchers and practitioners.</strong>
     </div>
 
+**Watch the OntoAligner presentation at EWC-2025.**
+
+.. raw:: html
+
+	<iframe src="https://videolectures.net/embed/videos/eswc2025_bernardin_babaei_giglu?part=1" width="100%" frameborder="0" allowfullscreen style="aspect-ratio:16/9"></iframe>
 
 Citing
 =========
@@ -46,6 +51,19 @@ or our related work `LLMs4OM: Matching Ontologies with Large Language Models <ht
       year={2024},
       organization={Springer}
     }
+
+or if you are using Knowledge Graph Embeddings refer to `OntoAligner Meets Knowledge Graph Embedding Aligners <https://arxiv.org/abs/2509.26417>`_:
+
+ .. code-block:: bibtex
+
+  @article{babaei2025ontoaligner,
+	  title={OntoAligner Meets Knowledge Graph Embedding Aligners},
+	  author={Babaei Giglou, Hamed and D'Souza, Jennifer and Auer, S{\"o}ren and Sanaei, Mahsa},
+	  journal={arXiv e-prints},
+	  pages={arXiv--2509},
+	  year={2025}
+	}
+
 
 
 .. toctree::

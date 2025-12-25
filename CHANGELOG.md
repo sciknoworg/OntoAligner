@@ -1,5 +1,10 @@
 ## Changelog
 
+### V1.5.2 Changelog (October 12, 2025)
+- Fix to `bitsandbytes` install for MacOS -- it will only be installed for linux.
+- Add KGE retriever
+- Update KGE documentation
+
 ### V1.5.1 Changelog (September 7, 2025)
 - Update dependencies.
 - Make versioning standardized.
