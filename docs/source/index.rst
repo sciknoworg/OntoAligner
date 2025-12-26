@@ -17,11 +17,19 @@ OntoAligner was created by `Scientific Knowledge Organization (SciKnowOrg group)
       <strong>The vision is to create a unified hub that brings together a wide range of ontology alignment models, making integration seamless for researchers and practitioners.</strong>
     </div>
 
-**Watch the OntoAligner presentation at EWC-2025.**
-
 .. raw:: html
 
-	<iframe src="https://videolectures.net/embed/videos/eswc2025_bernardin_babaei_giglu?part=1" width="100%" frameborder="0" allowfullscreen style="aspect-ratio:16/9"></iframe>
+	<div class="video-card">
+	  <iframe
+	    src="https://videolectures.net/embed/videos/eswc2025_bernardin_babaei_giglu?part=1"
+	    frameborder="0"
+	    allowfullscreen>
+	  </iframe>
+	  <p class="video-caption">
+	    ESWC 2025 Talk — OntoAligner Presentation by Hamed Babaei Giglou.
+	  </p>
+	</div>
+
 
 Citing
 =========

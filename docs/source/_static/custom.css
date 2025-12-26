@@ -79,3 +79,39 @@
   margin-bottom: 1.2em;
   font-size: 1.1em;
 }
+
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  margin: 2rem auto;
+  aspect-ratio: 16 / 9;
+}
+
+.video-container iframe {
+  width: 90%;
+  height: 90%;
+  border-radius: 12px;
+}
+
+.video-card {
+  max-width: 960px;
+  margin: 3rem auto;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgb(161, 159, 159);
+}
+
+.video-card iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+}
+
+.video-caption {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 1.05rem;
+  color: #0d3b5a;
+}

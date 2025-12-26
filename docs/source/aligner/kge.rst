@@ -34,8 +34,7 @@ Usage
 
 .. sidebar::
 
-    Full code is available at `OntoAligner Repository. <https://github.com/sciknoworg/OntoAligner/blob/main/examples/kge.py>`_
-
+    A usage example is available at `OntoAligner Repository. <https://github.com/sciknoworg/OntoAligner/blob/main/examples/kge.py>`_
 
 This module guides you through a step-by-step process for performing ontology alignment using a KGEs and the OntoAligner library. By the end, you’ll understand how to preprocess data, encode ontologies, generate alignments, evaluate results, and save the outputs in XML and JSON formats.
 
