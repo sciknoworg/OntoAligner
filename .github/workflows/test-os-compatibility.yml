@@ -19,7 +19,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }} on ${{ matrix.os }}
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
@@ -29,10 +29,12 @@ jobs:
         run: |
           curl -sSL https://install.python-poetry.org | python -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$APPDATA/Python/Scripts" >> $GITHUB_PATH
 
       - name: Configure Poetry and install plugin
         shell: bash
         run: |
+          poetry --version
           poetry config virtualenvs.create false
           poetry self add "poetry-dynamic-versioning[plugin]"
 
