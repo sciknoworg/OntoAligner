@@ -91,7 +91,6 @@ or if you are using Knowledge Graph Embeddings refer to `OntoAligner Meets Knowl
    :maxdepth: 1
 
    developerguide/parsers
-   developerguide/propertyalignment
 
 .. toctree::
    :caption: Aligners
