@@ -36,10 +36,8 @@ class PropertyEncoder(BaseEncoder):
 
     Attributes:
         items_in_owl (str): Description of OWL items being encoded
-        prompt_template (str): Template describing the encoding task
     """
     items_in_owl: str = "(Property)"
-    prompt_template: str = "Encode property with its label for matching"
 
     def parse(self, **kwargs) -> Any:
         """
@@ -117,7 +115,6 @@ class PropMatchEncoder(PropertyEncoder):
     """
 
     items_in_owl: str = "(Property, Domain, Range, Inverse)"
-    prompt_template: str = "Encode property with domain, range, and inverse for matching"
 
     def get_owl_items(self, property) -> Dict:
         """

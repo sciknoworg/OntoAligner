@@ -464,16 +464,16 @@ class OntologyProperty(BaseOntologyParser):
             >>> properties = parser.extract_data(graph)
             >>> prop = properties[0]
             >>> print(prop)
-            {
-                'property_uri': 'http://example.org#hasAuthor',
-                'label': 'has author',
-                'domain': ['http://example.org#Publication'],
-                'domain_text': 'has author publication',
-                'range': ['http://example.org#Person'],
-                'range_text': 'has author person',
-                'inverse_of': 'http://example.org#authorOf',
-                'inverse_label': 'authorOf'
-            }
+            >>> {
+            >>>    'iri': 'http://example.org#hasAuthor',
+            >>>    'label': 'has author',
+            >>>    'domain': ['http://example.org#Publication'],
+            >>>    'domain_text': ['has author', 'publication'],
+            >>>    'range': ['http://example.org#Person'],
+            >>>    'range_text': ['has author', 'person'],
+            >>>    'inverse_of': 'http://example.org#authorOf',
+            >>>    'inverse_label': 'authorOf'
+            >>>}
         """
         properties = []
 
