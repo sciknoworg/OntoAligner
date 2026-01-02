@@ -64,3 +64,11 @@ KGE Aligners
    :undoc-members:
    :show-inheritance:
    :special-members: __init__, generate
+
+PropMatch Aligner
+------------------
+.. automodule:: ontoaligner.aligner.propmatch.propmatch
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :special-members: __init__, match_property, generate
