@@ -22,6 +22,7 @@ setup(
         "pandas",
         "scikit-learn",
         "tqdm",
+        "nltk",
         "py-stringmatching",
         "openai==1.56.0",
         "owlready2==0.44",

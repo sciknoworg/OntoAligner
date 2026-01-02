@@ -2,6 +2,10 @@ from unittest.mock import patch
 from ontoaligner import ontology, encoder
 from ontoaligner.aligner import PropMatchAligner
 
+import nltk
+nltk.download('averaged_perceptron_tagger')
+nltk.download('averaged_perceptron_tagger_eng')
+
 def test_propmatch_aligner_with_mocked_embeddings():
     # Prepare dataset
     task = ontology.PropertyOMDataset(ontology.ProcessingStrategy.NONE)
