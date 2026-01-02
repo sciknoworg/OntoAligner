@@ -4,11 +4,6 @@ Knowledge Graph Embedding
 Graph Embeddings
 ---------------------------------
 
-.. sidebar:: **Reference:**
-
-    `OntoAligner Meets Knowledge Graph Embedding Aligners <https://arxiv.org/abs/2509.26417>`_
-
-
 Ontology alignment involves finding correspondences between entities in different ontologies. OntoAligner addresses this challenge by leveraging **Knowledge Graph Embedding (KGE)** models. The core idea of KGE is to represent entities (like classes, properties, individuals) and relations within an ontology as **low-dimensional vectors** in a continuous vector space. These numerical representations (embeddings) are learned to preserve semantic relationships from the original ontology geometrically in the embedding space.
 
 .. hint::
@@ -27,6 +22,10 @@ OntoAligner's KGE-based alignment process involves several key components that w
     <div align="center">
      <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/kge.jpg" width="80%"/>
     </div>
+
+.. note::
+
+    **Reference:** Giglou, Hamed Babaei, Jennifer D'Souza, Sören Auer, and Mahsa Sanaei. "OntoAligner Meets Knowledge Graph Embedding Aligners." `arXiv preprint arXiv:2509.26417 <https://arxiv.org/abs/2509.26417>`_ (2025).
 
 
 Usage
