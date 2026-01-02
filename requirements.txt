@@ -22,3 +22,5 @@ setuptools
 wheel
 twine
 pytest
+py-stringmatching
+nltk

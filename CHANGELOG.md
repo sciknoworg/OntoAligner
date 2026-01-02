@@ -1,5 +1,14 @@
 ## Changelog
 
+### V1.6.0 Changelog (Janouary 2, 2026)
+- Add OS compatibility CI/CD
+- Minor fix to documentations
+- Add PropMatch Aligner
+- Add PropMatch encoder compatibility to other alignments such as Lightweight and Retrieval aligners
+- Add PropMatch documentation page
+- Add PropMatch unittests
+- Minor code refactoring
+
 ### V1.5.2 Changelog (October 12, 2025)
 - Fix to `bitsandbytes` install for MacOS -- it will only be installed for linux.
 - Add KGE retriever

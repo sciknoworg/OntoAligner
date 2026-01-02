@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='utf-8'?>
+				<rdf:RDF xmlns='http://knowledgeweb.semanticweb.org/heterogeneity/alignment'
+					 xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+					 xmlns:xsd='http://www.w3.org/2001/XMLSchema#'>
+				<Alignment>
+				<xml>yes</xml>
+				<level>0</level>
+				<type>??</type>
+
+				<onto1>
+				<Ontology rdf:about="http://cmt">
+				  <location>http://nb.vse.cz/~svabo/oaei2010/cmt.owl</location>
+				</Ontology>
+				</onto1>
+				<onto2>
+				<Ontology rdf:about="http://conference">
+				  <location>http://nb.vse.cz/~svabo/oaei2010/Conference.owl</location>
+				</Ontology>
+				</onto2>
+							<map>
+								<Cell cid='1'>
+									<entity1 rdf:resource='http://cmt#Conference'/>
+									<entity2 rdf:resource='http://conference#Conference_volume'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='2'>
+									<entity1 rdf:resource='http://cmt#Preference'/>
+									<entity2 rdf:resource='http://conference#Review_preference'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='3'>
+									<entity1 rdf:resource='http://cmt#Author'/>
+									<entity2 rdf:resource='http://conference#Regular_author'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='4'>
+									<entity1 rdf:resource='http://cmt#Person'/>
+									<entity2 rdf:resource='http://conference#Person'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='5'>
+									<entity1 rdf:resource='http://cmt#email'/>
+									<entity2 rdf:resource='http://conference#has_an_email'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='6'>
+									<entity1 rdf:resource='http://cmt#Co-author'/>
+									<entity2 rdf:resource='http://conference#Contribution_co-author'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='7'>
+									<entity1 rdf:resource='http://cmt#PaperAbstract'/>
+									<entity2 rdf:resource='http://conference#Abstract'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='8'>
+									<entity1 rdf:resource='http://cmt#Document'/>
+									<entity2 rdf:resource='http://conference#Conference_document'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='9'>
+									<entity1 rdf:resource='http://cmt#Review'/>
+									<entity2 rdf:resource='http://conference#Review'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='10'>
+									<entity1 rdf:resource='http://cmt#Conference'/>
+									<entity2 rdf:resource='http://conference#Conference'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='11'>
+									<entity1 rdf:resource='http://cmt#ProgramCommittee'/>
+									<entity2 rdf:resource='http://conference#Program_committee'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='12'>
+									<entity1 rdf:resource='http://cmt#Chairman'/>
+									<entity2 rdf:resource='http://conference#Chair'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='13'>
+									<entity1 rdf:resource='http://cmt#SubjectArea'/>
+									<entity2 rdf:resource='http://conference#Topic'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='16'>
+									<entity1 rdf:resource='http://cmt#assignedByReviewer'/>
+									<entity2 rdf:resource='http://conference#invited_by'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							<map>
+								<Cell cid='17'>
+									<entity1 rdf:resource='http://cmt#assignExternalReviewer'/>
+									<entity2 rdf:resource='http://conference#invites_co-reviewers'/>
+									<measure rdf:datatype='xsd:float'>1.0</measure>
+									<relation>=</relation>
+								</Cell>
+							</map>
+							</Alignment>
+	</rdf:RDF>

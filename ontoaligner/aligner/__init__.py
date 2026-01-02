@@ -21,3 +21,4 @@ from .rag.models import * # NOQA
 from .rag.dataset import * # NOQA
 from .retrieval.models import * # NOQA
 from .graph.models import * # NOQA
+from .propmatch import * # NOQA
