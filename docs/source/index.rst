@@ -1,6 +1,30 @@
+.. raw:: html
+
+    <div align="center">
+      <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/main/images/logo-with-background.png"
+           alt="OntoAligner Logo" width="50%" height="20%"/>
+	<br>
+	<!-- PyPI Version -->
+	<a href="https://badge.fury.io/py/OntoAligner">
+	    <img src="https://badge.fury.io/py/OntoAligner.svg" alt="PyPI version">
+	</a>
+
+	<!-- PyPI Downloads -->
+	<a href="https://pepy.tech/projects/ontoaligner">
+	    <img src="https://static.pepy.tech/badge/ontoaligner" alt="PyPI Downloads">
+	</a>
+
+	<!-- License -->
+	<img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License">
+
+	<!-- DOI -->
+	<a href="https://doi.org/10.5281/zenodo.14533133">
+	    <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.14533133.svg" alt="DOI">
+	</a>
+    </div>
 
 OntoAligner Documentation
-===========================
+=================================
 
 Ontology Alignment (OA) is fundamental for achieving semantic interoperability across diverse knowledge systems. **OntoAligner** (a.k.a Ontology Aligner), a modular Python toolkit for ontology alignment, designed to address current limitations with existing tools faced by practitioners. Existing tools are limited in scalability, modularity, and ease of integration with recent AI advances. OntoAligner provides a flexible architecture integrating existing lightweight OA techniques such as fuzzy matching but goes beyond by supporting contemporary methods with retrieval-augmented generation and large language models for OA. The current framework prioritizes extensibility, enabling researchers to integrate custom alignment algorithms and datasets. With OntoAligner you can handle large-scale ontologies efficiently with few lines of code while delivering high alignment quality. By making OntoAligner open-source, we aim to provide a resource that fosters innovation and collaboration within the OA community, empowering researchers and practitioners with a toolkit for reproducible OA research and real-world applications.
 
