@@ -16,3 +16,4 @@ from .lightweight import * # NOQA
 from .llm import * # NOQA
 from .rag import * # NOQA
 from .graph import * # NOQA
+from .property import * # NOQA
