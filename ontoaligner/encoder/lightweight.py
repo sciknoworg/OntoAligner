@@ -169,3 +169,51 @@ class ConceptParentLightweightEncoder(LightweightEncoder):
         """
         parents = ", ".join([parent["label"] for parent in owl["parents"]])
         return {"iri": owl["iri"], "text": owl["label"] + "  " + str(parents)}
+
+
+class DocConceptLightweightEncoder(LightweightEncoder):
+    """
+    Encodes OWL items as a Document which is a combination of the IRI, label, synonyms, and comments.
+
+    This class inherits from the `LightweightEncoder` class and is designed to encode OWL items that consist of
+    concepts. The `get_owl_items` method retrieves the IRI and label of the concept.
+
+    Attributes:
+        items_in_owl (str): Specifies the type of OWL items being encoded, in this case, a Concept.
+    """
+    items_in_owl: str = """(Classes Only)"""
+    # items_in_owl: str = ""
+
+    def preprocess(self, text: str) -> str:
+        """
+        Preprocesses input text by replacing underscores with spaces and converting the text to lowercase.
+
+        This method is used to standardize the format of input text before processing it further for encoding.
+
+        Parameters:
+            text (str): The input text that needs preprocessing.
+
+        Returns:
+            str: The preprocessed text with underscores replaced by spaces and all characters in lowercase.
+        """
+        if isinstance(text, list):
+            text = " ".join(text)
+
+        text = text.replace("_", " ")
+        text = text.lower()
+        # print(text)
+        return text
+
+    def get_owl_items(self, owl: Dict) -> Any:
+        """
+        Extracts the IRI and label of a concept from the given OWL item.
+
+        Parameters:
+            owl (Dict): A dictionary representing an OWL item, expected to contain 'iri' and 'label' keys.
+
+        Returns:
+            Dict: A dictionary containing the IRI and label of the concept.
+        """
+        synonyms = " ".join(owl['synonyms'])
+        comments = " ".join(owl['comment'])
+        return {"iri": owl["iri"], "text": owl["label"]+" "+synonyms +" "+comments}
