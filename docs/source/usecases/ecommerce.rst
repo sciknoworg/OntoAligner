@@ -43,6 +43,17 @@ Lets see samples (according to the following table) from Amazon and eBay ontolog
      - ``manufacturer``, ``producer``, ``displaySize``
 
 
+The visualization below illustrates how ontologies and their corresponding alignment are represented.
+
+.. raw:: html
+
+   <iframe src="../_static/amazon-ebay-alignment.html.html"
+           width="90%"
+           height="900"
+           style="border:none;">
+   </iframe>
+
+
 .. note::
 
     Amazon ontology (simplified):
