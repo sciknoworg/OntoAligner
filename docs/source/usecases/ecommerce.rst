@@ -47,7 +47,7 @@ The visualization below illustrates how ontologies and their corresponding align
 
 .. raw:: html
 
-   <iframe src="../_static/amazon-ebay-alignment.html.html"
+   <iframe src="../_static/amazon-ebay-alignment.html"
            width="90%"
            height="900"
            style="border:none;">
