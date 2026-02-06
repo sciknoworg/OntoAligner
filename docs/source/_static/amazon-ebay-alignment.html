@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ontology Alignment Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .controls label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .controls input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .visualization {
+            display: flex;
+            padding: 40px;
+            gap: 60px;
+            position: relative;
+            min-height: 600px;
+        }
+
+        .ontology {
+            flex: 1;
+            position: relative;
+        }
+
+        .ontology-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .amazon-title {
+            background: #ff9900;
+            color: white;
+        }
+
+        .ebay-title {
+            background: #0064d2;
+            color: white;
+        }
+
+        .class-node {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .class-node:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .class-node.highlighted {
+            border-color: #28a745;
+            background: #d4edda;
+            border-width: 3px;
+        }
+
+        .class-name {
+            font-weight: 600;
+            color: #212529;
+            font-size: 1.05em;
+        }
+
+        .class-meta {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .indent-1 { margin-left: 30px; }
+        .indent-2 { margin-left: 60px; }
+
+        .property-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .property-section-title {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .property-node {
+            background: #e7f3ff;
+            border: 2px solid #b3d9ff;
+            border-radius: 8px;
+            padding: 10px 18px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .property-node:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .property-node.highlighted {
+            border-color: #28a745;
+            background: #d4edda;
+            border-width: 3px;
+        }
+
+        .datatype-property {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .mapping-line {
+            stroke: #28a745;
+            stroke-width: 2;
+            fill: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mapping-line.visible {
+            opacity: 0.6;
+        }
+
+        .mapping-line.active {
+            opacity: 1;
+            stroke-width: 3;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .legend {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .legend-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: #495057;
+        }
+
+        .legend-items {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 40px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #dee2e6;
+        }
+
+        .mapping-info {
+            padding: 20px 30px;
+            background: #e7f3ff;
+            border-top: 2px solid #b3d9ff;
+        }
+
+        .mapping-info h3 {
+            color: #0064d2;
+            margin-bottom: 15px;
+        }
+
+        .mapping-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .mapping-item {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border-left: 4px solid #28a745;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mapping-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .mapping-item.active {
+            background: #d4edda;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .mapping-type {
+            font-size: 0.8em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- <div class="header">
+            <h1>🔗 Ontology Alignment Visualization</h1>
+            <p>Amazon vs eBay E-commerce Ontologies</p>
+        </div> -->
+
+        <div class="controls">
+            <label>
+                <input type="checkbox" id="showMappings" checked>
+                Show Mapping Lines
+            </label>
+            <label>
+                <input type="checkbox" id="showClasses" checked>
+                Show Classes
+            </label>
+            <label>
+                <input type="checkbox" id="showProperties" checked>
+                Show Properties
+            </label>
+        </div>
+
+        <div class="mapping-info">
+            <h3>Identified Mappings (Click to highlight)</h3>
+            <div class="mapping-list" id="mappingList"></div>
+        </div>
+
+        <div class="visualization" id="visualization">
+            <svg id="connectionsSvg"></svg>
+
+            <!-- Amazon Ontology -->
+            <div class="ontology" id="amazonOntology">
+                <div class="ontology-title amazon-title">Amazon Ontology</div>
+
+                <div class="class-node" data-id="Electronics">
+                    <div class="class-name">Electronics</div>
+                    <div class="class-meta">Root Class</div>
+                </div>
+
+                <div class="class-node indent-1" data-id="Laptop">
+                    <div class="class-name">Laptop</div>
+                    <div class="class-meta">subClassOf: Electronics</div>
+                </div>
+
+                <div class="class-node indent-2" data-id="GamingLaptop">
+                    <div class="class-name">Gaming Laptop</div>
+                    <div class="class-meta">subClassOf: Laptop | disjointWith: Ultrabook</div>
+                </div>
+
+                <div class="class-node indent-2" data-id="Ultrabook">
+                    <div class="class-name">Ultrabook</div>
+                    <div class="class-meta">subClassOf: Laptop</div>
+                </div>
+
+                <div class="class-node indent-1" data-id="Smartphone">
+                    <div class="class-name">Smartphone</div>
+                    <div class="class-meta">altLabel: Mobile Phone | broader: Electronics</div>
+                </div>
+
+                <div class="property-section">
+                    <div class="property-section-title">Object Properties</div>
+
+                    <div class="property-node" data-id="hasManufacturer">
+                        <div class="class-name">hasManufacturer</div>
+                        <div class="class-meta">Object Property</div>
+                    </div>
+
+                    <div class="property-node indent-1" data-id="hasBrand">
+                        <div class="class-name">hasBrand</div>
+                        <div class="class-meta">subPropertyOf: hasManufacturer</div>
+                    </div>
+
+                    <div class="property-section-title" style="margin-top: 20px;">Datatype Properties</div>
+
+                    <div class="property-node datatype-property" data-id="screenSize">
+                        <div class="class-name">screenSize</div>
+                        <div class="class-meta">domain: Laptop</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- eBay Ontology -->
+            <div class="ontology" id="ebayOntology">
+                <div class="ontology-title ebay-title">eBay Ontology</div>
+
+                <div class="class-node" data-id="Computers">
+                    <div class="class-name">Computers</div>
+                    <div class="class-meta">Root Class</div>
+                </div>
+
+                <div class="class-node indent-1" data-id="Notebook">
+                    <div class="class-name">Notebook</div>
+                    <div class="class-meta">subClassOf: Computers</div>
+                </div>
+
+                <div class="class-node indent-2" data-id="GamingNotebook">
+                    <div class="class-name">Gaming Notebook</div>
+                    <div class="class-meta">subClassOf: Notebook | disjointWith: BusinessNotebook</div>
+                </div>
+
+                <div class="class-node indent-2" data-id="BusinessNotebook">
+                    <div class="class-name">Business Notebook</div>
+                    <div class="class-meta">subClassOf: Notebook</div>
+                </div>
+
+                <div class="property-section">
+                    <div class="property-section-title">Object Properties</div>
+
+                    <div class="property-node" data-id="producer">
+                        <div class="class-name">producer</div>
+                        <div class="class-meta">Object Property</div>
+                    </div>
+
+                    <div class="property-node indent-1" data-id="manufacturer">
+                        <div class="class-name">manufacturer</div>
+                        <div class="class-meta">subPropertyOf: producer</div>
+                    </div>
+
+                    <div class="property-section-title" style="margin-top: 20px;">Datatype Properties</div>
+
+                    <div class="property-node datatype-property" data-id="displaySize">
+                        <div class="class-name">displaySize</div>
+                        <div class="class-meta">domain: Notebook</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="legend">
+            <div class="legend-title">Legend</div>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: white; border-color: #dee2e6;"></div>
+                    <span>Class</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #e7f3ff; border-color: #b3d9ff;"></div>
+                    <span>Object Property</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #fff3cd; border-color: #ffc107;"></div>
+                    <span>Datatype Property</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #d4edda; border-color: #28a745;"></div>
+                    <span>Mapped Element</span>
+                </div>
+                <div class="legend-item">
+                    <div style="width: 40px; height: 2px; background: #28a745;"></div>
+                    <span>Mapping Connection</span>
+                </div>
+            </div>
+        </div> -->
+    </div>
+
+    <script>
+        // Define mappings between ontologies
+        const mappings = [
+            // Class mappings
+            {
+                amazon: 'Electronics',
+                ebay: 'Computers',
+                type: 'Class (Broad Match)',
+                confidence: 'Similar root concepts'
+            },
+            {
+                amazon: 'Laptop',
+                ebay: 'Notebook',
+                type: 'Class (Exact Match)',
+                confidence: 'Synonymous concepts'
+            },
+            {
+                amazon: 'GamingLaptop',
+                ebay: 'GamingNotebook',
+                type: 'Class (Exact Match)',
+                confidence: 'Identical specialized concepts'
+            },
+            {
+                amazon: 'Ultrabook',
+                ebay: 'BusinessNotebook',
+                type: 'Class (Related Match)',
+                confidence: 'Similar purpose, different labels'
+            },
+            // Property mappings
+            {
+                amazon: 'hasManufacturer',
+                ebay: 'producer',
+                type: 'Property (Broad Match)',
+                confidence: 'Similar semantics'
+            },
+            {
+                amazon: 'hasBrand',
+                ebay: 'manufacturer',
+                type: 'Property (Related Match)',
+                confidence: 'Related manufacturing concepts'
+            },
+            {
+                amazon: 'screenSize',
+                ebay: 'displaySize',
+                type: 'Property (Exact Match)',
+                confidence: 'Synonymous properties'
+            }
+        ];
+
+        let activeMappings = new Set();
+
+        // Initialize
+        function init() {
+            createMappingList();
+            drawConnections();
+            setupEventListeners();
+        }
+
+        function createMappingList() {
+            const mappingList = document.getElementById('mappingList');
+            mappings.forEach((mapping, index) => {
+                const item = document.createElement('div');
+                item.className = 'mapping-item';
+                item.dataset.index = index;
+                item.innerHTML = `
+                    <div><strong>${mapping.amazon}</strong> ↔ <strong>${mapping.ebay}</strong></div>
+                    <div class="mapping-type">${mapping.type} - ${mapping.confidence}</div>
+                `;
+                item.addEventListener('click', () => toggleMapping(index));
+                mappingList.appendChild(item);
+            });
+        }
+
+        function toggleMapping(index) {
+            const mapping = mappings[index];
+            const mappingItem = document.querySelector(`.mapping-item[data-index="${index}"]`);
+
+            if (activeMappings.has(index)) {
+                activeMappings.delete(index);
+                mappingItem.classList.remove('active');
+                unhighlightMapping(mapping);
+            } else {
+                activeMappings.add(index);
+                mappingItem.classList.add('active');
+                highlightMapping(mapping);
+            }
+
+            updateConnections();
+        }
+
+        function highlightMapping(mapping) {
+            const amazonNode = document.querySelector(`#amazonOntology [data-id="${mapping.amazon}"]`);
+            const ebayNode = document.querySelector(`#ebayOntology [data-id="${mapping.ebay}"]`);
+
+            if (amazonNode) amazonNode.classList.add('highlighted');
+            if (ebayNode) ebayNode.classList.add('highlighted');
+        }
+
+        function unhighlightMapping(mapping) {
+            const amazonNode = document.querySelector(`#amazonOntology [data-id="${mapping.amazon}"]`);
+            const ebayNode = document.querySelector(`#ebayOntology [data-id="${mapping.ebay}"]`);
+
+            if (amazonNode) amazonNode.classList.remove('highlighted');
+            if (ebayNode) ebayNode.classList.remove('highlighted');
+        }
+
+        function drawConnections() {
+            const svg = document.getElementById('connectionsSvg');
+            const viz = document.getElementById('visualization');
+
+            // Clear existing lines
+            svg.innerHTML = '';
+
+            mappings.forEach((mapping, index) => {
+                const amazonNode = document.querySelector(`#amazonOntology [data-id="${mapping.amazon}"]`);
+                const ebayNode = document.querySelector(`#ebayOntology [data-id="${mapping.ebay}"]`);
+
+                if (amazonNode && ebayNode) {
+                    const amazonRect = amazonNode.getBoundingClientRect();
+                    const ebayRect = ebayNode.getBoundingClientRect();
+                    const vizRect = viz.getBoundingClientRect();
+
+                    const x1 = amazonRect.right - vizRect.left;
+                    const y1 = amazonRect.top + amazonRect.height / 2 - vizRect.top;
+                    const x2 = ebayRect.left - vizRect.left;
+                    const y2 = ebayRect.top + ebayRect.height / 2 - vizRect.top;
+
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    const midX = (x1 + x2) / 2;
+                    const d = `M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`;
+
+                    path.setAttribute('d', d);
+                    path.setAttribute('class', 'mapping-line');
+                    path.dataset.index = index;
+
+                    svg.appendChild(path);
+                }
+            });
+
+            updateConnections();
+        }
+
+        function updateConnections() {
+            const showMappings = document.getElementById('showMappings').checked;
+            const lines = document.querySelectorAll('.mapping-line');
+
+            lines.forEach((line, index) => {
+                if (showMappings) {
+                    line.classList.add('visible');
+                    if (activeMappings.has(index)) {
+                        line.classList.add('active');
+                    } else {
+                        line.classList.remove('active');
+                    }
+                } else {
+                    line.classList.remove('visible');
+                    line.classList.remove('active');
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            document.getElementById('showMappings').addEventListener('change', updateConnections);
+
+            document.getElementById('showClasses').addEventListener('change', (e) => {
+                document.querySelectorAll('.class-node').forEach(node => {
+                    node.style.display = e.target.checked ? 'block' : 'none';
+                });
+                drawConnections();
+            });
+
+            document.getElementById('showProperties').addEventListener('change', (e) => {
+                document.querySelectorAll('.property-section').forEach(section => {
+                    section.style.display = e.target.checked ? 'block' : 'none';
+                });
+                drawConnections();
+            });
+
+            window.addEventListener('resize', drawConnections);
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
