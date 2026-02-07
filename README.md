@@ -18,6 +18,7 @@
 
 **OntoAligner** is a Python library designed to simplify ontology alignment and matching for researchers, practitioners, and developers. With a modular architecture and robust features, OntoAligner provides powerful tools to bridge ontologies effectively.
 
+📘 **Explore the OntoAligner tutorial [here](tutorial/README.md).**
 
 ## 🧪 Installation
 
