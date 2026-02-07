@@ -23,6 +23,12 @@ This module guides you through a step-by-step process for performing ontology al
 
         # post-processing imports
         from ontoaligner.postprocess import TFIDFLabelMapper, llm_postprocessor
+
+        # for batching the datasets
+        from torch.utils.data import DataLoader
+
+        # to see the progress
+        from tqdm import tqdm
     ::
 
 .. tab:: ➡️ 2: Parse and Encode
@@ -282,7 +288,7 @@ To use decoder based aligner based technique:
 
 .. code-block:: python
 
-       from ontoaligner.aligner import FlanT5LEncoderDecoderLM
+       from ontoaligner.aligner import AutoModelDecoderLLM
 
         model = AutoModelDecoderLLM()
         model.load(path="...")
