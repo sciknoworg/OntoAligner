@@ -64,9 +64,8 @@ This guide walks you through the process of ontology matching using the OntoAlig
     encoded_ontology = encoder_model(source=dataset['source'], target=dataset['target'])
 
     #Step 4. Configure the Retriever and LLM
-    config = {
-        "retriever_config": {"device": 'cuda', "top_k": 5, "threshold": 0.1},
-        "llm_config": {
+    retriever_config = {"device": 'cuda', "top_k": 5, "threshold": 0.1}
+    llm_config = {
             "device": "cuda", "batch_size": 32,
             "answer_set": {"yes": ["yes", "true"], "no": ["no", "false"]}
         }
