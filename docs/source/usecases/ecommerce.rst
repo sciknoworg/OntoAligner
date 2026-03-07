@@ -226,7 +226,7 @@ To capture semantic similarities beyond lexical matching, we utilize a Sentence-
      - 0.61
 
 LLM Aligner
----------------------------------------------
+-----------
 
 For complex or ambiguous cases where previous methods may fall short, we employ a Large Language Model (LLM) to generate potential alignments. The LLM considers broader context and domain knowledge to suggest matches.
 
@@ -253,7 +253,7 @@ For complex or ambiguous cases where previous methods may fall short, we employ 
         preds.extend(seqs)
 
 
-**LLM Predictions Post‑processing**: We process the LLM-generated predictions using a TF-IDF-based label mapper and a logistic regression classifier to determine the most probable alignments.
+**LLM Predictions Post-processing**: We process the LLM-generated predictions using a TF-IDF-based label mapper and a logistic regression classifier to determine the most probable alignments.
 
 .. code-block:: python
 

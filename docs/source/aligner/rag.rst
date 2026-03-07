@@ -286,7 +286,7 @@ This RAG variant performs ontology matching using ``ConceptRAGEncoder`` only. Th
     encoder_model = ConceptRAGEncoder()
     encoded_ontology = encoder_model(source=dataset['source'], target=dataset['target'], reference=dataset['reference'])
 
-2. Next, import an ICV-RAG aligner, here we use Falcon model:
+2. Next, import an ICV-RAG model. Here, we use the Falcon model:
 
 .. code-block:: python
 

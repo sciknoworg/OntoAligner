@@ -94,7 +94,7 @@ This tutorial provides a guide to performing ontology alignment using the Retrie
 
 .. tab:: ➡️ 5: Export
 
-    Save the matchings in both XML and JSON formats for further analysis or use. For convert matchings to XML format we use ``xmlify`` utility.
+    Save the matchings in both XML and JSON formats for further analysis or use. To convert matchings to XML format, we use the ``xmlify`` utility.
 
     .. code-block:: python
 
