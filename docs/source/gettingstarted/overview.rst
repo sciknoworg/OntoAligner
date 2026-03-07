@@ -21,7 +21,7 @@ OntoAligner is a modular, extensible, and efficient framework for ontology align
 
     1) ``OntologyParser`` that supports loading ontologies and extracts class/property names, IRIs, hierarchies, synonyms, annotations, and any relevant informations.
 
-    2) ``AlignmentsParser`` for loading ground truth alignments used for evaluation, however in a case of specific dataset doesnt support the references this module need to be ignored.
+    2) ``AlignmentsParser`` for loading ground truth alignments used for evaluation. However, in cases where a specific dataset does not support references, this module may be ignored.
 
     .. note::
 

@@ -214,7 +214,7 @@ This module guides you through a step-by-step process for performing ontology al
 
 .. tab:: ➡️ 8: Evaluate and Export
 
-    The following code will compare the generated alignments with reference matchings. Then save the matchings in both XML and JSON formats for further analysis or use. Feel free to use any of the techniques.
+    The following code will compare the generated alignments with reference matchings and save the matchings in both XML and JSON formats for further analysis or use.
 
     .. code-block::
 
