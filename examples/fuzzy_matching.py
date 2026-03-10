@@ -22,7 +22,7 @@ dataset = task.collect(source_ontology_path="../assets/MI-MatOnto/mi_ontology.xm
 encoder_model = encoder.ConceptParentLightweightEncoder()
 
 # Encode the source and target datasets using the encoder model
-# The encoder generates embeddings of the concepts in both the source and target ontologies
+# The encoder generates structured inputs of the concepts in both the source and target ontologies
 encoder_output = encoder_model(source=dataset['source'], target=dataset['target'])
 
 # Initialize the SimpleFuzzySMLightweight ontology matcher
