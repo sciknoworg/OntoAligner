@@ -15,3 +15,6 @@ from .oaei import * # NOQA
 from .generic import GenericOntology, GenericOMDataset
 from .triple import GraphTripleOntology, GraphTripleOMDataset
 from .property import OntologyProperty, PropertyOMDataset, ProcessingStrategy
+from .flora import FLORAOntology, FLORAOMDataset, \
+                   FLORAOpenEAKnowledgeBase, FLORAOpenEAOMDataset, \
+                   FLORADBpedia15KKnowledgeBase, FLORADBpediaOMDataset
