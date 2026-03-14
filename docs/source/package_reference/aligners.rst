@@ -2,7 +2,7 @@ Aligners
 ====================
 
 Lightweight Aligners
-------------------
+---------------------
 .. automodule:: ontoaligner.aligner.lightweight.models
    :members:
    :undoc-members:
@@ -40,7 +40,7 @@ RAG Aligners
 
 
 FewShot-RAG Aligners
-------------------
+------------------------
 .. automodule:: ontoaligner.aligner.fewshot.models
    :members:
    :undoc-members:
