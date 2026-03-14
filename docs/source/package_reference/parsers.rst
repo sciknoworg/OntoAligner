@@ -23,6 +23,17 @@ The graph triplet parser that aims to provide triplet representations of ontolog
    :no-index:
 
 
+FLORA Knowledge-Graph Alignment
+-----------------------------------------
+Parser for FLORA Turtle-based KG alignment. Loads the Turtle file into a FLORA ``Graph`` (``load_ontology``) then extracts entities, predicates, triples, and the ``Graph`` object itself (``extract_data``), ready for ``FLORAEncoder``.
+
+.. automodule:: ontoaligner.ontology.flora
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :no-index:
+
+
 OAEI: Anatomy Track
 ---------------
 The anatomy real world case is about matching the Adult Mouse Anatomy (2744 classes) and the NCI Thesaurus (3304 classes) describing the human anatomy.

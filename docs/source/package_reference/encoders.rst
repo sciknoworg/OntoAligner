@@ -54,3 +54,11 @@ Graph Encoders
    :undoc-members:
    :show-inheritance:
    :noindex:
+
+FLORA Encoder
+---------------------
+.. automodule:: ontoaligner.encoder.flora
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :noindex:

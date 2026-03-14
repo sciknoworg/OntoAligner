@@ -128,6 +128,7 @@ or if you are using Knowledge Graph Embeddings refer to `OntoAligner Meets Knowl
    aligner/rag
    aligner/kge
    aligner/propmatch
+   aligner/flora
 
 .. toctree::
    :maxdepth: 1
