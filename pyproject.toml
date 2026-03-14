@@ -31,6 +31,8 @@ huggingface-hub = "^0.34.4"
 sentence-transformers = "^5.1.0"
 bitsandbytes = { version = ">=0.45.1,<1.0.0", markers = "platform_system == 'Linux'" }
 pykeen = "1.11.1"
+multiprocess = "*"
+scipy = "^1.15.3"
 
 [tool.poetry.dev-dependencies]
 ruff = "*"

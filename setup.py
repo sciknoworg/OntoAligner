@@ -34,7 +34,9 @@ setup(
         "transformers>=4.56.0,<5.0.0",
         "huggingface-hub>=0.34.4,<1.0.0",
         "bitsandbytes>=0.45.1,<1.0.0; platform_system == 'Linux'",
-        "pykeen==1.11.1"
+        "pykeen==1.11.1",
+        "multiprocess",
+        "scipy==1.15.3",
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",

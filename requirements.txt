@@ -24,3 +24,5 @@ twine
 pytest
 py-stringmatching
 nltk
+multiprocess
+scipy==1.15.3
