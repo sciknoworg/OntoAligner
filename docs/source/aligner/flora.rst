@@ -30,17 +30,16 @@ FLORA
 
 Fuzzy Logic
 ----------------------
+Given two KGs :math:`G = \langle E, R, T \rangle` and :math:`G' = \langle E', R', T' \rangle`, FLORA jointly produces:
+
+- **Entity alignment** :math:`M_e = \{(e, e') \mid e \equiv e'\}` — pairs of semantically equivalent entities.
+- **Relation alignment** :math:`M_r = \{(r, O, r') \mid r \mathbin{O} r',\; O \in \{\subseteq, \supseteq, \equiv\}\}` — pairs of relations with their subsumption or equivalence type.
 
 .. raw:: html
 
     <div align="center">
      <img src="https://raw.githubusercontent.com/dig-team/FLORA/refs/heads/main/docs/pipeline.png" width="75%"/>
     </div>
-
-Given two KGs :math:`G = \langle E, R, T \rangle` and :math:`G' = \langle E', R', T' \rangle`, FLORA jointly produces:
-
-- **Entity alignment** :math:`M_e = \{(e, e') \mid e \equiv e'\}` — pairs of semantically equivalent entities.
-- **Relation alignment** :math:`M_r = \{(r, O, r') \mid r \mathbin{O} r',\; O \in \{\subseteq, \supseteq, \equiv\}\}` — pairs of relations with their subsumption or equivalence type.
 
 FLORA frames both tasks as a single **Recursive Fuzzy Inference System**: every alignment score is a value in :math:`[0, 1]`, rules propagate scores through the graph, and an iterative fixed-point algorithm drives everything to convergence.
 
@@ -49,9 +48,9 @@ FLORA frames both tasks as a single **Recursive Fuzzy Inference System**: every 
    FLORA handles **dangling entities** — entities that have no counterpart in the other KG — naturally, since alignment scores simply remain at or near zero for unmatched entities. No one-to-one mapping is assumed during iteration.
 
 
-.. tab:: Key concepts of FLORA
+.. tab:: 🔑 Key concepts of FLORA
 
-	.. tab:: 1. Functionality
+	.. tab:: 📊 1. Functionality
 
 		A relation :math:`r` is *functional* if it tends to map each head entity to a unique tail entity. FLORA uses two flavors:
 
@@ -71,7 +70,7 @@ FLORA frames both tasks as a single **Recursive Fuzzy Inference System**: every 
 
 		This captures exceptions: ``hasCapital`` is globally functional, but locally non-functional for South Africa (which has three capitals). Using both global and local functionality prevents spurious matches in such cases.
 
-	.. tab:: 2. Relation Lists
+	.. tab:: 🔗 2. Relation Lists
 
 		FLORA generalises single-relation functionality to *lists* of relations :math:`R = (r_1, \ldots, r_n)` applied to a corresponding list of head entities :math:`H = (h_1, \ldots, h_n)`:
 
@@ -81,7 +80,7 @@ FLORA frames both tasks as a single **Recursive Fuzzy Inference System**: every 
 
 		Even if no individual relation is functional, their combination can be. For example, neither ``BirthDateOf`` nor ``FamilyNameOf`` alone uniquely identifies a person, but together they usually do. This is a key improvement over PARIS, which is limited to single functional relations.
 
-	.. tab:: 3. Aggregation Functions
+	.. tab:: ⚙️ 3. Aggregation Functions
 
 		FLORA uses three aggregation functions, each chosen for a specific role:
 
@@ -103,9 +102,9 @@ FLORA frames both tasks as a single **Recursive Fuzzy Inference System**: every 
 		     - Subrelation scoring — arithmetic mean scaled by benefit-of-doubt constant :math:`\alpha = 3` to compensate for KG incompleteness.
 
 
-.. tab:: FLORA 4 Main Steps
+.. tab:: 👣 FLORA 4 Main Steps
 
-	.. tab:: 1. Literal Similarity Initialization
+	.. tab:: ✨ 1. Literal Similarity Initialization
 
 		Before any iteration, FLORA computes pairwise similarity scores for all literals (strings, numbers, dates) across the two KGs. These scores are **computed once** and treated as fixed input variables throughout the algorithm.
 
@@ -118,15 +117,13 @@ FLORA frames both tasks as a single **Recursive Fuzzy Inference System**: every 
 		- **Numbers** — similarity of 1 if values agree within a relative error of :math:`10^{-9}`, else 0.
 		- **Dates** — exact match only.
 
-		If training data are provided, matched entity pairs are fixed at score 1 and also treated as input variables that are never updated.
-
-		Relation similarities are **initialised to a small constant** :math:`\theta_r = 0.1` to bootstrap the entity alignment rule on the first iteration. This value is superseded by the subrelation alignment scores in subsequent iterations.
+		If training data are provided, matched entity pairs are fixed at score 1 and also treated as input variables that are never updated. Relation similarities are **initialised to a small constant** :math:`\theta_r = 0.1` to bootstrap the entity alignment rule on the first iteration. This value is superseded by the subrelation alignment scores in subsequent iterations.
 
 		.. important::
 
 			This step does **not** produce entity alignment scores. It produces literal similarity scores that seed the entity alignment rules in Step 2. Entity alignment scores emerge only from the iterative process.
 
-	.. tab:: 2. Entity Alignment via Fuzzy Rules
+	.. tab:: 🔀 2. Entity Alignment via Fuzzy Rules
 
 
 		The core of FLORA is the following rule, applied for every candidate pair of non-literal entities :math:`t \in E` and :math:`t' \in E'`:
@@ -138,35 +135,14 @@ FLORA frames both tasks as a single **Recursive Fuzzy Inference System**: every 
 		   \;\wedge\; \operatorname{fun}(R') \;\wedge\; \operatorname{fun}(R', H')
 		   \;\xrightarrow{\min}\; t \equiv t'
 
-		In plain terms: if head entities :math:`H` and :math:`H'` are already aligned, if the relation lists :math:`R` and :math:`R'` are similar and jointly functional (both globally and locally), and if both relation lists actually connect those heads to :math:`t` and :math:`t'` respectively, then :math:`t` and :math:`t'` receive an alignment score equal to the **minimum** of all these premise values.
+		In plain terms: if head entities :math:`H` and :math:`H'` are already aligned, if the relation lists :math:`R` and :math:`R'` are similar and jointly functional (both globally and locally), and if both relation lists actually connect those heads to :math:`t` and :math:`t'` respectively, then :math:`t` and :math:`t'` receive an alignment score equal to the **minimum** of all these premise values. The sub-expressions in the rule are themselves output variables of subordinate rules:
 
-		The sub-expressions in the rule are themselves output variables of subordinate rules:
+		- **Head-list alignment** :math:`H \equiv H'`, were :math:`h_1 \equiv h'_1 \;\wedge\; \cdots \;\wedge\; h_n \equiv h'_n \;\xrightarrow{\text{hmean}}\; H \equiv H'`, in which each individual head alignment :math:`h_i \equiv h'_i` is either itself an output variable (from a previous application of the entity rule) or a literal similarity score (from Step 1).
+		- **Relation-list similarity** :math:`R \cong R'`, were :math:`r_1 \cong r'_1 \;\wedge\; \cdots \;\wedge\; r_n \cong r'_n \;\xrightarrow{\text{hmean}}\; R \cong R'`, where :math:`r \cong r'` holds (with firing strength 1) if :math:`r \subseteq r'` or :math:`r' \subseteq r` — i.e., one is a subrelation of the other. If multiple rules imply the same output variable :math:`t \equiv t'`, its score is the **maximum** of all firing strengths, in line with the FIS solver (Algorithm 1).
 
-		**Head-list alignment** :math:`H \equiv H'`
+	.. tab:: 🧬 3. Subrelation Alignment
 
-		.. math::
-
-		   h_1 \equiv h'_1 \;\wedge\; \cdots \;\wedge\; h_n \equiv h'_n
-		   \;\xrightarrow{\text{hmean}}\; H \equiv H'
-
-		Each individual head alignment :math:`h_i \equiv h'_i` is either itself an output variable (from a previous application of the entity rule) or a literal similarity score (from Step 1).
-
-		**Relation-list similarity** :math:`R \cong R'`
-
-		.. math::
-
-		   r_1 \cong r'_1 \;\wedge\; \cdots \;\wedge\; r_n \cong r'_n
-		   \;\xrightarrow{\text{hmean}}\; R \cong R'
-
-		where :math:`r \cong r'` holds (with firing strength 1) if :math:`r \subseteq r'` or :math:`r' \subseteq r` — i.e., one is a subrelation of the other.
-
-		If multiple rules imply the same output variable :math:`t \equiv t'`, its score is the **maximum** of all firing strengths, in line with the FIS solver (Algorithm 1).
-
-	.. tab:: 3. Subrelation Alignment
-
-		For each pair of relations :math:`r \in R` and :math:`r' \in R'`, FLORA measures how consistently the facts of :math:`r` are also facts of :math:`r'` under the current entity alignment.
-
-		For each fact :math:`r(h, t)` in :math:`G`, it looks for a counterpart :math:`r'(h', t')` in :math:`G'` where :math:`h \equiv h'` and :math:`t \equiv t'` already hold. Each such coincidence produces a local score:
+		For each pair of relations :math:`r \in R` and :math:`r' \in R'`, FLORA measures how consistently the facts of :math:`r` are also facts of :math:`r'` under the current entity alignment. Furthermore, For each fact :math:`r(h, t)` in :math:`G`, it looks for a counterpart :math:`r'(h', t')` in :math:`G'` where :math:`h \equiv h'` and :math:`t \equiv t'` already hold. Each such coincidence produces a local score:
 
 		.. math::
 
@@ -186,13 +162,11 @@ FLORA frames both tasks as a single **Recursive Fuzzy Inference System**: every 
 
 		   Relation alignment is **asymmetric** by design. FLORA computes :math:`r \subseteq r'` and :math:`r' \subseteq r` independently. Equivalence :math:`r \equiv r'` is only declared when both subsumptions hold. This naturally handles cases such as ``parent`` (DBpedia) being a superrelation of ``father`` (Wikidata), as illustrated in Figure 1 of the paper.
 
-	.. tab:: 4. Fixed-Point Iteration until Convergence
+	.. tab:: 🔁 4. Fixed-Point Iteration until Convergence
 
 		Steps 2 and 3 are applied alternately. After each full pass, every output variable takes the **maximum** over all rules that imply it. The process terminates (early stopping) when the total matching score increases by less than :math:`\varepsilon = 0.01`.
 
-		**Convergence guarantee.** Because all aggregation functions (min, harmonic mean, α-mean, max) are *continuous* and *non-decreasing*, the Knaster–Tarski fixed-point theorem guarantees that Algorithm 1 converges to the unique **least fixed point** of the Recursive FIS. This is Theorem 1 of the paper and is a key theoretical advantage over PARIS, which has no such guarantee.
-
-		After convergence:
+		**Convergence guarantee.** Because all aggregation functions (min, harmonic mean, α-mean, max) are *continuous* and *non-decreasing*, the Knaster–Tarski fixed-point theorem guarantees that Algorithm 1 converges to the unique **least fixed point** of the Recursive FIS. This is Theorem 1 of the paper and is a key theoretical advantage over PARIS, which has no such guarantee. After convergence:
 
 		- Entity pairs with scores below :math:`\theta_e = 0.1` are discarded.
 		- A **maximum assignment** is enforced for entities: each entity :math:`e \in E`
@@ -220,9 +194,9 @@ Usage
     .. note::
 
         The ``FLORAAligner`` class accepts configuration parameters to customize
-        behaviour. See `Configuration Options`_ below.
+        behaviour. See `Configuration`_ below.
 
-.. tab:: ➡️ 2: Load the Dataset
+.. tab:: ➡️ 2: Parse Ontologies/KGs
 
     ``FLORAOMDataset.collect()`` calls ``FLORAOntology.parse()`` for each KG,
     which **loads the Turtle file** into a FLORA ``Graph`` and **extracts** all
@@ -248,7 +222,7 @@ Usage
             "graph":      <Graph>   # ← passed to the aligner
         }
 
-.. tab:: ➡️ 3: Encode
+.. tab:: ➡️ 3: Encoder
 
     ``FLORAEncoder`` extracts the two pre-loaded ``Graph`` objects from the
     structured parser output and returns ``[kg1_graph, kg2_graph]``.
@@ -261,7 +235,7 @@ Usage
         # encoder_output == [kg1_graph, kg2_graph]
         # Both are fully loaded FLORA Graph objects, ready for the aligner.
 
-.. tab:: ➡️ 4: Configure the Aligner
+.. tab:: ➡️ 4: Initialize Aligner
 
     Create a FLORA aligner instance and configure parameters as needed.
 
@@ -291,9 +265,9 @@ Usage
             # device='cuda',         # Uncomment for GPU
         )
 
-    See `Configuration Options`_ below for a complete parameter reference.
+    See `Configuration`_ below for a complete parameter reference.
 
-.. tab:: ➡️ 5: Align
+.. tab:: ➡️ 5: Generate Alignments
 
     Pass the encoder output to ``generate()`` — identical to every other aligner.
 
@@ -314,7 +288,7 @@ Usage
             ...
         ]
 
-.. tab:: ➡️ 6: Evaluate
+.. tab:: ➡️ 6: Evaluate and Export
 
     Compare predictions to a reference alignment.
 
@@ -337,9 +311,7 @@ Usage
             "reference-len": 153
         }
 
-.. tab:: ➡️ 7: Export
-
-    Save the alignment results in XML or JSON format.
+    Next, save the alignment results in XML or JSON format.
 
     .. tab:: 📄 Export to XML
 
@@ -362,7 +334,7 @@ Configuration
 
 The :class:`~ontoaligner.aligner.flora.FLORAAligner` class accepts the following parameters to customize alignment behaviour.
 
-.. tab:: Subrelation Inference
+.. tab:: 🔀 Subrelation Inference
 
 	.. list-table::
 	   :header-rows: 1
@@ -383,7 +355,7 @@ The :class:`~ontoaligner.aligner.flora.FLORAAligner` class accepts the following
 	     - Initial score for predicates that do not match identically.
 	       Used when bootstrapping predicate subsumption.
 
-.. tab:: Literal Bootstrapping
+.. tab:: 💬 Literal Bootstrapping
 
 	.. list-table::
 	   :header-rows: 1
@@ -409,7 +381,7 @@ The :class:`~ontoaligner.aligner.flora.FLORAAligner` class accepts the following
 	     - Hugging Face model ID for semantic embedding of string literals.
 	       Set to ``None`` to disable embeddings.
 
-.. tab::  Entity Matching
+.. tab:: 🎯 Entity Matching
 
 	.. list-table::
 	   :header-rows: 1
@@ -425,7 +397,7 @@ The :class:`~ontoaligner.aligner.flora.FLORAAligner` class accepts the following
 	     - Maximum number of evidential triples (facts) to consider per entity during matching.
 	       Increase for more evidence; decrease for speed.
 
-.. tab:: Convergence Control
+.. tab:: ⏸️ Convergence Control
 
 	.. list-table::
 	   :header-rows: 1
@@ -445,7 +417,7 @@ The :class:`~ontoaligner.aligner.flora.FLORAAligner` class accepts the following
 	     - 100
 	     - Maximum number of main-loop iterations. Acts as a safety cap.
 
-.. tab::  Functionality Computation
+.. tab:: 🔧 Functionality Computation
 
 	.. list-table::
 	   :header-rows: 1
@@ -461,7 +433,7 @@ The :class:`~ontoaligner.aligner.flora.FLORAAligner` class accepts the following
 	     - N-gram sizes for predicate functionality computation.
 	       E.g., ``[1, 2]`` considers unary and binary predicate patterns.
 
-.. tab::  Optional Seed Alignments
+.. tab::  🌱 Optional Seed Alignments
 
 	.. list-table::
 	   :header-rows: 1
@@ -482,7 +454,7 @@ The :class:`~ontoaligner.aligner.flora.FLORAAligner` class accepts the following
 	    <http://kg1.org/E1>    <http://kg2.org/E1>
 	    <http://kg1.org/E2>    <http://kg2.org/E2>    0.95
 
-.. tab:: Hardware & Performance
+.. tab:: 🖥️ Hardware & Performance
 
 	.. list-table::
 	   :header-rows: 1
@@ -525,7 +497,7 @@ The :class:`~ontoaligner.aligner.flora.FLORAAligner` class accepts the following
 Advanced Usage
 -------------------
 
-.. tab:: Supervised Mode
+.. tab:: 🔐 Supervised Mode
 
 
 	If seed/training entity pairs are available, you can bootstrap the alignment:
@@ -545,7 +517,7 @@ Advanced Usage
 	An optional third column provides the seed confidence score (defaults to 1.0 if omitted).
 
 
-.. tab:: String-Identity Mode
+.. tab:: ⚡ String-Identity Mode
 
 	For a lightweight run without downloading/running the embedding model, set ``string_identity=True``:
 
@@ -558,7 +530,7 @@ Advanced Usage
 	where equivalent literals differ in whitespace, casing, or phrasing.
 
 
-.. tab:: Pre-computing Embeddings
+.. tab:: 💾 Pre-computing Embeddings
 
 
 	For large KGs or repeated experiments you can pre-compute and cache the literal string embeddings:
