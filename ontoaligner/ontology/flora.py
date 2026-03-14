@@ -73,9 +73,6 @@ from abc import ABC
 track = "KG Alignment - FLORA"
 _blank_node_counter=0
 
-# Debug flag: set to True to enable verbose parser error messages
-TEST = False
-
 literal_regex=re.compile('"([^"]*)"(@([a-z-]+))?(\\^\\^(.*))?') # Regex for literals
 integer_regex=re.compile('^"?[+-]?[0-9.]+"?$') # Regex for int values
 
@@ -89,7 +86,10 @@ def invert(rel):
     return rel[:-1] if is_inverse(rel) else rel+'-'
 
 def is_literal(term):
-    return re.match(literal_regex,term) or re.match(integer_regex,term)
+    try:
+        return re.match(literal_regex, term) or re.match(integer_regex, term)
+    except TypeError:
+        return False # if there is no match or exception then the term is None
 
 class Graph(object):
     """
@@ -533,10 +533,6 @@ class Graph(object):
         return count
 
 
-##########################################################################
-#             Parsing Turtle
-##########################################################################
-
 def printError(*args, **kwargs):
     """Print an error message to *stderr*."""
     print(*args, file=sys.stderr, **kwargs)
@@ -673,8 +669,6 @@ def terms_and_separators(generator):
                     break
                 if not language or len(language) > 20 or len(language) < 2 or (
                         '-' in language and len(language[language.index('-'):]) > 9):
-                    if TEST:
-                        printError("Invalid literal language:", language)
                     yield ('"' + literal + '"')
                 else:
                     yield ('"' + literal + '"@' + language)
@@ -882,7 +876,6 @@ def parse_turtle_graph(file, message=None):
         graph.add(triple)
     return graph
 
-##########################################################################
 
 class FLORAOntology(BaseOntologyParser):
     """
@@ -957,7 +950,7 @@ class FLORAOntology(BaseOntologyParser):
         entities = []
         seen = set()
         for subject in graph.subjects():
-            if is_literal(subject) or subject in seen:
+            if is_literal(subject) or subject in seen or not subject: # adding if subject is none!
                 continue
             seen.add(subject)
             # Derive a readable label from the local IRI fragment

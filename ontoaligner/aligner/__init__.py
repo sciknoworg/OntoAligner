@@ -22,3 +22,4 @@ from .rag.dataset import * # NOQA
 from .retrieval.models import * # NOQA
 from .graph.models import * # NOQA
 from .propmatch import * # NOQA
+from .flora import * # NOQA
