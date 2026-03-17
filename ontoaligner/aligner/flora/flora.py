@@ -233,7 +233,8 @@ class FLORAAligner(BaseOMModel):
         )
         self.literals_embedding = literals.FLORALiteralsEmbedding(
             model_id=model_id,
-            device=device if device else 'cpu'
+            device=device if device else 'cpu',
+            identity=string_identity
         )
         self.same_as_scores = {}
         self.predicate2super_predicate = {}

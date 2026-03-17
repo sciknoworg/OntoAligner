@@ -63,6 +63,8 @@ LITERAL_REGEX = re.compile('"([^"]*)"(@([a-z-]+))?(\\^\\^(.*))?')
 
 # Regex for float values
 FLOAT_REGEX = re.compile('^"?([+-])?([0-9.]+)"?$')
+INTEGER_REGEX = re.compile('^"?[+-]?[0-9.]+"?$') # Regex for int values
+
 SCI_FLOAT_REGEX = re.compile('^"?([+-])?([0-9.]+[Ee][+-]?[0-9]+)"?$')
 
 # Regex for numbers: post codes, phone numbers, etc.
@@ -132,7 +134,7 @@ def is_literal(term: Any) -> bool:
         True if the term is a literal, False otherwise.
     """
     try:
-        return bool(re.match(LITERAL_REGEX, term) or re.match(FLOAT_REGEX, term))
+        return bool(re.match(LITERAL_REGEX, term) or re.match(FLOAT_REGEX, term) or re.match(INTEGER_REGEX, term))
     except Exception:
         return False
 
@@ -393,6 +395,7 @@ class FLORALiteralsEmbedding:
         self,
         model_id: str = 'Lihuchen/pearl_small',
         device: str = 'cuda' if torch.cuda.is_available() else 'cpu',
+        identity: bool = False,
     ) -> None:
         """Initialize the embedding model.
 
@@ -400,9 +403,11 @@ class FLORALiteralsEmbedding:
             model_id: Hugging Face model ID for the embedding model.
             device: Device to load the model on ('cuda' or 'cpu').
         """
-        self.model = AutoModel.from_pretrained(model_id)
-        self.tokenizer = AutoTokenizer.from_pretrained(model_id)
-        self.model.to(device)
+        os.environ["TOKENIZERS_PARALLELISM"] = "false"
+        if not identity:
+            self.model = AutoModel.from_pretrained(model_id)
+            self.tokenizer = AutoTokenizer.from_pretrained(model_id)
+            self.model.to(device)
         self.device = device
 
     def encode(self, input_texts: List[str]) -> torch.Tensor:

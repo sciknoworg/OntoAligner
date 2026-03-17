@@ -75,7 +75,7 @@ _blank_node_counter=0
 
 literal_regex=re.compile('"([^"]*)"(@([a-z-]+))?(\\^\\^(.*))?') # Regex for literals
 integer_regex=re.compile('^"?[+-]?[0-9.]+"?$') # Regex for int values
-
+float_regex = re.compile('^"?([+-])?([0-9.]+)"?$')
 
 def is_inverse(rel):
     """ TRUE if the relation is an inverse relation """
@@ -87,7 +87,7 @@ def invert(rel):
 
 def is_literal(term):
     try:
-        return re.match(literal_regex, term) or re.match(integer_regex, term)
+        return re.match(literal_regex, term) or re.match(integer_regex, term) or re.match(float_regex, term)
     except TypeError:
         return False # if there is no match or exception then the term is None
 
