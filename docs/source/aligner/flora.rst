@@ -538,7 +538,7 @@ Advanced Usage
 	.. code-block:: python
 
 	    from ontoaligner.aligner.flora.fuzzy_logic import literals
-	    from ontoaligner.aligner.flora.utils import Graph
+	    from ontoaligner.ontology.flora import Graph
 
 	    # Load KGs
 	    kb1 = ...  # load KG1
@@ -553,6 +553,132 @@ Advanced Usage
 	    # These embeddings will be loaded from disk instead of recomputed
 	    aligner = FLORAAligner()
 	    # (The aligner will look for embeddings in default locations)
+
+
+.. tab:: 📁 Loading Knowledge Graphs Directly
+
+	If you prefer to work directly with FLORA's native :class:`~ontoaligner.ontology.flora.Graph`
+	data structure instead of using the standard dataset pipelines, you can load TTL/XML files directly:
+
+	.. code-block:: python
+
+	    from ontoaligner.ontology.flora import Graph, parse_turtle_graph
+
+	    # Load Turtle files directly into Graph objects
+	    kg1 = parse_turtle_graph("path/to/kg1.ttl")
+	    kg2 = parse_turtle_graph("path/to/kg2.ttl")
+
+	    # kg1 and kg2 are now Graph objects ready for the aligner
+	    aligner = FLORAAligner()
+	    matchings = aligner.generate(input_data=[kg1, kg2])
+
+	**Graph Class Overview**
+
+	The :class:`~ontoaligner.ontology.flora.Graph` is an in-memory directed multigraph optimized for KG alignment:
+
+	.. code-block:: python
+
+	    from ontoaligner.ontology.flora import Graph
+
+	    # Create an empty graph
+	    graph = Graph()
+
+	    # Add triples manually
+	    graph.add(("http://example.org/John", "http://example.org/knows", "http://example.org/Jane"))
+	    graph.add(("http://example.org/John", "http://example.org/age", '"25"^^http://www.w3.org/2001/XMLSchema#integer'))
+
+	    # Check if a triple exists
+	    if ("http://example.org/John", "http://example.org/knows", "http://example.org/Jane") in graph:
+	        print("Triple found!")
+
+	    # Iterate over all triples
+	    for subject, predicate, obj in graph:
+	        print(f"{subject} -> {predicate} -> {obj}")
+
+	    # Get predicate statistics
+	    predicates = graph.predicates()  # Returns {predicate: count, ...}
+	    print(f"Total predicates: {len(predicates)}")
+
+	    # Load from a TTL file
+	    graph.loadTurtleFile("path/to/ontology.ttl")
+
+	**Key Features of Graph**:
+
+	- **Bidirectional indexing**: Forward (subject→predicate→objects) and reverse (predicate→subject→objects) indices for fast lookups.
+	- **Automatic inverse arcs**: For every triple ``(s, p, o)``, the inverse ``(o, p+"-", s)`` is automatically added.
+	- **Efficient storage**: Uses nested dictionaries with sets for O(1) membership testing.
+	- **Lazy predicate counting**: Predicates are cached and recomputed only when modified.
+
+
+.. tab:: 📤 Exporting Alignments to RDF/Turtle
+
+	The :class:`~ontoaligner.aligner.flora.FLORARDFWriter` class writes alignment results back to RDF/Turtle format:
+
+	.. code-block:: python
+
+	    from ontoaligner.aligner.flora import FLORARDFWriter, FLORAAligner
+	    from ontoaligner.ontology.flora import Graph
+
+	    # Run alignment
+	    aligner = FLORAAligner()
+	    matchings = aligner.generate(input_data=[kg1, kg2])
+
+	    # Extract entity and predicate alignments from the aligner
+	    same_as_scores = aligner.get_same_as_scores()
+	    predicate_scores = aligner.get_predicate2super_predicate()
+
+	    # Create an RDF writer with namespace prefixes
+	    prefixes = {
+	        'ex': 'http://example.org/',
+	        'owl': 'http://www.w3.org/2002/07/owl#',
+	        'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
+	        'align': 'http://knowledgeweb.semanticweb.org/heterogeneity/alignment#'
+	    }
+
+	    writer = FLORARDFWriter(prefixes=prefixes)
+
+	    # Write alignments to file
+	    writer.write(
+	        output_path="alignments.ttl",
+	        kb1=kg1,
+	        kb2=kg2,
+	        predicate2super_predicate=predicate_scores,
+	        same_as_scores=same_as_scores
+	    )
+
+	**Output Format**
+
+	The generated Turtle file contains:
+
+	1. **Namespace declarations** — Standard RDF prefixes at the top:
+
+	   .. code-block:: turtle
+
+	       @prefix ex: <http://example.org/> .
+	       @prefix owl: <http://www.w3.org/2002/07/owl#> .
+	       @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+	2. **Predicate subsumption relationships** — Using ``rdfs:subPropertyOf``:
+
+	   .. code-block:: turtle
+
+	       ex:father rdfs:subPropertyOf ex:parent . # 0.92
+
+	3. **Entity equivalence mappings** — Using ``owl:sameAs``:
+
+	   .. code-block:: turtle
+
+	       ex:John owl:sameAs ex:John_DBpedia . # 0.95
+	       ex:Jane owl:sameAs ex:jane_dbpedia . # 0.88
+
+	The ``# score`` suffix (as a comment) indicates the confidence of each alignment.
+
+	**Why Use FLORARDFWriter?**
+
+	- **Standard RDF format**: Output is directly readable by any RDF tool or SPARQL engine.
+	- **Interpretable scores**: Comments preserve confidence scores for downstream analysis.
+	- **Integration-ready**: Results can be loaded into ontology editors (Protégé, TopBraid) or linked data platforms.
+	- **Reproducible**: Combined with seed alignments, enables iterative refinement workflows.
 
 
 
