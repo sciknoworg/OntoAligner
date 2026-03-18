@@ -48,9 +48,9 @@ class GraphEmbeddingAligner(BaseOMModel):
     """
 
     model: str = ""
-    graph_embedder: Any = None
 
     def __init__(self,
+                 model: str = "",
                  device: str='cpu',
                  retriever: bool = False,
                  embedding_dim: int=300,
@@ -81,6 +81,11 @@ class GraphEmbeddingAligner(BaseOMModel):
                          num_negs_per_pos=num_negs_per_pos,
                          top_k=top_k,
                          random_seed=random_seed)
+        self.graph_embedder: Any = None
+        if not model:
+            raise ValueError("Model name must be specified for GraphEmbeddingAligner.")
+        else:
+            self.model = model
 
     def fit(self, triplets: List):
         """

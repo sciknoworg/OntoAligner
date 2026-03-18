@@ -214,22 +214,32 @@ class RAG(BaseOMModel):
     RAG is a retrieval-augmented generation (RAG) model that integrates both retrieval and generation components
     to answer questions based on retrieved documents and a language model.
     """
-    path: str = "NO MODEL LOADING IN RAG MODELS"
     Retrieval = None
     LLM = None
 
-    def __init__(self, retriever_config=None, llm_config=None) -> None:
+    def __init__(self, retriever = None, llm = None, retriever_config=None, llm_config=None) -> None:
         """
         Initializes the RAG model by loading the retriever and LLM components.
 
         Args:
             **kwargs: Arbitrary keyword arguments passed to the parent class.
         """
-        kwargs = {"retriever-config":retriever_config, "llm-config": llm_config}
+        kwargs = {"retriever_config":retriever_config, "llm_config": llm_config}
         super().__init__(**kwargs)
-
-        self.Retrieval = self.Retrieval(**self.kwargs["retriever-config"])
-        self.LLM = self.LLM(**self.kwargs["llm-config"])
+        if not retriever:
+            try:
+                self.Retrieval = self.Retrieval(**self.kwargs["retriever_config"])
+            except Exception as error:
+                raise ValueError(f"{error}\n Retriever model must be provided.")
+        else:
+            self.Retrieval = retriever(**self.kwargs["retriever_config"])
+        if not llm:
+            try:
+                self.Retrieval = self.LLM(**self.kwargs["llm_config"])
+            except Exception as error:
+                raise ValueError(f"{error}\n LLM model must be provided.")
+        else:
+            self.LLM = llm(**self.kwargs["llm_config"])
 
     def load(self, llm_path: str, ir_path: str) -> None:
         """
@@ -269,8 +279,8 @@ class RAG(BaseOMModel):
         """
         # IR generation
         ir_output = self.ir_generate(input_data=input_data)
-        if 'threshold' in self.kwargs['retriever-config']:
-            threshold = self.kwargs['retriever-config']['threshold']
+        if 'threshold' in self.kwargs['retriever_config']:
+            threshold = self.kwargs['retriever_config']['threshold']
         else:
             threshold = 0.0
         ir_output_cleaned = process.retriever_postprocessor(predicts=ir_output, threshold=threshold)
@@ -341,7 +351,7 @@ class RAG(BaseOMModel):
         dataset = self.build_llm_encoder(input_data=input_data, llm_inputs=llm_inputs)
         dataloader = DataLoader(
             dataset,
-            batch_size=self.kwargs["llm-config"]["batch_size"],
+            batch_size=self.kwargs["llm_config"]["batch_size"],
             shuffle=False,
             collate_fn=dataset.collate_fn,
         )

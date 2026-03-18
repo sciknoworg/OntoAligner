@@ -117,8 +117,7 @@ print("\nStep 1: Parsing RDF/Turtle files...")
 #       "graph":      <FLORA Graph object>     ← used by aligner
 #   }
 
-task = FLORAOMDataset()
-task.ontology_name = "My-KG-Pair"
+task = FLORAOMDataset(ontology_name = "My-KG-Pair")
 
 dataset = task.collect(
     source_ontology_path="../assets/cmt-conference/source.xml",

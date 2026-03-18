@@ -6,8 +6,7 @@ from ontoaligner.postprocess import graph_postprocessor        # Applies post-pr
 from ontoaligner.utils import metrics, xmlify                  # Utilities for evaluation and XML export
 
 # Step 1: Initialize ontology matching task
-task = GraphTripleOMDataset()
-task.ontology_name = "Mouse-Human"                             # Assign a name for the ontology matching task
+task = GraphTripleOMDataset(ontology_name = "Mouse-Human" )
 print("task:", task)
 # Example output: task: Track: GraphTriple, Source-Target sets: Mouse-Human
 

@@ -52,6 +52,12 @@ class OMDataset(ABC):
 
     alignments: Any = BaseAlignmentsParser()
 
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            if not hasattr(self, k):
+                raise TypeError(f"Unknown argument: {k}")
+            setattr(self, k, v)
+
     def collect(self, source_ontology_path: str, target_ontology_path: str, reference_matching_path: str="") -> Dict:
         """
         Collects data from the source ontology, target ontology, and reference alignments.
