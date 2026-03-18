@@ -386,6 +386,18 @@ The primary distinction between ``AutoModelDecoderRAGLLMV2`` and ``AutoModelDeco
         return len(self.tokenizer(answer).input_ids) == 1
 
 
+In another approach you can simply use the ``RAG`` class and provide the retriever and LLM as follows in a light configuration manner:
+
+.. code-block:: python
+
+	from ontoaligner.aligner import RAG, TFIDFRetrieval, AutoModelDecoderRAGLLMV2
+
+	custom_rag = RAG(retrieval = TFIDFRetrieval,
+					 llm = AutoModelDecoderRAGLLMV2,
+					 retriever_config = ...,
+					 llm_config = ...)
+
+
 .. note::
 
     Consider reading the following section next:

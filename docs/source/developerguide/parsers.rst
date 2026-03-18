@@ -116,9 +116,10 @@ As another example, suppose you want to perform ontology alignment for the ``GEO
 .. code-block:: python
 
     from ontoaligner.ontology import GenericOMDataset
-    task =  GenericOMDataset()
-    task.track = "Geographical"   # optional
-    task.ontology_name = "GEO-GeoNames"  # optional
+    task =  GenericOMDataset(
+        track = "Geographical"         # optional
+        ontology_name = "GEO-GeoNames" # optional
+    )
     dataset = task.collect(source_ontology_path="geo.owl", target_ontology_path="geonames.owl")
 
 
