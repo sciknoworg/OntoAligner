@@ -542,16 +542,15 @@ Advanced Usage
 
 	.. code-block:: python
 
-	    from ontoaligner.aligner.flora.fuzzy_logic import literals
-	    from ontoaligner.ontology.flora import FLORAOntology
+	    from ontoaligner.aligner.flora import FLORALiteralsEmbedding
+	    from ontoaligner.ontology import FLORAOntology
 
 	    # Load KGs
 	    kb1 = FLORAOntology().load_ontology(input_file_path='path/to/kg.ttl')  # load KG1
 	    kb2 = FLORAOntology().load_ontology(input_file_path='path/to/kg.ttl')  # load KG2
 
 	    # Compute and save embeddings
-	    embedding_model = literals.FLORALiteralsEmbedding(model_id='Lihuchen/pearl_small',
-	                                                     identity=False)
+	    embedding_model = FLORALiteralsEmbedding(model_id='Lihuchen/pearl_small', identity=False)
 	    embedding_model.encode_save(kb1, kb2, emb_path="my_embeddings/")
 
 	Then reuse in multiple experiments::
@@ -688,7 +687,7 @@ Advanced Usage
 
 	  .. code-block:: python
 
-	     from ontoaligner.aligner.flora.fuzzy_logic.prefixes import prefixes
+	     from ontoaligner.aligner.flora import prefixes
 
 	     writer = FLORARDFWriter(prefixes=prefixes)
 
@@ -747,7 +746,7 @@ Advanced Usage
 
 	  .. code-block:: python
 
-	     from ontoaligner.aligner.flora.fuzzy_logic.prefixes import prefixes_dbp
+	     from ontoaligner.aligner.flora import prefixes_dbp
 
 	     writer = FLORARDFWriter(prefixes=prefixes_dbp)
 
