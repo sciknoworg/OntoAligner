@@ -380,6 +380,11 @@ The :class:`~ontoaligner.aligner.flora.FLORAAligner` class accepts the following
 	     - ``'Lihuchen/pearl_small'``
 	     - Hugging Face model ID for semantic embedding of string literals.
 	       Set to ``None`` to disable embeddings.
+      * - **emb_path**
+	     - str
+	     - ``'path/to/pre-encoded-embeddings'``
+	     - Optional path to pretrained (encoded) embeddings using Hugging Face model for string literals.
+	       Set to ``None`` to this if you are whiling to use Hugging Face model.
 
 .. tab:: 🎯 Entity Matching
 
@@ -538,20 +543,21 @@ Advanced Usage
 	.. code-block:: python
 
 	    from ontoaligner.aligner.flora.fuzzy_logic import literals
-	    from ontoaligner.ontology.flora import Graph
+	    from ontoaligner.ontology.flora import FLORAOntology
 
 	    # Load KGs
-	    kb1 = ...  # load KG1
-	    kb2 = ...  # load KG2
+	    kb1 = FLORAOntology().load_ontology(input_file_path='path/to/kg.ttl')  # load KG1
+	    kb2 = FLORAOntology().load_ontology(input_file_path='path/to/kg.ttl')  # load KG2
 
 	    # Compute and save embeddings
-	    embedding_model = literals.FLORALiteralsEmbedding()
+	    embedding_model = literals.FLORALiteralsEmbedding(model_id='Lihuchen/pearl_small',
+	                                                     identity=False)
 	    embedding_model.encode_save(kb1, kb2, emb_path="my_embeddings/")
 
 	Then reuse in multiple experiments::
 
 	    # These embeddings will be loaded from disk instead of recomputed
-	    aligner = FLORAAligner()
+	    aligner = FLORAAligner(emb_path='my_embeddings/')
 	    # (The aligner will look for embeddings in default locations)
 
 
@@ -562,11 +568,11 @@ Advanced Usage
 
 	.. code-block:: python
 
-	    from ontoaligner.ontology.flora import Graph, parse_turtle_graph
+	    from ontoaligner.ontology.flora import Graph
 
 	    # Load Turtle files directly into Graph objects
-	    kg1 = parse_turtle_graph("path/to/kg1.ttl")
-	    kg2 = parse_turtle_graph("path/to/kg2.ttl")
+	    kg1=Graph().load_turtle_file("path/to/kg1.ttl")
+	    kg2=Graph().load_turtle_file("path/to/kg2.ttl")
 
 	    # kg1 and kg2 are now Graph objects ready for the aligner
 	    aligner = FLORAAligner()
@@ -600,7 +606,7 @@ Advanced Usage
 	    print(f"Total predicates: {len(predicates)}")
 
 	    # Load from a TTL file
-	    graph.loadTurtleFile("path/to/ontology.ttl")
+	    graph.load_turtle_file("path/to/ontology.ttl")
 
 	**Key Features of Graph**:
 
@@ -617,7 +623,6 @@ Advanced Usage
 	.. code-block:: python
 
 	    from ontoaligner.aligner.flora import FLORARDFWriter, FLORAAligner
-	    from ontoaligner.ontology.flora import Graph
 
 	    # Run alignment
 	    aligner = FLORAAligner()
@@ -672,6 +677,124 @@ Advanced Usage
 	       ex:Jane owl:sameAs ex:jane_dbpedia . # 0.88
 
 	The ``# score`` suffix (as a comment) indicates the confidence of each alignment.
+
+	**Pre-defined Prefixes from ontoaligner.aligner.flora.fuzzy_logic.prefixes**
+
+	The module ``prefixes.py`` provides two built-in prefix dictionaries with well-known RDF/OWL vocabularies:
+
+	.. tab:: 🔗🌐 General Linked-Data & Knowledge Base Prefixes
+
+	  Import and use the ``prefixes`` dictionary for general-purpose RDF/OWL vocabularies:
+
+	  .. code-block:: python
+
+	     from ontoaligner.aligner.flora.fuzzy_logic.prefixes import prefixes
+
+	     writer = FLORARDFWriter(prefixes=prefixes)
+
+	  **Supported namespaces:**
+
+	  .. list-table::
+	     :header-rows: 1
+	     :widths: 15 60
+
+	     * - Prefix
+	       - Namespace URI
+	     * - ``yago``
+	       - http://yago-knowledge.org/resource/
+	     * - ``wd``
+	       - http://www.wikidata.org/entity/
+	     * - ``wdt``
+	       - http://www.wikidata.org/prop/direct/
+	     * - ``p``
+	       - http://www.wikidata.org/prop/
+	     * - ``ps``, ``psv``, ``psn``
+	       - Wikidata statement value properties
+	     * - ``pq``, ``pqv``, ``pqn``
+	       - Wikidata qualifier value properties
+	     * - ``pr``, ``prv``, ``prn``
+	       - Wikidata reference value properties
+	     * - ``rdf``, ``rdfs``, ``owl``
+	       - RDF/RDFS/OWL core vocabularies
+	     * - ``xsd``
+	       - XML Schema datatypes
+	     * - ``skos``
+	       - Simple Knowledge Organization System
+	     * - ``schema``
+	       - schema.org vocabulary
+	     * - ``foaf``
+	       - Friend of a Friend
+	     * - ``dct``
+	       - Dublin Core Terms
+	     * - ``cc``
+	       - Creative Commons
+	     * - ``geo``
+	       - OGC GeoSPARQL
+	     * - ``prov``
+	       - W3C PROV ontology
+	     * - ``sh``
+	       - SHACL (Shapes Constraint Language)
+	     * - ``wikibase``
+	       - Wikibase ontology
+	     * - ``ontolex``
+	       - OntoLex vocabulary
+	     * - ``ys``
+	       - YAGO Schema
+
+	.. tab:: 🔗📖 DBpedia-Specific Prefixes
+
+	  For DBpedia-centric alignments, use ``prefixes_dbp`` which includes multilingual support:
+
+	  .. code-block:: python
+
+	     from ontoaligner.aligner.flora.fuzzy_logic.prefixes import prefixes_dbp
+
+	     writer = FLORARDFWriter(prefixes=prefixes_dbp)
+
+	  **Supported DBpedia resources and properties:**
+
+	  .. list-table::
+	     :header-rows: 1
+	     :widths: 15 60
+
+	     * - Prefix
+	       - Description
+	     * - ``dbr``
+	       - DBpedia English resource namespace
+	     * - ``dbr-fr``, ``dbr-zh``, ``dbr-ja``
+	       - DBpedia resources in French, Chinese, Japanese
+	     * - ``dbo``
+	       - DBpedia ontology (classes and properties)
+	     * - ``dbp``, ``dbp-fr``, ``dbp-zh``, ``dbp-ja``
+	       - DBpedia properties in multiple languages
+	     * - ``dbd``
+	       - DBpedia datatypes
+	     * - ``foaf``, ``rdfs``, ``owl``, ``xsd``
+	       - Standard RDF vocabularies (overlaps with ``prefixes``)
+	     * - ``dc``, ``dc-terms``
+	       - Dublin Core (elements and terms)
+	     * - ``skos``
+	       - SKOS vocabulary
+	     * - ``geo``
+	       - OGC WGS84 Geo Positioning
+
+	.. important::
+
+	   **What is supported:**
+
+	   - ✅ Custom prefix dictionaries – Pass any ``Dict[str, str]`` mapping prefix names to URIs.
+	   - ✅ Pre-configured vocabularies – Use ``prefixes`` or ``prefixes_dbp`` from the module.
+	   - ✅ Mixed vocabularies – Combine multiple prefix sources into a single dict.
+	   - ✅ Multilingual DBpedia – ``prefixes_dbp`` handles English, French, Chinese, Japanese.
+	   - ✅ Standard RDF/OWL predicates – ``owl:sameAs`` and ``rdfs:subPropertyOf`` are always supported.
+
+	   **What is NOT supported:**
+
+	   - ❌ Automatic namespace detection – Prefixes must be explicitly provided; the writer does not introspect your KGs.
+	   - ❌ Custom alignment predicates – The writer always uses ``owl:sameAs`` for entities and ``rdfs:subPropertyOf`` for predicates. Other predicates (e.g., ``skos:closeMatch``) are not generated.
+	   - ❌ Filtering by namespace – All IRIs are written as-is; use post-processing to filter by namespace if needed.
+	   - ❌ Blank node abbreviation – IRIs are always written in full form, not abbreviated with prefixes in the triples themselves.
+	   - ❌ Alignment metadata – Scores are appended as tab-separated comments only; no formal alignment vocabulary (e.g., from `ALIGNAPI <http://alignapi.gforge.inria.fr/>`_) is used.
 
 	**Why Use FLORARDFWriter?**
 
