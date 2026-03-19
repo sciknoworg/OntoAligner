@@ -11,19 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+
 """
 Literal processing and embedding utilities for the FLORA knowledge graph alignment system.
 
@@ -396,18 +384,30 @@ class FLORALiteralsEmbedding:
         model_id: str = 'Lihuchen/pearl_small',
         device: str = 'cuda' if torch.cuda.is_available() else 'cpu',
         identity: bool = False,
+        emb_path: Optional[str] = None,
     ) -> None:
         """Initialize the embedding model.
 
         Args:
             model_id: Hugging Face model ID for the embedding model.
             device: Device to load the model on ('cuda' or 'cpu').
+            identity: If True, do not load the model and tokenizer (used for string identity only).
         """
         os.environ["TOKENIZERS_PARALLELISM"] = "false"
+        self.kg1_pretrained = None
+        self.kg2_pretrained = None
         if not identity:
-            self.model = AutoModel.from_pretrained(model_id)
-            self.tokenizer = AutoTokenizer.from_pretrained(model_id)
-            self.model.to(device)
+            if emb_path is not None:
+                try:
+                    self.kg1_pretrained = self.load_embeddings(emb_path)
+                    self.kg2_pretrained = self.load_embeddings(emb_path)
+                except Exception as e:
+                    raise RuntimeError(f"Error loading embeddings from {emb_path}: {e} \n "
+                                       f"Please ensure the embedding files exist and are in the correct format. ")
+            else:
+                self.model = AutoModel.from_pretrained(model_id)
+                self.tokenizer = AutoTokenizer.from_pretrained(model_id)
+                self.model.to(device)
         self.device = device
 
     def encode(self, input_texts: List[str]) -> torch.Tensor:
@@ -550,10 +550,10 @@ class FLORALiteralsEmbedding:
             map_scores = compare_literals_identity(map_scores, str_bucket1, str_bucket2)
 
             # Compute semantic embeddings
-            kb1_embedding = self.embedding_strings(kb=kb1)
+            kb1_embedding = self.embedding_strings(kb=kb1) if self.kg1_pretrained is None else self.kg1_pretrained
             literal2id_kb1, embedding_matrix_kb1 = kb1_embedding['id'], kb1_embedding['emb']
 
-            kb2_embedding = self.embedding_strings(kb=kb2)
+            kb2_embedding = self.embedding_strings(kb=kb2) if self.kg2_pretrained is None else self.kg2_pretrained
             literal2id_kb2, embedding_matrix_kb2 = kb2_embedding['id'], kb2_embedding['emb']
 
             id2literal_kb2 = {v: k for k, v in literal2id_kb2.items()}
@@ -622,3 +622,18 @@ class FLORALiteralsEmbedding:
             pickle.dump(kb1_emb, f)
         with open(os.path.join(emb_path, "kb2.pkl"), "wb") as f:
             pickle.dump(kb2_emb, f)
+
+    def load_embeddings(
+        self,
+        emb_path: str,
+    ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+        """Load precomputed embeddings for two knowledge bases.
+
+        Args:
+            emb_path: Directory path where embedding files are saved.
+        """
+        with open(os.path.join(emb_path, "kb1.pkl"), "rb") as f:
+            kb1_emb = pickle.load(f)
+        with open(os.path.join(emb_path, "kb2.pkl"), "rb") as f:
+            kb2_emb = pickle.load(f)
+        return kb1_emb, kb2_emb

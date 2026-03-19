@@ -51,7 +51,8 @@ from typing import List, Optional, Dict, Any, Tuple
 import multiprocessing
 
 from ...base import BaseOMModel
-from .fuzzy_logic import fuzzy, literals
+from .fuzzy_logic import fuzzy
+from .fuzzy_logic.literals import FLORALiteralsEmbedding
 
 
 
@@ -192,6 +193,7 @@ class FLORAAligner(BaseOMModel):
         relinit: float = 0.1,
         ngrams: Optional[List[int]] = None,
         model_id: Optional[str] = None,
+        emb_path: Optional[str] = None,
         training_data: Optional[str] = None,
         device: Optional[str] = None,
         batch_size: Optional[int] = 32,
@@ -209,6 +211,7 @@ class FLORAAligner(BaseOMModel):
             relinit: Initial score for unidentical predicates.
             ngrams: N-gram sizes for functionality computation.
             model_id: Transformer model for literal embeddings.
+            emb_path: Optional path to pretrained embeddings.
             training_data: Path to seed alignment file.
             device: Device for tensor operations.
             batch_size: Batch size for embedding computations.
@@ -231,10 +234,11 @@ class FLORAAligner(BaseOMModel):
             batch_size=batch_size,
             **kwargs,
         )
-        self.literals_embedding = literals.FLORALiteralsEmbedding(
+        self.literals_embedding = FLORALiteralsEmbedding(
             model_id=model_id,
             device=device if device else 'cpu',
-            identity=string_identity
+            identity=string_identity,
+            emb_path=emb_path,
         )
         self.same_as_scores = {}
         self.predicate2super_predicate = {}

@@ -71,11 +71,11 @@ from rdflib import Graph as RDFGraph
 from abc import ABC
 
 track = "KG Alignment - FLORA"
-_blank_node_counter=0
+_BLACK_NODE_COUNTER=0
 
-literal_regex=re.compile('"([^"]*)"(@([a-z-]+))?(\\^\\^(.*))?') # Regex for literals
-integer_regex=re.compile('^"?[+-]?[0-9.]+"?$') # Regex for int values
-float_regex = re.compile('^"?([+-])?([0-9.]+)"?$')
+LITERAL_REGEX=re.compile('"([^"]*)"(@([a-z-]+))?(\\^\\^(.*))?') # Regex for literals
+INTEGER_REGEX=re.compile('^"?[+-]?[0-9.]+"?$') # Regex for int values
+FLOAT_REGEX = re.compile('^"?([+-])?([0-9.]+)"?$')
 
 def is_inverse(rel):
     """ TRUE if the relation is an inverse relation """
@@ -87,7 +87,7 @@ def invert(rel):
 
 def is_literal(term):
     try:
-        return re.match(literal_regex, term) or re.match(integer_regex, term) or re.match(float_regex, term)
+        return re.match(LITERAL_REGEX, term) or re.match(INTEGER_REGEX, term) or re.match(FLOAT_REGEX, term)
     except TypeError:
         return False # if there is no match or exception then the term is None
 
@@ -200,7 +200,7 @@ class Graph(object):
                 for o in self.index[s][p]:
                     yield (s, p, o)
 
-    def loadTurtleFile(self, file, message=None):
+    def load_turtle_file(self, file, message=None):
         """
         Parse a Turtle file and add all its triples to this graph.
 
@@ -211,22 +211,22 @@ class Graph(object):
         for triple in parse_turtle_triples(file, message):
             self.add(triple)
 
-    def getList(self, listStart):
+    def get_list(self, list_start):
         """
-        Collect the elements of an RDF list starting at ``listStart``.
+        Collect the elements of an RDF list starting at ``list_start``.
 
         Args:
-            listStart (str): IRI of the first ``rdf:List`` node.
+            list_start (str): IRI of the first ``rdf:List`` node.
 
         Returns:
             List[str]: Ordered list of element IRIs / literals.
         """
         result = []
-        while listStart and listStart != 'rdf:nil':
-            result.extend(self.index[listStart].get('rdf:first', []))
-            if 'rdf:rest' not in self.index[listStart]:
+        while list_start and list_start != 'rdf:nil':
+            result.extend(self.index[list_start].get('rdf:first', []))
+            if 'rdf:rest' not in self.index[list_start]:
                 break
-            listStart = list(self.index[listStart]['rdf:rest'])[0]
+            list_start = list(self.index[list_start]['rdf:rest'])[0]
         return result
 
     def predicates(self):
@@ -241,7 +241,7 @@ class Graph(object):
             that use it (counting both forward and inverse arcs).
         """
         if not self.pred2num:
-            self.numFactsWithPredicate("blah")
+            self.num_facts_with_predicate("blah")
         return self.pred2num
 
     def attributes(self):
@@ -257,12 +257,12 @@ class Graph(object):
         """
         result = set()
         for predicate in self.relindex:
-            if self.isAttribute(predicate):
+            if self.is_attribute(predicate):
                 result.add(predicate)
                 result.add(invert(predicate))  # add inverse
         return result
 
-    def numFactsWithPredicate(self, predicate):
+    def num_facts_with_predicate(self, predicate):
         """
         Return the number of triples that use the given predicate.
 
@@ -282,9 +282,9 @@ class Graph(object):
                 if pred not in self.pred2num:
                     self.pred2num[pred] = 0
                 self.pred2num[pred] += len(self.index[subject][pred])
-        return self.numFactsWithPredicate(predicate)
+        return self.num_facts_with_predicate(predicate)
 
-    def isAttribute(self, pred):
+    def is_attribute(self, pred):
         """
         Return ``True`` if at least one object of ``pred`` is a literal.
 
@@ -300,7 +300,7 @@ class Graph(object):
                     return True
         return False
 
-    def localFunctionality(self, subjects, preds):
+    def local_functionality(self, subjects, preds):
         """
         Compute the local functionality score for a set of (subject, predicate) pairs.
 
@@ -324,14 +324,14 @@ class Graph(object):
             preds = [preds]
         if len(subjects) != len(preds):
             raise ValueError("The input size of subjects and predicates are not equal.")
-        commonObjs = None
+        common_objs = None
         for i in range(len(subjects)):
-            if commonObjs is None:
-                commonObjs = self.index[subjects[i]][preds[i]]
+            if common_objs is None:
+                common_objs = self.index[subjects[i]][preds[i]]
             else:
-                commonObjs = commonObjs & self.index[subjects[i]][preds[i]]
+                common_objs = common_objs & self.index[subjects[i]][preds[i]]
         try:
-            value = 1.0 / len(commonObjs)
+            value = 1.0 / len(common_objs)
         except ZeroDivisionError:
             value = 0
         return value
@@ -377,12 +377,12 @@ class Graph(object):
         pred = invert(predicate) if predicate else None
         return self.objects(subject=object, predicate=pred)
 
-    def triplesWithObject(self, obj, predicates=[]):
+    def triples_with_object(self, obj, predicates=[]):
         """
         Yield all triples whose object is ``obj``, optionally filtered by predicates.
 
         Implemented by inverting the predicate list and delegating to
-        :meth:`triplesWithSubject`.
+        :meth:`triples_with_subject`.
 
         Args:
             obj        (str): Object IRI / literal to match.
@@ -391,9 +391,9 @@ class Graph(object):
         Yields:
             Tuple[str, str, str]: Matching ``(subject, predicate, object)`` triples.
         """
-        return self.triplesWithSubject(obj, [invert(p) for p in predicates])
+        return self.triples_with_subject(obj, [invert(p) for p in predicates])
 
-    def triplesWithSubject(self, subject, predicates=[]):
+    def triples_with_subject(self, subject, predicates=[]):
         """
         Yield all triples with the given subject, optionally filtered by predicates.
 
@@ -409,7 +409,7 @@ class Graph(object):
                 for obj in self.index[subject][predicate]:
                     yield (subject, predicate, obj)
 
-    def triplesWithPredicate(self, *predicates):
+    def triples_with_predicate(self, *predicates):
         """
         Yield all triples that use any of the given predicates.
 
@@ -425,28 +425,28 @@ class Graph(object):
                     for object in self.index[subject][predicate]:
                         yield (subject, predicate, object)
 
-    def headTriplesWithPredicateList(self, predicatesWithCount):
+    def head_triples_with_predicate_list(self, predicates_with_count):
         """
         Return triples grouped by head entity for heads that carry all listed predicates.
 
         Only subjects that appear in the ``relindex`` for *every* predicate in
-        ``predicatesWithCount`` are included.  At most 10 objects per
+        ``predicates_with_count`` are included.  At most 10 objects per
         (subject, predicate) pair are returned to bound memory usage.
 
         Args:
-            predicatesWithCount (Dict[str, int]): Mapping of predicate IRI to the
+            predicates_with_count (Dict[str, int]): Mapping of predicate IRI to the
                 minimum number of objects required for a subject to qualify.
 
         Returns:
             Dict[str, Set[Tuple]]: ``{subject: set of (subject, predicate, object) triples}``.
         """
         result = {}  # {head: pred: tail}
-        heads = [set(self.relindex[pred].keys()) for pred in predicatesWithCount]
-        sharedHeads = reduce(lambda x, y: x & y, heads)
+        heads = [set(self.relindex[pred].keys()) for pred in predicates_with_count]
+        shared_heads = reduce(lambda x, y: x & y, heads)
 
-        for predicate in set(predicatesWithCount):
-            for subject in sharedHeads:
-                if len(self.relindex[predicate][subject]) < predicatesWithCount[predicate]:
+        for predicate in set(predicates_with_count):
+            for subject in shared_heads:
+                if len(self.relindex[predicate][subject]) < predicates_with_count[predicate]:
                     continue
                 if subject not in result:
                     result[subject] = set()
@@ -458,7 +458,7 @@ class Graph(object):
                         break
         return result
 
-    def printToWriter(self, result):
+    def print_to_writer(self, result):
         """
         Serialize the graph to a Turtle-like text representation.
 
@@ -489,7 +489,7 @@ class Graph(object):
                         result.write(', ')
                     if obj.startswith("_:list_"):
                         result.write("(")
-                        result.write(" ".join(self.getList(obj)))
+                        result.write(" ".join(self.get_list(obj)))
                         result.write(")")
                     else:
                         result.write(obj)
@@ -505,10 +505,10 @@ class Graph(object):
         """
         buffer = StringIO()
         buffer.write("# RDF Graph\n")
-        self.printToWriter(buffer)
+        self.print_to_writer(buffer)
         return buffer.getvalue()
 
-    def someSubject(self):
+    def some_subject(self):
         """
         Return an arbitrary subject IRI from the graph, or ``None`` if empty.
 
@@ -529,11 +529,11 @@ class Graph(object):
         # Total number of facts
         count = 0
         for p in self.predicates():
-            count += self.numFactsWithPredicate(p)
+            count += self.num_facts_with_predicate(p)
         return count
 
 
-def printError(*args, **kwargs):
+def print_error(*args, **kwargs):
     """Print an error message to *stderr*."""
     print(*args, file=sys.stderr, **kwargs)
 
@@ -552,12 +552,12 @@ def terms_and_separators(generator):
     Yields:
         str | None: The next Turtle token, or ``None`` at end-of-file.
     """
-    pushBack = None
+    push_back = None
     while True:
         # Scroll to next term
         while True:
-            char = pushBack if pushBack else next(generator, None)
-            pushBack = None
+            char = push_back if push_back else next(generator, None)
+            push_back = None
             if not char:
                 # end of file
                 yield None
@@ -566,7 +566,7 @@ def terms_and_separators(generator):
                 # @base and @prefix
                 for term in terms_and_separators(generator):
                     if not term:
-                        printError("Unexpected end of file in directive")
+                        print_error("Unexpected end of file in directive")
                         return
                     if term == '.':
                         break
@@ -582,9 +582,9 @@ def terms_and_separators(generator):
 
         # Strings
         if char == '"':
-            secondChar = next(generator, None)
-            thirdChar = next(generator, None)
-            if secondChar == '"' and thirdChar == '"':
+            second_char = next(generator, None)
+            third_char = next(generator, None)
+            if second_char == '"' and third_char == '"':
                 # long string quote
                 literal = ""
                 while True:
@@ -592,7 +592,7 @@ def terms_and_separators(generator):
                     if char:
                         literal = literal + char
                     else:
-                        printError("Unexpected end of file in literal", literal)
+                        print_error("Unexpected end of file in literal", literal)
                         literal = literal + '"""'
                         break
                     if literal.endswith('"""'):
@@ -601,20 +601,20 @@ def terms_and_separators(generator):
                 char = None
             else:
                 # Short string quote
-                if secondChar == '"':
+                if second_char == '"':
                     literal = ''
-                    char = thirdChar
-                elif thirdChar == '"' and secondChar != '\\':
-                    literal = secondChar
+                    char = third_char
+                elif third_char == '"' and second_char != '\\':
+                    literal = second_char
                     char = None
                 else:
-                    literal = [secondChar, thirdChar]
-                    if thirdChar == '\\' and secondChar != '\\':
+                    literal = [second_char, third_char]
+                    if third_char == '\\' and second_char != '\\':
                         literal += next(generator, ' ')
                     while True:
                         char = next(generator, None)
                         if not char:
-                            printError("Unexpected end of file in literal", literal)
+                            print_error("Unexpected end of file in literal", literal)
                             break
                         elif char == '\\':
                             literal += char
@@ -640,18 +640,18 @@ def terms_and_separators(generator):
                 while True:
                     char = next(generator, None)
                     if not char:
-                        printError("Unexpected end of file in datatype of", literal)
+                        print_error("Unexpected end of file in datatype of", literal)
                         break
                     if len(datatype) > 0 and datatype[0] != '<' and char != ':' and (
                             char < 'A' or char > 'z') and char != '/' and (char != '2' and char != '3') \
                             and char != 'ó' and char != 'ł':  # exceptions: m^2, /km2, ó, polishZłoty
-                        pushBack = char
+                        push_back = char
                         break
                     datatype = datatype + char
                     if datatype.startswith('<') and datatype.endswith('>'):
                         break
                 if not datatype or len(datatype) < 3:
-                    printError("Invalid literal datatype:", datatype)
+                    print_error("Invalid literal datatype:", datatype)
                 yield ('"' + literal + '"^^' + datatype)
             elif char == '@':
                 # Languages
@@ -659,13 +659,13 @@ def terms_and_separators(generator):
                 while True:
                     char = next(generator, None)
                     if not char:
-                        printError("Unexpected end of file in language of", literal)
+                        print_error("Unexpected end of file in language of", literal)
                         break
                     if (char >= 'A' and char <= 'Z') or (char >= 'a' and char <= 'z') or (
                             char >= '0' and char <= '9') or char == '-':
                         language += char
                         continue
-                    pushBack = char
+                    push_back = char
                     break
                 if not language or len(language) > 20 or len(language) < 2 or (
                         '-' in language and len(language[language.index('-'):]) > 9):
@@ -673,7 +673,7 @@ def terms_and_separators(generator):
                 else:
                     yield ('"' + literal + '"@' + language)
             else:
-                pushBack = char
+                push_back = char
                 yield ('"' + literal + '"')
         elif char == '<':
             # URIs
@@ -682,7 +682,7 @@ def terms_and_separators(generator):
                 uri += char
                 char = next(generator, None)
                 if not char:
-                    printError("Unexpected end of file in URL", uri)
+                    print_error("Unexpected end of file in URL", uri)
                     break
             uri += '>'
             yield "".join(uri)
@@ -696,9 +696,9 @@ def terms_and_separators(generator):
                 iri += char
                 char = next(generator, None)
                 if not char:
-                    printError("Unexpected end of file in IRI", iri)
+                    print_error("Unexpected end of file in IRI", iri)
                     break
-            pushBack = char
+            push_back = char
             yield "".join(iri)
 
 def generate_blank_node_name(subject, predicate=None):
@@ -717,7 +717,7 @@ def generate_blank_node_name(subject, predicate=None):
     Returns:
         str: A blank-node identifier such as ``"ys:Gene_subClassOf_42"``.
     """
-    global _blank_node_counter
+    global _BLACK_NODE_COUNTER
     if ':' in subject:
         lastIndex = len(subject) - subject[::-1].index(':') - 1
         subject = subject[lastIndex + 1:] + "_"
@@ -728,10 +728,10 @@ def generate_blank_node_name(subject, predicate=None):
         predicate = predicate[lastIndex + 1:]
     else:
         predicate = ""
-    _blank_node_counter += 1
-    return "ys:" + subject + predicate + "_" + str(_blank_node_counter)
+    _BLACK_NODE_COUNTER += 1
+    return "ys:" + subject + predicate + "_" + str(_BLACK_NODE_COUNTER)
 
-def triples_from_terms(generator, predicates=None, givenSubject=None):
+def triples_from_terms(generator, predicates=None, given_subject=None):
     """
     Yield ``(subject, predicate, object)`` triples from a token generator.
 
@@ -743,7 +743,7 @@ def triples_from_terms(generator, predicates=None, givenSubject=None):
         generator     : Token generator as produced by :func:`terms_and_separators`.
         predicates    (List[str] | None): If given, only yield triples whose
             predicate is in this list.
-        givenSubject  (str | None): If inside a ``[...]`` block, the subject
+        given_subject  (str | None): If inside a ``[...]`` block, the subject
             is supplied externally rather than read from the stream.
 
     Yields:
@@ -753,11 +753,11 @@ def triples_from_terms(generator, predicates=None, givenSubject=None):
         term = next(generator, None)
         if not term or term == ']':
             return
-        if term == '.' or (term == ';' and givenSubject):
+        if term == '.' or (term == ';' and given_subject):
             continue
         # If we're inside a [...]
-        if givenSubject:
-            subject = givenSubject
+        if given_subject:
+            subject = given_subject
             if term != ',':
                 predicate = term
                 # If we're in a normal statement
@@ -771,54 +771,54 @@ def triples_from_terms(generator, predicates=None, givenSubject=None):
         # read the object
         object = next(generator, None)
         if not object:
-            printError("File ended unexpectedly after", subject, predicate)
+            print_error("File ended unexpectedly after", subject, predicate)
             return
         elif object in ['.', ',', ';']:
-            printError("Unexpected", object, "after", subject, predicate)
+            print_error("Unexpected", object, "after", subject, predicate)
             return
         elif object == '(':
-            listNode = generate_blank_node_name("list")
-            previousListNode = None
-            yield (subject, predicate, listNode)
+            list_node = generate_blank_node_name("list")
+            previous_list_node = None
+            yield (subject, predicate, list_node)
             while True:
                 term = next(generator, None)
                 if not term:
-                    printError("Unexpected end of file in collection (...)")
+                    print_error("Unexpected end of file in collection (...)")
                     break
                 elif term == ')':
                     break
                 else:
-                    if previousListNode:
-                        yield (previousListNode, 'rdf:rest', listNode)
+                    if previous_list_node:
+                        yield (previous_list_node, 'rdf:rest', list_node)
                     if term == '[':
                         term = generate_blank_node_name("element")
-                        yield (listNode, 'rdf:first', term)
-                        yield from triples_from_terms(generator, predicates, givenSubject=term)
+                        yield (list_node, 'rdf:first', term)
+                        yield from triples_from_terms(generator, predicates, given_subject=term)
                     else:
-                        yield (listNode, 'rdf:first', term)
-                    previousListNode = listNode
-                    listNode = generate_blank_node_name("list")
-            yield (previousListNode, 'rdf:rest', 'rdf:nil')
+                        yield (list_node, 'rdf:first', term)
+                    previous_list_node = list_node
+                    list_node = generate_blank_node_name("list")
+            yield (previous_list_node, 'rdf:rest', 'rdf:nil')
         elif object == '[':
             object = generate_blank_node_name(subject, predicate)
             yield (subject, predicate, object)
-            yield from triples_from_terms(generator, predicates, givenSubject=object)
+            yield from triples_from_terms(generator, predicates, given_subject=object)
         else:
             if (not predicates) or (predicate in predicates):
                 yield (subject, predicate, object)
 
-def byte_generator(byteReader):
+def byte_generator(byte_reader):
     """
     Yield individual bytes from a binary reader.
 
     Args:
-        byteReader: A binary file object opened in ``"rb"`` mode.
+        byte_reader: A binary file object opened in ``"rb"`` mode.
 
     Yields:
         bytes: One byte at a time until EOF.
     """
     while True:
-        b=byteReader.read(1)
+        b=byte_reader.read(1)
         if b:
             yield b
         else:
