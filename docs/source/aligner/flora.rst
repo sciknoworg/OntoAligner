@@ -14,7 +14,7 @@ FLORA
 
 	<div class="video-card">
 	  <iframe
-	    src="https://videolectures.net/embed/videos/eswc2024_babaei_giglou_language_models?part=1"
+	    src="https://videolectures.net/embed/videos/iswc2025_nara_peng_flora?part=1"
 	    frameborder="0"
 	    allowfullscreen>
 	  </iframe>
