@@ -917,6 +917,8 @@ class FLORAOntology(BaseOntologyParser):
         Raises:
             ValueError: If the file extension is neither ``.ttl`` nor ``.xml``.
         """
+        global _BLACK_NODE_COUNTER
+        _BLACK_NODE_COUNTER = 0
         # If already TTL → parse directly
         if input_file_path.endswith(".ttl"):
             return parse_turtle_graph(input_file_path)
