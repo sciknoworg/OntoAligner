@@ -92,7 +92,7 @@ def initialize_predicate_subsumption(
 def update_predicate_subsumption(
     pred2super_pred12: Dict[Any, Dict[Any, float]],
     pred2super_pred21: Dict[Any, Dict[Any, float]],
-    previous_predicate2super_predicate: Optional[Dict[Any, Dict[Any, float]]] = None,
+    previous_predicate2super_predicate: Optional[Dict[Any, Dict[Any, float]]],
 ) -> Dict[Any, Dict[Any, float]]:
     """Update predicate subsumption scores bidirectionally.
 
@@ -109,27 +109,25 @@ def update_predicate_subsumption(
     Returns:
         Updated predicate subsumption scores dictionary.
     """
-    result = previous_predicate2super_predicate if previous_predicate2super_predicate is not None else {}
-
     for pred1 in pred2super_pred12:
-        if result.get(pred1) is None:
-            result[pred1] = {}
+        if previous_predicate2super_predicate.get(pred1) is None:
+            previous_predicate2super_predicate[pred1] = {}
         for pred2 in pred2super_pred12[pred1]:
             # Make relation subsumption monotonic
-            result[pred1][pred2] = max(
-                result[pred1].get(pred2, 0),
+            previous_predicate2super_predicate[pred1][pred2] = max(
+                previous_predicate2super_predicate[pred1].get(pred2, 0),
                 pred2super_pred12[pred1][pred2],
             )
     for pred2 in pred2super_pred21:
-        if result.get(pred2) is None:
-            result[pred2] = {}
+        if previous_predicate2super_predicate.get(pred2) is None:
+            previous_predicate2super_predicate[pred2] = {}
         for pred1 in pred2super_pred21[pred2]:
             # Make relation subsumption monotonic
-            result[pred2][pred1] = max(
-                result[pred2].get(pred1, 0),
+            previous_predicate2super_predicate[pred2][pred1] = max(
+                previous_predicate2super_predicate[pred2].get(pred1, 0),
                 pred2super_pred21[pred2][pred1],
             )
-    return result
+    return previous_predicate2super_predicate
 
 
 def compute_functionalities(kb: Any, gram: Optional[List[int]] = None) -> Dict[Any, float]:
@@ -192,7 +190,7 @@ def update_score_min(
     mapping: Dict[Any, Dict[Any, float]],
     key1: Any,
     key2: Any,
-    *body: float,
+    *body,
 ) -> Dict[Any, Dict[Any, float]]:
     """Update score using minimum operator (Gödel logic).
 
@@ -228,7 +226,7 @@ def update_score_additive_min(
     key1: Any,
     key2: Any,
     factor: float,
-    *body: float,
+    *body,
 ) -> Dict[Any, Dict[Any, float]]:
     """Update score using additive minimum operator.
 
@@ -284,7 +282,6 @@ def update_max_score_min(
     else:
         if score > mapping[pred][1]:
             mapping[pred] = (fact, score)
-
     return mapping
 
 
@@ -363,6 +360,7 @@ def bootstrap_algo(
     same_as_score: Dict[Any, Dict[Any, float]],
     pred2super_pred: Dict[Any, Dict[Any, float]],
     functionalities: Dict[Any, float],
+    num_workers: int
 ) -> Dict[Any, Dict[Any, float]]:
     """Bootstrap the algorithm using initial literal alignments.
 
@@ -387,7 +385,6 @@ def bootstrap_algo(
     for subj_kb1 in subjs_kb1:
         ent_queue.put(subj_kb1)
     tasks = []
-    num_workers = 90
     ent_match_tuple_queue = mgr.Queue()
     for _ in range(num_workers):
         task = mp.Process(
@@ -457,7 +454,7 @@ def map_subrelations(
                 if fact2[OBJ] not in ent_max_assign.get(fact1[OBJ], {}):
                     continue
                 score_object = ent_max_assign[fact1[OBJ]][fact2[OBJ]]
-                update_max_score_min(
+                rel2max_fact = update_max_score_min(
                     rel2max_fact, fact2[PRED], fact2,
                     ent_max_assign[fact1[SUBJ]][fact2[SUBJ]], score_object
                 )
@@ -484,7 +481,7 @@ def map_subrelations(
                 if fact1[OBJ] not in ent_max_assign.get(fact2[OBJ], {}):
                     continue
                 score_object = ent_max_assign[fact2[OBJ]][fact1[OBJ]]
-                update_max_score_min(
+                rel1max_fact = update_max_score_min(
                     rel1max_fact, fact1[PRED], fact1,
                     ent_max_assign[fact2[SUBJ]][fact1[SUBJ]], score_object
                 )
@@ -628,7 +625,7 @@ def _match_entities_by_rules(
     import logging
     ent_match_scores = dict()
     ent_max_assign = bilateral_max_assign(same_as_score)
-    while True:
+    while not queue.empty():
         try:
             subj_kb1 = queue.get(timeout=2)  # Use timeout instead of get_nowait()
         except Exception:

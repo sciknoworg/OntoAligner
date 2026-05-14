@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 from .flora import FLORAAligner, FLORARDFWriter
-from .fuzzy_logic.literals import FLORALiteralsEmbedding
-from .fuzzy_logic.prefixes import * # NOQA
+from .literals import FLORALiteralsEmbedding
+from .prefixes import * # NOQA

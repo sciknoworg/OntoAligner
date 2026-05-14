@@ -20,15 +20,6 @@ This module provides tools for:
 - Literal comparison and normalization
 - Semantic embedding-based literal similarity
 - Bucket-based literal organization by type (dates, quantities, strings, etc.)
-
-Key components:
-
-- **Literal utilities** – :func:`is_literal`, :func:`split_literal`, :func:`is_readable`,
-  :func:`is_inverse`, :func:`invert`.
-- **Normalization** – :func:`numeric_normalization`, :func:`decode_unicode`.
-- **Bucketing** – :func:`get_literal_buckets`, :func:`compare_literals`,
-  :func:`compare_literals_identity`.
-- **Embedding model** – :class:`FLORALiteralsEmbedding` for semantic similarity.
 """
 
 from typing import List, Dict, Tuple, DefaultDict, Optional, Any
@@ -56,7 +47,7 @@ INTEGER_REGEX = re.compile('^"?[+-]?[0-9.]+"?$') # Regex for int values
 SCI_FLOAT_REGEX = re.compile('^"?([+-])?([0-9.]+[Ee][+-]?[0-9]+)"?$')
 
 # Regex for numbers: post codes, phone numbers, etc.
-NUMBER_REGEX = re.compile('[\d\W]+')
+NUMBER_REGEX = re.compile(r'[\d\W]+')
 
 #################################################################
 #                 Literal Utility Functions                     #
@@ -110,7 +101,7 @@ def is_readable(txt: str) -> bool:
     return non_alpha_ratio < 0.5
 
 
-def is_literal(term: Any) -> bool:
+def is_literal(term: Any):
     """Check if a term is an RDF literal value.
 
     A term is a literal if it matches the RDF literal pattern or is a float value.
@@ -121,11 +112,7 @@ def is_literal(term: Any) -> bool:
     Returns:
         True if the term is a literal, False otherwise.
     """
-    try:
-        return bool(re.match(LITERAL_REGEX, term) or re.match(FLOAT_REGEX, term) or re.match(INTEGER_REGEX, term))
-    except Exception:
-        return False
-
+    return re.match(LITERAL_REGEX, term) or re.match(FLOAT_REGEX, term)
 
 def numeric_normalization(term: str) -> str:
     """Normalize a numeric string by removing non-digit characters.
@@ -178,7 +165,29 @@ def split_literal(term: str) -> Tuple[str, Optional[Any], Optional[str], Optiona
         A tuple of (literal_string, numeric_value, language_tag, datatype).
         numeric_value is None for non-numeric literals or for dates.
     """
-    literal, _, lang, _, datatype = re.match(LITERAL_REGEX, term).groups()
+    match = re.match(LITERAL_REGEX, term)
+    if match:
+        literal, _, lang, _, datatype = match.groups()
+    else:
+        # Fallback for plain numbers (FLOAT_REGEX or INTEGER_REGEX match)
+        literal = term.strip('"')
+        lang = None
+        datatype = None
+
+        # Try to parse as number
+        float_match = re.match(FLOAT_REGEX, term)
+        sci_float_match = re.match(SCI_FLOAT_REGEX, term)
+        if float_match or sci_float_match:
+            try:
+                value = int(literal)
+                return (literal, value, lang, 'xsd:integer')
+            except Exception:
+                try:
+                    value = float(literal)
+                    return (literal, value, lang, 'xsd:float')
+                except ValueError:
+                    return (literal, None, lang, 'xsd:string')
+        return (literal, None, lang, 'xsd:string')
 
     # Handle date types
     if datatype in ['xsd:date', 'xsd:gYear', 'xsd:gYearMonth', 'xsd:datetime']:
@@ -208,8 +217,7 @@ def split_literal(term: str) -> Tuple[str, Optional[Any], Optional[str], Optiona
     match_number = re.fullmatch(NUMBER_REGEX, literal)
     if match_number:
         value = numeric_normalization(literal)
-        if len(value) >= 10:  # e.g., phone numbers
-            return (literal, value, lang, datatype)
+        return (literal, 'normalized_'+value, lang, datatype)
 
     # Handle string literals
     decoded_literal = decode_unicode(literal)
@@ -324,9 +332,8 @@ def compare_literals(
                         if obj1 not in same_as_scores:
                             same_as_scores[obj1] = {}
                         # Score based on specificity
-                        score = (key1_partial.count('-') + 1) / 3
                         for obj2 in bucket2[key1_partial]:
-                            same_as_scores[obj1][obj2] = score
+                            same_as_scores[obj1][obj2] = (key1_partial.count('-') + 1) / 3
                     break
                 last_dash = key1.rfind('-', 0, last_dash)
     else:  # digits (IDs, code versions, etc.)
