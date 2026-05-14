@@ -58,7 +58,7 @@ from typing_extensions import override
 
 from ..base import BaseOntologyParser, OMDataset, BaseAlignmentsParser
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Tuple
 import codecs
 import re
 import os
@@ -929,7 +929,7 @@ class FLORAOntology(BaseOntologyParser):
             with tempfile.NamedTemporaryFile(suffix=".ttl", delete=False) as tmp:
                 tmp_path = tmp.name
             try:
-                rdf_graph.serialize(tmp_path, format="turtle", encoding="utf-8")
+                rdf_graph.serialize(tmp_path, format="nt", encoding="utf-8")
                 graph = parse_turtle_graph(tmp_path)
             finally:
                 os.remove(tmp_path)
@@ -1354,42 +1354,39 @@ class OpenEAAlignmentsParser(BaseAlignmentsParser):
 
 class DBpediaAlignmentsParser(BaseAlignmentsParser):
     """
-    Alignment parser for DBP15K ``ref_ent_ids`` TSV files.
+    Alignment parser for DBP15K ``ref_ent_ids`` / ``sup_pairs`` TSV files.
 
-    The ``ref_ent_ids`` file contains tab-separated entity-ID pairs::
+    The ``ref_ent_ids`` file (and ``sup_pairs``) contain tab-separated
+    entity-ID pairs::
 
         <entity_id_kg1>\\t<entity_id_kg2>
         ...
 
-    IDs are mapped back to IRIs using the ``ent_ids_1`` / ``ent_ids_2`` files
-    found in the same directory.  If IDs cannot be resolved (no mapping files
-    present) the raw values are treated as IRIs directly.
+    IDs are mapped back to IRIs using ``ent_ids_1`` / ``ent_ids_2`` files
+    found in the same directory.  If those mapping files are absent the raw
+    values are treated as IRIs directly.
+
+    Adopted from ``eval.load_dbp15k_ref``:  the supervised 30 % seed pairs
+    (``sup_pairs``) and the test 70 % pairs (``ref_pairs``) are now both
+    accessible via :meth:`parse_splits`.
 
     Example:
         >>> parser = DBpediaAlignmentsParser()
-        >>> refs = parser.parse("data/dbp_zh_en_15k_v1/ref_ent_ids")
-        >>> print(refs[0])
+        >>> seed, ref = parser.parse_splits("data/dbp_zh_en_15k_v1/ref_ent_ids")
+        >>> print(ref[0])
         {'source': 'http://zh.dbpedia.org/...', 'target': 'http://en.dbpedia.org/...', 'relation': '='}
     """
 
-    def load_ontology(self, input_file_path: str) -> Any:
-        """
-        Read and resolve the ``ref_ent_ids`` file.
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
 
-        Looks for ``ent_ids_1`` and ``ent_ids_2`` in the same directory as
-        ``input_file_path`` to build ``id → IRI`` maps.  If those files are
-        absent the raw integer strings are returned unchanged.
-
-        Args:
-            input_file_path (str): Path to the ``ref_ent_ids`` TSV file.
-
-        Returns:
-            List[Tuple[str, str]]: List of ``(iri1, iri2)`` entity pairs.
-        """
-        dir_path = os.path.dirname(input_file_path)
-        id2ent1, id2ent2 = {}, {}
+    def _build_id_maps(self, dir_path: str) -> Tuple[Dict[int, str], Dict[int, str]]:
+        """Build ``{id → IRI}`` maps from ``ent_ids_1`` / ``ent_ids_2``."""
+        id2ent1: Dict[int, str] = {}
+        id2ent2: Dict[int, str] = {}
         for i, id2ent in enumerate([id2ent1, id2ent2], start=1):
-            ent_ids_path = os.path.join(dir_path, "ent_ids_{}".format(i))
+            ent_ids_path = os.path.join(dir_path, f"ent_ids_{i}")
             if os.path.exists(ent_ids_path):
                 with open(ent_ids_path, encoding="utf-8") as f:
                     for line in f:
@@ -1398,9 +1395,17 @@ class DBpediaAlignmentsParser(BaseAlignmentsParser):
                             continue
                         idx, iri = line.split("\t")
                         id2ent[int(idx)] = iri
+        return id2ent1, id2ent2
 
-        pairs = []
-        with open(input_file_path, "r", encoding="utf-8") as f:
+    def _read_pair_file(
+            self,
+            file_path: str,
+            id2ent1: Dict[int, str],
+            id2ent2: Dict[int, str],
+    ) -> List[Tuple[str, str]]:
+        """Read a tab-separated pair file, resolving IDs to IRIs."""
+        pairs: List[Tuple[str, str]] = []
+        with open(file_path, "r", encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
                 if not line:
@@ -1417,29 +1422,37 @@ class DBpediaAlignmentsParser(BaseAlignmentsParser):
                 pairs.append((e1, e2))
         return pairs
 
-    def extract_data(self, reference: Any) -> List[Dict]:
+    # ------------------------------------------------------------------
+    # BaseAlignmentsParser interface  (used by the default .parse() path)
+    # ------------------------------------------------------------------
+
+    def load_ontology(self, input_file_path: str) -> Any:
         """
-        Convert raw entity pairs to OntoAligner alignment dicts.
+        Read and resolve the ``ref_ent_ids`` file (test pairs only).
 
         Args:
-            reference (List[Tuple[str, str]]): List of ``(iri1, iri2)`` pairs.
+            input_file_path: Path to ``ref_ent_ids``.
 
         Returns:
-            List[Dict]: Each dict has keys ``"source"``, ``"target"``, and
-            ``"relation"`` (always ``"="``).
+            List[Tuple[str, str]]: ``(iri1, iri2)`` pairs.
         """
+        dir_path = os.path.dirname(input_file_path)
+        id2ent1, id2ent2 = self._build_id_maps(dir_path)
+        return self._read_pair_file(input_file_path, id2ent1, id2ent2)
+
+    def extract_data(self, reference: Any) -> List[Dict]:
+        """Convert raw ``(iri1, iri2)`` pairs to OntoAligner alignment dicts."""
         return [{"source": e1, "target": e2, "relation": "="} for e1, e2 in reference]
 
     def parse(self, input_file_path: str = "") -> List:
         """
-        Parse a DBP15K ground-truth alignment file.
+        Parse the DBP15K test-pairs file (``ref_ent_ids``).
 
         Args:
-            input_file_path (str): Path to the ``ref_ent_ids`` TSV file.
+            input_file_path: Path to the ``ref_ent_ids`` TSV file.
 
         Returns:
-            List[Dict]: Parsed alignment pairs, or an empty list on error or
-            if no path is given.
+            List[Dict]: Parsed alignment pairs, or ``[]`` on error / empty path.
         """
         if not input_file_path:
             return []
@@ -1448,6 +1461,54 @@ class DBpediaAlignmentsParser(BaseAlignmentsParser):
             return self.extract_data(pairs)
         except Exception:
             return []
+
+    # ------------------------------------------------------------------
+    # CHANGE 1 — new method: load_sup_pairs
+    # ------------------------------------------------------------------
+
+    def load_sup_pairs(self, ref_ent_ids_path: str) -> List[Tuple[str, str]]:
+        """Load the 30 % supervised seed pairs from the ``sup_pairs`` file.
+
+        Adopted from ``eval.load_dbp15k_ref``: the ``sup_pairs`` file lives
+        in the same directory as ``ref_ent_ids``.
+
+        Args:
+            ref_ent_ids_path: Path to ``ref_ent_ids`` (used to locate the
+                directory and ``ent_ids_*`` mapping files).
+
+        Returns:
+            List[Tuple[str, str]]: ``(iri1, iri2)`` seed pairs, or ``[]`` if
+            the file is absent.
+        """
+        dir_path = os.path.dirname(ref_ent_ids_path)
+        sup_path = os.path.join(dir_path, "sup_pairs")
+        if not os.path.exists(sup_path):
+            return []
+        id2ent1, id2ent2 = self._build_id_maps(dir_path)
+        return self._read_pair_file(sup_path, id2ent1, id2ent2)
+
+    # ------------------------------------------------------------------
+    # CHANGE 2 — new method: parse_splits
+    # ------------------------------------------------------------------
+
+    def parse_splits(
+            self, input_file_path: str = ""
+    ) -> Tuple[List[Dict], List[Dict]]:
+        """Parse both the seed (30 %) and test (70 %) pair files.
+
+        Mirrors ``eval.load_dbp15k_ref``.
+
+        Args:
+            input_file_path: Path to the ``ref_ent_ids`` test-pairs file.
+
+        Returns:
+            Tuple ``(seed_pairs, ref_pairs)`` where each element is a list of
+            alignment dicts with keys ``source``, ``target``, ``relation``.
+        """
+        ref_pairs = self.parse(input_file_path)
+        raw_seed = self.load_sup_pairs(input_file_path)
+        seed_pairs = self.extract_data(raw_seed)
+        return seed_pairs, ref_pairs
 
 
 class FLORAAlignmentsParser(BaseAlignmentsParser):
@@ -1628,57 +1689,57 @@ class FLORADBpediaOMDataset(OMDataset):
 
     @override
     def collect(
-        self,
-        source_kg_rel_ids_path: str,
-        target_kg_rel_ids_path: str,
-        source_translated_name_path: str = None,
-        target_translated_name_path: str = None,
-        source_kg_ent_ids_path: str = None,
-        target_kg_ent_ids_path: str = None,
-        source_kg_triples_path: str = None,
-        target_kg_triples_path: str = None,
-        source_kg_att_triples_path: str = None,
-        target_kg_att_triples_path: str = None,
-        reference_matching_path: str = ""
+            self,
+            source_kg_rel_ids_path: str,
+            target_kg_rel_ids_path: str,
+            source_translated_name_path: Optional[str] = None,
+            target_translated_name_path: Optional[str] = None,
+            source_kg_ent_ids_path: Optional[str] = None,
+            target_kg_ent_ids_path: Optional[str] = None,
+            source_kg_triples_path: Optional[str] = None,
+            target_kg_triples_path: Optional[str] = None,
+            source_kg_att_triples_path: Optional[str] = None,
+            target_kg_att_triples_path: Optional[str] = None,
+            reference_matching_path: str = ""
     ) -> Dict:
         """
-        Load both KGs and the ground-truth alignment for a DBP15K benchmark.
-
-        Args:
-            source_kg_rel_ids_path       (str): Path to ``rel_ids_1``.
-            target_kg_rel_ids_path       (str): Path to ``rel_ids_2``.
-            source_translated_name_path  (str | None): Path to
-                ``translated_google.txt`` for the source side, or ``None``.
-            target_translated_name_path  (str | None): Path to translated names
-                for the target side, or ``None``.
-            source_kg_ent_ids_path       (str | None): Path to ``ent_ids_1``.
-            target_kg_ent_ids_path       (str | None): Path to ``ent_ids_2``.
-            source_kg_triples_path       (str | None): Path to ``triples_1``.
-            target_kg_triples_path       (str | None): Path to ``triples_2``.
-            source_kg_att_triples_path   (str | None): Path to ``att_triples_1``,
-                or ``None`` to skip attribute loading.
-            target_kg_att_triples_path   (str | None): Path to ``att_triples_2``,
-                or ``None`` to skip attribute loading.
-            reference_matching_path      (str): Path to ``ref_ent_ids``.
-                Pass an empty string to skip reference loading.
+        Load both KGs and both reference splits for a DBP15K benchmark.
 
         Returns:
-            Dict: ``{"dataset-info": ..., "source": [kg1_data],
-            "target": [kg2_data], "reference": [...]}``
+            Dict with keys:
+                - ``"dataset-info"``  : track / dataset metadata
+                - ``"source"``        : [kg1_data]
+                - ``"target"``        : [kg2_data]
+                - ``"reference"``     : 70 % test pairs (ref_ent_ids)
+                - ``"seed_reference"``: 30 % supervised seed pairs (sup_pairs)
+                  — pass these to FLORAAligner via the training_data argument
+                  or as pre-loaded seed alignments.
         """
-        source_kg = self.source_ontology.parse(rel_ids_path=source_kg_rel_ids_path,
-                                               translated_name_path=source_translated_name_path,
-                                               ent_ids_path=source_kg_ent_ids_path,
-                                               triples_path=source_kg_triples_path,
-                                               att_triples_path=source_kg_att_triples_path)
-        target_kg = self.target_ontology.parse(rel_ids_path=target_kg_rel_ids_path,
-                                               translated_name_path=target_translated_name_path,
-                                               ent_ids_path=target_kg_ent_ids_path,
-                                               triples_path=target_kg_triples_path,
-                                               att_triples_path=target_kg_att_triples_path)
+        source_kg = self.source_ontology.parse(
+            rel_ids_path=source_kg_rel_ids_path,
+            translated_name_path=source_translated_name_path,
+            ent_ids_path=source_kg_ent_ids_path,
+            triples_path=source_kg_triples_path,
+            att_triples_path=source_kg_att_triples_path,
+        )
+        target_kg = self.target_ontology.parse(
+            rel_ids_path=target_kg_rel_ids_path,
+            translated_name_path=target_translated_name_path,
+            ent_ids_path=target_kg_ent_ids_path,
+            triples_path=target_kg_triples_path,
+            att_triples_path=target_kg_att_triples_path,
+        )
+
+        # CHANGE 3: use parse_splits() instead of plain parse() so we get
+        # both the supervised seed pairs and the held-out test pairs.
+        seed_pairs, ref_pairs = self.alignments.parse_splits(
+            input_file_path=reference_matching_path
+        )
+
         return {
             "dataset-info": {"track": self.track, "ontology-name": self.ontology_name},
-            "source":       source_kg,
-            "target":       target_kg,
-            "reference":     self.alignments.parse(input_file_path=reference_matching_path),
+            "source": [source_kg],
+            "target": [target_kg],
+            "reference": ref_pairs,  # 70 % test pairs → use for evaluate_dbp15k()
+            "seed_reference": seed_pairs,  # 30 % seed pairs → use as training_data
         }
