@@ -895,6 +895,7 @@ class FLORAOntology(BaseOntologyParser):
     - ``"graph"``      — the loaded :class:`Graph` object forwarded to the aligner.
 
     Example:
+        >>> from ontoaligner.ontology.kg import FLORAOntology
         >>> parser = FLORAOntology()
         >>> kg_data = parser.parse("kg1.ttl")
         >>> print(kg_data[0]["entities"][0])
@@ -992,7 +993,7 @@ class FLORAOpenEAKnowledgeBase(ABC):
         (none) — this class is stateless; all configuration is passed per call.
 
     Example:
-        >>> from ontoaligner.ontology.flora import FLORAOpenEAKnowledgeBase
+        >>> from ontoaligner.ontology.kg import FLORAOpenEAKnowledgeBase
         >>> parser = FLORAOpenEAKnowledgeBase()
         >>> kg_data = parser.parse(
         ...     input_file_path="data/D_W_15K_V1/rel_triples_1",
@@ -1130,7 +1131,7 @@ class FLORADBpedia15KKnowledgeBase(ABC):
             entity is added as an ``EA:label`` attribute triple.
 
     Example:
-        >>> from ontoaligner.ontology.flora import FLORADBpedia15KKnowledgeBase
+        >>> from ontoaligner.ontology.kg import FLORADBpedia15KKnowledgeBase
         >>> parser = FLORADBpedia15KKnowledgeBase()
         >>> kg_data = parser.parse(
         ...     rel_ids_path="data/dbp_zh_en_15k_v1/rel_ids_1",
@@ -1371,6 +1372,7 @@ class DBpediaAlignmentsParser(BaseAlignmentsParser):
     accessible via :meth:`parse_splits`.
 
     Example:
+        >>> from ontoaligner.ontology.kg import DBpediaAlignmentsParser
         >>> parser = DBpediaAlignmentsParser()
         >>> seed, ref = parser.parse_splits("data/dbp_zh_en_15k_v1/ref_ent_ids")
         >>> print(ref[0])
@@ -1582,19 +1584,18 @@ class FLORAOpenEAOMDataset(OMDataset):
     :meth:`collect` method accepts explicit per-side file paths rather than a
     single shared directory.
 
-    .. code-block:: python
-
-        task    = FLORAOpenEAOMDataset()
-        dataset = task.collect(
-            source_kg_path="data/D_W_15K_V1/rel_triples_1",
-            target_kg_path="data/D_W_15K_V1/rel_triples_2",
-            source_kg_attribute_path="data/D_W_15K_V1/attr_triples_1",
-            target_kg_attribute_path="data/D_W_15K_V1/attr_triples_2",
-            reference_matching_path="data/D_W_15K_V1/ent_links",
-        )
-        # dataset["source"][0]["graph"]  -> FLORA Graph for KG1
-        # dataset["target"][0]["graph"]  -> FLORA Graph for KG2
-        # dataset["reference"]           -> list of {"source", "target", "relation"} dicts
+    >>> from ontoaligner.ontology.kg import FLORAOpenEAOMDataset
+    >>> task    = FLORAOpenEAOMDataset()
+    >>> dataset = task.collect(
+    >>>     source_kg_path="data/D_W_15K_V1/rel_triples_1",
+    >>>     target_kg_path="data/D_W_15K_V1/rel_triples_2",
+    >>>     source_kg_attribute_path="data/D_W_15K_V1/attr_triples_1",
+    >>>     target_kg_attribute_path="data/D_W_15K_V1/attr_triples_2",
+    >>>     reference_matching_path="data/D_W_15K_V1/ent_links",
+    >>> )
+    >>> # dataset["source"][0]["graph"]  -> FLORA Graph for KG1
+    >>> # dataset["target"][0]["graph"]  -> FLORA Graph for KG2
+    >>> # dataset["reference"]           -> list of {"source", "target", "relation"} dicts
 
     Attributes:
         track (str): ``"KG Alignment - FLORA"``
@@ -1655,23 +1656,22 @@ class FLORADBpediaOMDataset(OMDataset):
     custom :meth:`collect` method accepts explicit per-side file paths for all
     DBP15K input files.
 
-    .. code-block:: python
-
-        task    = FLORADBpediaOMDataset()
-        dataset = task.collect(
-            source_kg_rel_ids_path="data/dbp_zh_en_15k_v1/rel_ids_1",
-            target_kg_rel_ids_path="data/dbp_zh_en_15k_v1/rel_ids_2",
-            source_kg_ent_ids_path="data/dbp_zh_en_15k_v1/ent_ids_1",
-            target_kg_ent_ids_path="data/dbp_zh_en_15k_v1/ent_ids_2",
-            source_kg_triples_path="data/dbp_zh_en_15k_v1/triples_1",
-            target_kg_triples_path="data/dbp_zh_en_15k_v1/triples_2",
-            source_kg_att_triples_path="data/dbp_zh_en_15k_v1/att_triples_1",
-            target_kg_att_triples_path="data/dbp_zh_en_15k_v1/att_triples_2",
-            reference_matching_path="data/dbp_zh_en_15k_v1/ref_ent_ids",
-        )
-        # dataset["source"][0]["graph"]  -> FLORA Graph for KG1
-        # dataset["target"][0]["graph"]  -> FLORA Graph for KG2
-        # dataset["reference"]           -> list of {"source", "target", "relation"} dicts
+    >>> from ontoaligner.ontology.kg import FLORAOpenEAKnowledgeBase
+    >>> task    = FLORADBpediaOMDataset()
+    >>> dataset = task.collect(
+    >>>     source_kg_rel_ids_path="data/dbp_zh_en_15k_v1/rel_ids_1",
+    >>>     target_kg_rel_ids_path="data/dbp_zh_en_15k_v1/rel_ids_2",
+    >>>     source_kg_ent_ids_path="data/dbp_zh_en_15k_v1/ent_ids_1",
+    >>>     target_kg_ent_ids_path="data/dbp_zh_en_15k_v1/ent_ids_2",
+    >>>     source_kg_triples_path="data/dbp_zh_en_15k_v1/triples_1",
+    >>>     target_kg_triples_path="data/dbp_zh_en_15k_v1/triples_2",
+    >>>     source_kg_att_triples_path="data/dbp_zh_en_15k_v1/att_triples_1",
+    >>>     target_kg_att_triples_path="data/dbp_zh_en_15k_v1/att_triples_2",
+    >>>     reference_matching_path="data/dbp_zh_en_15k_v1/ref_ent_ids",
+    >>> )
+    >>> # dataset["source"][0]["graph"]  -> FLORA Graph for KG1
+    >>> # dataset["target"][0]["graph"]  -> FLORA Graph for KG2
+    >>> # dataset["reference"]           -> list of {"source", "target", "relation"} dicts
 
     Attributes:
         track (str): ``"KG Alignment - FLORA"``
