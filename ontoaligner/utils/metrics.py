@@ -1,4 +1,4 @@
-# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group. 
+# Copyright 2025 Scientific Knowledge Organization (SciKnowOrg) Research Group.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,44 +26,45 @@ from typing import Dict, List
 
 def calculate_intersection(predicts: List, references: List) -> int:
     """
-        Calculate Matching Items Between Predicted and Reference Data:
+    Calculate Matching Items Between Predicted and Reference Data:
 
-        This function compares the predicted data with the reference data and determines the number of matching items.
-        A match is identified when both the `source` and `target` fields are identical in a predicted-reference pair.
+    This function compares the predicted data with the reference data and determines
+    the number of matching items. A match is identified when both the `source` and
+    `target` fields are identical in a predicted-reference pair.
 
-        Parameters:
-        ------------
+    The function now handles duplicate predictions by counting only unique matches.
 
-        - **`predicts`** (*list of dict*):
-          A list of predicted entries, where each entry is a dictionary containing:
-          - `source` (*any*): The source element of the prediction.
-          - `target` (*any*): The target element of the prediction.
-          - `score` (*float*): An optional confidence or relevance score for the prediction.
+    Parameters:
+    ------------
+    - **`predicts`** (*list of dict*):
+        A list of predicted entries, where each entry is a dictionary containing:
+        - `source` (*any*): The source element of the prediction.
+        - `target` (*any*): The target element of the prediction.
+        - `score` (*float*): An optional confidence or relevance score for the prediction.
 
-        - **`references`** (*list of dict*):
-          A list of reference entries, where each entry is a dictionary containing:
-          - `source` (*any*): The source element of the reference.
-          - `target` (*any*): The target element of the reference.
-          - `relation` (*any*): The relationship between the source and target in the reference.
+    - **`references`** (*list of dict*):
+        A list of reference entries, where each entry is a dictionary containing:
+        - `source` (*any*): The source element of the reference.
+        - `target` (*any*): The target element of the reference.
+        - `relation` (*any*): The relationship between the source and target in the reference.
 
-        Returns:
-        ---------
-
-        - **`intersection`** (*list of dict*):
-          A list of matching items, where each matching item is a dictionary containing the `source` and `target` fields
-          found in both `predicts` and `references`.
+    Returns:
+    ---------
+    - **`intersection`** (*int*):
+        The count of unique (source, target) pairs that appear in both predictions
+        and references.
     """
-    intersection = 0
-    for predict in predicts:
-        for reference in references:
-            if predict["source"] == reference["source"] and predict["target"] == reference["target"]:
-                intersection += 1
-                break
+    # Convert predictions to a set of unique (source, target) tuples
+    predict_set = {(pred["source"], pred["target"]) for pred in predicts}
+    # Convert references to a set of unique (source, target) tuples
+    reference_set = {(ref["source"], ref["target"]) for ref in references}
+    # Calculate intersection
+    intersection = len(predict_set & reference_set)
     return intersection
 
 
 def evaluation_report(predicts: List, references: List, beta: int = 1) -> Dict:
-    """
+    r"""
         Calculate Evaluation Metrics:
 
         - **Precision (P)**:
