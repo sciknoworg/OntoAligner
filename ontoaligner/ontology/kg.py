@@ -69,6 +69,7 @@ from collections import defaultdict
 from functools import reduce
 from rdflib import Graph as RDFGraph
 from abc import ABC
+import xml.etree.ElementTree as ET
 
 track = "KG Alignment - FLORA"
 _BLACK_NODE_COUNTER=0
@@ -917,8 +918,6 @@ class FLORAOntology(BaseOntologyParser):
         Raises:
             ValueError: If the file extension is neither ``.ttl`` nor ``.xml``.
         """
-        global _BLACK_NODE_COUNTER
-        _BLACK_NODE_COUNTER = 0
         # If already TTL → parse directly
         if input_file_path.endswith(".ttl"):
             return parse_turtle_graph(input_file_path)
@@ -1451,6 +1450,35 @@ class DBpediaAlignmentsParser(BaseAlignmentsParser):
             return []
 
 
+class FLORAAlignmentsParser(BaseAlignmentsParser):
+
+    def load_ontology(self, input_file_path: str) -> Any:
+        tree = ET.parse(input_file_path)
+        root = tree.getroot()
+        ns = {
+            'ns': 'http://knowledgeweb.semanticweb.org/heterogeneity/alignment',
+            'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+        }
+        cells = root.findall('.//ns:map/ns:Cell', ns)
+        pairs = []
+        for cell in cells:
+            e1 = cell.find('ns:entity1', ns).attrib['{http://www.w3.org/1999/02/22-rdf-syntax-ns#}resource']
+            e2 = cell.find('ns:entity2', ns).attrib['{http://www.w3.org/1999/02/22-rdf-syntax-ns#}resource']
+
+            if '/class/' in e1:
+                pairs.append((e1, e2, 'class'))
+            elif '/property/' in e1:
+                pairs.append((e1, e2, 'property'))
+            elif '/resource/' in e1:
+                pairs.append((e1, e2, 'instance'))
+            else:
+                raise ValueError('Unknown type of entity: {}'.format(e1))
+        return pairs
+
+    def extract_data(self, reference: Any) -> List[Dict]:
+        return [{"source": e1, "target": e2, "type": type} for e1, e2, type in reference]
+
+
 class FLORAOMDataset(OMDataset):
     """
     Dataset class for FLORA-based OAEI / Turtle-file alignment tasks.
@@ -1481,6 +1509,7 @@ class FLORAOMDataset(OMDataset):
     ontology_name: str = "Source-Target"
     source_ontology: FLORAOntology = FLORAOntology()
     target_ontology: FLORAOntology = FLORAOntology()
+    alignments: FLORAAlignmentsParser = FLORAAlignmentsParser()
 
 
 class FLORAOpenEAOMDataset(OMDataset):

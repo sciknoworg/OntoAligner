@@ -11,38 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""
-Encoder for the FLORA (Fuzzy Logic KG Alignment) aligner.
-
-:class:`FLORAEncoder` sits between the parser and the aligner in the standard
-OntoAligner pipeline.  It receives the structured KG data produced by
-:class:`~ontoaligner.ontology.flora.FLORAOntology` (which has already loaded the
-Turtle files and extracted entities, predicates, triples, and the native
-:class:`~ontoaligner.aligner.flora.utils.Graph` object) and packages the two
-``Graph`` objects into the ``[kg1_graph, kg2_graph]`` list expected by
-:meth:`~ontoaligner.aligner.flora.flora.FLORAAligner.generate`.
-
-Typical usage::
-
-    from ontoaligner.ontology import FLORAOMDataset
-    from ontoaligner.encoder import FLORAEncoder
-    from ontoaligner.aligner.flora import FLORAAligner
-
-    task    = FLORAOMDataset()
-    dataset = task.collect("kg1.ttl", "kg2.ttl")
-    # dataset["source"][0]["graph"] is the loaded FLORA Graph for KG1
-    # dataset["source"][0]["entities"] is the entity list for KG1
-
-    encoder_output = FLORAEncoder()(source=dataset["source"],
-                                    target=dataset["target"])
-    # encoder_output == [kg1_graph, kg2_graph]
-
-    matchings = FLORAAligner().generate(input_data=encoder_output)
-
-Classes:
-    - FLORAEncoder: Extracts pre-loaded Graph objects from parsed KG data for FLORA.
-"""
-
 from typing import Any, List
 
 from ..base import BaseEncoder
@@ -84,10 +52,8 @@ class FLORAEncoder(BaseEncoder):
             Graph objects, ready to be passed as ``input_data`` to
             :meth:`~ontoaligner.aligner.flora.flora.FLORAAligner.generate`.
         """
-        source_onto = kwargs["source"]
-        target_onto = kwargs["target"]
-        kg1_graph = source_onto[0]["graph"]
-        kg2_graph = target_onto[0]["graph"]
+        kg1_graph = kwargs["source"][0]['graph']
+        kg2_graph = kwargs["target"][0]['graph']
         return [kg1_graph, kg2_graph]
 
     def __str__(self) -> str:

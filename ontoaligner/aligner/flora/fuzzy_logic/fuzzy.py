@@ -20,22 +20,7 @@ that form the heart of the FLORA algorithm as described in:
     Peng, Yiwen, Bonald, Thomas, and Suchanek, Fabian.
     "FLORA: Unsupervised Knowledge Graph Alignment by Fuzzy Logic."
     ISWC 2025. https://suchanek.name/work/publications/iswc-2025.pdf
-
-Key components:
-
-- **Predicate subsumption** – :func:`initialize_predicate_subsumption`,
-  :func:`update_predicate_subsumption`, :func:`compute_quasi_eqrel`.
-- **Functionality computation** – :func:`compute_functionalities`,
-  :func:`compute_functionalities_for_predicates`.
-- **Implication functions** – :func:`update_score_min` (Gödel min-norm, Eq. 1),
-  :func:`update_score_additive_min` (additive normalised, Eq. 2).
-- **Bootstrapping** – :func:`bootstrap_algo`, :func:`first_iteration`.
-- **Relation mapping** – :func:`map_subrelations`.
-- **Bilateral max assignment** – :func:`bilateral_max_assign` (Eq. 3).
-- **Parallel entity matching** – :func:`_match_entities_by_rules` (Eq. 2,
-  multi-process worker).
 """
-
 from itertools import combinations
 import multiprocessing as mp
 from typing import Any, Dict, List, Optional, Set, Tuple
@@ -167,7 +152,7 @@ def compute_functionalities(kb: Any, gram: Optional[List[int]] = None) -> Dict[A
     predicate2subjects = {}
 
     for subject in kb.subjects():
-        facts = list(kb.triplesWithSubject(subject))
+        facts = list(kb.triples_with_subject(subject))
         for n in gram:
             if n == 1:
                 for fact in facts:
@@ -339,7 +324,7 @@ def first_iteration(
         except Exception:
             break
 
-        for fact1 in kb_src.triplesWithSubject(subj_kb1):
+        for fact1 in kb_src.triples_with_subject(subj_kb1):
             # We don't match literals
             if literals.is_literal(fact1[OBJ]):
                 continue
@@ -349,7 +334,7 @@ def first_iteration(
             for subj_kb2 in ent_max_assign[fact1[SUBJ]]:
                 if subj_kb2 not in kb_dst.index:
                     continue
-                for fact2 in kb_dst.triplesWithSubject(subj_kb2, pred2super_pred[fact1[PRED]]):
+                for fact2 in kb_dst.triples_with_subject(subj_kb2, pred2super_pred[fact1[PRED]]):
                     # We don't match literals
                     if literals.is_literal(fact2[OBJ]):
                         continue
@@ -360,8 +345,8 @@ def first_iteration(
                         # ... if the subjects are the same, ...
                         ent_max_assign[fact1[SUBJ]][fact2[SUBJ]],
                         # ... and the predicate is locally functional, ...
-                        kb_src.localFunctionality(fact1[SUBJ], fact1[PRED]),
-                        kb_dst.localFunctionality(fact2[SUBJ], fact2[PRED]),
+                        kb_src.local_functionality(fact1[SUBJ], fact1[PRED]),
+                        kb_dst.local_functionality(fact2[SUBJ], fact2[PRED]),
                         # ... and the predicate is globally functional,
                         functionalities[fact1[PRED]], functionalities[fact2[PRED]],
                         # ... and the target predicate is subsumed.
@@ -370,7 +355,6 @@ def first_iteration(
                     )
     # Update the queue
     ent_match_tuple_queue.put(ent_match_scores)
-    exit(1)
 
 
 def bootstrap_algo(
@@ -466,7 +450,7 @@ def map_subrelations(
         for subject2 in ent_max_assign[fact1[SUBJ]]:
             if subject2 not in kb_dst.index:
                 continue
-            for fact2 in kb_dst.triplesWithSubject(subject2):
+            for fact2 in kb_dst.triples_with_subject(subject2):
                 # Skip if objects are not aligned
                 if fact1[OBJ] not in ent_max_assign:
                     continue
@@ -481,7 +465,7 @@ def map_subrelations(
         for pred2, (fact2, score) in rel2max_fact.items():
             pred2super_pred1 = update_score_additive_min(
                 pred2super_pred1, fact1[PRED], fact2[PRED],
-                alpha / kb_src.numFactsWithPredicate(fact1[PRED]), score
+                alpha / kb_src.num_facts_with_predicate(fact1[PRED]), score
             )
 
     # Direction: kb2 -> kb1
@@ -493,7 +477,7 @@ def map_subrelations(
         for subject1 in ent_max_assign[fact2[SUBJ]]:
             if subject1 not in kb_src.index:
                 continue
-            for fact1 in kb_src.triplesWithSubject(subject1):
+            for fact1 in kb_src.triples_with_subject(subject1):
                 # Skip if objects are not aligned
                 if fact2[OBJ] not in ent_max_assign:
                     continue
@@ -508,7 +492,7 @@ def map_subrelations(
         for pred1, (fact1, score) in rel1max_fact.items():
             pred2super_pred2 = update_score_additive_min(
                 pred2super_pred2, fact2[PRED], fact1[PRED],
-                alpha / kb_dst.numFactsWithPredicate(fact2[PRED]), score
+                alpha / kb_dst.num_facts_with_predicate(fact2[PRED]), score
             )
     # Complete the subrelation mapping
     previous_predicate2super_predicate = update_predicate_subsumption(pred2super_pred1, pred2super_pred2, previous_predicate2super_predicate)
@@ -641,173 +625,182 @@ def _match_entities_by_rules(
         functionalities: Dictionary mapping predicates to their functionalities.
         params: Dictionary of parameters, including 'gramN' (the maximum n-gram size to consider).
     """
+    import logging
     ent_match_scores = dict()
     ent_max_assign = bilateral_max_assign(same_as_score)
-    while not queue.empty():
+    while True:
         try:
-            subj_kb1 = queue.get_nowait()
+            subj_kb1 = queue.get(timeout=2)  # Use timeout instead of get_nowait()
         except Exception:
             break
 
-        # We don't need to match literals
-        if literals.is_literal(subj_kb1):
-            continue
-
-        # Skip if the entity is already matched
-        if subj_kb1 in ent_max_assign and \
-            round(max(ent_max_assign.get(subj_kb1, {None: 0}).values()), 1) >= 1.0:
-            continue
-
-        # Search Algorithm
-        kb1_facts_ordered = []
-        for fact1 in kb_src.triplesWithSubject(subj_kb1):
-            if max(ent_max_assign.get(fact1[OBJ], {None: 0}).values()) <= 0:
+        try:
+            # We don't need to match literals
+            if literals.is_literal(subj_kb1):
                 continue
-            if max(quasi_eqvrel.get(fact1[PRED], {None: 0}).values()) <= 0:
+
+            # Skip if the entity is already matched
+            if subj_kb1 in ent_max_assign and \
+                round(max(ent_max_assign.get(subj_kb1, {None: 0}).values()), 1) >= 1.0:
                 continue
-            kb1_facts_ordered.append((fact1[OBJ], literals.invert(fact1[PRED]), subj_kb1))
-        # search order: the most informative facts first
-        kb1_facts_ordered.sort(
-            reverse=True,
-            key=lambda x: min(
-                max(ent_max_assign[x[0]].values()),
-                max(quasi_eqvrel[x[1]].values())
-            )
-        )
-        subj2evi1 = dict()  # a dict of list of ordered evidences
-        subj2evi2 = dict()  # {subj2: [ev2, ...]}
-        for fact_kb1 in kb1_facts_ordered[:params['gramN']]:
-            pred_kb1, obj_kb1 = fact_kb1[PRED], fact_kb1[0]
-            # find the corresponding facts in kb2
-            tmp_subj2_evi2 = dict()
-            subj2_max_subrel_score = dict()
-            for obj_kb2 in ent_max_assign[obj_kb1]:
-                if obj_kb2 not in kb_dst.index:
-                    continue
-                aligned_evi2 = []
-                max_subrel_score = 0
-                for evi2_ in kb_dst.triplesWithSubject(obj_kb2):
-                    if literals.is_literal(evi2_[OBJ]):
-                        continue
-                    subrel_score = quasi_eqvrel[pred_kb1].get(evi2_[PRED], 0)
-                    if subrel_score <= 0:
-                        continue
-                    if subrel_score > max_subrel_score:
-                        max_subrel_score = subrel_score
-                        aligned_evi2 = [evi2_]
-                    if subrel_score == max_subrel_score:
-                        aligned_evi2.append(evi2_)
-                if len(aligned_evi2) == 0:
-                    continue
-                for evi2 in aligned_evi2:
-                    subj2_ = evi2[OBJ]
-                    if subj2_ not in subj2_max_subrel_score:
-                        subj2_max_subrel_score[subj2_] = 0
-                    # certain evi1 (subj1, obj1, pred1),
-                    # one subj2 has just one corresponding evidence2 at most
-                    if quasi_eqvrel[pred_kb1][evi2[PRED]] > subj2_max_subrel_score[subj2_]:
-                        subj2_max_subrel_score[subj2_] = quasi_eqvrel[pred_kb1][evi2[PRED]]
-                        tmp_subj2_evi2[subj2_] = evi2
-            # update subj2evi1 for exact evidence1 == fact_kb1
-            for subj2, single_evi2 in tmp_subj2_evi2.items():
-                if subj2 not in subj2evi1:
-                    subj2evi1[subj2] = [fact_kb1]
-                    subj2evi2[subj2] = [single_evi2]
-                    continue
-                # Reduce duplicates
-                if single_evi2 in subj2evi2[subj2]:
-                    index_evi2 = subj2evi2[subj2].index(single_evi2)
-                    # compare scores
-                    score1 = min(
-                        ent_max_assign[subj2evi1[subj2][index_evi2][0]][single_evi2[SUBJ]],
-                        quasi_eqvrel[subj2evi1[subj2][index_evi2][PRED]][single_evi2[PRED]]
-                    )
-                    score2 = min(
-                        ent_max_assign[fact_kb1[0]][single_evi2[SUBJ]],
-                        quasi_eqvrel[fact_kb1[PRED]][single_evi2[PRED]]
-                    )
-                    if score2 > score1:
-                        subj2evi1[subj2][index_evi2] = fact_kb1
-                        subj2evi2[subj2][index_evi2] = single_evi2
-                    continue
-                subj2evi1[subj2].append(fact_kb1)
-                subj2evi2[subj2].append(single_evi2)
 
-        # Selection Algorithm
-        # select the entities with the most evidences
-        subj2_count = dict()
-        max_count = 0
-        for subj2 in subj2evi2:
-            if subj2 in ent_max_assign and \
-                round(max(ent_max_assign.get(subj2, {None: 0}).values()), 1) >= 1.0:
-                continue
-            cur_count = len(set(subj2evi2[subj2]))
-            if cur_count > max_count:
-                subj2_count = dict()
-                max_count = cur_count
-                subj2_count[subj2] = len(set(subj2evi2[subj2]))
-            elif cur_count == max_count:
-                subj2_count[subj2] = len(set(subj2evi2[subj2]))
-        if len(subj2_count) == 0:
-            continue
-
-        # Alignment Algorithm
-        # Apply rules in order to update the scores
-        gram_n = min(20, max_count)
-        for subj_kb2 in subj2_count:
-            assert len(subj2evi1[subj_kb2]) == len(subj2evi2[subj_kb2])
-
-            # Re-order the list
-            index_sorted = sorted(
-                range(len(subj2evi1[subj_kb2])),
+            # Search Algorithm
+            kb1_facts_ordered = []
+            for fact1 in kb_src.triples_with_subject(subj_kb1):
+                if max(ent_max_assign.get(fact1[OBJ], {None: 0}).values()) <= 0:
+                    continue
+                if max(quasi_eqvrel.get(fact1[PRED], {None: 0}).values()) <= 0:
+                    continue
+                kb1_facts_ordered.append((fact1[OBJ], literals.invert(fact1[PRED]), subj_kb1))
+            # search order: the most informative facts first
+            kb1_facts_ordered.sort(
                 reverse=True,
-                key=lambda i: min(
-                    ent_max_assign[subj2evi1[subj_kb2][i][0]][subj2evi2[subj_kb2][i][SUBJ]],
-                    quasi_eqvrel[subj2evi1[subj_kb2][i][PRED]][subj2evi2[subj_kb2][i][PRED]]
+                key=lambda x: min(
+                    max(ent_max_assign[x[0]].values()),
+                    max(quasi_eqvrel[x[1]].values())
                 )
             )
-            subj2evi1[subj_kb2] = [subj2evi1[subj_kb2][i] for i in index_sorted]
-            subj2evi2[subj_kb2] = [subj2evi2[subj_kb2][i] for i in index_sorted]
+            subj2evi1 = dict()  # a dict of list of ordered evidences
+            subj2evi2 = dict()  # {subj2: [ev2, ...]}
+            for fact_kb1 in kb1_facts_ordered[:params['gramN']]:
+                pred_kb1, obj_kb1 = fact_kb1[PRED], fact_kb1[0]
+                # find the corresponding facts in kb2
+                tmp_subj2_evi2 = dict()
+                subj2_max_subrel_score = dict()
+                for obj_kb2 in ent_max_assign[obj_kb1]:
+                    if obj_kb2 not in kb_dst.index:
+                        continue
+                    aligned_evi2 = []
+                    max_subrel_score = 0
+                    for evi2_ in kb_dst.triples_with_subject(obj_kb2):
+                        if literals.is_literal(evi2_[OBJ]):
+                            continue
+                        subrel_score = quasi_eqvrel[pred_kb1].get(evi2_[PRED], 0)
+                        if subrel_score <= 0:
+                            continue
+                        if subrel_score > max_subrel_score:
+                            max_subrel_score = subrel_score
+                            aligned_evi2 = [evi2_]
+                        if subrel_score == max_subrel_score:
+                            aligned_evi2.append(evi2_)
+                    if len(aligned_evi2) == 0:
+                        continue
+                    for evi2 in aligned_evi2:
+                        subj2_ = evi2[OBJ]
+                        if subj2_ not in subj2_max_subrel_score:
+                            subj2_max_subrel_score[subj2_] = 0
+                        # certain evi1 (subj1, obj1, pred1),
+                        # one subj2 has just one corresponding evidence2 at most
+                        if quasi_eqvrel[pred_kb1][evi2[PRED]] > subj2_max_subrel_score[subj2_]:
+                            subj2_max_subrel_score[subj2_] = quasi_eqvrel[pred_kb1][evi2[PRED]]
+                            tmp_subj2_evi2[subj2_] = evi2
+                # update subj2evi1 for exact evidence1 == fact_kb1
+                for subj2, single_evi2 in tmp_subj2_evi2.items():
+                    if subj2 not in subj2evi1:
+                        subj2evi1[subj2] = [fact_kb1]
+                        subj2evi2[subj2] = [single_evi2]
+                        continue
+                    # Reduce duplicates
+                    if single_evi2 in subj2evi2[subj2]:
+                        index_evi2 = subj2evi2[subj2].index(single_evi2)
+                        # compare scores
+                        score1 = min(
+                            ent_max_assign[subj2evi1[subj2][index_evi2][0]][single_evi2[SUBJ]],
+                            quasi_eqvrel[subj2evi1[subj2][index_evi2][PRED]][single_evi2[PRED]]
+                        )
+                        score2 = min(
+                            ent_max_assign[fact_kb1[0]][single_evi2[SUBJ]],
+                            quasi_eqvrel[fact_kb1[PRED]][single_evi2[PRED]]
+                        )
+                        if score2 > score1:
+                            subj2evi1[subj2][index_evi2] = fact_kb1
+                            subj2evi2[subj2][index_evi2] = single_evi2
+                        continue
+                    subj2evi1[subj2].append(fact_kb1)
+                    subj2evi2[subj2].append(single_evi2)
 
-            # find the common patterns
-            visited_facts = set()
-            ev1s, ev2s = subj2evi1[subj_kb2], subj2evi2[subj_kb2]
-            # Try all possible sets
-            for n in range(1, gram_n + 1):
-                ev1, ev2 = ev1s[:n], ev2s[:n]
-                if (tuple(ev1), tuple(ev2)) in visited_facts:
+            # Selection Algorithm
+            # select the entities with the most evidences
+            subj2_count = dict()
+            max_count = 0
+            for subj2 in subj2evi2:
+                if subj2 in ent_max_assign and \
+                    round(max(ent_max_assign.get(subj2, {None: 0}).values()), 1) >= 1.0:
                     continue
-                visited_facts.add((tuple(ev1), tuple(ev2)))
-                obj1_combo, pred1_combo, subj1_combo = zip(*ev1)
-                obj2_combo, pred2_combo, subj2_combo = zip(*ev2)
-                # check if subjects itself are the same
-                assert len(set(subj1_combo)) == 1
-                assert len(set(subj2_combo)) == 1
-                # check same pattern
-                if not (pd.factorize(np.array(obj1_combo))[0]
-                        == pd.factorize(np.array(obj2_combo))[0]).all():
-                    continue
-                localfunc1 = kb_src.localFunctionality(obj1_combo, pred1_combo)
-                localfunc2 = kb_dst.localFunctionality(obj2_combo, pred2_combo)
-                pred1_sort = tuple(sorted(list(pred1_combo)))
-                pred2_sort = tuple(sorted(list(pred2_combo)))
-                globalfunc1 = functionalities.get(pred1_sort, 1.0)
-                globalfunc2 = functionalities.get(pred2_sort, 1.0)
+                cur_count = len(set(subj2evi2[subj2]))
+                if cur_count > max_count:
+                    subj2_count = dict()
+                    max_count = cur_count
+                    subj2_count[subj2] = len(set(subj2evi2[subj2]))
+                elif cur_count == max_count:
+                    subj2_count[subj2] = len(set(subj2evi2[subj2]))
+            if len(subj2_count) == 0:
+                continue
 
-                obj_eq = float(stats.hmean([ent_max_assign[obj1_combo[i]][obj2_combo[i]] for i in range(len(obj1_combo))]))
-                pred_eq = float(stats.hmean([quasi_eqvrel[pred1_combo[i]][pred2_combo[i]] for i in range(len(pred1_combo))]))
-                # update
-                if n == 1:
-                    ent_match_scores = update_score_min(
-                        ent_match_scores, subj1_combo[0], subj2_combo[0],
-                        obj_eq, pred_eq, localfunc1, localfunc2,
-                        functionalities[pred1_combo[0]], functionalities[pred2_combo[0]]
+            # Alignment Algorithm
+            # Apply rules in order to update the scores
+            gram_n = min(20, max_count)
+            for subj_kb2 in subj2_count:
+                assert len(subj2evi1[subj_kb2]) == len(subj2evi2[subj_kb2])
+
+                # Re-order the list
+                index_sorted = sorted(
+                    range(len(subj2evi1[subj_kb2])),
+                    reverse=True,
+                    key=lambda i: min(
+                        ent_max_assign[subj2evi1[subj_kb2][i][0]][subj2evi2[subj_kb2][i][SUBJ]],
+                        quasi_eqvrel[subj2evi1[subj_kb2][i][PRED]][subj2evi2[subj_kb2][i][PRED]]
                     )
-                else:
-                    ent_match_scores = update_score_min(
-                        ent_match_scores, subj1_combo[0], subj2_combo[0],
-                        obj_eq, pred_eq, localfunc1, localfunc2,
-                        globalfunc1, globalfunc2,
-                    )
-    # Update the queue
-    ent_match_tuple_queue.put(ent_match_scores)
+                )
+                subj2evi1[subj_kb2] = [subj2evi1[subj_kb2][i] for i in index_sorted]
+                subj2evi2[subj_kb2] = [subj2evi2[subj_kb2][i] for i in index_sorted]
+
+                # find the common patterns
+                visited_facts = set()
+                ev1s, ev2s = subj2evi1[subj_kb2], subj2evi2[subj_kb2]
+                # Try all possible sets
+                for n in range(1, gram_n + 1):
+                    ev1, ev2 = ev1s[:n], ev2s[:n]
+                    if (tuple(ev1), tuple(ev2)) in visited_facts:
+                        continue
+                    visited_facts.add((tuple(ev1), tuple(ev2)))
+                    obj1_combo, pred1_combo, subj1_combo = zip(*ev1)
+                    obj2_combo, pred2_combo, subj2_combo = zip(*ev2)
+                    # check if subjects itself are the same
+                    assert len(set(subj1_combo)) == 1
+                    assert len(set(subj2_combo)) == 1
+                    # check same pattern
+                    if not (pd.factorize(np.array(obj1_combo))[0]
+                            == pd.factorize(np.array(obj2_combo))[0]).all():
+                        continue
+                    localfunc1 = kb_src.local_functionality(obj1_combo, pred1_combo)
+                    localfunc2 = kb_dst.local_functionality(obj2_combo, pred2_combo)
+                    pred1_sort = tuple(sorted(list(pred1_combo)))
+                    pred2_sort = tuple(sorted(list(pred2_combo)))
+                    globalfunc1 = functionalities.get(pred1_sort, 1.0)
+                    globalfunc2 = functionalities.get(pred2_sort, 1.0)
+
+                    obj_eq = float(stats.hmean([ent_max_assign[obj1_combo[i]][obj2_combo[i]] for i in range(len(obj1_combo))]))
+                    pred_eq = float(stats.hmean([quasi_eqvrel[pred1_combo[i]][pred2_combo[i]] for i in range(len(pred1_combo))]))
+                    # update
+                    if n == 1:
+                        ent_match_scores = update_score_min(
+                            ent_match_scores, subj1_combo[0], subj2_combo[0],
+                            obj_eq, pred_eq, localfunc1, localfunc2,
+                            functionalities[pred1_combo[0]], functionalities[pred2_combo[0]]
+                        )
+                    else:
+                        ent_match_scores = update_score_min(
+                            ent_match_scores, subj1_combo[0], subj2_combo[0],
+                            obj_eq, pred_eq, localfunc1, localfunc2,
+                            globalfunc1, globalfunc2,
+                        )
+        except Exception as e:
+            logging.error(f"Error matching entity {subj_kb1}: {e}", exc_info=True)
+            continue
+
+    # Update the queue with timeout
+    try:
+        ent_match_tuple_queue.put(ent_match_scores, timeout=5)
+    except Exception as e:
+        logging.error(f"Error writing results to output queue: {e}")

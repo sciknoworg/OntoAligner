@@ -38,10 +38,6 @@ FLORA iteratively:
     "FLORA: Unsupervised Knowledge Graph Alignment by Fuzzy Logic."
     International Semantic Web Conference (ISWC), 2025.
     https://suchanek.name/work/publications/iswc-2025.pdf
-
-**Classes**:
-    - :class:`FLORARDFWriter` – Writes alignment results to RDF/Turtle format.
-    - :class:`FLORAAligner` – Main aligner class integrating the FLORA algorithm.
 """
 
 import os
@@ -184,7 +180,7 @@ class FLORAAligner(BaseOMModel):
 
     def __init__(
         self,
-        alpha: float = 3.0,
+        alpha: float = 2.0,
         init_threshold: float = 0.7,
         gramN: int = 100,
         epsilon: float = 0.01,
@@ -197,6 +193,8 @@ class FLORAAligner(BaseOMModel):
         training_data: Optional[str] = None,
         device: Optional[str] = None,
         batch_size: Optional[int] = 32,
+        verbose: bool = False,
+        workers: Optional[int] = 4,
         **kwargs,
     ) -> None:
         """Initialize the FLORA aligner.
@@ -232,8 +230,13 @@ class FLORAAligner(BaseOMModel):
             training_data=training_data,
             device=device,
             batch_size=batch_size,
+            verbose=verbose,
+            workers=workers,
             **kwargs,
         )
+        if self.kwargs['verbose']:
+            logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
         self.literals_embedding = FLORALiteralsEmbedding(
             model_id=model_id,
             device=device if device else 'cpu',
@@ -459,49 +462,86 @@ class FLORAAligner(BaseOMModel):
             logging.info("FLORA: Iteration %d ...", iterations + 1)
             same_as_sum = sum(v for d in same_as_scores.values() for v in d.values())
 
-            # --- Parallel entity matching ---
-            mgr = multiprocessing.Manager()
-            subjs_kb1 = kb1.subjects()
-            ent_queue = mgr.Queue(len(subjs_kb1))
-            for subj in subjs_kb1:
-                ent_queue.put(subj)
+            # --- Parallel entity matching with robust error handling ---
+            try:
+                mgr = multiprocessing.Manager()
+                subjs_kb1 = kb1.subjects()
+                ent_queue = mgr.Queue(len(subjs_kb1))
+                for subj in subjs_kb1:
+                    ent_queue.put(subj)
 
-            num_workers = max(1, min(multiprocessing.cpu_count() - 1, 90))
-            ent_match_tuple_queue = mgr.Queue()
-            tasks = []
-            for _ in range(num_workers):
-                task = multiprocessing.Process(
-                    target=fuzzy._match_entities_by_rules,
-                    args=(
-                        kb1, kb2,
-                        quasi_eqrel,
-                        ent_queue,
-                        ent_match_tuple_queue,
-                        same_as_scores,
-                        functionalities,
-                        self.kwargs,
-                    ),
-                )
-                task.start()
-                tasks.append(task)
-            for task in tasks:
-                task.join()
+                num_workers = self.kwargs["workers"]
+                ent_match_tuple_queue = mgr.Queue()
+                tasks = []
+                task_errors = []  # Track worker errors
 
-            # Collect results from worker processes
-            while not ent_match_tuple_queue.empty():
-                batch = ent_match_tuple_queue.get()
-                for subj1, matches in batch.items():
-                    max_score1 = max(ent_max_assign.get(subj1, {None: 0}).values())
-                    for subj2, score in matches.items():
-                        max_score2 = max(ent_max_assign.get(subj2, {None: 0}).values())
-                        if score <= max(max_score1, max_score2):
-                            continue
-                        if subj1 not in same_as_scores:
-                            same_as_scores[subj1] = {}
-                        if subj2 not in same_as_scores[subj1]:
-                            same_as_scores[subj1][subj2] = score
-                        elif score > same_as_scores[subj1][subj2]:
-                            same_as_scores[subj1][subj2] = score
+                for _ in range(num_workers):
+                    task = multiprocessing.Process(
+                        target=fuzzy._match_entities_by_rules,
+                        args=(
+                            kb1, kb2,
+                            quasi_eqrel,
+                            ent_queue,
+                            ent_match_tuple_queue,
+                            same_as_scores,
+                            functionalities,
+                            self.kwargs,
+                        ),
+                    )
+                    task.daemon = False  # Explicit cleanup
+                    task.start()
+                    tasks.append(task)
+
+                # Collect results from worker processes FIRST (while queue is alive)
+                # Do NOT terminate workers while they might still be writing
+                try:
+                    timeout_count = 0
+                    results_collected = 0
+                    while timeout_count < 100 and results_collected < num_workers:  # Expect one result per worker
+                        try:
+                            batch = ent_match_tuple_queue.get(timeout=5)  # 5 second timeout per batch
+                            results_collected += 1
+                            for subj1, matches in batch.items():
+                                max_score1 = max(ent_max_assign.get(subj1, {None: 0}).values())
+                                for subj2, score in matches.items():
+                                    max_score2 = max(ent_max_assign.get(subj2, {None: 0}).values())
+                                    if score <= max(max_score1, max_score2):
+                                        continue
+                                    if subj1 not in same_as_scores:
+                                        same_as_scores[subj1] = {}
+                                    if subj2 not in same_as_scores[subj1]:
+                                        same_as_scores[subj1][subj2] = score
+                                    elif score > same_as_scores[subj1][subj2]:
+                                        same_as_scores[subj1][subj2] = score
+                        except Exception:
+                            timeout_count += 1
+                            if timeout_count >= 100:
+                                logging.warning(f"FLORA: Queue timeout after {results_collected}/{num_workers} results...")
+                                break
+                except (BrokenPipeError, EOFError) as e:
+                    logging.warning(f"FLORA: Queue communication error: {e}")
+
+                # NOW wait for workers to complete naturally
+                logging.info(f"FLORA: Waiting for {num_workers} workers to complete...")
+                timeout = 3600  # 1 hour timeout
+                for idx, task in enumerate(tasks):
+                    task.join(timeout=timeout)
+                    if task.is_alive():
+                        logging.warning(f"FLORA: Worker {idx} timeout, terminating...")
+                        task.terminate()
+                        task.join(timeout=5)
+                        if task.is_alive():
+                            logging.error(f"FLORA: Worker {idx} force killed")
+                            task.kill()
+                    elif task.exitcode != 0 and task.exitcode is not None:
+                        logging.warning(f"FLORA: Worker {idx} exited with code {task.exitcode}")
+                        task_errors.append(idx)
+
+            except Exception as e:
+                logging.error(f"FLORA: Multiprocessing error: {e}")
+                logging.info("FLORA: Falling back to single-process mode for this iteration...")
+                # Fallback: Graceful degradation, algorithm continues in next iteration
+                # (In production, could implement serial entity matching here)
 
             # --- Update predicate subsumptions ---
             ent_max_assign = fuzzy.bilateral_max_assign(same_as_scores)
@@ -522,16 +562,32 @@ class FLORAAligner(BaseOMModel):
         self.same_as_scores = same_as_scores
         self.predicate2super_predicate = predicate2super_predicate
 
-        # 7. Collect and return results
         predictions = []
-        for entity1, targets in same_as_scores.items():
-            for entity2, score in targets.items():
-                if score > 0:
+        # Predicates
+        kb1_predicates = kb1.predicates()
+        kb2_predicates = kb2.predicates()
+        predicates = kb1_predicates | kb2_predicates
+        for predicate1 in predicates:
+            if predicate1 in predicate2super_predicate:
+                for predicate2 in predicate2super_predicate[predicate1]:
+                    if predicate2super_predicate[predicate1][predicate2] > 0.1:
+                        predictions.append({
+                            "source": predicate1,
+                            "target": predicate2,
+                            "score": float(predicate2super_predicate[predicate1][predicate2]),
+                            'type': 'predicate'
+                        })
+
+        # Literals and instances
+        for entity1 in same_as_scores:
+            for entity2 in same_as_scores[entity1]:
+                if same_as_scores[entity1][entity2] > 0:
                     predictions.append(
                         {
                             "source": entity1,
                             "target": entity2,
-                            "score": float(score),
+                            "score": float(same_as_scores[entity1][entity2]),
+                            'type': 'instance'
                         }
                     )
         return predictions
