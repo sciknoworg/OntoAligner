@@ -344,7 +344,7 @@ Customized-RAG Aligner
 
 .. sidebar:: Useful links:
 
-    * `OntoAlignerPipeline Experimentation <https://github.com/sciknoworg/OntoAligner/blob/main/examples/OntoAlignerPipeline-Exp.ipynb>`_
+    * `OntoAlignerPipeline Experimentation <https://github.com/sciknoworg/OntoAligner/blob/main/examples/pipeline.ipynb>`_
 
 You can use custom LLMs with RAG for alignment. Below, we define two classes, each combining a retrieval mechanism with a LLMs to implement RAG aligner functionality.
 
