@@ -16,12 +16,56 @@ import torch.nn as nn
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
-from py_stringmatching import SoftTfIdf, JaroWinkler
+from rapidfuzz.distance import JaroWinkler
 from sklearn.feature_extraction.text import TfidfVectorizer
 import nltk
 
 from ...base import BaseOMModel
 from .embedding import WordEmbedding
+
+
+class SoftTfIdf:
+    """
+    Soft TF-IDF similarity between two token lists.
+    Uses a token-level sim_func and only counts tokens above `threshold`.
+    """
+    def __init__(self, corpus: list[list[str]], sim_func, threshold: float = 0.8):
+        self.sim_func = sim_func
+        self.threshold = threshold
+        # build IDF over corpus
+        from math import log
+        N = len(corpus)
+        df: dict[str, int] = {}
+        for tokens in corpus:
+            for t in set(tokens):
+                df[t] = df.get(t, 0) + 1
+        self.idf = {t: log((N + 1) / (freq + 1)) + 1 for t, freq in df.items()}
+
+    def _tf_idf_vec(self, tokens: list[str]) -> dict[str, float]:
+        tf: dict[str, int] = {}
+        for t in tokens:
+            tf[t] = tf.get(t, 0) + 1
+        vec = {t: (count / len(tokens)) * self.idf.get(t, 1.0)
+               for t, count in tf.items()}
+        norm = sum(v ** 2 for v in vec.values()) ** 0.5
+        return {t: v / norm for t, v in vec.items()} if norm else vec
+
+    def get_raw_score(self, tokens_a: list[str], tokens_b: list[str]) -> float:
+        if not tokens_a or not tokens_b:
+            return 0.0
+        vec_a = self._tf_idf_vec(tokens_a)
+        vec_b = self._tf_idf_vec(tokens_b)
+        score = 0.0
+        for ta, wa in vec_a.items():
+            best = max(
+                (self.sim_func(ta, tb) for tb in vec_b),
+                default=0.0
+            )
+            if best >= self.threshold:
+                # weight by the best-matching token's weight in b
+                best_tb = max(vec_b, key=lambda tb: self.sim_func(ta, tb))
+                score += wa * vec_b[best_tb] * best
+        return score
 
 
 class PropMatchAligner(BaseOMModel):
@@ -97,7 +141,7 @@ class PropMatchAligner(BaseOMModel):
             sentences_list.append(prop['label'].lower().split())
 
         soft_metric = SoftTfIdf(sentences_list,
-                                sim_func=JaroWinkler().get_raw_score,
+                                sim_func= lambda a, b: JaroWinkler.similarity(a, b),
                                 threshold=0.8) ################ 0.8
 
         # Build general TF-IDF using full property text (label + domain + range)
