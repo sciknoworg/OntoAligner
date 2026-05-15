@@ -14,7 +14,29 @@
 from typing import List, Dict, Any, Tuple
 from .fuzzy import bilateral_max_assign
 
-def flora_bilateral_postprocess(same_as_scores, source_prefix) -> Dict[str, Dict[str, float]]:
+def __map_to_alignment_triples(filtered_items: Dict[str, Dict[str, float]]) -> List[Dict[str, str|float]]:
+    alignments = []
+    for source, target_values in filtered_items.items():
+        for target, score in target_values.items():
+            alignments.append({
+                "source": source.replace("<", "").replace(">", ""),
+                "target": target.replace("<", "").replace(">", ""),
+                "score": score,
+            })
+    return alignments
+
+def __map_to_alignment_triples_swapped(filtered_items: Dict[str, Dict[str, float]]) -> List[Dict[str, str | float]]:
+    alignments = []
+    for target, source_values in filtered_items.items():
+        for source, score in source_values.items():
+            alignments.append({
+                "source": source.replace("<", "").replace(">", ""),
+                "target": target.replace("<", "").replace(">", ""),
+                "score": score,
+            })
+    return alignments
+
+def flora_bilateral_postprocessor(same_as_scores, source_prefix) -> List[Dict[str, str|float]]:
     """
     Bilateral post-processing of KG alignments.
 
@@ -22,22 +44,20 @@ def flora_bilateral_postprocess(same_as_scores, source_prefix) -> Dict[str, Dict
       1) Build sameAsScores from flat predictions
       2) Run bilateral_max_assign(sameAsScores)
       3) Keep only top-1 match per source entity that starts with source_prefix
-
-    No GT is used here.
     """
     max_assign = bilateral_max_assign(same_as_scores)
     filtered: Dict[str, Dict[str, float]] = {}
     for e1, matches in max_assign.items():
-        if not e1.startswith(source_prefix):
+        if not e1.startswith('<'+source_prefix):
             continue
         # take highest-score match only
         for e2 in matches:
             filtered.setdefault(e1, {})[e2] = matches[e2]
             break
-    return filtered
+    return __map_to_alignment_triples(filtered)
 
 
-def flora_1to1_postprocessor(same_as_scores) -> List[Tuple[str, str, float]]:
+def flora_1to1_postprocessor(same_as_scores) -> List[Dict[str, str|float]]:
     """
     1-to-1 post-processing
     Correct behavior:
@@ -46,25 +66,13 @@ def flora_1to1_postprocessor(same_as_scores) -> List[Tuple[str, str, float]]:
       - Flatten to (source, target, score)
     """
     max_assign = bilateral_max_assign(same_as_scores)
-    result: List[Tuple[str, str, float]] = []
-    for s, targets in max_assign.items():
-        for t, sc in targets.items():
-            result.append((s, t, sc))
-            break  # top-1 only
-    return result
+    return __map_to_alignment_triples(max_assign)
 
 
-
-
-
-def flora_threshold_post_processor(predictions: List[Dict[str, Any]],
+def flora_threshold_postprocessor(predictions: List[Dict[str, Any]],
                                  prefix1: str,
                                  prefix2: str,
-                                 threshold: float = 0.1) -> Tuple[
-    Dict[str, Dict[str, float]],
-    Dict[str, Dict[str, float]],
-    Dict[str, Dict[str, float]],
-]:
+                                 threshold: float = 0.1) -> Tuple:
     """
     Threshold-style  post-processing.
 
@@ -80,18 +88,18 @@ def flora_threshold_post_processor(predictions: List[Dict[str, Any]],
 
     # ---- split predictions WITHOUT GT ----
     for pred in predictions:
-        s = pred["source"]
-        t = pred["target"]
-        sc = float(pred["score"])
+        source = pred["source"]
+        target = pred["target"]
+        score = float(pred["score"])
         ptype = pred.get("type", "instance")
 
-        if sc < threshold:
+        if score < threshold:
             continue
 
         if ptype == "predicate":
-            rel_pred.setdefault(s, {})[t] = sc
+            rel_pred.setdefault(source, {})[target] = score
         else:
-            inst_pred.setdefault(s, {})[t] = sc  # unified handling
+            inst_pred.setdefault(source, {})[target] = score  # unified handling
 
     # ---- instances (top-1 per source, prefix-aware) ----
     inst_align: Dict[str, Dict[str, float]] = {}
@@ -99,7 +107,7 @@ def flora_threshold_post_processor(predictions: List[Dict[str, Any]],
     for s, targets in inst_pred.items():
         candidates = [
             (t, sc) for t, sc in targets.items()
-            if t.startswith(prefix2)
+            if t.startswith('<' + prefix2)
         ]
         if not candidates:
             continue
@@ -116,7 +124,7 @@ def flora_threshold_post_processor(predictions: List[Dict[str, Any]],
         candidates = sorted(targets.items(), key=lambda x: x[1], reverse=True)
 
         for t, sc in candidates:
-            if t.startswith(prefix2):
+            if t.startswith('<' + prefix2):
                 rel_align.setdefault(t, {})[s] = sc
                 break
 
@@ -129,7 +137,11 @@ def flora_threshold_post_processor(predictions: List[Dict[str, Any]],
             continue
 
         t, sc = candidates[0]
-        if t.startswith(prefix2):
+        if t.startswith('<' + prefix2):
             cls_align.setdefault(t, {})[s] = sc
 
-    return inst_align, cls_align, rel_align
+    instance_alignments = __map_to_alignment_triples_swapped(inst_align)
+    class_alignments = __map_to_alignment_triples_swapped(cls_align)
+    predicate_alignments = __map_to_alignment_triples_swapped(rel_align)
+
+    return instance_alignments, class_alignments, predicate_alignments
