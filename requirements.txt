@@ -5,6 +5,8 @@ pandas
 datasets
 scikit-learn
 tqdm
+nltk
+py-stringmatching
 owlready2==0.44
 rdflib==7.1.1
 torch==2.8.0
@@ -14,15 +16,13 @@ openai==1.56.0
 rank_bm25==0.2.2
 huggingface-hub==0.34.4
 sentence-transformers==5.1.0
-bitsandbytes>=0.45.1,<0.46.0; platform_system == "Linux"
+bitsandbytes==0.45.1
 pykeen==1.11.1
+multiprocess
+scipy==1.15.3
 ruff
 pre-commit
 setuptools
 wheel
 twine
 pytest
-py-stringmatching
-nltk
-multiprocess
-scipy==1.15.3
