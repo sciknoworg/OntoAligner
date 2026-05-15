@@ -25,7 +25,7 @@ setup(
         "nltk",
         "py-stringmatching",
         "openai==1.56.0",
-        "owlready2==0.50",
+        "owlready2==0.44",
         "rank_bm25==0.2.2",
         "rapidfuzz==3.5.2",
         "rdflib==7.1.1",
