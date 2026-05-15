@@ -1,5 +1,17 @@
 ## Changelog
 
+### V1.7.0 Changelog (May 15, 2026)
+- FloraAligner is in action for KG alignment.
+- Documentation refactorings.
+- Added more metrics.
+- Updated the packages.
+- Renamings in examples.
+- Added unittests for Flora aligner.
+- KG loading support.
+- Added MRR and Hit@k metrics with a dedicated documentation page.
+- Minor improvement in parsers.
+- Getting rid of the dependency with `py_stringmatching` (from `propmatch` aligner).
+
 ### V1.6.0 Changelog (Janouary 2, 2026)
 - Add OS compatibility CI/CD
 - Minor fix to documentations
