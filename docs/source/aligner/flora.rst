@@ -190,6 +190,11 @@ Usage
         from ontoaligner.encoder import FLORAEncoder
         from ontoaligner.aligner.flora import FLORAAligner
         from ontoaligner.utils import metrics, xmlify
+        from ontoaligner.aligner.flora.postprocessor import (
+            flora_threshold_postprocessor,
+            flora_bilateral_postprocessor,
+            flora_1to1_postprocessor,
+        )
 
     .. note::
 
@@ -199,16 +204,17 @@ Usage
 .. tab:: ➡️ 2: Parse Ontologies/KGs
 
     ``FLORAOMDataset.collect()`` calls ``FLORAOntology.parse()`` for each KG,
-    which **loads the Turtle file** into a FLORA ``Graph`` and **extracts** all
+    which **loads the Turtle or XML file** into a FLORA ``Graph`` and **extracts** all
     alignment-relevant data.
 
     .. code-block:: python
 
-        task    = FLORAOMDataset()
+        # Initialize dataset, optionally naming the use-case
+        task    = FLORAOMDataset(ontology_name="memoryalpha-stexpanded")
         dataset = task.collect(
-            source_ontology_path="path/to/kg1.ttl",
-            target_ontology_path="path/to/kg2.ttl",
-            reference_matching_path="path/to/reference.xml",  # optional
+            source_ontology_path="memoryalpha-stexpanded/source.xml",
+            target_ontology_path="memoryalpha-stexpanded/target.xml",
+            reference_matching_path="memoryalpha-stexpanded/reference.xml",  # optional: for evaluation
         )
 
     Each side of ``dataset`` is a single-element list containing:
@@ -221,6 +227,10 @@ Usage
             "triples":    [("http://subj", "pred", "http://obj"), ...],
             "graph":      <Graph>   # ← passed to the aligner
         }
+
+	.. warning::
+
+		The input should be either XML (which the existing module will convert it into N-Turtle) or Turtle with `N-Triples format <https://en.wikipedia.org/wiki/N-Triples>`_. The aligner relies on the structured output of the parser, so other formats may require custom parsing.
 
 .. tab:: ➡️ 3: Encoder
 
@@ -243,26 +253,34 @@ Usage
 
         aligner = FLORAAligner(
             # Subrelation inference
-            alpha=3.0,              # Benefit-of-doubt (higher = more lenient)
-            relinit=0.1,            # Initial score for non-identical predicates
+            alpha=3.0,                # Benefit-of-doubt parameter
+            relinit=0.1,              # Initial score for non-identical predicates
 
             # Literal bootstrapping
-            init_threshold=0.7,     # Min semantic similarity (0.0-1.0)
-            string_identity=False,  # Set True to skip embeddings (faster)
+            init_threshold=0.2,       # Min semantic similarity threshold
+            string_identity=True,     # Use exact string matching (no embeddings)
 
             # Entity matching
-            gramN=100,              # Max evidence facts per entity
+            gramN=100,                # Max evidential facts per entity
 
             # Convergence
-            epsilon=0.01,           # Stop when score change < epsilon
-            max_iterations=100,     # Safety cap on iterations
+            epsilon=0.01,             # Stop when score change < epsilon
+            max_iterations=100,       # Safety cap on iterations
+
+            # Functionality computation
+            ngrams=[1, 2],            # N-gram sizes for predicate functionality
 
             # Optional: seed alignments
-            training_data=None,     # Path to seed_links.tsv (tab-separated)
+            training_data=None,       # Tab-separated seed alignments file
 
             # Embeddings
-            model_id='Lihuchen/pearl_small',  # Hugging Face model
-            # device='cuda',         # Uncomment for GPU
+            # model_id='Lihuchen/pearl_small',  # Hugging Face model for literal similarity,
+                                                # set this  if `string_identity` is False
+            device='cuda',         # Uncomment to force GPU (auto-detects by default)
+
+            verbose=True,            # Enable debug logging to see FLORA progress
+
+            workers=30,              # Number of workers for multiprocessing
         )
 
     See `Configuration`_ below for a complete parameter reference.
@@ -288,17 +306,71 @@ Usage
             ...
         ]
 
-.. tab:: ➡️ 6: Evaluate and Export
+.. tab:: ➡️ 6: Post-Process Alignments
+
+    Refine and filter the raw alignments using post-processing functions.
+
+    .. code-block:: python
+
+        # Apply thresholding to filter weak matches
+        instance_alignments, class_alignments, predicate_alignments = flora_threshold_postprocessor(matchings,
+                                                                                                    prefix1="http://dbkwik.webdatacommons.org/memory-alpha.wikia.com",
+                                                                                                    prefix2='http://dbkwik.webdatacommons.org/stexpanded.wikia.com',
+                                                                                                    threshold=0.1)
+        # Bilateral match refinement
+        bilateral_alignments = flora_bilateral_postprocessor(same_as_scores = aligner.get_same_as_scores(),
+                                                            source_prefix="http://dbkwik.webdatacommons.org/memory-alpha.wikia.com")
+        # 1-to-1 matching enforcement
+        one2one_alignments = flora_1to1_postprocessor(same_as_scores = aligner.get_same_as_scores())
+
+    The output is a refined list of alignments, ready for evaluation or export.
+
+.. tab:: ➡️ 7: Evaluate and Export
 
     Compare predictions to a reference alignment.
 
     .. code-block:: python
 
-        evaluation = metrics.evaluation_report(predicts=matchings,
-                                               references=dataset["reference"])
-        print("Evaluation:", json.dumps(evaluation, indent=4))
+        evaluation = metrics.evaluation_report(predicts=bilateral_alignments, references=dataset["reference"])
+        print("\n  Bilateral  Alignments Evaluation Results:")
+        print(f"    Precision: {evaluation.get('precision', 'N/A'):.3f}")
+        print(f"    Recall:    {evaluation.get('recall', 'N/A'):.3f}")
+        print(f"    F1-Score:  {evaluation.get('f-score', 'N/A'):.3f}")
 
-    Example output:
+        evaluation = metrics.evaluation_report(predicts=one2one_alignments, references=dataset["reference"])
+        print("\n  1-to-1  Alignments Evaluation Results:")
+        print(f"    Precision: {evaluation.get('precision', 'N/A'):.3f}")
+        print(f"    Recall:    {evaluation.get('recall', 'N/A'):.3f}")
+        print(f"    F1-Score:  {evaluation.get('f-score', 'N/A'):.3f}")
+
+        evaluation = metrics.evaluation_report(
+            predicts=instance_alignments,
+            references=[item for item in dataset['reference'] if item['type'] == 'instance']
+        )
+        print("\n  Instance alignments Results:")
+        print(f"    Precision: {evaluation.get('precision', 'N/A'):.3f}")
+        print(f"    Recall:    {evaluation.get('recall', 'N/A'):.3f}")
+        print(f"    F1-Score:  {evaluation.get('f-score', 'N/A'):.3f}")
+
+        evaluation = metrics.evaluation_report(
+            predicts=class_alignments,
+            references=[item for item in dataset['reference'] if item['type'] == 'class']
+        )
+        print("\n  Class Alignments Results:")
+        print(f"    Precision: {evaluation.get('precision', 'N/A'):.3f}")
+        print(f"    Recall:    {evaluation.get('recall', 'N/A'):.3f}")
+        print(f"    F1-Score:  {evaluation.get('f-score', 'N/A'):.3f}")
+
+        evaluation = metrics.evaluation_report(
+            predicts=predicate_alignments,
+            references=[item for item in dataset['reference'] if item['type'] == 'predicate']
+        )
+        print("\n  Predicate Alignments Results:")
+        print(f"    Precision: {evaluation.get('precision', 'N/A'):.3f}")
+        print(f"    Recall:    {evaluation.get('recall', 'N/A'):.3f}")
+        print(f"    F1-Score:  {evaluation.get('f-score', 'N/A'):.3f}")
+
+	Example output:
 
     .. code-block::
 
@@ -317,16 +389,16 @@ Usage
 
         ::
 
-            xml_str = xmlify.xml_alignment_generator(matchings=matchings)
-            with open("matchings.xml", "w", encoding="utf-8") as f:
+            xml_str = xmlify.xml_alignment_generator(matchings=bilateral_alignments)
+            with open("bilateral_alignments.xml", "w", encoding="utf-8") as f:
                 f.write(xml_str)
 
     .. tab:: 🧾 Export to JSON
 
         ::
 
-            with open("matchings.json", "w", encoding="utf-8") as f:
-                json.dump(matchings, f, indent=4, ensure_ascii=False)
+            with open("bilateral_alignments.json", "w", encoding="utf-8") as f:
+                json.dump(bilateral_alignments, f, indent=4, ensure_ascii=False)
 
 
 Configuration
@@ -458,6 +530,26 @@ The :class:`~ontoaligner.aligner.flora.FLORAAligner` class accepts the following
 
 	    <http://kg1.org/E1>    <http://kg2.org/E1>
 	    <http://kg1.org/E2>    <http://kg2.org/E2>    0.95
+
+.. tab:: 🚀 Logging & Parallelism
+
+	.. list-table::
+	   :header-rows: 1
+	   :widths: 20 12 12 56
+
+	   * - Parameter
+	     - Type
+	     - Default
+	     - Description
+	   * - **verbose**
+	     - bool
+	     - False
+	     - Enable debug logging for detailed aligner output.
+	   * - **workers**
+	     - int or None
+	     - 4
+	     - Number of parallel workers for multiprocessing (set to None to auto-detect CPU count).
+
 
 .. tab:: 🖥️ Hardware & Performance
 
