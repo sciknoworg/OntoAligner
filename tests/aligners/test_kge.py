@@ -82,7 +82,7 @@ def test_kge_aligner_output(toy_kge_ontologies):
         model = "TransE"   # keep it light for testing
 
     # retriever=False → one-to-one mapping
-    aligner = DummyAligner(retriever=False, num_epochs=1, embedding_dim=16)
+    aligner = GraphEmbeddingAligner(model="TransE", retriever=False, num_epochs=1, embedding_dim=16)
 
     results = aligner.generate([source_onto, target_onto])
 
