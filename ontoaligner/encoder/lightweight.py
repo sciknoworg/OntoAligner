@@ -171,6 +171,54 @@ class ConceptParentLightweightEncoder(LightweightEncoder):
         return {"iri": owl["iri"], "text": owl["label"] + "  " + str(parents)}
 
 
+class MILAEncoder(ConceptLightweightEncoder):
+
+    items_in_owl: str = "(MILA Concept)"
+
+    def parse(self, **kwargs) -> Any:
+        """
+        Parses the source and target ontologies, applying preprocessing.
+
+        This method extracts ontology items (IRI and label) from the source and target ontologies,
+        applies text preprocessing to the labels, and returns the encoded data.
+
+        Parameters:
+            **kwargs: Contains the source and target ontologies as keyword arguments.
+
+        Returns:
+            list: A list containing two elements, the processed source and target ontologies.
+        """
+        source_onto, target_onto = kwargs["source"], kwargs["target"]
+
+        term2class, class2term = {}, {}
+        for source in source_onto:
+            encoded_source = self.get_owl_items(owl=source)
+            term2class[encoded_source["text"]] = encoded_source["iri"]
+            class2term[encoded_source["iri"]] = encoded_source["text"]
+        source_ontos = {'term2class': term2class, 'class2term': class2term}
+
+        term2class, class2term = {}, {}
+        for target in target_onto:
+            encoded_target = self.get_owl_items(owl=target)
+            term2class[encoded_target["text"]] = encoded_target["iri"]
+            class2term[encoded_target["iri"]] = encoded_target["text"]
+        target_ontos = {'term2class': term2class, 'class2term': class2term}
+
+        return [source_ontos, target_ontos]
+
+    def get_owl_items(self, owl: Dict) -> Any:
+        """
+        Extracts the IRI and label of a concept from the given OWL item.
+
+        Parameters:
+            owl (Dict): A dictionary representing an OWL item, expected to contain 'iri' and 'label' keys.
+
+        Returns:
+            Dict: A dictionary containing the IRI and label of the concept.
+        """
+        return {"iri": owl["iri"], "text": owl["label"]}
+
+
 class DocConceptLightweightEncoder(LightweightEncoder):
     """
     Encodes OWL items as a Document which is a combination of the IRI, label, synonyms, and comments.
