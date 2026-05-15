@@ -286,7 +286,7 @@ This RAG variant performs ontology matching using ``ConceptRAGEncoder`` only. Th
     encoder_model = ConceptRAGEncoder()
     encoded_ontology = encoder_model(source=dataset['source'], target=dataset['target'], reference=dataset['reference'])
 
-2. Next, import an ICV-RAG aligner, here we use Falcon model:
+2. Next, import an ICV-RAG model. Here, we use the Falcon model:
 
 .. code-block:: python
 
@@ -344,7 +344,7 @@ Customized-RAG Aligner
 
 .. sidebar:: Useful links:
 
-    * `OntoAlignerPipeline Experimentation <https://github.com/sciknoworg/OntoAligner/blob/main/examples/OntoAlignerPipeline-Exp.ipynb>`_
+    * `OntoAlignerPipeline Experimentation <https://github.com/sciknoworg/OntoAligner/blob/main/examples/pipeline.ipynb>`_
 
 You can use custom LLMs with RAG for alignment. Below, we define two classes, each combining a retrieval mechanism with a LLMs to implement RAG aligner functionality.
 
@@ -384,6 +384,18 @@ The primary distinction between ``AutoModelDecoderRAGLLMV2`` and ``AutoModelDeco
     def check_answer_set_tokenizer(self, answer: str) -> bool:
         """Checks if the tokenizer produces a single token for a given answer string."""
         return len(self.tokenizer(answer).input_ids) == 1
+
+
+In another approach you can simply use the ``RAG`` class and provide the retriever and LLM as follows in a light configuration manner:
+
+.. code-block:: python
+
+	from ontoaligner.aligner import RAG, TFIDFRetrieval, AutoModelDecoderRAGLLMV2
+
+	custom_rag = RAG(retrieval = TFIDFRetrieval,
+					 llm = AutoModelDecoderRAGLLMV2,
+					 retriever_config = ...,
+					 llm_config = ...)
 
 
 .. note::

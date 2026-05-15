@@ -1,0 +1,2 @@
+yago:Elvis rdfs:label "Elvis" .
+yago:Elvis yago:marriedTo yago:Priscilla .

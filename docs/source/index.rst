@@ -26,7 +26,7 @@
 OntoAligner Documentation
 =================================
 
-Ontology Alignment (OA) is fundamental for achieving semantic interoperability across diverse knowledge systems. **OntoAligner** (a.k.a Ontology Aligner), a modular Python toolkit for ontology alignment, designed to address current limitations with existing tools faced by practitioners. Existing tools are limited in scalability, modularity, and ease of integration with recent AI advances. OntoAligner provides a flexible architecture integrating existing lightweight OA techniques such as fuzzy matching but goes beyond by supporting contemporary methods with retrieval-augmented generation and large language models for OA. The current framework prioritizes extensibility, enabling researchers to integrate custom alignment algorithms and datasets. With OntoAligner you can handle large-scale ontologies efficiently with few lines of code while delivering high alignment quality. By making OntoAligner open-source, we aim to provide a resource that fosters innovation and collaboration within the OA community, empowering researchers and practitioners with a toolkit for reproducible OA research and real-world applications.
+Ontology Alignment (OA) is fundamental for achieving semantic interoperability across diverse knowledge systems. **OntoAligner** is a modular Python toolkit for ontology alignment, designed to address current limitations with existing tools faced by practitioners. Existing tools are limited in scalability, modularity, and ease of integration with recent AI advances. OntoAligner provides a flexible architecture integrating existing lightweight OA techniques such as fuzzy matching but goes beyond by supporting contemporary methods with retrieval-augmented generation and large language models for OA. The current framework prioritizes extensibility, enabling researchers to integrate custom alignment algorithms and datasets. With OntoAligner you can handle large-scale ontologies efficiently with few lines of code while delivering high alignment quality. By making OntoAligner open-source, we aim to provide a resource that fosters innovation and collaboration within the OA community, empowering researchers and practitioners with a toolkit for reproducible OA research and real-world applications.
 
 OntoAligner was created by `Scientific Knowledge Organization (SciKnowOrg group) <https://github.com/sciknoworg/>`_ at `Technische Informationsbibliothek (TIB) <https://www.tib.eu/de/>`_. Don't hesitate to open an issue on the `OntoAligner repository <https://github.com/sciknoworg/OntoAligner>`_ if something is broken or if you have further questions.
 
@@ -115,6 +115,7 @@ or if you are using Knowledge Graph Embeddings refer to `OntoAligner Meets Knowl
    :maxdepth: 1
 
    developerguide/parsers
+   developerguide/metrics
 
 .. toctree::
    :caption: Aligners
@@ -128,6 +129,7 @@ or if you are using Knowledge Graph Embeddings refer to `OntoAligner Meets Knowl
    aligner/rag
    aligner/kge
    aligner/propmatch
+   aligner/flora
 
 .. toctree::
    :maxdepth: 1

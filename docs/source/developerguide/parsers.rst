@@ -86,7 +86,7 @@ In the final ``OMDataset`` will form a parsed ontology alignment task using sour
     }
 
 .. hint::
-    If you dont specify the ``reference_matching_path``, in the ``OMDataset`` it will be assumed as a empty list ``[]``.
+    If you don't specify the ``reference_matching_path`` in the ``OMDataset``, it will be assumed to be an empty list ``[]``.
 
 
 Generic Parser
@@ -116,9 +116,10 @@ As another example, suppose you want to perform ontology alignment for the ``GEO
 .. code-block:: python
 
     from ontoaligner.ontology import GenericOMDataset
-    task =  GenericOMDataset()
-    task.track = "Geographical"   # optional
-    task.ontology_name = "GEO-GeoNames"  # optional
+    task =  GenericOMDataset(
+        track = "Geographical"         # optional
+        ontology_name = "GEO-GeoNames" # optional
+    )
     dataset = task.collect(source_ontology_path="geo.owl", target_ontology_path="geonames.owl")
 
 
@@ -127,9 +128,9 @@ OAEI Parsers
 
 The OAEI tasks (not all of them) datasets are supported within the OntoAligner from the `LLMs4OM: Matching Ontologies with Large Language Models <https://link.springer.com/chapter/10.1007/978-3-031-78952-6_3>`__ empirical study.
 
-The OntoAligner contains several Python modules that supports the following tracks.
+The OntoAligner contains several Python modules that include support for the following tracks:
 
-- `Anatomy <https://oaei.ontologymatching.org/2023/anatomy/index.html>`__: Ontology alignments in anatomical domains.
+- `Anatomy <https://oaei.ontologymatching.org/2023/anatomy/index.html>`__: Ontology alignments in the anatomical domain.
 - `Biodiv <https://oaei.ontologymatching.org/2023/biodiv/index.html>`__: Ontology alignments in the biodiversity domain.
 - `BioML <https://krr-oxford.github.io/OAEI-Bio-ML/>`__: Ontology alignments in the biomedical domain, specifically designed for machine learning approaches with train/test sets.
 - `CommonKG <https://oaei.ontologymatching.org/2022/commonKG/index.html>`__: Ontology alignments in the common knowledge graph domain.
@@ -161,6 +162,6 @@ For a simpler import, use:
 
 .. note::
 
-    Consider reading the following section next for more details on list of possible OAEI Parsers.
+    Consider reading the following section next for more details on available OAEI parsers.
 
     * `Package Reference > Parsers <../package_reference/parsers.html>`_

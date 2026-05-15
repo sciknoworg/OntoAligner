@@ -75,7 +75,7 @@ This module demonstrates the process of aligning ontologies using the **OntoAlig
         - ``target_ontology_path``: The target ontology path.
         - ``reference_matching_path``: Ground truth data path used for evaluating the results.
 
-    **Outputs Format**: The ``dataset`` is a dictionary with the following key values:
+    **Output Format**: The ``dataset`` is a dictionary with the following structure:
 
     .. code-block::
 

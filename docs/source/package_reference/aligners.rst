@@ -2,7 +2,7 @@ Aligners
 ====================
 
 Lightweight Aligners
-------------------
+---------------------
 .. automodule:: ontoaligner.aligner.lightweight.models
    :members:
    :undoc-members:
@@ -40,7 +40,7 @@ RAG Aligners
 
 
 FewShot-RAG Aligners
-------------------
+------------------------
 .. automodule:: ontoaligner.aligner.fewshot.models
    :members:
    :undoc-members:
@@ -72,3 +72,21 @@ PropMatch Aligner
    :undoc-members:
    :show-inheritance:
    :special-members: __init__, match_property, generate
+
+FLORA Aligner
+------------------
+.. automodule:: ontoaligner.aligner.flora.flora
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :special-members: __init__, generate
+
+.. automodule:: ontoaligner.aligner.flora.fuzzy
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: ontoaligner.aligner.flora.literal
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -46,8 +46,7 @@ This module guides you through a step-by-step process for performing ontology al
 
         from ontoaligner.ontology import GraphTripleOMDataset
 
-        task  = GraphTripleOMDataset()
-        task.ontology_name = "Mouse-Human"
+        task  = GraphTripleOMDataset(ontology_name = "Mouse-Human")
         print("task:", task)
         # >>> task: Track: GraphTriple, Source-Target sets: Mouse-Human
 
@@ -260,6 +259,14 @@ If the desired model is not avaliable in OntoAligner, then:
     aligner = CustomKGEAligner()
     matchings = aligner.generate(input_data=...)
 
+Or, you can also directly use the base ``GraphEmbeddingAligner`` and specify the model you want to use in a simple way:
+
+.. code-block:: python
+
+	from ontoaligner.aligner.graph import GraphEmbeddingAligner
+
+	aligner = GraphEmbeddingAligner(model="RESCAL")
+	matchings = aligner.generate(input_data=...)
 
 Here ``RESCAL`` is our custom KGE model.
 

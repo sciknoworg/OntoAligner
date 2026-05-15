@@ -1,0 +1,2 @@
+dbp:Elvis rdfs:label "Elvis" .
+dbp:Elvis dbp:marriedTo dbp:Priscilla .

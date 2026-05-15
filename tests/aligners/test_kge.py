@@ -31,11 +31,8 @@ def toy_retriever_ontologies():
 def test_retriever_topk_output(toy_retriever_ontologies):
     source_onto, target_onto = toy_retriever_ontologies
 
-    class DummyAligner(GraphEmbeddingAligner):
-        model = "TransE"   # keep it lightweight for test
-
     # retriever=True → returns top-k candidates
-    aligner = DummyAligner(retriever=True, top_k=2, num_epochs=1, embedding_dim=16)
+    aligner = GraphEmbeddingAligner(model="TransE", retriever=True, top_k=2, num_epochs=1, embedding_dim=16)
 
     results = aligner.generate([source_onto, target_onto])
 
@@ -85,7 +82,7 @@ def test_kge_aligner_output(toy_kge_ontologies):
         model = "TransE"   # keep it light for testing
 
     # retriever=False → one-to-one mapping
-    aligner = DummyAligner(retriever=False, num_epochs=1, embedding_dim=16)
+    aligner = GraphEmbeddingAligner(model="TransE", retriever=False, num_epochs=1, embedding_dim=16)
 
     results = aligner.generate([source_onto, target_onto])
 
