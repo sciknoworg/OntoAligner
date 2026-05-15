@@ -44,12 +44,13 @@ import os
 import time
 import logging
 from typing import List, Optional, Dict, Any, Tuple
+
 import multiprocessing
 
 from ...base import BaseOMModel
-from .fuzzy_logic import fuzzy
-from .fuzzy_logic.literals import FLORALiteralsEmbedding
-
+from .fuzzy import (compute_functionalities, bootstrap_algo, bilateral_max_assign, map_subrelations,
+                    compute_quasi_eqrel, initialize_predicate_subsumption, _match_entities_by_rules)
+from .literals import FLORALiteralsEmbedding
 
 
 class FLORARDFWriter:
@@ -289,7 +290,7 @@ class FLORAAligner(BaseOMModel):
                     same_as_scores[entity1][entity2] = score
         return same_as_scores
 
-    def compute_functionalities(
+    def functionalities(
         self,
         kb1: Any,
         kb2: Any,
@@ -310,8 +311,8 @@ class FLORAAligner(BaseOMModel):
         Returns:
             Dictionary mapping predicates to functionality scores in [0, 1].
         """
-        functionalities1 = fuzzy.compute_functionalities(kb1, gram=self.kwargs['ngrams'])
-        functionalities2 = fuzzy.compute_functionalities(kb2, gram=self.kwargs['ngrams'])
+        functionalities1 = compute_functionalities(kb1, gram=self.kwargs['ngrams'])
+        functionalities2 = compute_functionalities(kb2, gram=self.kwargs['ngrams'])
         functionalities: Dict[Any, float] = {}
 
         # Merge scores from both KGs
@@ -332,6 +333,7 @@ class FLORAAligner(BaseOMModel):
         same_as_scores: Dict[Any, Dict[Any, float]],
         predicate2super_predicate: Dict[Any, Dict[Any, float]],
         functionalities: Dict[Any, float],
+        num_workers: int
     ) -> Tuple[Dict[Any, Dict[Any, float]], Dict[Any, Dict[Any, float]], Dict[Any, Dict[Any, float]], Dict[Any, Dict[Any, float]]]:
         """Perform the bootstrapping phase of entity and predicate alignment.
 
@@ -344,6 +346,7 @@ class FLORAAligner(BaseOMModel):
             same_as_scores: Initial entity alignment scores (from literal bootstrapping).
             predicate2super_predicate: Initial predicate subsumption scores.
             functionalities: Predicate functionality scores.
+            num_workers: Number of parallel worker processes.
 
         Returns:
             Tuple of (quasi_eqrel, predicate2super_predicate, same_as_scores, ent_max_assign):
@@ -352,14 +355,14 @@ class FLORAAligner(BaseOMModel):
             - same_as_scores: Updated entity alignments
             - ent_max_assign: Bilateral max assignments for entities
         """
-        same_as_scores = fuzzy.bootstrap_algo(
-            kb1, kb2, same_as_scores, predicate2super_predicate, functionalities
+        same_as_scores = bootstrap_algo(
+            kb1, kb2, same_as_scores, predicate2super_predicate, functionalities, num_workers
         )
-        ent_max_assign = fuzzy.bilateral_max_assign(same_as_scores)
-        predicate2super_predicate = fuzzy.map_subrelations(
+        ent_max_assign = bilateral_max_assign(same_as_scores)
+        predicate2super_predicate = map_subrelations(
             self.kwargs["alpha"], kb1, kb2, ent_max_assign, predicate2super_predicate
         )
-        quasi_eqrel = fuzzy.compute_quasi_eqrel(kb1, kb2, predicate2super_predicate)
+        quasi_eqrel = compute_quasi_eqrel(kb1, kb2, predicate2super_predicate)
         return quasi_eqrel, predicate2super_predicate, same_as_scores, ent_max_assign
 
     def generate(self, input_data: List[Any]) -> List[Dict[str, Any]]:
@@ -406,13 +409,12 @@ class FLORAAligner(BaseOMModel):
                 - ``source`` (str): IRI of the source KG entity
                 - ``target`` (str): IRI of the target KG entity
                 - ``score`` (float): Alignment confidence in [0.0, 1.0]
+                - ``type`` (str): ``'instance'`` or ``'predicate'``
 
         Raises:
             ValueError: If input_data does not contain exactly 2 elements.
-
-        Yields:
-            Predictions are sorted by source entity, then by score (descending).
         """
+        num_workers = self.kwargs["workers"]
         if len(input_data) != 2:
             raise ValueError(
                 "FLORAAligner.generate() expects input_data = [kg1_graph, kg2_graph], "
@@ -425,7 +427,7 @@ class FLORAAligner(BaseOMModel):
 
         # 2. Predicate initialisation
         logging.info("FLORA: Initialising predicate subsumptions...")
-        predicate2super_predicate = fuzzy.initialize_predicate_subsumption(
+        predicate2super_predicate = initialize_predicate_subsumption(
             predicates1=kb1.predicates(),
             predicates2=kb2.predicates(),
             relinit=self.kwargs['relinit']
@@ -433,7 +435,7 @@ class FLORAAligner(BaseOMModel):
 
         # 3. Compute functionalities
         logging.info("FLORA: Computing functionalities...")
-        functionalities = self.compute_functionalities(kb1=kb1, kb2=kb2)
+        functionalities = self.functionalities(kb1=kb1, kb2=kb2)
 
         # 4. Literal similarity bootstrapping
         same_as_scores = self.literals_embedding.map_literals(
@@ -452,7 +454,8 @@ class FLORAAligner(BaseOMModel):
             kb2=kb2,
             same_as_scores=same_as_scores,
             predicate2super_predicate=predicate2super_predicate,
-            functionalities=functionalities
+            functionalities=functionalities,
+            num_workers=num_workers
         )
         logging.info("FLORA: Bootstrapping done in %.2f min.", (time.time() - start_time) / 60)
 
@@ -470,14 +473,12 @@ class FLORAAligner(BaseOMModel):
                 for subj in subjs_kb1:
                     ent_queue.put(subj)
 
-                num_workers = self.kwargs["workers"]
                 ent_match_tuple_queue = mgr.Queue()
                 tasks = []
-                task_errors = []  # Track worker errors
 
                 for _ in range(num_workers):
                     task = multiprocessing.Process(
-                        target=fuzzy._match_entities_by_rules,
+                        target=_match_entities_by_rules,
                         args=(
                             kb1, kb2,
                             quasi_eqrel,
@@ -488,67 +489,46 @@ class FLORAAligner(BaseOMModel):
                             self.kwargs,
                         ),
                     )
-                    task.daemon = False  # Explicit cleanup
                     task.start()
                     tasks.append(task)
 
                 # Collect results from worker processes FIRST (while queue is alive)
                 # Do NOT terminate workers while they might still be writing
-                try:
-                    timeout_count = 0
-                    results_collected = 0
-                    while timeout_count < 100 and results_collected < num_workers:  # Expect one result per worker
-                        try:
-                            batch = ent_match_tuple_queue.get(timeout=5)  # 5 second timeout per batch
-                            results_collected += 1
-                            for subj1, matches in batch.items():
-                                max_score1 = max(ent_max_assign.get(subj1, {None: 0}).values())
-                                for subj2, score in matches.items():
-                                    max_score2 = max(ent_max_assign.get(subj2, {None: 0}).values())
-                                    if score <= max(max_score1, max_score2):
-                                        continue
-                                    if subj1 not in same_as_scores:
-                                        same_as_scores[subj1] = {}
-                                    if subj2 not in same_as_scores[subj1]:
-                                        same_as_scores[subj1][subj2] = score
-                                    elif score > same_as_scores[subj1][subj2]:
-                                        same_as_scores[subj1][subj2] = score
-                        except Exception:
-                            timeout_count += 1
-                            if timeout_count >= 100:
-                                logging.warning(f"FLORA: Queue timeout after {results_collected}/{num_workers} results...")
-                                break
-                except (BrokenPipeError, EOFError) as e:
-                    logging.warning(f"FLORA: Queue communication error: {e}")
+                for task in tasks:
+                    task.join()
 
-                # NOW wait for workers to complete naturally
-                logging.info(f"FLORA: Waiting for {num_workers} workers to complete...")
-                timeout = 3600  # 1 hour timeout
-                for idx, task in enumerate(tasks):
-                    task.join(timeout=timeout)
-                    if task.is_alive():
-                        logging.warning(f"FLORA: Worker {idx} timeout, terminating...")
-                        task.terminate()
-                        task.join(timeout=5)
-                        if task.is_alive():
-                            logging.error(f"FLORA: Worker {idx} force killed")
-                            task.kill()
-                    elif task.exitcode != 0 and task.exitcode is not None:
-                        logging.warning(f"FLORA: Worker {idx} exited with code {task.exitcode}")
-                        task_errors.append(idx)
+                # Update the entity alignment scores
+                while not ent_match_tuple_queue.empty():
+                    ent_match_score_dict = ent_match_tuple_queue.get()
+                    # update sameAsScores using max aggregation
+                    for subj1 in ent_match_score_dict:
+                        max_score1 = max(ent_max_assign.get(subj1, {None: 0}).values())
+                        for subj2 in ent_match_score_dict[subj1]:
+                            max_score2 = max(ent_max_assign.get(subj2, {None: 0}).values())
+                            # Avoid propagating False Positives:
+                            # don't accept a score not above the current max assignment
+                            if ent_match_score_dict[subj1][subj2] <= max(max_score1, max_score2):
+                                continue
+                            # update
+                            if subj1 not in same_as_scores:
+                                same_as_scores[subj1] = {}
+                            if subj2 not in same_as_scores[subj1]:
+                                same_as_scores[subj1][subj2] = ent_match_score_dict[subj1][subj2]
+                                continue
+                            # Take Max Score
+                            if ent_match_score_dict[subj1][subj2] > same_as_scores[subj1][subj2]:
+                                same_as_scores[subj1][subj2] = ent_match_score_dict[subj1][subj2]
 
             except Exception as e:
                 logging.error(f"FLORA: Multiprocessing error: {e}")
                 logging.info("FLORA: Falling back to single-process mode for this iteration...")
-                # Fallback: Graceful degradation, algorithm continues in next iteration
-                # (In production, could implement serial entity matching here)
 
             # --- Update predicate subsumptions ---
-            ent_max_assign = fuzzy.bilateral_max_assign(same_as_scores)
-            predicate2super_predicate = fuzzy.map_subrelations(
+            ent_max_assign = bilateral_max_assign(same_as_scores)
+            predicate2super_predicate = map_subrelations(
                 self.kwargs["alpha"], kb1, kb2, ent_max_assign, predicate2super_predicate
             )
-            quasi_eqrel = fuzzy.compute_quasi_eqrel(kb1, kb2, predicate2super_predicate)
+            quasi_eqrel = compute_quasi_eqrel(kb1, kb2, predicate2super_predicate)
 
             # --- Check convergence ---
             new_same_as_sum = sum(v for d in same_as_scores.values() for v in d.values())
@@ -570,26 +550,24 @@ class FLORAAligner(BaseOMModel):
         for predicate1 in predicates:
             if predicate1 in predicate2super_predicate:
                 for predicate2 in predicate2super_predicate[predicate1]:
-                    if predicate2super_predicate[predicate1][predicate2] > 0.1:
+                    if predicate2super_predicate[predicate1][predicate2]:
                         predictions.append({
                             "source": predicate1,
                             "target": predicate2,
                             "score": float(predicate2super_predicate[predicate1][predicate2]),
-                            'type': 'predicate'
+                            "type": "predicate",
                         })
 
         # Literals and instances
         for entity1 in same_as_scores:
             for entity2 in same_as_scores[entity1]:
-                if same_as_scores[entity1][entity2] > 0:
-                    predictions.append(
-                        {
-                            "source": entity1,
-                            "target": entity2,
-                            "score": float(same_as_scores[entity1][entity2]),
-                            'type': 'instance'
-                        }
-                    )
+                if same_as_scores[entity1][entity2]:
+                    predictions.append({
+                        "source": entity1,
+                        "target": entity2,
+                        "score": float(same_as_scores[entity1][entity2]),
+                        "type": "sameas",
+                    })
         return predictions
 
     def get_same_as_scores(self) -> Dict[Any, Dict[Any, float]]:
