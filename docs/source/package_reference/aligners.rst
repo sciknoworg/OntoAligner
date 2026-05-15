@@ -81,12 +81,12 @@ FLORA Aligner
    :show-inheritance:
    :special-members: __init__, generate
 
-.. automodule:: ontoaligner.aligner.flora.fuzzy_logic.fuzzy
+.. automodule:: ontoaligner.aligner.flora.fuzzy
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: ontoaligner.aligner.flora.fuzzy_logic.literal
+.. automodule:: ontoaligner.aligner.flora.literal
    :members:
    :undoc-members:
    :show-inheritance:

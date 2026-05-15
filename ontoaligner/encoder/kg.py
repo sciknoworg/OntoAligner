@@ -28,7 +28,7 @@ class FLORAEncoder(BaseEncoder):
     :meth:`~ontoaligner.aligner.flora.flora.FLORAAligner.generate`.
 
     Example:
-        >>> # After FLORAOMDataset.collect() has been called:
+        >>> from ontoaligner.encoder import FLORAEncoder
         >>> encoder = FLORAEncoder()
         >>> kg1_graph, kg2_graph = encoder(source=dataset["source"],
         ...                                target=dataset["target"])

@@ -17,4 +17,4 @@ from .llm import * # NOQA
 from .rag import * # NOQA
 from .graph import * # NOQA
 from .property import * # NOQA
-from .flora import *  # NOQA
+from .kg import *  # NOQA
