@@ -29,34 +29,33 @@ class OLaLaAligner(BaseOMModel):
         return "OLaLaAligner"
 
     def load(self, llm_path: str, retriever_path: str) -> None:
-        self.kwargs['olala_llm'].load(path=llm_path)
-        self.kwargs['olala_retriever'].load(path=retriever_path)
+        self.kwargs['llm_aligner'].load(path=llm_path)
+        self.kwargs['retriever'].load(path=retriever_path)
 
 
     def generate(self, input_data: List) -> List:
         """
-        Generates matching results based on the input data. In this class, it is a placeholder
-        method that does not perform any matching.
+        Generates ontology alignment results by chaining retrieval, LLM verification,
+        and high-precision matching.
 
         Args:
-            input_data (List): A list containing source and target ontologies for the matching task.
+            input_data (List): A list containing the encoded source and target ontologies.
 
         Returns:
-            List: An empty list as this method is not yet implemented in the base class.
+            List: The combined alignments from LLM and high-precision matching,
+                  each annotated with an alignment_type field.
         """
-        # source_onto, target_onto
-        # index into retriever
         source_onto, target_onto = input_data[0], input_data[1]
 
         retriever_candidates = self.kwargs['retriever'].generate(input_data=[source_onto, target_onto])
 
         llm_alignments = self.kwargs['llm_aligner'].generate(input_data=[source_onto,
-                                                                       target_onto,
-                                                                       retriever_candidates])
+                                                                          target_onto,
+                                                                          retriever_candidates])
 
         hp_alignments = self.kwargs['hp_aligner'].generate(input_data=[source_onto, target_onto])
 
-        alignments = [{"atype": "rag", **alignment} for alignment in llm_alignments] + \
-                     [{"atype": "hp", **alignment} for alignment in hp_alignments]
+        alignments = [{"alignment_type": "rag", **alignment} for alignment in llm_alignments] + \
+                     [{"alignment_type": "hp", **alignment} for alignment in hp_alignments]
 
         return alignments

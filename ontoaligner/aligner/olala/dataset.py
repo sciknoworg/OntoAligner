@@ -42,7 +42,7 @@ class OLaLaLLMDataset(Dataset):
         source_onto: Any,
         target_onto: Any,
         candidates: Any,
-        system_prompt_template: str = "{userpromt}",
+        system_prompt_template: str = "{user_prompt}",
     ) -> None:
         """
         Initializes the OLaLa LLM dataset from candidate correspondences.
@@ -116,7 +116,7 @@ class OLaLaLLMDataset(Dataset):
             .replace("{right}", target)
         )
 
-        return self.system_prompt_template.replace("{userpromt}", user_prompt)
+        return self.system_prompt_template.replace("{user_prompt}", user_prompt)
 
     def __getitem__(self, index: int) -> Dict:
         """
@@ -137,21 +137,21 @@ class OLaLaLLMDataset(Dataset):
             "is_valid": self.data[index]["is_valid"],
         }
 
-    def collate_fn(self, batchs):
+    def collate_fn(self, batches):
         """
         Collates OLaLa LLM examples.
 
         Parameters:
-            batchs: The batch examples.
+            batches: The batch examples.
 
         Returns:
             Dict: The collated batch.
         """
-        batchs_clear = {"prompts": [], "iris": [], "is_valid": []}
+        batches_clear = {"prompts": [], "iris": [], "is_valid": []}
 
-        for batch in batchs:
-            batchs_clear["prompts"].append(batch["prompts"])
-            batchs_clear["iris"].append(batch["iris"])
-            batchs_clear["is_valid"].append(batch["is_valid"])
+        for batch in batches:
+            batches_clear["prompts"].append(batch["prompts"])
+            batches_clear["iris"].append(batch["iris"])
+            batches_clear["is_valid"].append(batch["is_valid"])
 
-        return batchs_clear
+        return batches_clear

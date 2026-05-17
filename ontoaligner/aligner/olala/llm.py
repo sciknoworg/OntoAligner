@@ -141,7 +141,7 @@ class OLaLaLLMAligner(DecoderLLMArch):
         temperature: float = 0.0,
         word_stopper: bool = True,
         loading_arguments: Dict[str, Any] = None,
-        system_prompt_template: str = "{userpromt}",
+        system_prompt_template: str = "{user_prompt}",
         dataset_class: Any = OLaLaLLMDataset,
         **kwargs,
     ) -> None:

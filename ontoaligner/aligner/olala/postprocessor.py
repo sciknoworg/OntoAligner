@@ -320,8 +320,8 @@ def olala_postprocessor(
         List[Dict[str, Any]]: The final postprocessed correspondences.
     """
     source_ontology, target_ontology = encoded_ontology[0], encoded_ontology[1]
-    llm_alignments = [prediction for prediction in alignments if prediction.get("atype") == "rag"]
-    hp_alignments = [prediction for prediction in alignments if prediction.get("atype") == "hp"]
+    llm_alignments = [prediction for prediction in alignments if prediction.get("alignment_type") == "rag"]
+    hp_alignments = [prediction for prediction in alignments if prediction.get("alignment_type") == "hp"]
     llm_alignments = flatten_predictions(llm_alignments)
     hp_alignments = flatten_predictions(hp_alignments)
     hp_alignments = olala_bad_hosts_filter(
