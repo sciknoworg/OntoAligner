@@ -25,9 +25,9 @@ The following diagram (Figure 1 of the paper) illustrates the overall OLaLa pipe
 
 Given two ontologies :math:`O_1` and :math:`O_2`, OLaLa produces a set of correspondence pairs :math:`M = \{(c, c', s) \mid c \in O_1,\; c' \in O_2,\; s \in [0,1]\}`, where :math:`s` is the LLM-derived confidence that concepts :math:`c` and :math:`c'` refer to the same real-world entity. The pipeline has four stages:
 
-🔍 **1. Candidate Generation (SBERT)**: Each ontology concept is verbalized into one or more text strings using the **TextExtractorSet** strategy — extracting labels, descriptions, annotation-property texts, and the URI fragment (when it contains fewer than 50 % digits). All texts per resource are embedded with a Sentence-BERT model and a bidirectional cosine-similarity search returns the top-*k* candidates per resource. The default model is ``multi-qa-mpnet-base-dot-v1``, and *k* = 5. The procedure is run in both directions (``source → target and target → source``), and the union of candidates is kept.
+**🔍 1. Candidate Generation (SBERT)**: Each ontology concept is verbalized into one or more text strings using the **TextExtractorSet** strategy — extracting labels, descriptions, annotation-property texts, and the URI fragment (when it contains fewer than 50 % digits). All texts per resource are embedded with a Sentence-BERT model and a bidirectional cosine-similarity search returns the top-*k* candidates per resource. The default model is ``multi-qa-mpnet-base-dot-v1``, and *k* = 5. The procedure is run in both directions (``source → target and target → source``), and the union of candidates is kept.
 
-🤖 **2. LLM Binary Verification**: Each candidate pair is presented to a decoder LLM via a **few-shot prompt** (``prompt 7`` in the paper — see the *Prompts* section below):
+**🤖 2. LLM Binary Verification**: Each candidate pair is presented to a decoder LLM via a **few-shot prompt** (``prompt 7`` in the paper — see the *Prompts* section below):
 
 .. code-block:: text
 
@@ -42,9 +42,9 @@ Given two ontologies :math:`O_1` and :math:`O_2`, OLaLa produces a set of corres
 
 Generation stops as soon as a ``yes`` / ``no`` (or ``true`` / ``false``) token is produced. The softmax probability of the positive class is normalised by the sum of positive and negative class probabilities to yield a confidence score: :math:`s = p_{yes}/(p_{yes} + p_{no})`, where every correspondence with :math:`s \geq 0.5` is treated as a positive match.
 
-🎯 **3. High-Precision Matching**: In parallel, an exact-match **high-precision matcher** independently finds concepts with identical normalized labels or URI fragments (lowercased, camel-case split, non-alphanumeric characters removed). Only unambiguous 1:1 pairs (no N:M conflicts) are kept, all at confidence 1.0. These are merged into the LLM output to ensure trivial correspondences are never missed.
+**🎯 3. High-Precision Matching**: In parallel, an exact-match **high-precision matcher** independently finds concepts with identical normalized labels or URI fragments (lowercased, camel-case split, non-alphanumeric characters removed). Only unambiguous 1:1 pairs (no N:M conflicts) are kept, all at confidence 1.0. These are merged into the LLM output to ensure trivial correspondences are never missed.
 
-🧹 **4. Postprocessing:** The merged alignment is cleaned in three steps:
+**🧹 4. Postprocessing:** The merged alignment is cleaned in three steps:
 
 - **Bad-host filter** — removes correspondences whose IRIs do not belong to the
   expected source or target ontology hosts.
@@ -55,9 +55,7 @@ Generation stops as soon as a ``yes`` / ``no`` (or ``true`` / ``false``) token i
 
 .. note::
 
-    **Reference:** Hertling, S. and Paulheim, H. (2023). OLaLa: Ontology Matching with Large Language Models.
-    In *Knowledge Capture Conference 2023 (K-CAP '23)*, December 5–7, 2023, Pensacola, FL, USA. ACM.
-    https://doi.org/10.1145/3587259.3627571
+    **Reference:** Sven Hertling and Heiko Paulheim. 2023. OLaLa: Ontology Matching with Large Language Models. In Proceedings of the 12th Knowledge Capture Conference 2023 (K-CAP '23). Association for Computing Machinery, New York, NY, USA, 131–139. https://doi.org/10.1145/3587259.3627571
 
 
 Usage
@@ -520,7 +518,7 @@ Advanced Usage
     few-shot prompt (including both the examples and the ``{left}``/``{right}``
     pair under evaluation).
 
-🔧 **Custom System Prompt (Chat Models) Usage**: Chat-tuned models such as ``Llama-2-70b-chat-hf`` expect a specific conversation template. Pass ``system_prompt_template`` to wrap the filled few-shot prompt:
+**🔧 Custom System Prompt (Chat Models) Usage**: Chat-tuned models such as ``Llama-2-70b-chat-hf`` expect a specific conversation template. Pass ``system_prompt_template`` to wrap the filled few-shot prompt:
 
 .. code-block:: python
 
@@ -529,7 +527,7 @@ Advanced Usage
         ...
     )
 
-⚡ **Lightweight / CPU Mode Usage**: For quick experiments without GPU access, reduce the model size and disable 8-bit loading:
+**⚡ Lightweight / CPU Mode Usage**: For quick experiments without GPU access, reduce the model size and disable 8-bit loading:
 
 .. code-block:: python
 
@@ -542,7 +540,7 @@ Advanced Usage
 
 Consider using a smaller model such as ``meta-llama/Llama-2-7b-hf`.
 
-🔬 **Components Standalone Usage**: Each component can be used independently of ``OLaLaAligner``:
+**🔬 Components Standalone Usage**: Each component can be used independently of ``OLaLaAligner``:
 
 .. sidebar:: OLaLa High Precision Matcher
 
