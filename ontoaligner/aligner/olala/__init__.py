@@ -11,10 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from .oaei import * # NOQA
-from .generic import GenericOntology, GenericOMDataset, OLaLaOntology, OLaLaOMDataset
-from .triple import GraphTripleOntology, GraphTripleOMDataset
-from .property import OntologyProperty, PropertyOMDataset, ProcessingStrategy
-from .kg import FLORAOntology, FLORAOMDataset, \
-                FLORAOpenEAKnowledgeBase, FLORAOpenEAOMDataset, \
-                FLORADBpedia15KKnowledgeBase, FLORADBpediaOMDataset
+from .highprecision_matcher import OLaLaHighPrecisionMatcher
+from .olala import OLaLaAligner
+from .llm import OLaLaLLMAligner
+from .retrieval import OLaLaSBERTRetrieval

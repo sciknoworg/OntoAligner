@@ -90,3 +90,26 @@ FLORA Aligner
    :members:
    :undoc-members:
    :show-inheritance:
+
+OLaLa Aligner
+------------------
+.. automodule:: ontoaligner.aligner.olala.olala
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :special-members: __init__, generate
+
+.. automodule:: ontoaligner.aligner.olala.dataset
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: ontoaligner.aligner.olala.highprecision_matcher
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: ontoaligner.aligner.olala.retrieval
+   :members:
+   :undoc-members:
+   :show-inheritance:
