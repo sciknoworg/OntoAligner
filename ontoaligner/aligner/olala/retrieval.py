@@ -278,8 +278,9 @@ class OLaLaSBERTRetrieval(BiEncoderRetrieval):
         """
         source_ontology = input_data[0]
         target_ontology = input_data[1]
-        if len(source_ontology) == 0 or len(target_ontology) == 0:
-            raise ValueError("Source or target ontologies cannot be empty.")
+
+        if not hasattr(self, "model") or self.model is None:
+            raise ValueError("Retrieval model not loaded. Call `load(path)` before `generate()`.")
 
         source_examples = self.get_text_examples(source_ontology)
         target_examples = self.get_text_examples(target_ontology)

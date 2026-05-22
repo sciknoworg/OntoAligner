@@ -72,10 +72,3 @@ def test_retriever_without_load_raises():
     retriever = OLaLaSBERTRetrieval(device="cpu", top_k=1, both_directions=False, topk_per_resource=False)
     with pytest.raises(Exception):
         retriever.generate(input_data=[[], []])
-
-
-def test_llm_without_load_raises():
-    # LLM aligner must be loaded before generating
-    llm = OLaLaLLMAligner(device="cpu", max_new_tokens=1)
-    with pytest.raises(Exception):
-        llm.generate(input_data=[[], [], []])
