@@ -12,7 +12,7 @@ from ontoaligner.utils import metrics, xmlify
 
 
 # 1. Load task and ontologies
-task = OLaLaOMDataset(language="en")
+task = OLaLaOMDataset()
 print("Test Task:", task)
 dataset = task.collect(
     source_ontology_path="../assets/source.owl",

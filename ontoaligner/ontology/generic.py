@@ -692,7 +692,9 @@ class OLaLaOntology(GenericOntology):
             """
             Extracts the URI fragment if it is not mostly numeric.
             """
-            fragment = self.get_uri_fragment(owl.get("iri", "")).strip()
+            fragment = str(owl.get("uri_fragment", "")).strip()
+            if not fragment:
+                fragment = self.get_uri_fragment(owl.get("iri", "")).strip()
             if not fragment:
                 return ""
             if self.contains_mostly_numbers(fragment):

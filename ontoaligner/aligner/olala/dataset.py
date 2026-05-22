@@ -85,6 +85,15 @@ class OLaLaLLMDataset(Dataset):
 
         self.len = len(self.data)
 
+    def __len__(self) -> int:
+        """
+        Returns the number of source-target candidate pairs.
+
+        Returns:
+            int: The number of candidate pairs.
+        """
+        return len(self.data)
+
     def preprocess(self, text: str) -> str:
         """
         Preprocesses text for OLaLa LLM prompting.
