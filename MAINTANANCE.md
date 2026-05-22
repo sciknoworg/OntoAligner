@@ -21,9 +21,11 @@ A core team will be responsible for the ongoing maintenance of OntoAligner, incl
   -  [Dr. Jennifer D'Souza](https://sites.google.com/view/jen-web) and [Prof. Dr. Sören Auer](https://www.tib.eu/en/research-development/research-groups-and-labs/data-science-and-digital-libraries/staff/soeren-auer) – Project Supervisors and Principal Investigators (PI) – Responsible for guiding ideation, refining ideas, and defining the project's high-level direction to align the library's goals with broader academic and research objectives.
 - **Assistants**:
   - [Mahsa Sanaei](https://www.linkedin.com/in/sanaei-mahsa/) – Contributes to the code-level documentation, use-case study, and ensures clarity and consistency across the library's functions and modules.
-  - [Mike Ashley Cedric Gill](https://www.linkedin.com/in/mike-ashley-cedric/) - Assists with activities such as maintaining the codebase for the smooth operation of the project. 
+  - [Krishna Rani](https://www.linkedin.com/in/krishna-rani-thakur-5b77b9150) - Assists with activities such as improvement of existing modules for the smooth operation of the project.
+  - [Venkata Abhishek Reddy Allu](https://www.linkedin.com/in/venkata-abhishek-reddy-allu/) – Focuses on the development of new features (or aligners) to enhance the library's functionality and maintainability.
 - **Alumni**:
   - [Amirreza Alasti](https://www.linkedin.com/in/amirreza-alasti-61450b1aa)
+  - [Mike Ashley Cedric Gill](https://www.linkedin.com/in/mike-ashley-cedric/)
 
 
 ## 2. Current Ongoing Maintenance and Plans
@@ -52,6 +54,7 @@ A roadmap for new features and improvements, ensuring the library evolves in res
 | Aligner | RDF2Vec based alinger | To-Do |
 | ... | ...                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | .. |
 
+> **The above list is a bit outdated as we decided to keep the current ongoing maintenances and plans in the issues!**
 
 > **If you are willing to have your Ontology Alignment within OntoAligner don't hesitate to contact us via [GitHub Issues](https://github.com/sciknoworg/ontoaligner/issues) or via email to [hamed.babaei@tib.eu](mailto:hamed.babaei@tib.eu)**.
 
