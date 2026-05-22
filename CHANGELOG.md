@@ -1,5 +1,11 @@
 ## Changelog
 
+### V1.8.0 Changelog (May 22, 2026)
+- OLaLa Aligner is added.
+- OLaLa Aligner documentation.
+- OLaLa Aligner example is added.
+- Added unittests for OLaLa Aligner.
+
 ### V1.7.0 Changelog (May 15, 2026)
 - FloraAligner is in action for KG alignment.
 - Documentation refactorings.
