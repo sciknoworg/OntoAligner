@@ -157,3 +157,92 @@ class ConceptParentLLMEncoder(LLMEncoder):
         """
         parents = ", ".join([parent["label"] for parent in owl["parents"]])
         return {"iri": owl["iri"], "concept": owl["label"], "parents": str(parents)}
+
+class PropertyLLMEncoder(LLMEncoder):
+    """
+    Encodes OWL/RDF items that represent properties.
+
+    This class inherits from the `LLMEncoder` class and is designed to encode OWL/RDF property items.
+    The `get_owl_items` method retrieves the IRI, label, and definition of the property.
+
+    Attributes:
+        items_in_owl (str): Specifies the type of OWL items being encoded, in this case, a Property.
+    """
+    items_in_owl: str = "(Property)"
+
+    def get_owl_items(self, prop: Dict) -> Any:
+        """
+        Extracts the IRI, label, and definition of a property from the given OWL item.
+
+        Parameters:
+            owl (Dict): A dictionary representing an OWL/RDF property item, expected to contain
+                        'iri', 'label', and optionally 'definition' keys.
+
+        Returns:
+            Dict: A dictionary containing the IRI, label, definition, and combined text of the property.
+        """        
+        label = prop.get("label", "")
+
+        combined_text = label
+
+        return {
+            "iri": prop["iri"],
+            "label": label,
+            "text": combined_text,
+        }
+
+class PropertyFullTextLLMEncoder(LLMEncoder):
+    """
+    Encodes OWL/RDF items that represent properties with domain, range, inverse property, and definition.
+
+    This class inherits from the `LLMEncoder` class and is designed to encode OWL/RDF property items.
+    The `get_owl_items` method retrieves the IRI, label, definition, domain, range, and inverse property information.
+
+    Attributes:
+        items_in_owl (str): Specifies the type of OWL items being encoded, in this case,
+                            a Property with Definition, Domain, Range, and Inverse.
+    """
+    items_in_owl: str = "(Property, Domain, Range, Inverse)"
+
+    def get_owl_items(self, prop: Dict) -> Any:
+        label = prop.get("label", "")
+
+        domain_text = (
+            " ".join(prop.get("domain_text", []))
+            if len(prop.get("domain_text", [])) > 0
+            else ""
+        )
+
+        range_text = (
+            " ".join(prop.get("range_text", []))
+            if len(prop.get("range_text", [])) > 0
+            else ""
+        )
+
+        inverse_text = ""
+        if prop.get("inverse_of"):
+            inverse_text = (
+                " ".join(prop.get("inverse_label", []))
+                if len(prop.get("inverse_label", [])) > 0
+                else ""
+            )
+
+        combined_text = label
+
+        if domain_text:
+            combined_text += "  " + domain_text
+
+        if range_text:
+            combined_text += "  " + range_text
+
+        if inverse_text:
+            combined_text += "  inverse: " + inverse_text
+
+        return {
+            "iri": prop["iri"],
+            "label": label,
+            "domain": domain_text,
+            "range": range_text,
+            "inverse": inverse_text,
+            "text": combined_text,
+        }
