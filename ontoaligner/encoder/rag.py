@@ -26,7 +26,6 @@ from collections import Counter
 
 from ..base import BaseEncoder
 from .lightweight import ConceptLightweightEncoder
-from .property import PropertyEncoder, PropMatchEncoder
 
 class RAGEncoder(BaseEncoder):
     """
@@ -287,43 +286,3 @@ class OLaLaEncoder(BaseEncoder):
             dict: A dictionary with the encoder name and items in OWL.
         """
         return f"OLaLaEncoder{self.items_in_owl}"
-
-class PropertyRAGEncoder(RAGEncoder):
-    """
-    Encodes OWL/RDF items representing a Property using retrieval-based and language model encoders.
-
-    This class extends the `RAGEncoder` class and is specialized in encoding OWL/RDF items that consist of
-    a Property. The retrieval encoder uses the `PropertyEncoder` class to retrieve the necessary property items,
-    while the language model encoder is set to "PropertyRAGDataset".
-
-    Attributes:
-        items_in_owl (str): Specifies the type of OWL items being encoded, in this case, a Property.
-        retrieval_encoder (Any): The retrieval encoder used for fetching OWL/RDF property items,
-                                 set to `PropertyEncoder`.
-        llm_encoder (str): The language model encoder used, set to "PropertyRAGDataset".
-    """    
-    items_in_owl: str = "(Property)"
-    retrieval_encoder: Any = PropertyEncoder
-    llm_encoder: str = "PropertyRAGDataset"
-
-
-class PropertyRAGEncoder(RAGEncoder):
-    """
-    Encodes OWL/RDF items representing a Property with its Domain, Range, and Inverse property using
-    retrieval-based and language model encoders.
-
-    This class extends the `RAGEncoder` class and is specialized in encoding OWL/RDF items that consist of
-    a Property, its Domain, Range, and Inverse property information. The retrieval encoder uses the
-    `PropMatchEncoder` class to retrieve the necessary property items, while the language model encoder is
-    set to "PropertyFullTextRAGDataset".
-
-    Attributes:
-        items_in_owl (str): Specifies the type of OWL items being encoded, in this case,
-                            a Property with Domain, Range, and Inverse property.
-        retrieval_encoder (Any): The retrieval encoder used for fetching OWL/RDF property items,
-                                 set to `PropMatchEncoder`.
-        llm_encoder (str): The language model encoder used, set to "PropertyFullTextRAGDataset".
-    """    
-    items_in_owl: str = "(Property, Domain, Range, Inverse)"
-    retrieval_encoder: Any = PropMatchEncoder
-    llm_encoder: str = "PropertyFullTextRAGDataset"
