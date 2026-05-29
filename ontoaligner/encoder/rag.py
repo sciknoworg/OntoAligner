@@ -27,6 +27,7 @@ from collections import Counter
 from ..base import BaseEncoder
 from .lightweight import ConceptLightweightEncoder
 
+
 class RAGEncoder(BaseEncoder):
     """
     A retrieval-augmented generation (RAG) encoder for ontology mapping.

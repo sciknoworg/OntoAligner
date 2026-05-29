@@ -26,6 +26,7 @@ from typing import Any, Dict
 
 from torch.utils.data import Dataset
 
+
 class RAGDataset(Dataset):
     """
     A base dataset class for handling real-world entity classification tasks. This class preprocesses data and formats it into
