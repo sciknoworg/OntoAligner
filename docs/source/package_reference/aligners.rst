@@ -113,3 +113,46 @@ OLaLa Aligner
    :members:
    :undoc-members:
    :show-inheritance:
+
+Ensemble Learning
+------------------
+.. automodule:: ontoaligner.aligner.ensemble.ensemble
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :special-members: __init__, generate
+
+.. automodule:: ontoaligner.aligner.ensemble.voting.base
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: ontoaligner.aligner.ensemble.voting.reciprocal_rank_fusion
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :special-members: __init__, combine, get_voting_info
+
+.. automodule:: ontoaligner.aligner.ensemble.voting.borda
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :special-members: combine, get_voting_info
+
+.. automodule:: ontoaligner.aligner.ensemble.voting.condorce
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :special-members: combine, get_voting_info
+
+.. automodule:: ontoaligner.aligner.ensemble.voting.average
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :special-members: combine, get_voting_info
+
+.. automodule:: ontoaligner.aligner.ensemble.voting.weighted
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :special-members: __init__, combine, get_voting_info
