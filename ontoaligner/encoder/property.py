@@ -21,7 +21,8 @@ into structures suitable for the PropertyMatcher alignment algorithm.
 from typing import Any, Dict
 
 from ..base import BaseEncoder
-
+from .llm import LLMEncoder
+from .rag import RAGEncoder
 
 class PropertyEncoder(BaseEncoder):
     """
@@ -155,3 +156,133 @@ class PropMatchEncoder(PropertyEncoder):
     def __str__(self):
         """Returns a string representation of the encoder."""
         return {"PropMatchEncoder": self.items_in_owl}
+
+class PropertyRAGEncoder(RAGEncoder):
+    """
+    Encodes OWL/RDF items representing a Property using retrieval-based and language model encoders.
+
+    This class extends the `RAGEncoder` class and is specialized in encoding OWL/RDF items that consist of
+    a Property. The retrieval encoder uses the `PropertyEncoder` class to retrieve the necessary property items,
+    while the language model encoder is set to "PropertyRAGDataset".
+
+    Attributes:
+        items_in_owl (str): Specifies the type of OWL items being encoded, in this case, a Property.
+        retrieval_encoder (Any): The retrieval encoder used for fetching OWL/RDF property items,
+                                 set to `PropertyEncoder`.
+        llm_encoder (str): The language model encoder used, set to "PropertyRAGDataset".
+    """    
+    items_in_owl: str = "(Property)"
+    retrieval_encoder: Any = PropertyEncoder
+    llm_encoder: str = "PropertyRAGDataset"
+
+
+class PropertyFullTextRAGEncoder(RAGEncoder):
+    """
+    Encodes OWL/RDF items representing a Property with its Domain, Range, and Inverse property using
+    retrieval-based and language model encoders.
+
+    This class extends the `RAGEncoder` class and is specialized in encoding OWL/RDF items that consist of
+    a Property, its Domain, Range, and Inverse property information. The retrieval encoder uses the
+    `PropMatchEncoder` class to retrieve the necessary property items, while the language model encoder is
+    set to "PropertyFullTextRAGDataset".
+
+    Attributes:
+        items_in_owl (str): Specifies the type of OWL items being encoded, in this case,
+                            a Property with Domain, Range, and Inverse property.
+        retrieval_encoder (Any): The retrieval encoder used for fetching OWL/RDF property items,
+                                 set to `PropMatchEncoder`.
+        llm_encoder (str): The language model encoder used, set to "PropertyFullTextRAGDataset".
+    """    
+    items_in_owl: str = "(Property, Domain, Range, Inverse)"
+    retrieval_encoder: Any = PropMatchEncoder
+    llm_encoder: str = "PropertyFullTextRAGDataset"
+
+
+class PropertyLLMEncoder(LLMEncoder):
+    """
+    Encodes OWL/RDF items that represent properties.
+
+    This class inherits from the `LLMEncoder` class and is designed to encode OWL/RDF property items.
+    The `get_owl_items` method retrieves the IRI, label, and definition of the property.
+
+    Attributes:
+        items_in_owl (str): Specifies the type of OWL items being encoded, in this case, a Property.
+    """
+    items_in_owl: str = "(Property)"
+
+    def get_owl_items(self, prop: Dict) -> Any:
+        """
+        Extracts the IRI, label, and definition of a property from the given OWL item.
+
+        Parameters:
+            owl (Dict): A dictionary representing an OWL/RDF property item, expected to contain
+                        'iri', 'label', and optionally 'definition' keys.
+
+        Returns:
+            Dict: A dictionary containing the IRI, label, definition, and combined text of the property.
+        """        
+        label = prop.get("label", "")
+
+        combined_text = label
+
+        return {
+            "iri": prop["iri"],
+            "label": label,
+            "text": combined_text,
+        }
+
+class PropertyFullTextLLMEncoder(LLMEncoder):
+    """
+    Encodes OWL/RDF items that represent properties with domain, range, inverse property, and definition.
+
+    This class inherits from the `LLMEncoder` class and is designed to encode OWL/RDF property items.
+    The `get_owl_items` method retrieves the IRI, label, definition, domain, range, and inverse property information.
+
+    Attributes:
+        items_in_owl (str): Specifies the type of OWL items being encoded, in this case,
+                            a Property with Definition, Domain, Range, and Inverse.
+    """
+    items_in_owl: str = "(Property, Domain, Range, Inverse)"
+
+    def get_owl_items(self, prop: Dict) -> Any:
+        label = prop.get("label", "")
+
+        domain_text = (
+            " ".join(prop.get("domain_text", []))
+            if len(prop.get("domain_text", [])) > 0
+            else ""
+        )
+
+        range_text = (
+            " ".join(prop.get("range_text", []))
+            if len(prop.get("range_text", [])) > 0
+            else ""
+        )
+
+        inverse_text = ""
+        if prop.get("inverse_of"):
+            inverse_text = (
+                " ".join(prop.get("inverse_label", []))
+                if len(prop.get("inverse_label", [])) > 0
+                else ""
+            )
+
+        combined_text = label
+
+        if domain_text:
+            combined_text += "  " + domain_text
+
+        if range_text:
+            combined_text += "  " + range_text
+
+        if inverse_text:
+            combined_text += "  inverse: " + inverse_text
+
+        return {
+            "iri": prop["iri"],
+            "label": label,
+            "domain": domain_text,
+            "range": range_text,
+            "inverse": inverse_text,
+            "text": combined_text,
+        }    

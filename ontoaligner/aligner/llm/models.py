@@ -20,7 +20,7 @@ predefined abstract base classes for LLM architectures and customize them for sp
 from transformers import (AutoTokenizer, AutoModelForCausalLM, T5Tokenizer, T5ForConditionalGeneration)
 
 from .llm import EncoderDecoderLLMArch, DecoderLLMArch, OpenAILLMArch
-
+from ..propmatch import PropertyLLMDataset, PropertyFullTextLLMDataset
 
 class FlanT5LEncoderDecoderLM(EncoderDecoderLLMArch):
     """
