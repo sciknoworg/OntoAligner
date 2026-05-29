@@ -1,7 +1,7 @@
 import pytest
 
 from ontoaligner.base import BaseEncoder, BaseOMModel
-from ontoaligner.aligner.ensemble import EnsembleAligner
+from ontoaligner.aligner.ensemble import EnsembleLearningAligner
 from ontoaligner.aligner.ensemble.voting import (
     ReciprocalRankFusionVoting,
     BordaCountVoting,
@@ -82,14 +82,14 @@ def score_filter(predicts, threshold=0.5):
     return [prediction for prediction in predicts if prediction["score"] >= threshold]
 
 
-def test_aligner_branch_generates_predictions(om_dataset):
-    branch = AlignerPipeline(
+def test_aligner_pipeline_generates_predictions(om_dataset):
+    aligner_pipeline = AlignerPipeline(
         encoder=DummyEncoder(),
         aligner=DummyAligner(),
         om_dataset=om_dataset,
     )
 
-    predictions = branch.generate()
+    predictions = aligner_pipeline.generate()
 
     assert len(predictions) == 1
     assert predictions[0]["source"] == "s1"
@@ -97,8 +97,8 @@ def test_aligner_branch_generates_predictions(om_dataset):
     assert predictions[0]["score"] == 0.9
 
 
-def test_aligner_branch_with_postprocessor(om_dataset):
-    branch = AlignerPipeline(
+def test_aligner_pipeline_with_postprocessor(om_dataset):
+    aligner_pipeline = AlignerPipeline(
         encoder=DummyEncoder(),
         aligner=DummyAligner(),
         om_dataset=om_dataset,
@@ -106,19 +106,19 @@ def test_aligner_branch_with_postprocessor(om_dataset):
         postprocessor_params={"threshold": 0.95},
     )
 
-    predictions = branch.generate()
+    predictions = aligner_pipeline.generate()
 
     assert predictions == []
 
 
-def test_ensemble_aligner_requires_multiple_branches():
+def test_ensemble_learning_aligner_requires_multiple_branches():
     branch = StaticBranch([{"source": "s1", "target": "t1", "score": 1.0}])
 
     with pytest.raises(ValueError):
-        EnsembleAligner(branches=[("single", branch, 1.0)])
+        EnsembleLearningAligner(branches=[("single", branch, 1.0)])
 
 
-def test_ensemble_aligner_combines_flat_outputs():
+def test_ensemble_learning_aligner_combines_flat_outputs():
     branch_1 = StaticBranch(
         [
             {"source": "s1", "target": "t1", "score": 0.9},
@@ -131,7 +131,7 @@ def test_ensemble_aligner_combines_flat_outputs():
         ]
     )
 
-    ensemble = EnsembleAligner(
+    ensemble = EnsembleLearningAligner(
         branches=[
             ("branch-1", branch_1, 1.0),
             ("branch-2", branch_2, 1.0),
@@ -145,7 +145,7 @@ def test_ensemble_aligner_combines_flat_outputs():
     assert predictions[0]["target"] == "t1"
 
 
-def test_ensemble_aligner_flattens_grouped_outputs(om_dataset):
+def test_ensemble_learning_aligner_flattens_grouped_outputs(om_dataset):
     branch_1 = AlignerPipeline(
         encoder=DummyEncoder(),
         aligner=DummyGroupedAligner(),
@@ -157,7 +157,7 @@ def test_ensemble_aligner_flattens_grouped_outputs(om_dataset):
         ]
     )
 
-    ensemble = EnsembleAligner(
+    ensemble = EnsembleLearningAligner(
         branches=[
             ("grouped", branch_1, 1.0),
             ("flat", branch_2, 1.0),

@@ -28,7 +28,7 @@ from ontoaligner.postprocess import (
     graph_postprocessor,
     rag_heuristic_postprocessor,
 )
-from ontoaligner.aligner.ensemble import EnsembleAligner
+from ontoaligner.aligner.ensemble import EnsembleLearningAligner
 from ontoaligner.aligner.ensemble.voting import ReciprocalRankFusionVoting
 from ontoaligner import AlignerPipeline
 
@@ -126,6 +126,7 @@ branches = [
         AlignerPipeline(
             encoder=GraphTripleEncoder(),
             aligner=TransEAligner(
+                model="TransE",
                 device=device,
                 embedding_dim=32,
                 num_epochs=1,
@@ -210,7 +211,7 @@ branches = [
 
 
 # Step 6: Initialize ensemble aligner with rank-based voting
-ensemble = EnsembleAligner(
+ensemble = EnsembleLearningAligner(
     branches=branches,
     voting=ReciprocalRankFusionVoting(k=60),
 )

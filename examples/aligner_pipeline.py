@@ -18,15 +18,15 @@ dataset = task.collect(
     reference_matching_path="assets/MI-MatOnto/matchings.xml",
 )
 
-# Step 3: Define one aligner branch
-branch = AlignerPipeline(
+# Step 3: Define the aligner pipeline
+aligner_pipeline = AlignerPipeline(
     encoder=ConceptParentLightweightEncoder(),
     aligner=SimpleFuzzySMLightweight(fuzzy_sm_threshold=0.2),
     om_dataset=dataset,
 )
 
 # Step 4: Generate predictions
-matchings = branch.generate()
+matchings = aligner_pipeline.generate()
 
 # Step 5: Evaluate predictions
 evaluation = metrics.evaluation_report(
@@ -34,13 +34,13 @@ evaluation = metrics.evaluation_report(
     references=dataset["reference"],
 )
 
-print("\nSingle Branch Evaluation Report:")
+print("\n Aligner Pipeline Evaluation Report:")
 print(json.dumps(evaluation, indent=4))
 
 # Step 6: Save XML output
 xml_str = xmlify.xml_alignment_generator(matchings=matchings)
 
-with open("single_branch_matchings.xml", "w", encoding="utf-8") as xml_file:
+with open("aligner_pipeline_matchings.xml", "w", encoding="utf-8") as xml_file:
     xml_file.write(xml_str)
 
-print("Saved XML: single_branch_matchings.xml")
+print("Saved XML: aligner_pipeline_matchings.xml")
