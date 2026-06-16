@@ -36,6 +36,7 @@ setup(
         "pykeen==1.11.1",
         "scipy==1.15.3",
         "multiprocess",
+        "cohere",
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
