@@ -235,7 +235,7 @@ class RAG(BaseOMModel):
             self.Retrieval = retriever(**self.kwargs["retriever_config"])
         if not llm:
             try:
-                self.Retrieval = self.LLM(**self.kwargs["llm_config"])
+                self.LLM = self.LLM(**self.kwargs["llm_config"])
             except Exception as error:
                 raise ValueError(f"{error}\n LLM model must be provided.")
         else:
