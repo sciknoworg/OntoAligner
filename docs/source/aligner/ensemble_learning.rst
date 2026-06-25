@@ -1,7 +1,7 @@
-Ensemble Learning
+Ensemble Learning Aligner
 =====================================================
 
-Ensemble Alignment
+Ensemble Learning
 ------------------
 .. sidebar:: Useful links:
 
