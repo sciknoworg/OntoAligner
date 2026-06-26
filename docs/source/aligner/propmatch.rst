@@ -608,6 +608,130 @@ Different Aligners
 		print("Evaluation Report:", json.dumps(evaluation, indent=4))
 
 
+.. tab:: RAG-Based Aligner 🔗
+
+    The RAG-based aligner combines retrieval and LLM reasoning to match properties across ontologies. A BERT-based retriever first selects the top-k most similar candidate pairs, and a lightweight LLM then checks whether each pair is a real match. A hybrid postprocessor combines retrieval similarity and LLM confidence to produce the final alignments. This approach works well for heterogeneous ontologies because retrieval finds plausible candidates while the LLM resolves ambiguous cases.
+
+    .. code-block:: python
+
+        # Step1. Import Required Modules
+        import json
+        from ontoaligner.ontology import PropertyOMDataset
+        from ontoaligner.utils import metrics, xmlify
+        from ontoaligner.aligner import FalconLLMBERTRetrieverRAG
+        from ontoaligner.encoder import PropertyFullTextRAGEncoder
+        from ontoaligner.postprocess import rag_hybrid_postprocessor
+
+        #Step 2. Define the Task and Load Ontologies
+        task = PropertyOMDataset()
+        print("Property Matching Task:", task)
+
+        dataset = task.collect(
+            source_ontology_path="../assets/MI-MatOnto/mi_ontology.xml",
+            target_ontology_path="../assets/MI-MatOnto/matonto_ontology.xml",
+            reference_matching_path="../assets/MI-MatOnto/property_matchings.xml",
+        )
+
+        # Step 3. Encode Ontologies
+        encoder_model = PropertyFullTextRAGEncoder()
+        encoded_ontology = encoder_model(source=dataset["source"], target=dataset["target"], reference=dataset["reference"])
+
+        #Step 4. Configure the Retriever and LLM
+        retriever_config = {"device": "cpu", "top_k": 5, "threshold": 0.1,
+        }
+        llm_config = {
+            "device": "cpu", "max_length": 300, "max_new_tokens": 5, "device_map": "auto", "batch_size": 8,
+            "answer_set": {
+                "yes": ["yes", "correct", "true", "positive", "valid"],
+                "no": ["no", "incorrect", "false", "negative", "invalid"],
+            }
+        }
+
+        # Step 5. Generate Predictions
+        model = FalconLLMBERTRetrieverRAG(retriever_config=retriever_config, llm_config=llm_config)
+        model.load(llm_path="Qwen/Qwen2.5-0.5B-Instruct", ir_path="all-MiniLM-L6-v2",)
+        predicts = model.generate(input_data=encoded_ontology)
+
+        # Step 6. Postprocess Matches
+        # Heuristic Postprocessing
+        hybrid_matchings, hybrid_configs = rag_hybrid_postprocessor(predicts=predicts, ir_score_threshold=0.4, llm_confidence_th=0.5)
+        evaluation = metrics.evaluation_report(predicts=hybrid_matchings, references=dataset["reference"])
+        print("Property Hybrid Matching Evaluation Report:", json.dumps(evaluation, indent=4))
+        print("Property Hybrid Matching Obtained Configuration:", hybrid_configs)
+
+        # Step 7. Save Matchings in XML Format
+        xml_str = xmlify.xml_alignment_generator(matchings=hybrid_matchings)
+
+        output_file_path = "property_matchings.xml"
+        with open(output_file_path, "w", encoding="utf-8") as xml_file:
+            xml_file.write(xml_str)
+
+.. tab:: LLM-Based Aligner 🧠
+
+    The LLM-based aligner uses a large language model to decide whether source-target property pairs are equivalent. Each pair is converted into a prompt with property details such as labels, domains, ranges, and inverses. The LLM’s free-form answer is mapped to a clean yes/no decision using a TF-IDF label mapper and logistic-regression classifier, and the postprocessor keeps the pairs marked “yes” as final alignments. This approach is flexible because it uses full property context, but it is more computationally expensive since all pairs are evaluated directly.
+  
+    .. code-block:: python
+
+        import json
+        from torch.utils.data import DataLoader
+        from tqdm import tqdm
+        from sklearn.linear_model import LogisticRegression
+        from ontoaligner.ontology import PropertyOMDataset
+        from ontoaligner.encoder import PropMatchEncoder
+        from ontoaligner.aligner import AutoModelDecoderLLM
+        from ontoaligner.aligner import PropertyFullTextLLMDataset
+        from ontoaligner.postprocess import TFIDFLabelMapper, llm_postprocessor
+        from ontoaligner.utils import metrics, xmlify
+
+        task = PropertyOMDataset()
+        print("Property Matching Task:", task)
+
+        dataset = task.collect(
+            source_ontology_path="../assets/MI-MatOnto/mi_ontology.xml",
+            target_ontology_path="../assets/MI-MatOnto/matonto_ontology.xml",
+            reference_matching_path="../assets/MI-MatOnto/property_matchings.xml"
+        )
+
+        encoder_model = PropMatchEncoder()
+        source_onto, target_onto = encoder_model(source=dataset['source'], target=dataset['target'])
+
+        llm_dataset = PropertyFullTextLLMDataset(source_onto=source_onto, target_onto=target_onto)
+        print("Number of property pairs:", len(llm_dataset))
+
+        dataloader = DataLoader(llm_dataset, batch_size=128, shuffle=False, collate_fn=llm_dataset.collate_fn)
+
+        model = AutoModelDecoderLLM(device="cpu", max_length=300, max_new_tokens=10)
+        model.load(path="Qwen/Qwen2.5-0.5B-Instruct")
+
+        predictions = []
+        for batch in tqdm(dataloader):
+            prompts = batch["prompts"]
+            sequences = model.generate(prompts)
+            predictions.extend(sequences)
+        print("Number of predictions:", len(predictions))
+
+        label_dict = {
+            "yes": ["yes", "correct", "true", "positive", "valid"],
+            "no": ["no", "incorrect", "false", "negative", "invalid"],
+        }
+        mapper = TFIDFLabelMapper(classifier=LogisticRegression(), ngram_range=(1, 1), label_dict=label_dict)
+
+        matchings = llm_postprocessor(predicts=predictions, mapper=mapper, dataset=llm_dataset)
+
+        evaluation = metrics.evaluation_report(predicts=matchings, references=dataset['reference'])
+        print("Property LLM Matching Evaluation Report:", json.dumps(evaluation, indent=4))
+
+        xml_str = xmlify.xml_alignment_generator(matchings=matchings)
+        xml_output_file = "property_llm_matchings.xml"
+        with open(xml_output_file, "w", encoding="utf-8") as xml_file:
+            xml_file.write(xml_str)
+        print(f"Saved property LLM matchings XML to: {xml_output_file}")
+
+        json_output_file = "property_llm_matchings.json"
+        with open(json_output_file, "w", encoding="utf-8") as json_file:
+            json.dump(matchings, json_file, indent=4, ensure_ascii=False)
+        print(f"Saved property LLM matchings JSON to: {json_output_file}")
+
 	.. hint::
 
 		Refer to the `Aligners > Retrieval <https://ontoaligner.readthedocs.io/aligner/retriever.html>`_ page for more information.
