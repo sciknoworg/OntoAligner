@@ -62,7 +62,6 @@ model.load(
 # Step 8: Generate property matching predictions
 predicts = model.generate(input_data=encoded_ontology)
 
-print(predicts)
 # Step 9: Apply hybrid postprocessing
 hybrid_matchings, hybrid_configs = rag_hybrid_postprocessor(
     predicts=predicts,

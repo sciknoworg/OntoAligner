@@ -41,6 +41,7 @@ from ..llm import DecoderLLMArch, OpenAILLMArch
 from .dataset import * # NOQA
 from ...postprocess import process
 
+
 class RAGBasedDecoderLLMArch(DecoderLLMArch):
     """
     RAGBasedDecoderLLMArch is a class implementing a retrieval-augmented decoder architecture.

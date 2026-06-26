@@ -21,6 +21,7 @@ from transformers import (AutoTokenizer, AutoModelForCausalLM, T5Tokenizer, T5Fo
 
 from .llm import EncoderDecoderLLMArch, DecoderLLMArch, OpenAILLMArch
 
+
 class FlanT5LEncoderDecoderLM(EncoderDecoderLLMArch):
     """
     A subclass of EncoderDecoderLLMArch for the Flan-T5 encoder-decoder language model.
