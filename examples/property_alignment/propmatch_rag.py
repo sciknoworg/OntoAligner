@@ -31,28 +31,27 @@ encoded_ontology = encoder_model(
 )
 
 # Step 5: Define model configuration
-config = {
-    "retriever_config": {
-        "device": "cpu",
-        "top_k": 5,
-        "threshold": 0.1,
-    },
-    "llm_config": {
-        "device": "cpu",
-        "max_length": 300,
-        "max_new_tokens": 5,
-        "huggingface_access_token": "",
-        "device_map": "auto",
-        "batch_size": 8,
-        "answer_set": {
-            "yes": ["yes", "correct", "true", "positive", "valid"],
-            "no": ["no", "incorrect", "false", "negative", "invalid"],
-        },
-    },
+retriever_config = {
+    "device": "cpu",
+    "top_k": 5,
+    "threshold": 0.1,
+}
+llm_config = {
+    "device": "cpu",
+    "max_length": 300,
+    "max_new_tokens": 5,
+    "huggingface_access_token": "",
+    "device_map": "auto",
+    "batch_size": 8,
+    "answer_set": {
+        "yes": ["yes", "correct", "true", "positive", "valid"],
+        "no": ["no", "incorrect", "false", "negative", "invalid"],
+    }
 }
 
+
 # Step 6: Initialize the normal RAG model
-model = FalconLLMBERTRetrieverRAG(**config)
+model = FalconLLMBERTRetrieverRAG(retriever_config=retriever_config, llm_config=llm_config)
 
 # Step 7: Load small LLM and retriever model
 model.load(
@@ -63,7 +62,7 @@ model.load(
 # Step 8: Generate property matching predictions
 predicts = model.generate(input_data=encoded_ontology)
 
-
+print(predicts)
 # Step 9: Apply hybrid postprocessing
 hybrid_matchings, hybrid_configs = rag_hybrid_postprocessor(
     predicts=predicts,

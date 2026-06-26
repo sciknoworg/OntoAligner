@@ -40,7 +40,6 @@ from ...base import BaseOMModel
 from ..llm import DecoderLLMArch, OpenAILLMArch
 from .dataset import * # NOQA
 from ...postprocess import process
-from ..propmatch import PropertyRAGDataset, PropertyFullTextRAGDataset
 
 class RAGBasedDecoderLLMArch(DecoderLLMArch):
     """

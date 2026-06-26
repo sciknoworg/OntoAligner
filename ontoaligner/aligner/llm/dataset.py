@@ -117,3 +117,107 @@ class ConceptChildrenLLMDataset(LLMDataset):
             .replace("{target_children}", target_children)
         )
         return template
+class PropertyLLMDataset(LLMDataset):
+    prompt = """Determine whether the following two ontology properties represent the same semantic relation. Respond with "yes" or "no" only.
+### Property 1:
+{source}
+### Property 2:
+{target}
+### Your Answer:"""
+
+    def fill_one_sample(self, input_data: Any) -> str:
+        template = self.prompt
+
+        source = self.preprocess(input_data["source"].get("label", ""))
+        target = self.preprocess(input_data["target"].get("label", ""))
+
+        template = (
+            template.replace("{source}", source)
+            .replace("{target}", target)
+        )
+
+        return template
+
+class PropertyFullTextLLMDataset(LLMDataset):
+    prompt = """Determine whether the following two ontology properties represent the same semantic relation. Respond with "yes" or "no" only.
+### Property 1:
+{source}
+**Domain**: {source_domain}
+**Range**: {source_range}
+**Inverse**: {source_inverse}
+
+### Property 2:
+{target}
+**Domain**: {target_domain}
+**Range**: {target_range}
+**Inverse**: {target_inverse}
+
+### Your Answer:"""
+
+    def fill_one_sample(self, input_data: Any) -> str:
+        template = self.prompt
+
+        source = self.preprocess(input_data["source"].get("label", ""))
+        target = self.preprocess(input_data["target"].get("label", ""))
+
+        source_domain = (
+            " ".join(input_data["source"].get("domain_text", []))
+            if len(input_data["source"].get("domain_text", [])) > 0
+            else ""
+        )
+
+        target_domain = (
+            " ".join(input_data["target"].get("domain_text", []))
+            if len(input_data["target"].get("domain_text", [])) > 0
+            else ""
+        )
+
+        source_range = (
+            " ".join(input_data["source"].get("range_text", []))
+            if len(input_data["source"].get("range_text", [])) > 0
+            else ""
+        )
+
+        target_range = (
+            " ".join(input_data["target"].get("range_text", []))
+            if len(input_data["target"].get("range_text", [])) > 0
+            else ""
+        )
+
+        source_inverse = ""
+        if input_data["source"].get("inverse_of"):
+            source_inverse = (
+                " ".join(input_data["source"].get("inverse_label", []))
+                if len(input_data["source"].get("inverse_label", [])) > 0
+                else ""
+            )
+
+        target_inverse = ""
+        if input_data["target"].get("inverse_of"):
+            target_inverse = (
+                " ".join(input_data["target"].get("inverse_label", []))
+                if len(input_data["target"].get("inverse_label", [])) > 0
+                else ""
+            )
+
+        source_domain = self.preprocess(source_domain)
+        target_domain = self.preprocess(target_domain)
+
+        source_range = self.preprocess(source_range)
+        target_range = self.preprocess(target_range)
+
+        source_inverse = self.preprocess(source_inverse)
+        target_inverse = self.preprocess(target_inverse)
+
+        template = (
+            template.replace("{source}", source)
+            .replace("{target}", target)
+            .replace("{source_domain}", source_domain)
+            .replace("{target_domain}", target_domain)
+            .replace("{source_range}", source_range)
+            .replace("{target_range}", target_range)
+            .replace("{source_inverse}", source_inverse)
+            .replace("{target_inverse}", target_inverse)
+        )
+
+        return template
