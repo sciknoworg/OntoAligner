@@ -1,5 +1,18 @@
 ## Changelog
 
+### V1.9.0 Changelog (June 29, 2026)
+- Ensemble Aligner is added.
+- Ensemble Aligner documentation.
+- Ensemble Aligner example is added.
+- Added unittests for Ensemble Aligner.
+- Reranker added with documentation to the retrieval component of the aligner.
+- PropMatch Aligner extended to support LLM and RAG based alignments.
+- Financial case study added.
+- Documentation is improved.
+- Bug fixing in the RAG component of the aligner.
+- Parser customization is added to the aligner.
+- AlignerPipeline is added to the aligner in support of ensemble learning and other aligners.
+
 ### V1.8.0 Changelog (May 22, 2026)
 - OLaLa Aligner is added.
 - OLaLa Aligner documentation.
