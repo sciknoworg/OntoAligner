@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankTradingHaltMessage">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">trading halt message</rdfs:label>
+    <rdfs:comment xml:lang="en">A market message indicating that trading in a security is suspended.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">trading suspension</skos:altLabel>
+    <skos:altLabel xml:lang="en">halt notice</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankOddLotBuybackProgram">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">odd lot buyback program</rdfs:label>
+    <rdfs:comment xml:lang="en">A purchase offer aimed at holders of small or odd-lot positions.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">odd lot offer</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankCapitalReturnDistribution">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">capital return distribution</rdfs:label>
+    <rdfs:comment xml:lang="en">A distribution of capital or other value from an issuer to security holders.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">return of capital</skos:altLabel>
+    <skos:altLabel xml:lang="en">capital payout</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankBondMaturityRedemption">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">bond maturity redemption</rdfs:label>
+    <rdfs:comment xml:lang="en">A redemption event where the debt security is repaid at its scheduled maturity date.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">maturity repayment</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankIssuerEarlyCallRedemption">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">issuer early call redemption</rdfs:label>
+    <rdfs:comment xml:lang="en">A full redemption before maturity initiated by the issuer under call provisions.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">early call</skos:altLabel>
+    <skos:altLabel xml:lang="en">full call redemption</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankIssuerRepurchaseOffer">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">issuer repurchase offer</rdfs:label>
+    <rdfs:comment xml:lang="en">A voluntary offer in which the issuer offers to buy back securities from holders.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">buyback offer</skos:altLabel>
+    <skos:altLabel xml:lang="en">repurchase event</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankInterestRateReset">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">interest rate reset</rdfs:label>
+    <rdfs:comment xml:lang="en">An adjustment event that changes the interest rate terms for a security.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">rate adjustment</skos:altLabel>
+    <skos:altLabel xml:lang="en">coupon reset</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankCapitalGainPayout">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">capital gain payout</rdfs:label>
+    <rdfs:comment xml:lang="en">A distribution connected to realized capital gains that is paid to eligible holders.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">capital gains payout</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankBondDefaultNotice">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">bond default notice</rdfs:label>
+    <rdfs:comment xml:lang="en">A notice or event indicating that a bond issuer has defaulted on an obligation.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">debt default</skos:altLabel>
+    <skos:altLabel xml:lang="en">issuer default</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankPrincipalAndInterestPayment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">principal and interest payment</rdfs:label>
+    <rdfs:comment xml:lang="en">An event where both interest and principal are paid to holders of a debt security.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">interest with principal</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankParValueRedenomination">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">par value redenomination</rdfs:label>
+    <rdfs:comment xml:lang="en">An event that changes the denomination currency or nominal expression of a security.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">redenomination</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankSecurityConversionEvent">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">security conversion event</rdfs:label>
+    <rdfs:comment xml:lang="en">A corporate action where one security or instrument is converted into another security or form.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">conversion event</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankStockBonusDistribution">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">stock bonus distribution</rdfs:label>
+    <rdfs:comment xml:lang="en">A non-cash corporate action where additional shares are distributed to existing holders.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">stock dividend</skos:altLabel>
+    <skos:altLabel xml:lang="en">bonus shares</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankWorthlessSecurityNotice">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">worthless security notice</rdfs:label>
+    <rdfs:comment xml:lang="en">An event indicating that a security has no remaining economic value.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">worthless security</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankTradingResumeMessage">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">trading resume message</rdfs:label>
+    <rdfs:comment xml:lang="en">A market message indicating that trading in a security is active or has resumed.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">active trading status</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankBonusRightsDistribution">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">bonus rights distribution</rdfs:label>
+    <rdfs:comment xml:lang="en">An event where rights or intermediate securities are distributed to existing holders as a bonus entitlement.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">bonus rights</skos:altLabel>
+    <skos:altLabel xml:lang="en">rights allocation</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankHolderPutRedemption">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">holder put redemption</rdfs:label>
+    <rdfs:comment xml:lang="en">A redemption event initiated by the holder under put provisions.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">put redemption</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankPostMergerSecurityExchange">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">post merger security exchange</rdfs:label>
+    <rdfs:comment xml:lang="en">An event where holders exchange securities after a merger or acquisition transaction.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">merger exchange</skos:altLabel>
+    <skos:altLabel xml:lang="en">post acquisition exchange</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankPartialPrincipalRedemption">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">partial principal redemption</rdfs:label>
+    <rdfs:comment xml:lang="en">A partial redemption that reduces the nominal value or outstanding principal of the security.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">partial redemption</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label xml:lang="en">Synthetic Bank Corporate Actions Ontology</rdfs:label>
+    <rdfs:comment xml:lang="en">A synthetic RDF/XML ontology for demonstrating OntoAligner alignment from bank corporate-action vocabulary to FIBO security-related corporate actions.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankShareSplitAction">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">share split action</rdfs:label>
+    <rdfs:comment xml:lang="en">An issuer event that increases the number of outstanding shares and adjusts the per-share value proportionally.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">equity split</skos:altLabel>
+    <skos:altLabel xml:lang="en">forward split</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankDividendChoiceEvent">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">dividend election event</rdfs:label>
+    <rdfs:comment xml:lang="en">A corporate action where holders may choose among dividend settlement options.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">dividend option</skos:altLabel>
+    <skos:altLabel xml:lang="en">election dividend</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankRightsSubscriptionEvent">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">rights subscription event</rdfs:label>
+    <rdfs:comment xml:lang="en">An event where existing holders may exercise subscription rights to obtain securities.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">rights exercise</skos:altLabel>
+    <skos:altLabel xml:lang="en">subscription rights</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankBondCouponPayment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">bond coupon payment</rdfs:label>
+    <rdfs:comment xml:lang="en">A scheduled payment of interest to holders of a debt security.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">coupon payment</skos:altLabel>
+    <skos:altLabel xml:lang="en">interest coupon</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankConversionSuspensionNotice">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">conversion suspension notice</rdfs:label>
+    <rdfs:comment xml:lang="en">A notice that temporarily suspends the ability to convert a security.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">conversion halt</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankDelistingMessage">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">delisting message</rdfs:label>
+    <rdfs:comment xml:lang="en">A market notice indicating that a security has been removed from listing.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">listing removal</skos:altLabel>
+    <skos:altLabel xml:lang="en">delisting notice</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">bank security corporate action</rdfs:label>
+    <rdfs:comment xml:lang="en">Internal bank classification for events that change securities, payments, trading status, or investor elections.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankDividendReinvestmentPlan">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">dividend reinvestment plan</rdfs:label>
+    <rdfs:comment xml:lang="en">A dividend event where cash proceeds are reinvested into additional securities rather than paid out as cash.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">reinvestment dividend</skos:altLabel>
+    <skos:altLabel xml:lang="en">DRIP event</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankReverseShareConsolidation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">reverse share consolidation</rdfs:label>
+    <rdfs:comment xml:lang="en">An issuer event that combines existing shares into fewer shares and increases the per-share value proportionally.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">share consolidation</skos:altLabel>
+    <skos:altLabel xml:lang="en">reverse split</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankDutchAuctionBuyback">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">dutch auction buyback</rdfs:label>
+    <rdfs:comment xml:lang="en">A repurchase event where holders submit prices or quantities and the final purchase terms are determined through a Dutch auction process.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">auction buyback</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankTenderPurchaseOffer">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">tender purchase offer</rdfs:label>
+    <rdfs:comment xml:lang="en">A voluntary offer allowing holders to tender securities for purchase under stated terms.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">securities tender offer</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankCashDistribution">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">cash distribution event</rdfs:label>
+    <rdfs:comment xml:lang="en">A corporate action where the issuer pays cash proceeds to eligible holders of an equity security.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">cash payout</skos:altLabel>
+    <skos:altLabel xml:lang="en">equity income distribution</skos:altLabel>
+  </rdf:Description>
+  <rdf:Description rdf:about="https://example.org/bank/ontology/corporate-actions/BankPaymentInKindInterest">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">payment in kind interest</rdfs:label>
+    <rdfs:comment xml:lang="en">An interest event where the holder receives additional securities or principal instead of cash interest.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityCorporateAction"/>
+    <skos:altLabel xml:lang="en">PIK interest</skos:altLabel>
+  </rdf:Description>
+</rdf:RDF>
