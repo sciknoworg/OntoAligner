@@ -12,22 +12,247 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
+This module consists of two pipeline utilities: OntoAlignerPipeline and AlignerPipeline.
+
 Ontology Alignment Pipeline. Various methods such as lightweight matching, retriever-based matching, LLM-based matching,
 and RAG (Retriever-Augmented Generation) techniques has been applied.
+
+AlignerPipeline runs user-provided encoder, aligner and optional postprocessor components over a collected ontology matching dataset. Unlike
+OntoAlignerPipeline, it does not collect datasets, select methods, evaluate results, or save outputs.
 """
 import json
+import inspect
 from pathlib import Path
 from tqdm import tqdm
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
-from typing import Any, Dict
+from typing import Any, Dict, List
 from sklearn.linear_model import LogisticRegression
 
 from .base import BaseEncoder, BaseOMModel, OMDataset
-from .encoder import ConceptLightweightEncoder, ConceptLLMEncoder, ConceptRAGEncoder, ConceptParentFewShotEncoder
+from .encoder import (ConceptLightweightEncoder,
+                      ConceptLLMEncoder,
+                      ConceptRAGEncoder,
+                      ConceptParentFewShotEncoder,
+                      GraphTripleEncoder)
 from .utils import metrics, xmlify
-from .aligner import SimpleFuzzySMLightweight, SBERTRetrieval, AutoModelDecoderLLM, ConceptLLMDataset
-from .postprocess import retriever_postprocessor, llm_postprocessor, rag_hybrid_postprocessor, TFIDFLabelMapper, LabelMapper
+from .aligner import (SimpleFuzzySMLightweight,
+                      SBERTRetrieval,
+                      AutoModelDecoderLLM,
+                      ConceptLLMDataset)
+from .postprocess import (retriever_postprocessor,
+                          llm_postprocessor,
+                          rag_hybrid_postprocessor,
+                          TFIDFLabelMapper,
+                          LabelMapper)
+
+
+class AlignerPipeline(BaseOMModel):
+    """
+    An aligner pipeline that runs one encoder and one ontology matching aligner.
+
+    This class follows the standard OntoAligner flow for one aligner pipeline:
+    encode the ontology matching dataset, load the aligner if needed, generate predictions,
+    and optionally apply a postprocessor.
+    """
+
+    def __init__(
+        self,
+        encoder: BaseEncoder,
+        aligner: BaseOMModel,
+        om_dataset: Dict = None,
+        load_params: Dict = None,
+        llm_dataset_class: Dataset = None,
+        batch_size: int = 1,
+        shuffle: bool = False,
+        postprocessor: Any = None,
+        postprocessor_params: Dict = None,
+        include_reference: bool = False,
+        **kwargs,
+    ) -> None:
+        """
+        Initializes the aligner pipeline.
+
+        Parameters:
+            encoder (BaseEncoder): Encoder model used to encode the ontology matching dataset.
+            aligner (BaseOMModel): Ontology matching aligner used to generate predictions.
+            om_dataset (Dict, optional): Pre-collected ontology matching dataset. Defaults to None.
+            load_params (Dict, optional): Parameters forwarded to the aligner load method. Defaults to None.
+            llm_dataset_class (Dataset, optional): Dataset class used to wrap LLM inputs. Defaults to None.
+            batch_size (int, optional): Batch size used for LLM dataset generation. Defaults to 1.
+            shuffle (bool, optional): Whether to shuffle LLM dataset batches. Defaults to False.
+            postprocessor (Any, optional): Optional postprocessor applied to predictions. Defaults to None.
+            postprocessor_params (Dict, optional): Optional parameters forwarded to the postprocessor. Defaults to None.
+            include_reference (bool, optional): Whether to pass reference matchings to the encoder. Defaults to False.
+            **kwargs: Additional keyword arguments that may be used for model configuration.
+        """
+        super().__init__(**kwargs)
+        self.encoder = encoder
+        self.aligner = aligner
+        self.om_dataset = om_dataset
+        self.load_params = load_params or {}
+        self.llm_dataset_class = llm_dataset_class
+        self.batch_size = batch_size
+        self.shuffle = shuffle
+        self.postprocessor = postprocessor
+        self.postprocessor_params = postprocessor_params or {}
+        self.include_reference = include_reference
+
+    def __str__(self):
+        """
+        Returns a string representation of the AlignerPipeline model.
+
+        Returns:
+            str: A simple string representation of the class ("AlignerPipeline").
+        """
+        return "AlignerPipeline"
+
+    def _is_graph_encoder(self) -> bool:
+        """
+        Checks whether the pipeline's encoder is a graph triple encoder.
+
+        Returns:
+            bool: True if the encoder is a GraphTripleEncoder, otherwise False.
+        """
+        return isinstance(self.encoder, GraphTripleEncoder)
+
+    def _needs_llm_dataset(self) -> bool:
+        """
+        Checks whether the encoded output needs to be wrapped as an LLM dataset.
+
+        Returns:
+            bool: True if an LLM dataset class is provided, otherwise False.
+        """
+        return self.llm_dataset_class is not None
+
+    def _encode(self, om_dataset: Dict) -> List:
+        """
+        Encodes the ontology matching dataset.
+
+        Parameters:
+            om_dataset (Dict): The ontology matching dataset.
+
+        Returns:
+            List: The encoded ontology matching data.
+        """
+        if self._is_graph_encoder():
+            return self.encoder(**om_dataset)
+
+        if self.include_reference:
+            return self.encoder(
+                source=om_dataset["source"],
+                target=om_dataset["target"],
+                reference=om_dataset["reference"],
+            )
+
+        return self.encoder(
+            source=om_dataset["source"],
+            target=om_dataset["target"],
+        )
+
+    def _load_aligner(self) -> None:
+        """
+        Loads the ontology matching aligner when load parameters are provided.
+        """
+        if hasattr(self.aligner, "load") and self.load_params:
+            self.aligner.load(**self.load_params)
+
+    def _generate_llm_predictions(self, llm_dataset: Dataset) -> List:
+        """
+        Generates LLM predictions from an LLM dataset using batched prompts.
+
+        Parameters:
+            llm_dataset (Dataset): Dataset containing LLM prompts and source-target IRIs.
+
+        Returns:
+            List: A list of generated LLM outputs.
+        """
+        dataloader = DataLoader(
+            llm_dataset,
+            batch_size=self.batch_size,
+            shuffle=self.shuffle,
+            collate_fn=llm_dataset.collate_fn,
+        )
+
+        predictions = []
+        for batch in tqdm(dataloader):
+            sequences = self.aligner.generate(batch["prompts"])
+            predictions.extend(sequences)
+
+        return predictions
+
+    def _apply_postprocessor(self, predictions: List, llm_dataset: Dataset = None) -> List:
+        """
+        Applies the optional postprocessor to pipeline predictions.
+
+        Parameters:
+            predictions (List): The generated pipeline predictions.
+            llm_dataset (Dataset, optional): LLM dataset used to generate prompts. Defaults to None.
+
+        Returns:
+            List: The postprocessed predictions.
+        """
+        postprocessor_params = dict(self.postprocessor_params)
+
+        if llm_dataset is not None and "dataset" not in postprocessor_params:
+            postprocessor_params["dataset"] = llm_dataset
+
+        signature = inspect.signature(self.postprocessor)
+        parameters = signature.parameters
+
+        if "predicts" in parameters:
+            predictions = self.postprocessor(
+                predicts=predictions,
+                **postprocessor_params,
+            )
+        else:
+            predictions = self.postprocessor(
+                predictions,
+                **postprocessor_params,
+            )
+
+        if isinstance(predictions, tuple):
+            predictions = predictions[0]
+
+        return predictions
+
+    def generate(self, input_data: Dict = None) -> List:
+        """
+        Generates predictions for one aligner pipeline.
+
+        Parameters:
+            input_data (Dict, optional): Optional ontology matching dataset. If not provided,
+                                         the pipeline uses its own pre-collected dataset.
+
+        Returns:
+            List: A list of raw or postprocessed alignment predictions.
+        """
+        llm_dataset = None
+        om_dataset = input_data or self.om_dataset
+
+        if om_dataset is None:
+            raise ValueError("AlignerPipeline requires an ontology matching dataset.")
+
+        encoded_data = self._encode(om_dataset=om_dataset)
+        self._load_aligner()
+
+        if self._needs_llm_dataset():
+            llm_dataset = self.llm_dataset_class(
+                source_onto=encoded_data[0],
+                target_onto=encoded_data[1],
+            )
+            predictions = self._generate_llm_predictions(llm_dataset=llm_dataset)
+        else:
+            predictions = self.aligner.generate(input_data=encoded_data)
+
+        if self.postprocessor is not None:
+            predictions = self._apply_postprocessor(
+                predictions=predictions,
+                llm_dataset=llm_dataset,
+            )
+
+        return predictions
+
 
 class OntoAlignerPipeline:
     """

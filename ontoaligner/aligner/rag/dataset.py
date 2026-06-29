@@ -229,3 +229,116 @@ Children: {target_children}
             .replace("{target_children}", target_children)
         )
         return template
+
+
+class PropertyRAGDataset(RAGDataset):
+    """
+    A subclass of RAGDataset used for ontology property matching using only property labels.
+    """
+
+    prompt = """Classify if two ontology properties represent the same semantic relation or not (answer only yes or no).
+### First property:
+{source}
+### Second property:
+{target}
+### Answer:"""
+
+    def fill_one_sample(self, input_data: Any) -> str:
+        template = self.prompt
+
+        source = self.preprocess(input_data["source"]["label"])
+        target = self.preprocess(input_data["target"]["label"])
+
+        template = (
+            template.replace("{source}", source)
+            .replace("{target}", target)
+        )
+
+        return template
+    
+class PropertyFullTextRAGDataset(RAGDataset):
+    """
+    A subclass of RAGDataset used for ontology property matching using property label,
+    domain, range, and inverse property.
+    """
+
+    prompt = """Classify if two ontology properties represent the same semantic relation or not (answer only yes or no).
+### First property:
+{source}
+Domain: {source_domain}
+Range: {source_range}
+Inverse: {source_inverse}
+
+### Second property:
+{target}
+Domain: {target_domain}
+Range: {target_range}
+Inverse: {target_inverse}
+
+### Answer:"""
+
+    def fill_one_sample(self, input_data: Any) -> str:
+        template = self.prompt
+
+        source = self.preprocess(input_data["source"]["label"])
+        target = self.preprocess(input_data["target"]["label"])
+
+        source_domain = (
+            " ".join(input_data["source"]["domain_text"])
+            if len(input_data["source"]["domain_text"]) > 0
+            else ""
+        )
+
+        target_domain = (
+            " ".join(input_data["target"]["domain_text"])
+            if len(input_data["target"]["domain_text"]) > 0
+            else ""
+        )
+
+        source_range = (
+            " ".join(input_data["source"]["range_text"])
+            if len(input_data["source"]["range_text"]) > 0
+            else ""
+        )
+
+        target_range = (
+            " ".join(input_data["target"]["range_text"])
+            if len(input_data["target"]["range_text"]) > 0
+            else ""
+        )
+
+        source_inverse = ""
+        if input_data["source"]["inverse_of"]:
+            source_inverse = (
+                " ".join(input_data["source"]["inverse_label"])
+                if len(input_data["source"]["inverse_label"]) > 0
+                else ""
+            )
+
+        target_inverse = ""
+        if input_data["target"]["inverse_of"]:
+            target_inverse = (
+                " ".join(input_data["target"]["inverse_label"])
+                if len(input_data["target"]["inverse_label"]) > 0
+                else ""
+            )
+
+        source_domain = self.preprocess(source_domain)
+        target_domain = self.preprocess(target_domain)
+        source_range = self.preprocess(source_range)
+        target_range = self.preprocess(target_range)
+        source_inverse = self.preprocess(source_inverse)
+        target_inverse = self.preprocess(target_inverse)
+
+        template = (
+            template.replace("{source}", source)
+            .replace("{target}", target)
+            .replace("{source_domain}", source_domain)
+            .replace("{target_domain}", target_domain)
+            .replace("{source_range}", source_range)
+            .replace("{target_range}", target_range)
+            .replace("{source_inverse}", source_inverse)
+            .replace("{target_inverse}", target_inverse)
+        )
+
+        return template

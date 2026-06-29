@@ -22,7 +22,7 @@ A core team will be responsible for the ongoing maintenance of OntoAligner, incl
 - **Assistants**:
   - [Mahsa Sanaei](https://www.linkedin.com/in/sanaei-mahsa/) – Contributes to the code-level documentation, use-case study, and ensures clarity and consistency across the library's functions and modules.
   - [Krishna Rani](https://www.linkedin.com/in/krishna-rani-thakur-5b77b9150) - Assists with activities such as improvement of existing modules for the smooth operation of the project.
-  - [Venkata Abhishek Reddy Allu](https://www.linkedin.com/in/venkata-abhishek-reddy-allu/) – Focuses on the development of new features (or aligners) to enhance the library's functionality and maintainability.
+  - [Venkata Abhishek Reddy Allu](https://www.linkedin.com/in/abhishek-allu/) – Focuses on the development of new features (or aligners) to enhance the library's functionality and maintainability.
 - **Alumni**:
   - [Amirreza Alasti](https://www.linkedin.com/in/amirreza-alasti-61450b1aa)
   - [Mike Ashley Cedric Gill](https://www.linkedin.com/in/mike-ashley-cedric/)

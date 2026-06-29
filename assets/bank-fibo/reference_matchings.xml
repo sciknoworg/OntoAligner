@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF xmlns="http://knowledgeweb.semanticweb.org/heterogeneity/alignment"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+  <Alignment>
+    <xml>yes</xml>
+    <level>0</level>
+    <type>??</type>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankCashDistribution"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/CashDividendAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankStockBonusDistribution"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/StockDividendAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankShareSplitAction"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/StockSplit"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankReverseShareConsolidation"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/ReverseStockSplit"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankDividendChoiceEvent"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/DividendOptionAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankDividendReinvestmentPlan"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/DividendReinvestmentAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankCapitalReturnDistribution"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/CapitalDistribution"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankCapitalGainPayout"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/CapitalGainsDistribution"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankRightsSubscriptionEvent"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/RightsExerciseEvent"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankBonusRightsDistribution"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/BonusRightsIssue"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankTenderPurchaseOffer"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/TenderOffer"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankIssuerRepurchaseOffer"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/RepurchaseOffer"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankOddLotBuybackProgram"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/OddLotOffer"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankDutchAuctionBuyback"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/DutchAuction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankSecurityConversionEvent"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/ConversionAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankConversionSuspensionNotice"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/ConversionSuspensionAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankPostMergerSecurityExchange"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/PostMergerSecuritiesExchange"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankBondCouponPayment"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/InterestPaymentAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankPaymentInKindInterest"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/InterestPaymentInKind"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankPrincipalAndInterestPayment"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/InterestPaymentWithPrincipal"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankBondMaturityRedemption"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/RedemptionAtMaturityAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankIssuerEarlyCallRedemption"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/FullCallEarlyRedemptionAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankHolderPutRedemption"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/PutRedemptionAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankPartialPrincipalRedemption"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/PartialRedemptionWithReductionOfNominalValueAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankParValueRedenomination"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/RedenominationAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankInterestRateReset"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/InterestRateAdjustment"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankBondDefaultNotice"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/BondDefaultAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankTradingHaltMessage"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/TradingStatusSuspendedMessage"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankTradingResumeMessage"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/TradingStatusActiveMessage"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankDelistingMessage"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/ListingStatusDelistingMessage"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+    <map>
+      <Cell>
+        <entity1 rdf:resource="https://example.org/bank/ontology/corporate-actions/BankWorthlessSecurityNotice"/>
+        <entity2 rdf:resource="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/SecurityRelatedCorporateActions/WorthlessSecurityAction"/>
+        <relation>=</relation>
+        <measure rdf:datatype="xsd:float">1.0</measure>
+      </Cell>
+    </map>
+  </Alignment>
+</rdf:RDF>

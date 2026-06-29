@@ -116,6 +116,7 @@ or if you are using Knowledge Graph Embeddings refer to `OntoAligner Meets Knowl
 
    developerguide/parsers
    developerguide/metrics
+   developerguide/pipeline
 
 .. toctree::
    :caption: Aligners
@@ -131,6 +132,7 @@ or if you are using Knowledge Graph Embeddings refer to `OntoAligner Meets Knowl
    aligner/propmatch
    aligner/flora
    aligner/olala
+   aligner/ensemble_learning
 
 .. toctree::
    :maxdepth: 1
@@ -138,6 +140,7 @@ or if you are using Knowledge Graph Embeddings refer to `OntoAligner Meets Knowl
    :hidden:
 
    usecases/ecommerce
+   usecases/financial_corporate_actions
 
 
 .. toctree::
