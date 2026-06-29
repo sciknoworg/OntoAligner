@@ -20,6 +20,7 @@ from .llm.dataset import * # NOQA
 from .rag.models import * # NOQA
 from .rag.dataset import * # NOQA
 from .retrieval.models import * # NOQA
+from .retrieval.reranking import * # NOQA
 from .graph.models import * # NOQA
 from .propmatch import * # NOQA
 from .flora import * # NOQA

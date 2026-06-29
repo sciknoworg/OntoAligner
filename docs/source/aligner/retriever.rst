@@ -227,3 +227,80 @@ To use OpenAI based aligner technique:
 .. hint::
 
     More information on OpenAI embeddings can be found at `OpenAI > Embedding models <https://platform.openai.com/docs/guides/embeddings#embedding-models>`_.
+
+Reranking
+-----------------------------------
+
+.. sidebar:: 🔗 Related Links
+
+    * `🧠 Cohere Rerank documentation <https://docs.cohere.com/docs/rerank-overview>`_
+    * `🤗 Hugging Face CrossEncoder models <https://huggingface.co/cross-encoder>`_
+    * A usage example is available at `OntoAligner Repository <https://github.com/sciknoworg/OntoAligner/blob/dev/examples/reranking.py>`_.
+
+
+Reranking refines ontology alignment candidates after retrieval by applying a stronger relevance model to the retrieved source-target pairs. Instead of generating candidates from scratch, reranking improves the ordering of candidates already produced by retrieval aligners, making it useful when the initial retriever has high recall but needs better precision.
+
+Reranking models preserve the grouped retrieval output format with ``target-cands`` and ``score-cands``, allowing the results to remain compatible with existing retrieval postprocessors. They also support optional score normalization, where raw reranking scores can be kept as-is or transformed using methods such as ``sigmoid``, ``softmax``, or ``minmax`` before selecting the final candidates.
+
+.. list-table::
+   :widths: 20 70 10
+   :header-rows: 1
+
+   * - Reranking Model
+     - Description
+     - Link
+   * - ``CrossEncoderReranking``
+     - Uses a SentenceTransformers CrossEncoder model to score and rerank source-target candidate pairs.
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/retrieval/reranking.py#L272-327>`__
+   * - ``CohereReranking``
+     - Uses the Cohere Rerank API to rerank retrieved target candidates for each source concept.
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/retrieval/reranking.py#L202-L269>`__
+
+To use the Reranking technique:
+
+.. tab:: ➡️ CrossEncoder Reranking
+
+    Use ``CrossEncoderReranking`` when you want to rerank candidates locally using a
+    SentenceTransformers CrossEncoder model.
+
+    .. code-block:: python
+
+        from ontoaligner.aligner.retrieval.reranking import CrossEncoderReranking
+
+        reranker = CrossEncoderReranking(
+            device="cpu",
+            top_k=5,
+            normalize_score="sigmoid",
+            batch_size=16,
+        )
+        reranker.load(path="cross-encoder/ms-marco-MiniLM-L6-v2")
+
+        reranked_matchings = reranker.generate(input_data=reranking_input)
+
+.. tab:: ➡️ Cohere Reranking
+
+    Use ``CohereReranking`` when you want to rerank retrieval candidates with Cohere's
+    reranking API.
+
+    .. code-block:: python
+
+        from ontoaligner.aligner.retrieval.reranking import CohereReranking
+
+        reranker = CohereReranking(
+            top_k=5,
+            normalize_score="none",
+            cohere_key="YOUR_COHERE_API_KEY",
+        )
+        reranker.load(path="rerank-v3.5")
+
+        reranked_matchings = reranker.generate(input_data=reranking_input)
+
+    .. note::
+
+        - ``CohereReranking`` requires a Cohere API key.
+        - The ``path`` argument is the Cohere rerank model name.
+
+.. hint::
+
+        - Use a larger retrieval ``top_k`` to give the reranker more candidates to choose from.
+        - The reranker ``top_k`` controls how many candidates are kept after reranking.
