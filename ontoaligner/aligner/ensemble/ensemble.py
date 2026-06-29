@@ -17,9 +17,9 @@ from ...base import BaseOMModel
 from .voting import ReciprocalRankFusionVoting
 from .voting.base import BaseVoting
 
-class EnsembleAligner(BaseOMModel):
+class EnsembleLearningAligner(BaseOMModel):
     """
-    An ensemble ontology matching aligner for combining predictions from multiple branches.
+    An ensemble ontology matching aligner for combining predictions from multiple aligner pipelines.
     """
 
     def __init__(
@@ -33,7 +33,7 @@ class EnsembleAligner(BaseOMModel):
 
         Parameters:
             branches (List[Tuple]): A list of branch tuples in the form
-                                    (name, branch) or (name, branch, weight).
+                                    (name, aligner_pipeline) or (name, aligner_pipeline, weight).
             voting (BaseVoting, optional): Voting method used to combine branch predictions.
                                         Defaults to ReciprocalRankFusionVoting.
             **kwargs: Additional keyword arguments that may be used for model configuration.
@@ -41,31 +41,31 @@ class EnsembleAligner(BaseOMModel):
         super().__init__(**kwargs)
 
         if len(branches) < 2:
-            raise ValueError("EnsembleAligner requires two or more aligner branches.")
+            raise ValueError("EnsembleLearningAligner requires two or more aligner pipelines.")
 
         self.branches = []
 
         for branch in branches:
             if len(branch) == 2:
-                name, aligner_branch = branch
+                name, aligner_pipeline = branch
                 weight = 1.0
             elif len(branch) == 3:
-                name, aligner_branch, weight = branch
+                name, aligner_pipeline, weight = branch
             else:
-                raise ValueError("Each branch must be (name, branch) or (name, branch, weight).")
+                raise ValueError("Each branch must be (name, aligner_pipeline) or (name, aligner_pipeline, weight).")
 
-            self.branches.append((name, aligner_branch, float(weight)))
+            self.branches.append((name, aligner_pipeline, float(weight)))
 
         self.voting = voting or ReciprocalRankFusionVoting()
 
     def __str__(self):
         """
-        Returns a string representation of the EnsembleAligner model.
+        Returns a string representation of the EnsembleLearningAligner model.
 
         Returns:
-            str: A simple string representation of the class ("EnsembleAligner").
+            str: A simple string representation of the class ("EnsembleLearningAligner").
         """
-        return "EnsembleAligner"
+        return "EnsembleLearningAligner"
 
     def _flatten_predictions(self, predictions: List[Dict]) -> List[Dict]:
         """
@@ -130,8 +130,8 @@ class EnsembleAligner(BaseOMModel):
         """
         branch_outputs = []
 
-        for _, aligner_branch, weight in self.branches:
-            predictions = aligner_branch.generate(input_data=input_data)
+        for _, aligner_pipeline, weight in self.branches:
+            predictions = aligner_pipeline.generate(input_data=input_data)
             flat_predictions = self._flatten_predictions(predictions=predictions)
             branch_outputs.append((flat_predictions, weight))
 

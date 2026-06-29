@@ -1,525 +1,469 @@
+Ensemble Learning Aligner
+=====================================================
+
 Ensemble Learning
-===========================
+------------------
+.. sidebar:: Useful links:
 
-Ensemble Alignment
-------------------------
+    * `Developer Guide > AlignerPipeline <../developerguide/pipeline.html>`_
 
-The :mod:`ontoaligner.aligner.ensemble` module provides ensemble learning support for ontology alignment in OntoAligner.
+**Ensemble Learning** combines predictions from multiple ontology alignment pipelines to produce a final set of correspondences. In OntoAligner, ensemble learning is handled by :class:`EnsembleLearningAligner`, where each ensemble member is represented as a branch configured with :class:`AlignerPipeline`.
 
-Ensemble learning combines predictions from multiple ontology alignment models to produce a final alignment result. In ontology matching, different aligners may capture different signals, such as lexical similarity, retrieval similarity, graph structure, or LLM-based semantic verification.
+Each branch follows the standard OntoAligner flow: encode the ontology matching dataset, load the aligner when needed, generate predictions, and optionally apply branch-level postprocessing. Postprocessing may be required before voting for LLM, RAG, and KGE outputs because these branches may produce outputs that need conversion or filtering before fusion.
 
-The ensemble aligner in OntoAligner provides a common interface for running multiple alignment branches and combining their outputs with a voting method. Each branch can use a different encoder, aligner, and optional postprocessor. The final predictions are normalized into a common ``source``-``target``-``score`` format before voting.
+.. hint::
 
-The ensemble aligner follows the standard OntoAligner model flow. Each branch encodes a collected ontology matching dataset, loads the aligner when needed, generates predictions, and optionally applies branch-level postprocessing. The final branch outputs are then combined using a voting strategy.
+    **Why Ensemble Learning for Ontology Alignment?**
 
-The module provides two main execution components:
+    1) *Complementary Signals*: Combines lexical similarity, semantic retrieval, graph structure, and LLM/RAG-based verification from different aligner branches.
+    2) *Robustness*: Reduces reliance on a single aligner, which can help balance the weaknesses of individual models.
+    3) *Model-Agnostic Fusion*: Allows heterogeneous aligner families to contribute through a shared voting strategy and produce one final alignment.
 
-1. :class:`AlignerPipeline` — runs one encoder and one ontology matching aligner.
-2. :class:`EnsembleLearningAligner` — runs multiple :class:`AlignerPipeline` objects and combines their predictions.
+.. raw:: html
 
-The module also provides voting strategies for combining branch outputs:
+    <div align="center">
+        <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/ensemble.png" width="80%"/>
+    </div>
 
-1. :class:`ReciprocalRankFusion`
-2. :class:`BordaCountVoting`
-3. :class:`CondorcetVoting`
-4. :class:`ScoreAverageVoting`
-5. :class:`WeightedVoting`
+The ensemble workflow has four stages:
 
-The ensemble output follows the standard OntoAligner alignment format:
+**🔧 1. Branch Configuration**: Multiple :class:`AlignerPipeline` branches are configured with encoders, aligners, datasets, optional loading parameters, and optional postprocessors.
 
-.. code-block:: python
+**⚙️ 2. Branch Prediction**: Each branch generates correspondences independently using lightweight, retrieval, KGE, LLM, or RAG-based aligners.
 
-    [
-        {"source": "source_iri", "target": "target_iri", "score": 0.9},
-        ...
-    ]
+**🧩 3. Output Normalization**: Branch outputs are converted into a common ``source``-``target``-``score`` format before fusion.
 
-Grouped retrieval outputs such as ``target-cands`` and ``score-cands`` are flattened before voting.
+**🗳️ 4. Voting**: A voting method combines weighted branch outputs into the final matchings.
+
+Usage
+---------
+This module guides you through a step-by-step process for performing ensemble-based ontology alignment using multiple OntoAligner models. By the end, you’ll understand how to configure aligner pipeline branches, combine their predictions with voting strategies, evaluate the final matchings, and save the outputs in XML and JSON formats.
+
+.. tab:: ➡️ 1: Import
+
+    Import the dataset classes, encoders, aligners, postprocessors, ensemble aligner,
+    and voting strategy.
+
+    .. code-block:: python
+
+        import json
+        import torch
+
+        from sklearn.linear_model import LogisticRegression
+
+        from ontoaligner.ontology import MaterialInformationMatOntoOMDataset, GraphTripleOMDataset
+        from ontoaligner.utils import metrics, xmlify
+        from ontoaligner.encoder import (
+            ConceptParentLightweightEncoder,
+            ConceptLLMEncoder,
+            ConceptParentRAGEncoder,
+            GraphTripleEncoder,
+        )
+        from ontoaligner.aligner import (
+            SimpleFuzzySMLightweight,
+            SBERTRetrieval,
+            AutoModelDecoderLLM,
+            ConceptLLMDataset,
+            MistralLLMBERTRetrieverRAG,
+            TransEAligner,
+        )
+        from ontoaligner.postprocess import (
+            TFIDFLabelMapper,
+            llm_postprocessor,
+            graph_postprocessor,
+            rag_heuristic_postprocessor,
+        )
+        from ontoaligner.aligner.ensemble import EnsembleLearningAligner
+        from ontoaligner.aligner.ensemble.voting import ReciprocalRankFusionVoting
+        from ontoaligner import AlignerPipeline
+
+.. tab:: ➡️ 2: Parse Ontologies
+
+    Load the source ontology, target ontology, and reference alignment using OntoAligner
+    dataset classes.
+
+    .. code-block:: python
+
+        source_ontology_path = "assets/MI-MatOnto/mi_ontology.xml"
+        target_ontology_path = "assets/MI-MatOnto/matonto_ontology.xml"
+        reference_matching_path = "assets/MI-MatOnto/matchings.xml"
+
+        task = MaterialInformationMatOntoOMDataset()
+        print("Test Task:", task)
+
+        dataset = task.collect(
+            source_ontology_path=source_ontology_path,
+            target_ontology_path=target_ontology_path,
+            reference_matching_path=reference_matching_path,
+        )
+
+        graph_dataset = GraphTripleOMDataset().collect(
+            source_ontology_path,
+            target_ontology_path,
+            reference_matching_path,
+        )
+
+.. tab:: ➡️ 3: Configure Ensemble
+
+    Configure the runtime settings, model paths, label mapper, RAG configuration,
+    and ensemble branches. Each branch is represented by an :class:`AlignerPipeline`
+    and may include branch-level postprocessing before voting.
+
+    .. code-block:: python
+
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+
+        ir_model_path = "all-MiniLM-L6-v2"
+        llm_model_path = "Qwen/Qwen2.5-1.5B-Instruct"
+
+        mapper = TFIDFLabelMapper(
+            classifier=LogisticRegression(),
+            ngram_range=(1, 1),
+            label_dict={
+                "yes": ["yes", "correct", "true", "same", "equivalent", "valid"],
+                "no": ["no", "incorrect", "false", "different", "not same", "invalid"],
+            },
+        )
+
+        retriever_config = {
+            "device": device,
+            "top_k": 5,
+            "threshold": 0.1,
+        }
+
+        llm_config = {
+            "device": device,
+            "max_length": 300,
+            "max_new_tokens": 10,
+            "batch_size": 1,
+            "answer_set": {
+                "yes": ["yes", "correct", "true", "positive", "valid"],
+                "no": ["no", "incorrect", "false", "negative", "invalid"],
+            },
+        }
+
+        branches = [
+            (
+                "lightweight",
+                AlignerPipeline(
+                    encoder=ConceptParentLightweightEncoder(),
+                    aligner=SimpleFuzzySMLightweight(fuzzy_sm_threshold=0.2),
+                    om_dataset=dataset,
+                ),
+                1.0,
+            ),
+            (
+                "sbert",
+                AlignerPipeline(
+                    encoder=ConceptParentLightweightEncoder(),
+                    aligner=SBERTRetrieval(device=device, top_k=5),
+                    om_dataset=dataset,
+                    load_params={"path": ir_model_path},
+                ),
+                1.0,
+            ),
+            (
+                "kge",
+                AlignerPipeline(
+                    encoder=GraphTripleEncoder(),
+                    aligner=TransEAligner(
+                        model="TransE",
+                        device=device,
+                        embedding_dim=32,
+                        num_epochs=1,
+                        train_batch_size=32,
+                        eval_batch_size=32,
+                        num_negs_per_pos=1,
+                        random_seed=42,
+                    ),
+                    om_dataset=graph_dataset,
+                    postprocessor=graph_postprocessor,
+                    postprocessor_params={"threshold": 0.0},
+                ),
+                1.0,
+            ),
+            (
+                "llm",
+                AlignerPipeline(
+                    encoder=ConceptLLMEncoder(),
+                    aligner=AutoModelDecoderLLM(
+                        device=device,
+                        max_length=300,
+                        max_new_tokens=20,
+                        batch_size=1,
+                    ),
+                    om_dataset=dataset,
+                    llm_dataset_class=ConceptLLMDataset,
+                    load_params={"path": llm_model_path},
+                    postprocessor=llm_postprocessor,
+                    postprocessor_params={
+                        "mapper": mapper,
+                        "interested_class": "yes",
+                    },
+                ),
+                1.0,
+            ),
+            (
+                "rag",
+                AlignerPipeline(
+                    encoder=ConceptParentRAGEncoder(),
+                    aligner=MistralLLMBERTRetrieverRAG(
+                        retriever_config=retriever_config,
+                        llm_config=llm_config,
+                    ),
+                    om_dataset=dataset,
+                    load_params={
+                        "llm_path": llm_model_path,
+                        "ir_path": ir_model_path,
+                    },
+                    postprocessor=rag_heuristic_postprocessor,
+                    postprocessor_params={
+                        "topk_confidence_ratio": 3,
+                        "topk_confidence_score": 3,
+                    },
+                ),
+                1.0,
+            ),
+
+        ]
+
+    Each branch is represented as a tuple containing the branch name, an
+    :class:`AlignerPipeline`, and an optional branch weight.
+
+    .. code-block:: python
+
+        branches = [
+            ("lightweight", AlignerPipeline(...), 1.0),
+            ("sbert", AlignerPipeline(...), 1.0),
+        ]
+
+    The branch weight controls how much influence the branch has during voting.
+
+.. tab:: ➡️ 4: Ensemble Learning Aligner
+
+    Initialize :class:`EnsembleLearningAligner` with the configured branches and a voting
+    method. The default voting method is :class:`ReciprocalRankFusionVoting`.
+
+    .. code-block:: python
+
+        ensemble = EnsembleLearningAligner(
+            branches=branches,
+            voting=ReciprocalRankFusionVoting(k=60),
+        )
+
+        final_matchings = ensemble.generate()
+
+    The output is a list of flat source-target correspondences sorted by score.
+
+    .. code-block::
+
+        [
+            {"source": "...", "target": "...", "score": 0.9},
+            ...
+        ]
+
+.. tab:: ➡️ 5: Evaluate and Export
+
+    Compare predictions to a reference alignment and export results.
+
+    .. code-block:: python
+
+        # Evaluate
+        evaluation = metrics.evaluation_report(
+            predicts=final_matchings,
+            references=dataset["reference"],
+        )
+        print("Ensemble Learning Evaluation Report:")
+        print(json.dumps(evaluation, indent=4))
+
+    Example output:
+
+    .. code-block::
+
+        {
+            "intersection": 154,
+            "precision": 2.651058702014116,
+            "recall": 50.993377483443716,
+            "f-score": 5.040091638029782,
+            "predictions-len": 5809,
+            "reference-len": 302
+        }
+
+    Export the final alignment to XML (OAEI-compatible) or JSON:
+
+    .. tab:: 📄 Export to XML
+
+        .. code-block:: python
+
+            xml_str = xmlify.xml_alignment_generator(matchings=final_matchings)
+            with open("ensemble_matchings.xml", "w", encoding="utf-8") as f:
+                f.write(xml_str)
+
+    .. tab:: 🧾 Export to JSON
+
+        .. code-block:: python
+
+            with open("ensemble_matchings.json", "w", encoding="utf-8") as f:
+                json.dump(final_matchings, f, indent=4, ensure_ascii=False)
+
+.. note::
+
+        A complete ensemble learning example is available at
+        `examples/ensemble.py <https://github.com/sciknoworg/OntoAligner/blob/dev/examples/ensemble.py>`_.
 
 Voting Strategies
 -----------------------
 
-The ensemble module supports both rank-based and score-based voting methods.
+Voting strategies combine normalized predictions from multiple branches. Each branch
+contributes a list of predictions and a branch weight. The branch weight controls the
+influence of the branch during fusion.
 
-Rank-based methods are useful when branch scores are not directly comparable. This is common when combining lightweight, retrieval, KGE, LLM, and RAG-based aligners.
-
-Score-based methods are useful when branch outputs come from similar model families or when their scores are already comparable.
 
 .. list-table::
    :header-rows: 1
-   :widths: 25 55 20
+   :widths: 25 50 15
 
-   * - Voting Strategy
+   * - Strategy
      - Description
-     - Recommended Use
-   * - ``ReciprocalRankFusion``
-     - Combines ranked branch outputs using reciprocal-rank scores.
-     - Heterogeneous ensembles
+     - Link
+   * - ``ReciprocalRankFusionVoting``
+     - Adds reciprocal-rank scores from each branch and ranks pairs by the fused score.
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/ensemble/voting/reciprocal_rank_fusion.py>`_
    * - ``BordaCountVoting``
-     - Assigns rank-based points to predictions and sums them across branches.
-     - Heterogeneous ranked outputs
+     - Assigns normalized rank-based points to predictions and sums them across branches.
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/ensemble/voting/borda.py>`_
    * - ``CondorcetVoting``
-     - Compares target candidates pairwise for each source entity.
-     - Candidate preference voting
+     - Compares target candidates pairwise for each source and scores candidates by pairwise wins.
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/ensemble/voting/condorce.py>`_
    * - ``ScoreAverageVoting``
-     - Combines branch scores using weighted score averaging.
-     - Same-family aligners
+     - Computes the weighted average score for each source-target pair across branches.
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/ensemble/voting/average.py>`_
    * - ``WeightedVoting``
-     - Counts weighted branch support for each source-target pair.
-     - Agreement-based filtering
+     - Counts weighted branch support for each source-target pair and filters by vote settings.
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/ensemble/voting/weighted.py>`_
 
-Each voting method receives branch predictions together with a branch weight:
+.. hint::
+
+        Rank-based voting is useful for heterogeneous aligners where scores are not directly
+        comparable. Score-based voting is useful when scores come from similar model families
+        or are already comparable.
+
+To use voting strategies:
+
+Import a voting method and pass it to :class:`EnsembleLearningAligner`.
 
 .. code-block:: python
 
-    [
-       ([{"source": "...", "target": "...", "score": 0.9}], 1.0),
-       ([{"source": "...", "target": "...", "score": 0.8}], 1.0),
-    ]
+    from ontoaligner.aligner.ensemble.voting import ReciprocalRankFusionVoting
 
-The first element in each tuple is the list of normalized predictions from one branch. The second element is the branch weight used during voting.
+    ensemble = EnsembleLearningAligner(
+        branches=branches,
+        voting=ReciprocalRankFusionVoting(k=60),
+    )
 
-Usage
-----------
+A different voting method can be used by changing the import & voting object.
 
-.. tab:: ➡️ 1: Import
+.. code-block:: python
 
-   Import the ensemble components, voting methods, and standard OntoAligner modules.
+    from ontoaligner.aligner.ensemble.voting import ScoreAverageVoting
 
-   .. code-block:: python
-
-      import json
-      import torch
-
-      from sklearn.linear_model import LogisticRegression
-
-      from ontoaligner.ontology import MaterialInformationMatOntoOMDataset, GraphTripleOMDataset
-      from ontoaligner.utils import metrics, xmlify
-      from ontoaligner.encoder import (
-          ConceptParentLightweightEncoder,
-          ConceptLLMEncoder,
-          ConceptParentRAGEncoder,
-          ConceptParentFewShotEncoder,
-          GraphTripleEncoder,
-      )
-      from ontoaligner.aligner import (
-          SimpleFuzzySMLightweight,
-          TFIDFRetrieval,
-          SBERTRetrieval,
-          AutoModelDecoderLLM,
-          ConceptLLMDataset,
-          MistralLLMBERTRetrieverRAG,
-          MistralLLMBERTRetrieverFSRAG,
-          TransEAligner,
-      )
-      from ontoaligner.postprocess import (
-          TFIDFLabelMapper,
-          llm_postprocessor,
-          graph_postprocessor,
-          rag_heuristic_postprocessor,
-      )
-      from ontoaligner.aligner.ensemble import (
-          AlignerBranch,
-          EnsembleAligner,
-          ReciprocalRankFusion,
-          ScoreAverageVoting,
-      )
-
-.. tab:: ➡️ 2: Parse Ontologies
-
-   Load the source ontology, target ontology, and optional reference alignment using an OntoAligner dataset class.
-
-   .. code-block:: python
-
-      source_ontology_path = "assets/MI-MatOnto/mi_ontology.xml"
-      target_ontology_path = "assets/MI-MatOnto/matonto_ontology.xml"
-      reference_matching_path = "assets/MI-MatOnto/matchings.xml"
-
-      task = MaterialInformationMatOntoOMDataset()
-      print("Test Task:", task)
-
-      dataset = task.collect(
-          source_ontology_path=source_ontology_path,
-          target_ontology_path=target_ontology_path,
-          reference_matching_path=reference_matching_path,
-      )
-
-      graph_dataset = GraphTripleOMDataset().collect(
-          source_ontology_path,
-          target_ontology_path,
-          reference_matching_path,
-      )
-
-.. tab:: ➡️ 3: Single Aligner Branch
-
-   :class:`AlignerBranch` can be used independently to run one encoder and one aligner.
-
-   .. code-block:: python
-
-      branch = AlignerBranch(
-          encoder=ConceptParentLightweightEncoder(),
-          aligner=SimpleFuzzySMLightweight(fuzzy_sm_threshold=0.2),
-          om_dataset=dataset,
-      )
-
-      matchings = branch.generate()
-
-      evaluation = metrics.evaluation_report(
-          predicts=matchings,
-          references=dataset["reference"],
-      )
-
-      print("Single Branch Evaluation Report:")
-      print(json.dumps(evaluation, indent=4))
-
-.. tab:: ➡️ 4: Heterogeneous Ensemble
-
-   Use a rank-based voting method when combining aligners from different model families. This example combines lightweight, retrieval, SBERT retrieval, KGE, LLM, RAG, and FewShot-RAG branches.
-
-   .. code-block:: python
-
-      device = "cuda" if torch.cuda.is_available() else "cpu"
-
-      ir_model_path = "all-MiniLM-L6-v2"
-      llm_model_path = "Qwen/Qwen2.5-1.5B-Instruct"
-
-      mapper = TFIDFLabelMapper(
-          classifier=LogisticRegression(),
-          ngram_range=(1, 1),
-          label_dict={
-              "yes": ["yes", "correct", "true", "same", "equivalent", "valid"],
-              "no": ["no", "incorrect", "false", "different", "not same", "invalid"],
-          },
-      )
-
-      retriever_config = {
-          "device": device,
-          "top_k": 5,
-          "threshold": 0.1,
-      }
-
-      llm_config = {
-          "device": device,
-          "max_length": 300,
-          "max_new_tokens": 10,
-          "batch_size": 1,
-          "answer_set": {
-              "yes": ["yes", "correct", "true", "positive", "valid"],
-              "no": ["no", "incorrect", "false", "negative", "invalid"],
-          },
-      }
-
-      branches = [
-          (
-              "lightweight",
-              AlignerBranch(
-                  encoder=ConceptParentLightweightEncoder(),
-                  aligner=SimpleFuzzySMLightweight(fuzzy_sm_threshold=0.2),
-                  om_dataset=dataset,
-              ),
-              1.0,
-          ),
-          (
-              "tfidf",
-              AlignerBranch(
-                  encoder=ConceptParentLightweightEncoder(),
-                  aligner=TFIDFRetrieval(top_k=5),
-                  om_dataset=dataset,
-                  load_params={"path": None},
-              ),
-              1.0,
-          ),
-          (
-              "sbert",
-              AlignerBranch(
-                  encoder=ConceptParentLightweightEncoder(),
-                  aligner=SBERTRetrieval(device=device, top_k=5),
-                  om_dataset=dataset,
-                  load_params={"path": ir_model_path},
-              ),
-              1.0,
-          ),
-          (
-              "kge",
-              AlignerBranch(
-                  encoder=GraphTripleEncoder(),
-                  aligner=TransEAligner(
-                      device=device,
-                      embedding_dim=32,
-                      num_epochs=1,
-                      train_batch_size=32,
-                      eval_batch_size=32,
-                      num_negs_per_pos=1,
-                      random_seed=42,
-                  ),
-                  om_dataset=graph_dataset,
-                  postprocessor=graph_postprocessor,
-                  postprocessor_params={"threshold": 0.0},
-              ),
-              1.0,
-          ),
-          (
-              "llm",
-              AlignerBranch(
-                  encoder=ConceptLLMEncoder(),
-                  aligner=AutoModelDecoderLLM(
-                      device=device,
-                      max_length=300,
-                      max_new_tokens=20,
-                      batch_size=1,
-                  ),
-                  om_dataset=dataset,
-                  llm_dataset_class=ConceptLLMDataset,
-                  load_params={"path": llm_model_path},
-                  postprocessor=llm_postprocessor,
-                  postprocessor_params={
-                      "mapper": mapper,
-                      "interested_class": "yes",
-                  },
-              ),
-              1.0,
-          ),
-          (
-              "rag",
-              AlignerBranch(
-                  encoder=ConceptParentRAGEncoder(),
-                  aligner=MistralLLMBERTRetrieverRAG(
-                      retriever_config=retriever_config,
-                      llm_config=llm_config,
-                  ),
-                  om_dataset=dataset,
-                  load_params={
-                      "llm_path": llm_model_path,
-                      "ir_path": ir_model_path,
-                  },
-                  postprocessor=rag_heuristic_postprocessor,
-                  postprocessor_params={
-                      "topk_confidence_ratio": 3,
-                      "topk_confidence_score": 3,
-                  },
-              ),
-              1.0,
-          ),
-          (
-              "fsrag",
-              AlignerBranch(
-                  encoder=ConceptParentFewShotEncoder(),
-                  aligner=MistralLLMBERTRetrieverFSRAG(
-                      positive_ratio=1.0,
-                      n_shots=1,
-                      retriever_config=retriever_config,
-                      llm_config=llm_config,
-                  ),
-                  om_dataset=dataset,
-                  load_params={
-                      "llm_path": llm_model_path,
-                      "ir_path": ir_model_path,
-                  },
-                  postprocessor=rag_heuristic_postprocessor,
-                  postprocessor_params={
-                      "topk_confidence_ratio": 3,
-                      "topk_confidence_score": 3,
-                  },
-                  include_reference=True,
-              ),
-              1.0,
-          ),
-      ]
-
-      ensemble = EnsembleAligner(
-          branches=branches,
-          voting=ReciprocalRankFusion(k=60),
-      )
-
-      matchings = ensemble.generate()
-
-.. tab:: ➡️ 5: Score-Based Ensemble
-
-   Use :class:`ScoreAverageVoting` when the branches produce comparable scores.
-
-   .. code-block:: python
-
-      device = "cuda" if torch.cuda.is_available() else "cpu"
-
-      branches = [
-          (
-              "tfidf",
-              AlignerBranch(
-                  encoder=ConceptParentLightweightEncoder(),
-                  aligner=TFIDFRetrieval(top_k=5),
-                  om_dataset=dataset,
-                  load_params={"path": None},
-              ),
-              1.0,
-          ),
-          (
-              "sbert",
-              AlignerBranch(
-                  encoder=ConceptParentLightweightEncoder(),
-                  aligner=SBERTRetrieval(device=device, top_k=5),
-                  om_dataset=dataset,
-                  load_params={"path": "all-MiniLM-L6-v2"},
-              ),
-              1.0,
-          ),
-      ]
-
-      ensemble = EnsembleAligner(
-          branches=branches,
-          voting=ScoreAverageVoting(),
-      )
-
-      matchings = ensemble.generate()
-
-.. tab:: ➡️ 6: Evaluate and Export
-
-   Evaluate the ensemble output and export the final alignment to XML.
-
-   .. code-block:: python
-
-      evaluation = metrics.evaluation_report(
-          predicts=matchings,
-          references=dataset["reference"],
-      )
-
-      print("Ensemble Evaluation Report:")
-      print(json.dumps(evaluation, indent=4))
-
-      xml_str = xmlify.xml_alignment_generator(matchings=matchings)
-
-      with open("ensemble_matchings.xml", "w", encoding="utf-8") as xml_file:
-          xml_file.write(xml_str)
+    ensemble = EnsembleLearningAligner(
+        branches=branches,
+        voting=ScoreAverageVoting(),
+    )
 
 
-Aligner Pipeline
-----------------------
 
-The `AlignerPipeline` runs one encoder and one ontology aligner over a collected ontology matching dataset. It can be used independently or as a branch inside :class:`EnsembleAligner`. The parameters of this module are as follows:
-
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 20 55
-
-   * - Parameter
-     - Type
-     - Description
-   * - ``encoder``
-     - ``BaseEncoder``
-     - Encoder used to encode the source and target ontology items.
-   * - ``aligner``
-     - ``BaseOMModel``
-     - Ontology matching aligner used to generate predictions.
-   * - ``om_dataset``
-     - ``dict``
-     - Pre-collected ontology matching dataset.
-   * - ``load_params``
-     - ``dict``
-     - Parameters forwarded to the aligner ``load`` method when provided.
-   * - ``llm_dataset_class``
-     - ``Dataset``
-     - Dataset class used to wrap LLM inputs.
-   * - ``batch_size``
-     - ``int``
-     - Batch size used for LLM prompt generation.
-   * - ``shuffle``
-     - ``bool``
-     - Whether to shuffle LLM batches.
-   * - ``postprocessor``
-     - ``Any``
-     - Optional branch-level postprocessor.
-   * - ``postprocessor_params``
-     - ``dict``
-     - Parameters forwarded to the postprocessor.
-   * - ``include_reference``
-     - ``bool``
-     - Whether to pass reference matchings to the encoder.
-
-.. note::
-
-	``AlignerBranch`` applies postprocessing only when a postprocessor is provided. This is useful for model families that need output conversion before voting, such as LLM, RAG, FewShot-RAG, or KGE models.
-
-EnsembleAligner
+Configuration
 --------------------
 
-The ``EnsembleAligner`` combines predictions from two or more aligner branches. Parameters are as follows:
+.. tab:: 🧩 EnsembleLearningAligner
 
-.. list-table::
-   :header-rows: 1
-   :widths: 25 20 55
+    .. list-table::
+       :header-rows: 1
+       :widths: 14 12 14 60
 
-   * - Parameter
-     - Type
-     - Description
-   * - ``branches``
-     - ``list``
-     - A list of branch tuples in the form ``(name, branch)`` or ``(name, branch, weight)``.
-   * - ``voting``
-     - ``BaseVoting``
-     - Voting method used to combine branch predictions. Defaults to :class:`ReciprocalRankFusion`.
+       * - Parameter
+         - Type
+         - Default
+         - Description
+       * - **branches**
+         - list
+         - —
+         - A list of branch tuples in the form ``(name, aligner_pipeline)`` or
+           ``(name, aligner_pipeline, weight)``. At least two aligner pipelines
+           are required.
+       * - **voting**
+         - BaseVoting
+         - ``ReciprocalRankFusionVoting()``
+         - Voting method used to combine branch predictions.
+       * - ****kwargs**
+         - dict
+         - ``{}``
+         - Additional keyword arguments forwarded to the base ontology matching model.
+
+
+.. tab:: 🗳️ ReciprocalRankFusionVoting
+
+    .. list-table::
+       :header-rows: 1
+       :widths: 22 12 14 52
+
+       * - Parameter
+         - Type
+         - Default
+         - Description
+       * - **k**
+         - int
+         - ``60``
+         - Smoothing constant used in reciprocal rank fusion.
+
+.. tab:: ✅ WeightedVoting
+
+    .. list-table::
+       :header-rows: 1
+       :widths: 22 12 14 52
+
+       * - Parameter
+         - Type
+         - Default
+         - Description
+       * - **min_votes**
+         - int
+         - ``1``
+         - Minimum number of branches required for a pair.
+       * - **score_threshold**
+         - float
+         - ``None``
+         - Minimum branch score required to count a vote.
+
+    ``WeightedVoting`` can work as majority voting when all branches have the same
+    weight and ``min_votes`` is set to more than half of the total number of branches;
+    ``score_threshold`` is optional.
+
+    Example use when the count of branches is 5:
+
+    .. code-block:: python
+
+        ensemble = EnsembleLearningAligner(
+            branches=branches,
+            voting=WeightedVoting(min_votes=3),
+        )
 
 .. note::
 
-	``EnsembleAligner`` requires two or more branches. If only one branch is provided, it raises an error.
+    For details on configuring :class:`AlignerPipeline` & :class:`EnsembleLearningAligner`, see:
 
+    * `Developer Guide > AlignerPipeline Configuration <../developerguide/pipeline.html#configuration>`_
+    * `Package Reference > Ensemble Aligner <../package_reference/aligners.html#ensemble-aligner>`_
 
-Before voting, grouped retrieval outputs are flattened into the standard alignment format. Flat predictions with ``source`` and ``target`` are also accepted. If a flat prediction does not contain ``score``, the ensemble assigns a default score of ``1.0`` before voting.
+No additional constructor parameters are required for BordaCountVoting, CondorcetVoting, ScoreAverageVoting.
 
-.. tab:: ReciprocalRankFusion
+Configuration Example:
 
-	The `ReciprocalRankFusion` combines ranked pipeline outputs using reciprocal-rank scores. The parameters are as follows:
+.. code-block:: python
 
-	.. list-table::
-	   :header-rows: 1
-	   :widths: 25 20 55
-
-	   * - Parameter
-	     - Type
-	     - Description
-	   * - ``k``
-	     - ``int``
-	     - Smoothing constant used in reciprocal rank fusion. Defaults to ``60``.
-
-	Use :class:`ReciprocalRankFusion` when aligner pipelines come from different model families or when branch scores are not directly comparable.
-
-
-.. tab:: BordaCountVoting
-
-	:class:`BordaCountVoting` combines ranked branch outputs by assigning higher scores to higher-ranked predictions.
-
-
-	Use :class:`BordaCountVoting` when the ranking order of each branch is more important than the raw branch scores.
-
-.. tab::  CondorcetVoting
-
-
-	The `CondorcetVoting` compares target candidates pairwise for each source entity and ranks candidates by pairwise victories.
-
-
-	Use :class:`CondorcetVoting` when target candidates should be compared pairwise within each source entity.
-
-.. tab::  ScoreAverageVoting
-
-	:class:`ScoreAverageVoting` combines branch predictions by averaging scores across branches using branch weights.
-
-	Use :class:`ScoreAverageVoting` when branch scores are comparable or already calibrated.
-
-.. tab::  WeightedVoting
-
-	:class:`WeightedVoting` combines branch predictions by counting weighted branch support for each source-target pair. The parameters are as follows:
-
-	.. list-table::
-	   :header-rows: 1
-	   :widths: 25 20 55
-
-	   * - Parameter
-	     - Type
-	     - Description
-	   * - ``min_votes``
-	     - ``int``
-	     - Minimum number of branches required for a pair. Defaults to ``1``.
-	   * - ``score_threshold``
-	     - ``float``
-	     - Minimum branch score required to count a vote. Defaults to ``None``.
-
-	Use :class:`WeightedVoting` when the ensemble should favor predictions supported by one or more branches. With equal branch weights, it behaves like majority-style voting.
+    ensemble = EnsembleLearningAligner(
+        branches=branches,
+        voting=ReciprocalRankFusionVoting(k=60),
+    )

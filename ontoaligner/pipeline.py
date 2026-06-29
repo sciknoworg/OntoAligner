@@ -12,8 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
+This module consists of two pipeline utilities: OntoAlignerPipeline and AlignerPipeline.
+
 Ontology Alignment Pipeline. Various methods such as lightweight matching, retriever-based matching, LLM-based matching,
 and RAG (Retriever-Augmented Generation) techniques has been applied.
+
+AlignerPipeline runs user-provided encoder, aligner and optional postprocessor components over a collected ontology matching dataset. Unlike
+OntoAlignerPipeline, it does not collect datasets, select methods, evaluate results, or save outputs.
 """
 import json
 import inspect
@@ -46,7 +51,7 @@ class AlignerPipeline(BaseOMModel):
     """
     An aligner pipeline that runs one encoder and one ontology matching aligner.
 
-    This class follows the standard OntoAligner flow for one branch:
+    This class follows the standard OntoAligner flow for one aligner pipeline:
     encode the ontology matching dataset, load the aligner if needed, generate predictions,
     and optionally apply a postprocessor.
     """
@@ -66,7 +71,7 @@ class AlignerPipeline(BaseOMModel):
         **kwargs,
     ) -> None:
         """
-        Initializes the aligner branch.
+        Initializes the aligner pipeline.
 
         Parameters:
             encoder (BaseEncoder): Encoder model used to encode the ontology matching dataset.
@@ -95,16 +100,16 @@ class AlignerPipeline(BaseOMModel):
 
     def __str__(self):
         """
-        Returns a string representation of the AlignerBranch model.
+        Returns a string representation of the AlignerPipeline model.
 
         Returns:
-            str: A simple string representation of the class ("AlignerBranch").
+            str: A simple string representation of the class ("AlignerPipeline").
         """
-        return "AlignerBranch"
+        return "AlignerPipeline"
 
     def _is_graph_encoder(self) -> bool:
         """
-        Checks whether the branch encoder is a graph triple encoder.
+        Checks whether the pipeline's encoder is a graph triple encoder.
 
         Returns:
             bool: True if the encoder is a GraphTripleEncoder, otherwise False.
@@ -178,10 +183,10 @@ class AlignerPipeline(BaseOMModel):
 
     def _apply_postprocessor(self, predictions: List, llm_dataset: Dataset = None) -> List:
         """
-        Applies the optional postprocessor to branch predictions.
+        Applies the optional postprocessor to pipeline predictions.
 
         Parameters:
-            predictions (List): The generated branch predictions.
+            predictions (List): The generated pipeline predictions.
             llm_dataset (Dataset, optional): LLM dataset used to generate prompts. Defaults to None.
 
         Returns:
@@ -213,11 +218,11 @@ class AlignerPipeline(BaseOMModel):
 
     def generate(self, input_data: Dict = None) -> List:
         """
-        Generates predictions for one aligner branch.
+        Generates predictions for one aligner pipeline.
 
         Parameters:
             input_data (Dict, optional): Optional ontology matching dataset. If not provided,
-                                         the branch uses its own pre-collected dataset.
+                                         the pipeline uses its own pre-collected dataset.
 
         Returns:
             List: A list of raw or postprocessed alignment predictions.
@@ -226,7 +231,7 @@ class AlignerPipeline(BaseOMModel):
         om_dataset = input_data or self.om_dataset
 
         if om_dataset is None:
-            raise ValueError("AlignerBranch requires an ontology matching dataset.")
+            raise ValueError("AlignerPipeline requires an ontology matching dataset.")
 
         encoded_data = self._encode(om_dataset=om_dataset)
         self._load_aligner()
