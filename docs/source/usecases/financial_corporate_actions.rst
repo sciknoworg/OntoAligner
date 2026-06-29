@@ -1,7 +1,7 @@
 Financial Corporate Actions
 ===========================
 
-.. hint::
+.. sidebar:: 🚨 Note
 
         **We are using a synthetic bank ontology within this tutorial.**
 
@@ -21,12 +21,10 @@ The figure below shows the high-level story of the use case. OntoAligner acts as
    :width: 100%
 
 
-Overview
------------------
+Use Case Overview
+---------------------
 
-In this demo, the source ontology is a small synthetic bank vocabulary that mirrors how a real bank might name corporate-action concepts. The target ontology is a selected FIBO corporate-actions subset.
-
-The synthetic source is used only to make the example shareable and safe to publish. The same pipeline can be applied to a real internal schema once that schema is represented as an ontology or schema-derived vocabulary.
+In this demo, the source ontology is a small synthetic bank vocabulary that mirrors how a real bank might name corporate-action concepts. The target ontology is a selected FIBO corporate-actions subset. The synthetic source is used only to make the example shareable and safe to publish. The same pipeline can be applied to a real internal schema once that schema is represented as an ontology or schema-derived vocabulary.
 
 .. note::
 
@@ -34,9 +32,7 @@ The synthetic source is used only to make the example shareable and safe to publ
     `assets/bank-fibo <https://github.com/sciknoworg/OntoAligner/tree/dev/assets/bank-fibo>`_.
 
 
-The demo contains **32 source concepts**, **53 target concepts**, and **31 reference mappings**.
-
-Some representative Bank-to-FIBO correspondences in the use case are:
+The demo contains **32 source concepts**, **53 target concepts**, and **31 reference mappings**. Some representative Bank-to-FIBO correspondences in the use case are:
 
 .. list-table:: Sample Bank-to-FIBO Concepts
    :header-rows: 1
@@ -61,8 +57,8 @@ Some representative Bank-to-FIBO correspondences in the use case are:
      - Dividend proceeds are reinvested
 
 
-Why Corporate Actions?
-----------------------
+Why Corporate Actions Matter?
+------------------------------------
 
 Corporate actions are a useful financial pilot because the domain is compact enough to explain, but still rich enough to show the real alignment problem.
 
@@ -72,11 +68,7 @@ This is why the pipeline uses OLaLa-style parsing and encoding. Instead of relyi
 
 .. image:: ../img/label_vs_rich_text_matching.png
    :alt: Label matching versus rich ontology text
-   :width: 100%
-
-
-Bridging Financial Vocabularies
-------------------------------------------------
+   :width: 80%
 
 In financial data integration, the same real-world event may appear in several vocabularies:
 
@@ -88,11 +80,11 @@ These representations are not necessarily wrong; they were simply designed for d
 
 .. image:: ../img/three_worlds_semantic_overlap.png
    :alt: Three worlds semantic overlap
-   :width: 100%
+   :width: 80%
 
 
-Usage
------
+End-to-End Alignment Process
+--------------------------------
 
 The code below follows the same flow as the notebook: load the demo setup, encode concepts, retrieve candidate matches, rerank the candidates, postprocess the mappings, evaluate both output modes, and export the results.
 
@@ -245,7 +237,7 @@ The code below follows the same flow as the notebook: load the demo setup, encod
 
       .. image:: ../img/candidate_vs_final_alignment.png
          :alt: Candidate discovery versus final alignment
-         :width: 100%
+         :width: 70%
 
       Candidate discovery mode keeps all reranked candidates above the confidence threshold. This creates a review-friendly set of possible Bank-to-FIBO mappings before choosing a single final match.
 
@@ -355,7 +347,7 @@ The code below follows the same flow as the notebook: load the demo setup, encod
               json.dump(strict_matchings, json_file, indent=4, ensure_ascii=False)
 
 
-Summary
+Key Takeaways
 --------------------------
 
 This demo shows how OntoAligner can support a practical financial semantic interoperability workflow. The bank keeps its own internal vocabulary, while OntoAligner helps connect that vocabulary to FIBO without requiring hand-written mapping rules.

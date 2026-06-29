@@ -1,9 +1,6 @@
 Pipeline
 =====================================================
 
-Aligner Pipeline
----------------------
-
 .. sidebar:: Useful links:
 
     * `Aligners > Ensemble Learning <../aligner/ensemble_learning.html>`_
@@ -14,7 +11,7 @@ Aligner Pipeline
     * `Aligners > Knowledge Graph Embedding Aligner <../aligner/kge.html>`_
 
 
-**AlignerPipeline** provides a reusable execution flow for running one user-provided
+``AlignerPipeline`` provides a reusable execution flow for running one user-provided
 encoder and one ontology matching aligner over a collected ontology matching dataset.
 It is useful when users want direct control over the encoder, aligner, model loading,
 LLM dataset batching, and optional postprocessing.

@@ -22,7 +22,7 @@ Each branch follows the standard OntoAligner flow: encode the ontology matching 
 .. raw:: html
 
     <div align="center">
-        <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/ensemble.png" width="80%"/>
+        <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/ensemble.PNG" width="70%"/>
     </div>
 
 The ensemble workflow has four stages:

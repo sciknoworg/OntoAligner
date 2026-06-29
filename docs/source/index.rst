@@ -140,6 +140,7 @@ or if you are using Knowledge Graph Embeddings refer to `OntoAligner Meets Knowl
    :hidden:
 
    usecases/ecommerce
+   usecases/financial_corporate_actions
 
 
 .. toctree::
