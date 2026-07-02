@@ -9,13 +9,13 @@ Ensemble Learning
 
 **Ensemble Learning** combines predictions from multiple ontology alignment pipelines to produce a final set of correspondences. In OntoAligner, ensemble learning is handled by :class:`EnsembleLearningAligner`, where each ensemble member is represented as a branch configured with :class:`AlignerPipeline`.
 
-Each branch follows the standard OntoAligner flow: encode the ontology matching dataset, load the aligner when needed, generate predictions, and optionally apply branch-level postprocessing. Postprocessing may be required before voting for LLM, RAG, and KGE outputs because these branches may produce outputs that need conversion or filtering before fusion.
+Each branch follows the standard OntoAligner flow: encode the ontology matching dataset, load the aligner when needed, generate predictions, and optionally apply branch-level postprocessing. Postprocessing may be required before voting for LLM, RAG, and KGE outputs because these aligners may produce outputs that need conversion or filtering before fusion.
 
 .. hint::
 
     **Why Ensemble Learning for Ontology Alignment?**
 
-    1) *Complementary Signals*: Combines lexical similarity, semantic retrieval, graph structure, and LLM/RAG-based verification from different aligner branches.
+    1) *Complementary Signals*: Combines lexical similarity, semantic retrieval, graph structure, and LLM/RAG-based verification from different aligners.
     2) *Robustness*: Reduces reliance on a single aligner, which can help balance the weaknesses of individual models.
     3) *Model-Agnostic Fusion*: Allows heterogeneous aligner families to contribute through a shared voting strategy and produce one final alignment.
 
@@ -27,7 +27,7 @@ Each branch follows the standard OntoAligner flow: encode the ontology matching 
 
 The ensemble workflow has four stages:
 
-**🔧 1. Branch Configuration**: Multiple :class:`AlignerPipeline` branches are configured with encoders, aligners, datasets, optional loading parameters, and optional postprocessors.
+**🔧 1. Branch Configuration**: Multiple :class:`AlignerPipeline` are configured with encoders, aligners, datasets, optional loading parameters, and optional postprocessors.
 
 **⚙️ 2. Branch Prediction**: Each branch generates correspondences independently using lightweight, retrieval, KGE, LLM, or RAG-based aligners.
 
@@ -37,7 +37,7 @@ The ensemble workflow has four stages:
 
 Usage
 ---------
-This module guides you through a step-by-step process for performing ensemble-based ontology alignment using multiple OntoAligner models. By the end, you’ll understand how to configure aligner pipeline branches, combine their predictions with voting strategies, evaluate the final matchings, and save the outputs in XML and JSON formats.
+This module guides you through a step-by-step process for performing ensemble-based ontology alignment using multiple OntoAligner models. By the end, you’ll understand how to configure aligner pipeline, combine their predictions with voting strategies, evaluate the final matchings, and save the outputs in XML and JSON formats.
 
 .. tab:: ➡️ 1: Import
 
@@ -106,7 +106,7 @@ This module guides you through a step-by-step process for performing ensemble-ba
 .. tab:: ➡️ 3: Configure Ensemble
 
     Configure the runtime settings, model paths, label mapper, RAG configuration,
-    and ensemble branches. Each branch is represented by an :class:`AlignerPipeline`
+    and ensemble aligners. Each branch is represented by an :class:`AlignerPipeline`
     and may include branch-level postprocessing before voting.
 
     .. code-block:: python
@@ -142,7 +142,7 @@ This module guides you through a step-by-step process for performing ensemble-ba
             },
         }
 
-        branches = [
+        aligners = [
             (
                 "lightweight",
                 AlignerPipeline(
@@ -232,7 +232,7 @@ This module guides you through a step-by-step process for performing ensemble-ba
 
     .. code-block:: python
 
-        branches = [
+        aligners = [
             ("lightweight", AlignerPipeline(...), 1.0),
             ("sbert", AlignerPipeline(...), 1.0),
         ]
@@ -241,13 +241,13 @@ This module guides you through a step-by-step process for performing ensemble-ba
 
 .. tab:: ➡️ 4: Ensemble Learning Aligner
 
-    Initialize :class:`EnsembleLearningAligner` with the configured branches and a voting
+    Initialize :class:`EnsembleLearningAligner` with the configured aligners and a voting
     method. The default voting method is :class:`ReciprocalRankFusionVoting`.
 
     .. code-block:: python
 
         ensemble = EnsembleLearningAligner(
-            branches=branches,
+            aligners=aligners,
             voting=ReciprocalRankFusionVoting(k=60),
         )
 
@@ -314,7 +314,7 @@ This module guides you through a step-by-step process for performing ensemble-ba
 Voting Strategies
 -----------------------
 
-Voting strategies combine normalized predictions from multiple branches. Each branch
+Voting strategies combine normalized predictions from multiple aligners. Each branch
 contributes a list of predictions and a branch weight. The branch weight controls the
 influence of the branch during fusion.
 
@@ -330,13 +330,13 @@ influence of the branch during fusion.
      - Adds reciprocal-rank scores from each branch and ranks pairs by the fused score.
      - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/ensemble/voting/reciprocal_rank_fusion.py>`_
    * - ``BordaCountVoting``
-     - Assigns normalized rank-based points to predictions and sums them across branches.
+     - Assigns normalized rank-based points to predictions and sums them across aligners.
      - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/ensemble/voting/borda.py>`_
    * - ``CondorcetVoting``
      - Compares target candidates pairwise for each source and scores candidates by pairwise wins.
      - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/ensemble/voting/condorce.py>`_
    * - ``ScoreAverageVoting``
-     - Computes the weighted average score for each source-target pair across branches.
+     - Computes the weighted average score for each source-target pair across aligners.
      - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/ensemble/voting/average.py>`_
    * - ``WeightedVoting``
      - Counts weighted branch support for each source-target pair and filters by vote settings.
@@ -357,7 +357,7 @@ Import a voting method and pass it to :class:`EnsembleLearningAligner`.
     from ontoaligner.aligner.ensemble.voting import ReciprocalRankFusionVoting
 
     ensemble = EnsembleLearningAligner(
-        branches=branches,
+        aligners=aligners,
         voting=ReciprocalRankFusionVoting(k=60),
     )
 
@@ -368,7 +368,7 @@ A different voting method can be used by changing the import & voting object.
     from ontoaligner.aligner.ensemble.voting import ScoreAverageVoting
 
     ensemble = EnsembleLearningAligner(
-        branches=branches,
+        aligners=aligners,
         voting=ScoreAverageVoting(),
     )
 
@@ -387,7 +387,7 @@ Configuration
          - Type
          - Default
          - Description
-       * - **branches**
+       * - **aligners**
          - list
          - —
          - A list of branch tuples in the form ``(name, aligner_pipeline)`` or
@@ -431,22 +431,22 @@ Configuration
        * - **min_votes**
          - int
          - ``1``
-         - Minimum number of branches required for a pair.
+         - Minimum number of aligners required for a pair.
        * - **score_threshold**
          - float
          - ``None``
          - Minimum branch score required to count a vote.
 
-    ``WeightedVoting`` can work as majority voting when all branches have the same
-    weight and ``min_votes`` is set to more than half of the total number of branches;
+    ``WeightedVoting`` can work as majority voting when all aligners have the same
+    weight and ``min_votes`` is set to more than half of the total number of aligners;
     ``score_threshold`` is optional.
 
-    Example use when the count of branches is 5:
+    Example use when the count of aligners is 5:
 
     .. code-block:: python
 
         ensemble = EnsembleLearningAligner(
-            branches=branches,
+            aligners=aligners,
             voting=WeightedVoting(min_votes=3),
         )
 
@@ -464,6 +464,6 @@ Configuration Example:
 .. code-block:: python
 
     ensemble = EnsembleLearningAligner(
-        branches=branches,
+        aligners=aligners,
         voting=ReciprocalRankFusionVoting(k=60),
     )
