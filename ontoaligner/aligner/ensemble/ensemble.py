@@ -24,7 +24,7 @@ class EnsembleLearningAligner(BaseOMModel):
 
     def __init__(
         self,
-        branches: List[Tuple],
+        aligners: List[Tuple],
         voting: BaseVoting = None,
         **kwargs,
     ) -> None:
@@ -32,7 +32,7 @@ class EnsembleLearningAligner(BaseOMModel):
         Initializes the ensemble aligner.
 
         Parameters:
-            branches (List[Tuple]): A list of branch tuples in the form
+            aligners (List[Tuple]): A list of branch tuples in the form
                                     (name, aligner_pipeline) or (name, aligner_pipeline, weight).
             voting (BaseVoting, optional): Voting method used to combine branch predictions.
                                         Defaults to ReciprocalRankFusionVoting.
@@ -40,12 +40,12 @@ class EnsembleLearningAligner(BaseOMModel):
         """
         super().__init__(**kwargs)
 
-        if len(branches) < 2:
+        if len(aligners) < 2:
             raise ValueError("EnsembleLearningAligner requires two or more aligner pipelines.")
 
-        self.branches = []
+        self.aligners = []
 
-        for branch in branches:
+        for branch in aligners:
             if len(branch) == 2:
                 name, aligner_pipeline = branch
                 weight = 1.0
@@ -54,7 +54,7 @@ class EnsembleLearningAligner(BaseOMModel):
             else:
                 raise ValueError("Each branch must be (name, aligner_pipeline) or (name, aligner_pipeline, weight).")
 
-            self.branches.append((name, aligner_pipeline, float(weight)))
+            self.aligners.append((name, aligner_pipeline, float(weight)))
 
         self.voting = voting or ReciprocalRankFusionVoting()
 
@@ -130,7 +130,7 @@ class EnsembleLearningAligner(BaseOMModel):
         """
         branch_outputs = []
 
-        for _, aligner_pipeline, weight in self.branches:
+        for _, aligner_pipeline, weight in self.aligners:
             predictions = aligner_pipeline.generate(input_data=input_data)
             flat_predictions = self._flatten_predictions(predictions=predictions)
             branch_outputs.append((flat_predictions, weight))

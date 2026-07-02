@@ -90,8 +90,8 @@ llm_config = {
 }
 
 
-# Step 5: Define heterogeneous ensemble branches
-branches = [
+# Step 5: Define heterogeneous ensemble aligners
+aligners = [
     (
         "lightweight",
         AlignerPipeline(
@@ -212,7 +212,7 @@ branches = [
 
 # Step 6: Initialize ensemble aligner with rank-based voting
 ensemble = EnsembleLearningAligner(
-    branches=branches,
+    aligners=aligners,
     voting=ReciprocalRankFusionVoting(k=60),
 )
 

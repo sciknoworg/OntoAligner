@@ -111,11 +111,11 @@ def test_aligner_pipeline_with_postprocessor(om_dataset):
     assert predictions == []
 
 
-def test_ensemble_learning_aligner_requires_multiple_branches():
+def test_ensemble_learning_aligner_requires_multiple_aligners():
     branch = StaticBranch([{"source": "s1", "target": "t1", "score": 1.0}])
 
     with pytest.raises(ValueError):
-        EnsembleLearningAligner(branches=[("single", branch, 1.0)])
+        EnsembleLearningAligner(aligners=[("single", branch, 1.0)])
 
 
 def test_ensemble_learning_aligner_combines_flat_outputs():
@@ -132,7 +132,7 @@ def test_ensemble_learning_aligner_combines_flat_outputs():
     )
 
     ensemble = EnsembleLearningAligner(
-        branches=[
+        aligners=[
             ("branch-1", branch_1, 1.0),
             ("branch-2", branch_2, 1.0),
         ],
@@ -158,7 +158,7 @@ def test_ensemble_learning_aligner_flattens_grouped_outputs(om_dataset):
     )
 
     ensemble = EnsembleLearningAligner(
-        branches=[
+        aligners=[
             ("grouped", branch_1, 1.0),
             ("flat", branch_2, 1.0),
         ],
