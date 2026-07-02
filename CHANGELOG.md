@@ -1,5 +1,9 @@
 ## Changelog
 
+### V1.9.1 Changelog (July 2, 2026)
+- Fix typo in ensemble aligner code and documentation.
+- Update readme.
+
 ### V1.9.0 Changelog (June 29, 2026)
 - Ensemble Aligner is added.
 - Ensemble Aligner documentation.
