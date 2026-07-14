@@ -402,7 +402,7 @@ passing those ensembles into the final ensemble.
 .. note::
 
     A complete tutorial notebook is available at
-    `tutorial/04-nested-ensemble-aligners-in-ontoaligner.ipynb <https://github.com/sciknoworg/OntoAligner/blob/dev/tutorial/04-nested-ensemble-learning-aligners-in-ontoaligner.ipynb>`_.
+    `tutorial/04-nested-ensemble-learning-aligners-in-ontoaligner.ipynb <https://github.com/sciknoworg/OntoAligner/blob/dev/tutorial/04-nested-ensemble-learning-aligners-in-ontoaligner.ipynb>`_.
 
 Voting Strategies
 -----------------------
