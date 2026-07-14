@@ -311,6 +311,99 @@ This module guides you through a step-by-step process for performing ensemble-ba
         A complete ensemble learning example is available at
         `examples/ensemble.py <https://github.com/sciknoworg/OntoAligner/blob/dev/examples/ensemble.py>`_.
 
+Nested Ensemble Learning
+----------------------------
+
+Nested ensemble learning extends the standard ensemble learning workflow by combining multiple
+ensemble groups into one final ensemble. Instead of placing every aligner pipeline in a
+single flat ensemble, related pipelines are first grouped with
+:class:`EnsembleLearningAligner`. These group-level ensembles are then combined again
+with another :class:`EnsembleLearningAligner`.
+
+This is useful when an alignment workflow uses different groups of signals, such as
+retrieval, reranking, graph structure, and LLM-based reasoning.
+
+.. hint::
+
+    Nested ensembles can mix different :class:`AlignerPipeline` configurations and
+    ensemble groups as long as they expose the standard ``generate()`` flow. This makes
+    it possible to combine pipelines with different encoders, aligners, postprocessors,
+    and rerankers in the same workflow.
+
+The nested ensemble follows the flow below:
+
+.. code-block:: text
+
+    Mouse-Human dataset
+            │
+            ├─ llm_pipeline ────────┐
+            ├─ rag_pipeline ────────┼─ llm_ensemble ────────────┐
+            └─ fsrag_pipeline ──────┘                           │
+                                                                │
+            ├─ lightweight_pipeline ─┐                          │
+            ├─ tfidf_pipeline ───────┼─ retrieval_ensemble ─────┼─ nested_ensemble
+            └─ sbert_pipeline ───────┘                          │         │
+                                                                │         │
+            ├─ sbert_reranking_pipeline ─┐                      │         │
+            ├─ tfidf_reranking_pipeline ─┼─ reranking_ensemble ─┘         │
+            └─ graph_reranking_pipeline ─┘                                │
+                                                                          ↓
+                                                                  final_matchings
+                                                                          │
+                                                                          ↓
+                                                                  evaluation report
+                                                                          │
+                                                                          ↓
+                                                                  XML and JSON export
+
+A nested ensemble can be configured by first creating the group-level ensembles and then
+passing those ensembles into the final ensemble.
+
+.. code-block:: python
+
+    llm_ensemble = EnsembleLearningAligner(
+        aligners=[
+            ("llm", llm_pipeline, 1.0),
+            ("rag", rag_pipeline, 1.0),
+            ("fsrag", fsrag_pipeline, 1.0),
+        ],
+        voting=ReciprocalRankFusionVoting(k=60),
+    )
+
+    retrieval_ensemble = EnsembleLearningAligner(
+        aligners=[
+            ("lightweight", lightweight_pipeline, 1.0),
+            ("tfidf", tfidf_pipeline, 1.0),
+            ("sbert", sbert_pipeline, 1.0),
+        ],
+        voting=ReciprocalRankFusionVoting(k=60),
+    )
+
+    reranking_ensemble = EnsembleLearningAligner(
+        aligners=[
+            ("sbert_reranking", sbert_reranking_pipeline, 1.0),
+            ("tfidf_reranking", tfidf_reranking_pipeline, 1.0),
+            ("graph_reranking", graph_reranking_pipeline, 1.0),
+        ],
+        voting=ScoreAverageVoting(),
+    )
+
+    nested_ensemble = EnsembleLearningAligner(
+        aligners=[
+            ("llm_ensemble", llm_ensemble, 1.0),
+            ("retrieval_ensemble", retrieval_ensemble, 1.0),
+            ("reranking_ensemble", reranking_ensemble, 1.0),
+        ],
+        voting=ReciprocalRankFusionVoting(k=60),
+    )
+
+    final_matchings = nested_ensemble.generate()
+
+.. note::
+
+    A complete tutorial notebook is available at
+    `tutorial/04-nested-ensemble-aligners-in-ontoaligner.ipynb <https://github.com/sciknoworg/OntoAligner/blob/dev/tutorial/04-nested-ensemble-learning-aligners-in-ontoaligner.ipynb>`_.
+
 Voting Strategies
 -----------------------
 
