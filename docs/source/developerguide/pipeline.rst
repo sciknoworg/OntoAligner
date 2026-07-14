@@ -170,11 +170,10 @@ This module guides you through a step-by-step process for running a single ontol
 
 .. note::
 
-    Complete examples are available at:
+    Complete aligner pipeline examples are available at:
 
     * `examples/aligner_pipeline.py <https://github.com/sciknoworg/OntoAligner/blob/dev/examples/aligner_pipeline.py>`_
     * `examples/aligner_pipeline_reranking.py <https://github.com/sciknoworg/OntoAligner/blob/dev/examples/aligner_pipeline_reranking.py>`_
-
 Configuration
 --------------------
 
@@ -244,7 +243,7 @@ Configuration
          - bool
          - ``False``
          - Whether to pass reference matchings to the encoder.
-       * - ``**kwargs``
+       * - ****kwargs**
          - dict
          - ``{}``
          - Additional keyword arguments forwarded to the base ontology matching model.
