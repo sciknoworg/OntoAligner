@@ -3,8 +3,8 @@ Reranking
 
 .. sidebar:: Useful links:
 
-    * `Developer Guide > Pipeline <pipeline.html>`_
     * `Retrieval Aligner > Reranking <https://ontoaligner.readthedocs.io/aligner/retriever.html#reranking>`_
+    * `Developer Guide > Pipeline <pipeline.html>`_
 
 
 This guide shows how reranking can be used as a reusable candidate-refinement step across OntoAligner workflows.
@@ -23,20 +23,13 @@ grouped candidates or after grouping flat predictions.
     Single-target outputs, such as PropMatch or fuzzy lightweight results, are usually
     not suitable after final selection.
 
-The common reranking flows are:
+The common reranking workflows in OntoAligner are:
 
-.. code-block:: text
+.. raw:: html
 
-    grouped candidate output ---------------→ reranker → postprocessor
-
-    flat source-target-score output --------→ group predictions → reranker → postprocessor
-
-    RAG / FSRAG / ICV / LLM final output ---→ model-specific postprocessor → group predictions → reranker → postprocessor
-
-    RAG IR output before LLM verification --→ reranker → LLM verification  → RAG postprocessor
-
-    AlignerPipeline ------------------------→ built-in reranker
-
+    <div align="center">
+        <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/reranking_flows.png" width="70%"/>
+    </div>
 
 Usage
 ----------------------------
@@ -105,7 +98,7 @@ Usage
             return list(grouped_predictions.values())
 
 
-.. tab:: 🔁 Normal Reranking
+.. tab:: 🔁 Grouped Output Reranking
 
     Use this pattern when the aligner already returns grouped candidates with
     ``target-cands`` and ``score-cands``.
@@ -161,7 +154,7 @@ Usage
         use ``target-cands`` and ``score-cands``.
 
 
-.. tab:: 🧩 Flat-Output Reranking
+.. tab:: 🧩 Flat Output Reranking
 
     Use this pattern when a workflow produces final flat ``source``-``target``-``score``
     predictions. For RAG-style workflows, apply the RAG postprocessor first and then
@@ -217,10 +210,11 @@ Usage
         flat outputs from RAG, FewShotRAG, ICV, standalone LLM workflows, or custom
         aligners.
 
-.. tab:: 🕸️ Graph-Based Reranking
+.. tab:: 🕸️ Graph Candidate Reranking
 
-    Graph-based aligners can be reranked when they keep multiple candidates per source.
-    In the tutorial, ``ConvEAligner`` is used with ``retriever=True``.
+    Graph candidate reranking applies when a graph-based aligner keeps multiple target
+    candidates per source. In the tutorial, ``ConvEAligner`` is used with
+    ``retriever=True``.
 
     .. code-block:: python
 
@@ -295,8 +289,8 @@ Usage
 
     .. note::
 
-        This pattern applies to graph-based aligners when candidate retrieval is enabled,
-        such as ``ConvEAligner`` with ``retriever=True``.
+        This pattern applies to graph-based aligners when candidate retrieval is enabled.
+        When ``retriever=False``, the output may not contain multiple candidates to rerank.
 
 
 .. tab:: 🧠 RAG IR-Output Reranking
@@ -395,82 +389,6 @@ Usage
 
         This pattern applies to RAG, FewShotRAG, ICV, and custom RAG-style workflows
         when retrieval candidates are reranked before LLM verification.
-
-
-.. tab:: 🧬 AlignerPipeline Reranking
-
-    ``AlignerPipeline`` can apply reranking inside the pipeline when the aligner's raw
-    output is already rerankable. The built-in ``AlignerPipeline`` flow is:
-
-    .. code-block:: text
-
-        encoder
-            ↓
-        aligner
-            ↓
-        reranker
-            ↓
-        postprocessor
-            ↓
-        final matchings
-
-    .. code-block:: python
-
-        # Configure AlignerPipeline with a reranker
-        from ontoaligner import AlignerPipeline
-        from ontoaligner.encoder import ConceptParentLightweightEncoder
-        from ontoaligner.aligner import SBERTRetrieval, CrossEncoderReranking
-
-        aligner_pipeline = AlignerPipeline(
-            encoder=ConceptParentLightweightEncoder(),
-            aligner=SBERTRetrieval(
-                device=device,
-                top_k=10,
-            ),
-            om_dataset=dataset,
-            load_params={
-                "path": "all-MiniLM-L6-v2",
-            },
-            reranker=CrossEncoderReranking(
-                device=device,
-                top_k=5,
-                normalize_score="sigmoid",
-            ),
-            reranker_load_params={
-                "path": "cross-encoder/ms-marco-MiniLM-L6-v2",
-            },
-            postprocessor=retriever_postprocessor,
-            postprocessor_params={
-                "threshold": 0.5,
-            },
-        )
-
-        # Generate final matchings
-        matchings = aligner_pipeline.generate()
-
-
-    .. note::
-
-        This pattern applies to ``AlignerPipeline`` when the aligner's raw output is
-        already grouped or flat candidate output before postprocessing.
-
-Key Takeaways
-----------------------------
-
-- Reranking is a reusable candidate-refinement step in OntoAligner.
-- Reranking can be applied when an aligner output keeps multiple target candidates for
-  each source concept.
-- Grouped outputs with ``target-cands`` and ``score-cands`` can be reranked directly.
-- Flat outputs with ``source``, ``target``, and ``score`` can be grouped by source
-  before reranking.
-- Direct flat outputs, such as OLaLA, ensemble, FLORA, and custom flat aligner outputs,
-  can be grouped and reranked using the flat-output reranking pattern.
-- RAG, FewShotRAG, ICV, and LLM-style workflows should first use their model-specific
-  postprocessor to produce flat matchings before final-output reranking.
-- RAG-style ``ir-outputs`` can also be reranked before LLM verification.
-- Reranking is usually not useful after final single-target selection, such as
-  PropMatch or fuzzy lightweight outputs.
-
 
 .. note::
 

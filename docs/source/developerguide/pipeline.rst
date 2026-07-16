@@ -14,7 +14,7 @@ Pipeline
 ``AlignerPipeline`` provides a reusable execution flow for running one user-provided
 encoder and one ontology matching aligner over a collected ontology matching dataset.
 It is useful when users want direct control over the encoder, aligner, model loading,
-LLM dataset batching, optional reranking, and optional postprocessing.
+LLM dataset batching, reranking, and postprocessing.
 
 Unlike a full orchestration pipeline, :class:`AlignerPipeline` does not collect
 datasets, choose methods, define model-specific configurations, evaluate predictions,
@@ -24,23 +24,26 @@ returning predictions.
 Given two ontologies :math:`O_1` and :math:`O_2`, :class:`AlignerPipeline` produces
 a list of correspondence predictions through five stages:
 
-**🔧 1. Component Setup**: Provide the encoder, aligner, dataset, and optional
-pipeline settings such as ``load_params``, ``llm_dataset_class``, ``reranker``,
+**🔧 1. Component Setup**: Provide the encoder, aligner, dataset, and pipeline settings such as ``load_params``, ``llm_dataset_class``, ``reranker``,
 ``reranker_load_params``, ``postprocessor``, or ``postprocessor_params``.
 
 **⚙️ 2. Encoding**: Convert the collected ontology matching dataset into the format
 expected by the aligner.
 
 **🧠 3. Prediction Generation**: Generate predictions from encoded ontology data, with
-optional LLM dataset batching when ``llm_dataset_class`` is provided.
+LLM dataset batching when ``llm_dataset_class`` is provided.
 
-**🔀 4. Optional Reranking**: Reorder candidate predictions with a user-provided
+**🔀 4. Reranking**: Reorder candidate predictions with a user-provided
 reranker before postprocessing. If predictions are flat ``source``/``target``/``score``
 records, the pipeline groups them into ``target-cands`` and ``score-cands`` before
 reranking.
 
-**🧹 5. Optional Postprocessing**: Apply a user-provided postprocessor to convert,
+**🧹 5. Postprocessing**: Apply a user-provided postprocessor to convert,
 filter, or normalize predictions before returning the final pipeline output.
+
+.. note::
+
+    Reranking and postprocessing are optional pipeline stages. Skip them when raw aligner outputs are needed.
 
 Usage
 ----------
@@ -218,7 +221,7 @@ Configuration
        * - **reranker**
          - BaseOMModel
          - ``None``
-         - Optional reranking model used to reorder candidate predictions before postprocessing.
+         - reranking model used to reorder candidate predictions before postprocessing.
        * - **reranker_load_params**
          - dict
          - ``None``
@@ -226,15 +229,15 @@ Configuration
        * - **reranker_encoder**
          - BaseEncoder
          - ``None``
-         - Optional encoder used to prepare source and target ontology text for reranking.
+         - encoder used to prepare source and target ontology text for reranking.
        * - **reranker_om_dataset**
          - dict
          - ``None``
-         - Optional ontology matching dataset used by the reranker encoder.
+         - ontology matching dataset used by the reranker encoder.
        * - **postprocessor**
          - Any
          - ``None``
-         - Optional postprocessor applied to pipeline predictions.
+         - postprocessor applied to pipeline predictions.
        * - **postprocessor_params**
          - dict
          - ``None``
@@ -252,7 +255,7 @@ Configuration Example:
 
 .. code-block:: python
 
-    # Retrieval with optional reranking
+    # Retrieval with reranking
     AlignerPipeline(
         encoder=ConceptParentLightweightEncoder(),
         aligner=SBERTRetrieval(

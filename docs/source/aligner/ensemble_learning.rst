@@ -332,29 +332,11 @@ retrieval, reranking, graph structure, and LLM-based reasoning.
 
 The nested ensemble follows the flow below:
 
-.. code-block:: text
+.. raw:: html
 
-    Mouse-Human dataset
-            │
-            ├─ llm_pipeline ────────┐
-            ├─ rag_pipeline ────────┼─ llm_ensemble ────────────┐
-            └─ fsrag_pipeline ──────┘                           │
-                                                                │
-            ├─ lightweight_pipeline ─┐                          │
-            ├─ tfidf_pipeline ───────┼─ retrieval_ensemble ─────┼─ nested_ensemble
-            └─ sbert_pipeline ───────┘                          │         │
-                                                                │         │
-            ├─ sbert_reranking_pipeline ─┐                      │         │
-            ├─ tfidf_reranking_pipeline ─┼─ reranking_ensemble ─┘         │
-            └─ graph_reranking_pipeline ─┘                                │
-                                                                          ↓
-                                                                  final_matchings
-                                                                          │
-                                                                          ↓
-                                                                  evaluation report
-                                                                          │
-                                                                          ↓
-                                                                  XML and JSON export
+    <div align="center">
+        <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/nested_ensemble_learning_flow.png" width="70%"/>
+    </div>
 
 A nested ensemble can be configured by first creating the group-level ensembles and then
 passing those ensembles into the final ensemble.
