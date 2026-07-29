@@ -23,13 +23,6 @@ grouped candidates or after grouping flat predictions.
     Single-target outputs, such as PropMatch or fuzzy lightweight results, are usually
     not suitable after final selection.
 
-The common reranking workflows in OntoAligner are:
-
-.. raw:: html
-
-    <div align="center">
-        <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/reranking_flows.png" width="70%"/>
-    </div>
 
 Usage
 ----------------------------
@@ -389,6 +382,38 @@ Usage
 
         This pattern applies to RAG, FewShotRAG, ICV, and custom RAG-style workflows
         when retrieval candidates are reranked before LLM verification.
+
+Configuration
+----------------------------
+
+Reranking can be applied through different workflow patterns depending on the aligner
+output format:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 28 42 30
+
+   * - Aligner output
+     - Before reranking
+     - After reranking
+   * - Grouped output
+     - Use ``target-cands`` and ``score-cands`` directly.
+     - Apply ``retriever_postprocessor``.
+   * - Flat output
+     - Group flat ``source``-``target``-``score`` predictions by source.
+     - Apply ``retriever_postprocessor``.
+   * - Graph candidate output
+     - Use ``retriever=True`` and encode source and target text for reranking.
+     - Apply ``retriever_postprocessor``.
+   * - RAG IR output
+     - Use ``ir-outputs`` directly before LLM verification.
+     - Run LLM verification and RAG postprocessing.
+   * - RAG / FewShotRAG / ICV / LLM final output
+     - Apply the model-specific postprocessor, then group flat predictions by source.
+     - Apply ``retriever_postprocessor``.
+   * - ``AlignerPipeline``
+     - Configure ``reranker`` and ``postprocessor`` during pipeline initialization.
+     - The configured postprocessor is applied internally.
 
 .. note::
 

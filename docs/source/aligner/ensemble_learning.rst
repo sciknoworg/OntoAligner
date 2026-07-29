@@ -335,7 +335,7 @@ The nested ensemble follows the flow below:
 .. raw:: html
 
     <div align="center">
-        <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/nested_ensemble_learning_flow.png" width="70%"/>
+        <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/nested_ensemble.png" width="80%"/>
     </div>
 
 A nested ensemble can be configured by first creating the group-level ensembles and then
