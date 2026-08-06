@@ -211,9 +211,11 @@ aligners = [
 
 
 # Step 6: Initialize ensemble aligner with rank-based voting
+# `selection` controls how the fused output is filtered after voting; `top1_source`
+# keeps the strongest target per source, while `topk_source` can retain more candidates.
 ensemble = EnsembleLearningAligner(
     aligners=aligners,
-    voting=ReciprocalRankFusionVoting(k=60),
+    voting=ReciprocalRankFusionVoting(k=60, selection="top1_source"),
 )
 
 

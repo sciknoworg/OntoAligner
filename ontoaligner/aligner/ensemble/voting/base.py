@@ -52,7 +52,7 @@ class BaseVoting(ABC):
     An abstract base class for ensemble voting methods.
 
     This class defines the common interface used by voting strategies that combine
-    predictions from multiple alignment branches.
+    predictions from multiple alignment aligners.
 
     Attributes:
         voting_method (str): The name of the voting method.
@@ -83,21 +83,21 @@ class BaseVoting(ABC):
         """
         return self.voting_method
 
-    def combine(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
+    def combine(self, aligner_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         """
-        Combines predictions from multiple alignment branches.
+        Combines predictions from multiple alignment aligners.
 
         Parameters:
-            branch_outputs (List[Tuple[List[Dict], float]]): A list of flat branch predictions and branch weights.
+            aligner_outputs (List[Tuple[List[Dict], float]]): A list of flat aligner predictions and aligner weights.
 
         Returns:
             List[Dict]: The combined source-target predictions.
         """
-        fused = self.fuse(branch_outputs=branch_outputs)
+        fused = self.fuse(aligner_outputs=aligner_outputs)
         return self._select(fused=fused)
 
     @abstractmethod
-    def fuse(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
+    def fuse(self, aligner_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         pass
 
     @abstractmethod

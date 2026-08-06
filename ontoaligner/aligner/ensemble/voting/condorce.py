@@ -42,37 +42,37 @@ class CondorcetVoting(BaseVoting):
         """
         return "CondorcetVoting"
 
-    def _get_source_candidates(self, branch_outputs: List[Tuple[List[Dict], float]]) -> Dict:
+    def _get_source_candidates(self, aligner_outputs: List[Tuple[List[Dict], float]]) -> Dict:
         """
         Collects target candidates for each source entity.
 
         Parameters:
-            branch_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and branch weights.
+            aligner_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and aligner weights.
 
         Returns:
             Dict: A mapping from source IRI to target candidate IRIs.
         """
         source_candidates = defaultdict(set)
 
-        for flat_predictions, _ in branch_outputs:
+        for flat_predictions, _ in aligner_outputs:
             for prediction in flat_predictions:
                 source_candidates[prediction["source"]].add(prediction["target"])
 
         return source_candidates
 
-    def _get_branch_rankings(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Tuple[Dict, float]]:
+    def _get_aligner_rankings(self, aligner_outputs: List[Tuple[List[Dict], float]]) -> List[Tuple[Dict, float]]:
         """
-        Builds source-target rank maps for each branch.
+        Builds source-target rank maps for each aligner.
 
         Parameters:
-            branch_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and branch weights.
+            aligner_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and aligner weights.
 
         Returns:
-            List[Tuple[Dict, float]]: A list of branch ranking maps and branch weights.
+            List[Tuple[Dict, float]]: A list of aligner ranking maps and aligner weights.
         """
-        branch_rankings = []
+        aligner_rankings = []
 
-        for flat_predictions, weight in branch_outputs:
+        for flat_predictions, weight in aligner_outputs:
             sorted_predictions = _get_unique_sorted_predictions(predictions=flat_predictions)
             source_rankings = defaultdict(dict)
 
@@ -83,22 +83,22 @@ class CondorcetVoting(BaseVoting):
                 if target not in source_rankings[source]:
                     source_rankings[source][target] = rank
 
-            branch_rankings.append((source_rankings, float(weight)))
+            aligner_rankings.append((source_rankings, float(weight)))
 
-        return branch_rankings
+        return aligner_rankings
 
-    def fuse(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
+    def fuse(self, aligner_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         """
-        Combines branch predictions using Condorcet voting.
+        Combines aligner predictions using Condorcet voting.
 
         Parameters:
-            branch_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and branch weights.
+            aligner_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and aligner weights.
 
         Returns:
             List[Dict]: A list of combined source-target predictions sorted by Condorcet score.
         """
-        source_candidates = self._get_source_candidates(branch_outputs=branch_outputs)
-        branch_rankings = self._get_branch_rankings(branch_outputs=branch_outputs)
+        source_candidates = self._get_source_candidates(aligner_outputs=aligner_outputs)
+        aligner_rankings = self._get_aligner_rankings(aligner_outputs=aligner_outputs)
 
         condorcet_scores = defaultdict(float)
 
@@ -115,7 +115,7 @@ class CondorcetVoting(BaseVoting):
                     wins = 0.0
                     losses = 0.0
 
-                    for source_rankings, weight in branch_rankings:
+                    for source_rankings, weight in aligner_rankings:
                         source_ranks = source_rankings.get(source, {})
                         missing_rank = len(source_ranks) + 1
 

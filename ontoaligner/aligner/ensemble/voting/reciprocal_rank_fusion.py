@@ -21,7 +21,7 @@ class ReciprocalRankFusionVoting(BaseVoting):
     """
     A reciprocal rank fusion voting method for combining alignment predictions.
 
-    This class combines branch predictions by ranking each branch output independently
+    This class combines aligner predictions by ranking each aligner output independently
     and adding reciprocal-rank scores for repeated source-target pairs.
 
     Attributes:
@@ -46,19 +46,19 @@ class ReciprocalRankFusionVoting(BaseVoting):
         """
         return {"ReciprocalRankFusion": {"k": self.k}}
 
-    def fuse(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
+    def fuse(self, aligner_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         """
-        Combines branch predictions using reciprocal rank fusion.
+        Combines aligner predictions using reciprocal rank fusion.
 
         Parameters:
-            branch_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and branch weights.
+            aligner_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and aligner weights.
 
         Returns:
             List[Dict]: A list of combined source-target predictions sorted by fused score.
         """
         fused_scores = defaultdict(float)
 
-        for flat_predictions, weight in branch_outputs:
+        for flat_predictions, weight in aligner_outputs:
             sorted_predictions = _get_unique_sorted_predictions(predictions=flat_predictions)
 
             for rank, prediction in enumerate(sorted_predictions, start=1):

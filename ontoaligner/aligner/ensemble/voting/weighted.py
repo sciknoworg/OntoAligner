@@ -20,7 +20,7 @@ class WeightedVoting(BaseVoting):
     """
     A weighted voting method for combining alignment predictions.
 
-    This class combines branch predictions by counting weighted branch support for each
+    This class combines aligner predictions by counting weighted aligner support for each
     source-target pair.
     """
 
@@ -51,12 +51,12 @@ class WeightedVoting(BaseVoting):
             }
         }
 
-    def fuse(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
+    def fuse(self, aligner_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         """
-        Combines branch predictions using weighted voting.
+        Combines aligner predictions using weighted voting.
 
         Parameters:
-            branch_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and branch weights.
+            aligner_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and aligner weights.
 
         Returns:
             List[Dict]: A list of combined source-target predictions sorted by vote score.
@@ -64,7 +64,7 @@ class WeightedVoting(BaseVoting):
         vote_scores = defaultdict(float)
         vote_counts = defaultdict(int)
 
-        for flat_predictions, weight in branch_outputs:
+        for flat_predictions, weight in aligner_outputs:
             unique_predictions = _get_unique_sorted_predictions(predictions=flat_predictions)
 
             for prediction in unique_predictions:

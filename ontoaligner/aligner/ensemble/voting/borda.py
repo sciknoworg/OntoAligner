@@ -21,8 +21,8 @@ class BordaCountVoting(BaseVoting):
     """
     A Borda count voting method for combining alignment predictions.
 
-    This class combines branch predictions by assigning higher scores to higher-ranked
-    source-target pairs in each branch.
+    This class combines aligner predictions by assigning higher scores to higher-ranked
+    source-target pairs in each aligner.
     """
 
     voting_method: str = "BordaCountVoting"
@@ -43,19 +43,19 @@ class BordaCountVoting(BaseVoting):
         """
         return "BordaCountVoting"
 
-    def fuse(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
+    def fuse(self, aligner_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         """
-        Combines branch predictions using Borda count voting.
+        Combines aligner predictions using Borda count voting.
 
         Parameters:
-            branch_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and branch weights.
+            aligner_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and aligner weights.
 
         Returns:
             List[Dict]: A list of combined source-target predictions sorted by fused score.
         """
         fused_scores = defaultdict(float)
 
-        for flat_predictions, weight in branch_outputs:
+        for flat_predictions, weight in aligner_outputs:
             sorted_predictions = _get_unique_sorted_predictions(predictions=flat_predictions)
             total_predictions = len(sorted_predictions)
 

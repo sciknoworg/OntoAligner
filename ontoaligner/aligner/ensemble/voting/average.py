@@ -20,8 +20,8 @@ class ScoreAverageVoting(BaseVoting):
     """
     A score averaging voting method for combining alignment predictions.
 
-    This class combines branch predictions by averaging source-target scores across
-    branches using branch weights.
+    This class combines aligner predictions by averaging source-target scores across
+    aligners using aligner weights.
     """
 
     voting_method: str = "ScoreAverageVoting"
@@ -41,12 +41,12 @@ class ScoreAverageVoting(BaseVoting):
         """
         return "ScoreAverageVoting"
 
-    def fuse(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
+    def fuse(self, aligner_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         """
-        Combines branch predictions using weighted score averaging.
+        Combines aligner predictions using weighted score averaging.
 
         Parameters:
-            branch_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and branch weights.
+            aligner_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and aligner weights.
 
         Returns:
             List[Dict]: A list of combined source-target predictions sorted by averaged score.
@@ -54,14 +54,14 @@ class ScoreAverageVoting(BaseVoting):
         score_sums = defaultdict(float)
         weight_sums = defaultdict(float)
 
-        for flat_predictions, weight in branch_outputs:
+        for flat_predictions, weight in aligner_outputs:
             unique_predictions = _get_unique_sorted_predictions(predictions=flat_predictions)
-            branch_weight = float(weight)
+            aligner_weight = float(weight)
 
             for prediction in unique_predictions:
                 pair = (prediction["source"], prediction["target"])
-                score_sums[pair] += branch_weight * float(prediction["score"])
-                weight_sums[pair] += branch_weight
+                score_sums[pair] += aligner_weight * float(prediction["score"])
+                weight_sums[pair] += aligner_weight
 
         return [
             {
