@@ -206,7 +206,7 @@ class TestMambaSSMRAGLLM(unittest.TestCase):
 
     def test_initialization(self):
         """Test initialization and string representation"""
-        self.assertEqual(str(self.model), "RAGBasedDecoderLLMArch-AutoModelV2-MambaSSM")
+        self.assertEqual(str(self.model), "RAGBasedDecoderLLMArch-AutoModel-MambaSSM")
         self.assertEqual(self.model.tokenizer, AutoTokenizer)
         self.assertEqual(self.model.model, AutoModelForCausalLM)
 
