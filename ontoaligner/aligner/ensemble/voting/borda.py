@@ -27,6 +27,13 @@ class BordaCountVoting(BaseVoting):
 
     voting_method: str = "BordaCountVoting"
 
+    def __init__(self, selection: str = "top1_source", threshold: float = None, top_k: int = None,
+                 margin: float = None):
+        """
+        Initializes the BordaCountVoting voting method.
+        """
+        super().__init__(selection=selection, threshold=threshold, top_k=top_k, margin=margin)
+
     def __str__(self):
         """
         Returns a string representation of the voting method.
@@ -36,7 +43,7 @@ class BordaCountVoting(BaseVoting):
         """
         return "BordaCountVoting"
 
-    def combine(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
+    def fuse(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         """
         Combines branch predictions using Borda count voting.
 

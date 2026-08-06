@@ -30,13 +30,11 @@ class ReciprocalRankFusionVoting(BaseVoting):
 
     voting_method: str = "ReciprocalRankFusion"
 
-    def __init__(self, k: int = 60):
+    def __init__(self, k: int = 60, selection: str = "top1_source", threshold: float = None, top_k: int = None, margin: float = None):
         """
         Initializes the ReciprocalRankFusion voting method.
-
-        Parameters:
-            k (int, optional): Smoothing constant used in reciprocal rank fusion. Defaults to 60.
         """
+        super().__init__(selection=selection, threshold=threshold, top_k=top_k, margin=margin)
         self.k = k
 
     def __str__(self):
@@ -48,7 +46,7 @@ class ReciprocalRankFusionVoting(BaseVoting):
         """
         return {"ReciprocalRankFusion": {"k": self.k}}
 
-    def combine(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
+    def fuse(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         """
         Combines branch predictions using reciprocal rank fusion.
 

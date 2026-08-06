@@ -26,16 +26,16 @@ class WeightedVoting(BaseVoting):
 
     voting_method: str = "WeightedVoting"
 
-    def __init__(self, min_votes: int = 1, score_threshold: float = None):
+
+
+    def __init__(self, min_votes: int = 1, score_threshold: float = None, selection: str = "top1_source", threshold: float = None, top_k: int = None, margin: float = None):
         """
         Initializes the weighted voting method.
-
-        Parameters:
-            min_votes (int, optional): Minimum number of branches required for a pair. Defaults to 1.
-            score_threshold (float, optional): Minimum branch score required to count a vote. Defaults to None.
         """
+        super().__init__(selection=selection, threshold=threshold, top_k=top_k, margin=margin)
         self.min_votes = min_votes
         self.score_threshold = score_threshold
+
 
     def __str__(self):
         """
@@ -51,7 +51,7 @@ class WeightedVoting(BaseVoting):
             }
         }
 
-    def combine(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
+    def fuse(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         """
         Combines branch predictions using weighted voting.
 
