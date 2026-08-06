@@ -337,8 +337,9 @@ class FLORAAligner(BaseOMModel):
     ) -> Tuple[Dict[Any, Dict[Any, float]], Dict[Any, Dict[Any, float]], Dict[Any, Dict[Any, float]], Dict[Any, Dict[Any, float]]]:
         """Perform the bootstrapping phase of entity and predicate alignment.
 
-        Runs the first iteration in parallel to align entities based on literal similarity,
-        then infers predicate subsumptions from the aligned entity triples.
+        Runs the first iteration in parallel using worker processes to align entities
+        based on literal similarity, then infers predicate subsumptions from the aligned
+        entity triples.
 
         Args:
             kb1: First knowledge base.
@@ -346,7 +347,7 @@ class FLORAAligner(BaseOMModel):
             same_as_scores: Initial entity alignment scores (from literal bootstrapping).
             predicate2super_predicate: Initial predicate subsumption scores.
             functionalities: Predicate functionality scores.
-            num_workers: Number of parallel worker processes.
+            num_workers: Number of parallel worker processes used during bootstrapping.
 
         Returns:
             Tuple of (quasi_eqrel, predicate2super_predicate, same_as_scores, ent_max_assign):
