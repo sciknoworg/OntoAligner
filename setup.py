@@ -22,7 +22,7 @@ setup(
         "pandas",
         "scikit-learn",
         "tqdm",
-        "nltk",
+        "nltk==3.10.0",
         "openai==2.53.0",
         "owlready2==0.50",
         "rank_bm25==0.2.2",

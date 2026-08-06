@@ -5,7 +5,7 @@ pandas
 datasets
 scikit-learn
 tqdm
-nltk
+nltk==3.10.0
 owlready2==0.50
 rdflib==7.1.1
 torch==2.8.0
