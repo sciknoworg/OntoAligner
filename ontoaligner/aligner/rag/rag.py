@@ -459,7 +459,7 @@ class MambaSSMRAGLLM(AutoModelDecoderRAGLLM):
             outputs = self.model.generate(
                 tokenized_input_data.input_ids,
                 pad_token_id=self.tokenizer.eos_token_id,
-                max_new_tokens=self.kwargs["max_token_length"],
+                max_new_tokens=self.kwargs["max_new_tokens"],
                 do_sample=False,
                 output_scores=True,
                 return_dict_in_generate=True
