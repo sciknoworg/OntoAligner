@@ -23,7 +23,7 @@ setup(
         "scikit-learn",
         "tqdm",
         "nltk",
-        "openai==2.44.0",
+        "openai==2.53.0",
         "owlready2==0.50",
         "rank_bm25==0.2.2",
         "rapidfuzz==3.5.2",
