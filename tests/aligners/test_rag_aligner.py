@@ -7,7 +7,6 @@ from ontoaligner.aligner.rag.rag import (
     RAGBasedOpenAILLMArch,
     RAG,
     AutoModelDecoderRAGLLM,
-    AutoModelDecoderRAGLLMV2,
     OpenAIRAGLLM,
     MambaSSMRAGLLM,
 )
@@ -166,6 +165,7 @@ class TestRAG(unittest.TestCase):
                     }
 
 
+
 class TestAutoModelDecoderRAGLLM(unittest.TestCase):
     def setUp(self):
         self.model = AutoModelDecoderRAGLLM()
@@ -174,19 +174,6 @@ class TestAutoModelDecoderRAGLLM(unittest.TestCase):
         """Test initialization and attributes"""
         self.assertEqual(
             str(self.model), "RAGBasedDecoderLLMArch-AutoModel"
-        )  # Updated to match actual implementation
-        self.assertEqual(self.model.tokenizer, AutoTokenizer)
-        self.assertEqual(self.model.model, AutoModelForCausalLM)
-
-
-class TestAutoModelDecoderRAGLLMV2(unittest.TestCase):
-    def setUp(self):
-        self.model = AutoModelDecoderRAGLLMV2()
-
-    def test_initialization(self):
-        """Test initialization and attributes"""
-        self.assertEqual(
-            str(self.model), "RAGBasedDecoderLLMArch-AutoModelV2"
         )  # Updated to match actual implementation
         self.assertEqual(self.model.tokenizer, AutoTokenizer)
         self.assertEqual(self.model.model, AutoModelForCausalLM)
