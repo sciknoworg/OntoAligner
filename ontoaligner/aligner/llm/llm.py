@@ -33,8 +33,9 @@ Classes:
 import time
 from abc import abstractmethod
 from typing import Any, List
-
 import torch
+from concurrent.futures import ThreadPoolExecutor
+from openai import OpenAI
 
 from ...base import BaseOMModel
 
@@ -293,93 +294,85 @@ class BaseLLMArch(LLM):
 
 class OpenAILLMArch(LLM):
     """
-    A subclass of LLM for interfacing with OpenAI's GPT models. It uses OpenAI's API for generating text.
+    Generic OpenAI-compatible LLM.
+
+    Supports:
+        - OpenAI
+        - OpenRouter
+        - Together AI
+        - Groq
+        - DeepInfra
+        - Any OpenAI-compatible endpoint
     """
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.client = OpenAI(
+            api_key=kwargs.get("openai_key"),
+            base_url=kwargs.get(
+                "base_url",
+                "https://api.openai.com/v1"
+            ),
+        )
+
+        self.max_workers = kwargs.get("max_workers", 8)
 
     def __str__(self):
-        """
-        Returns a string representation of the OpenAILLM class.
+        return "OpenAICompatibleLLM"
 
-        Returns:
-            str: The string representation of the OpenAILLM class.
+    def load(self, path: str):
         """
-        return "OpenAILLM"
-
-    def load(self, path: str) -> None:
-        """
-        Loads the tokenizer and model from the specified path.
-
-        Args:
-            path (str): The path to the pretrained model and tokenizer.
+        Path corresponds to the model name.
+        Example:
+            gpt-4.1
+            deepseek/deepseek-chat
+            anthropic/claude-3.5-sonnet
         """
         self.path = path
 
     def tokenize(self, input_data: List) -> Any:
-        """
-        Tokenizes the input data. For OpenAI models, it returns the input data as is.
-
-        Args:
-            input_data (List): The list of input data to tokenize.
-
-        Returns:
-            Any: The input data, unchanged for OpenAI models.
-        """
         return input_data
 
-    def generate_for_one_input(self, tokenized_input_data: Any) -> List:
-        """
-        Generates output for a single input using OpenAI's GPT models.
-
-        Args:
-            tokenized_input_data (Any): The tokenized input data.
-
-        Returns:
-            List: A list of generated texts for the single input.
-        """
-        if len(tokenized_input_data[0].split(", ")) > 1000:
-            print("REDUCTION of the INPUT")
-            tokenized_input_data[0] = ", ".join(
-                tokenized_input_data[0].split(", ")[:1000]
-            )
-        prompt = [{"role": "user", "content": tokenized_input_data[0]}]
-        is_generated_output = False
-        response = None
-        while not is_generated_output:
+    def _generate_single(self, prompt: str) -> str:
+        messages = [{"role": "user", "content": prompt}]
+        attempt = 0
+        while True:
             try:
                 response = self.client.chat.completions.create(
                     model=self.path,
-                    messages=prompt,
+                    messages=messages,
                     temperature=self.kwargs["temperature"],
-                    max_tokens=self.kwargs["max_new_tokens"],
-                    # top_p=self.kwargs["top_p"],
+                    reasoning_effort= self.kwargs.get("reasoning_effort") or "none"
                 )
-                is_generated_output = True
-            except Exception as error:
+                return response.choices[0].message.content
+
+            except Exception as e:
                 print(
-                    f"Unexpected {error}, {type(error)} \n"
-                    f"Going for sleep for {self.kwargs['sleep']} seconds!"
+                    f"[Retry {attempt+1}"
+                    f"{type(e).__name__}: {e}\n"
+                    f"Sleeping 5s..."
                 )
-                time.sleep(self.kwargs["sleep"])
-        return [response]
+                time.sleep(5)
+
+    def generate_for_one_input(self, tokenized_input_data: Any) -> List:
+        return [self._generate_single(tokenized_input_data[0])]
 
     def generate_for_multiple_input(self, tokenized_input_data: Any) -> List:
         """
-        Generates output for multiple inputs using OpenAI's GPT models.
+        Parallel API calls.
 
-        Args:
-            tokenized_input_data (Any): The tokenized input data.
-
-        Returns:
-            List: A list of generated texts for the multiple inputs.
+        ThreadPoolExecutor is preferred here because API requests are
+        network-bound rather than CPU-bound.
         """
-        responses = []
-        for input_data in tokenized_input_data:
-            response = self.generate_for_one_input(tokenized_input_data=[input_data])[0]
-            responses.append(response)
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            responses = list(
+                executor.map(
+                    self._generate_single,
+                    tokenized_input_data,
+                )
+            )
         return responses
+
 
     def post_processor(self, generated_texts: List) -> List:
         """
@@ -393,11 +386,7 @@ class OpenAILLMArch(LLM):
         """
         processed_outputs = []
         for generated_text in generated_texts:
-            try:
-                processed_output = generated_text["choices"][0]["message"]["content"]
-            except Exception:
-                processed_output = generated_text.choices[0].message.content.lower()
-            processed_outputs.append(processed_output)
+            processed_outputs.append(generated_text.lower())
         return processed_outputs
 
 

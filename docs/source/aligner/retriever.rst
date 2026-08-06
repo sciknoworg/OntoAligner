@@ -211,22 +211,24 @@ OpenAI aligners utilize state-of-the-art embedding models from OpenAI (e.g., ``t
      - Description
      - Link
    * - ``AdaRetrieval``
-     - This model uses pre-trained embeddings from OpenAI. It is designed to use OpenAI embeddings, fit them, and transform input data into corresponding embeddings.
+     - Embeds input text via OpenAI's API using multi-threading. Automatically handles text normalization (lowercasing, underscore replacement) and retries on API errors.
      - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/retrieval/models.py#L189-L241>`__
 
 To use OpenAI based aligner technique:
 
-.. code-block::
+.. code-block:: Python
 
     from ontoaligner.aligner import AdaRetrieval
 
-    aligner = AdaRetrieval(top_k=5, openai_key='...')
+    # Pass max_workers in kwargs to adjust concurrency (default is 8)
+    aligner = AdaRetrieval(top_k=5, openai_key='...', max_workers=16)
     aligner.load(path='text-embedding-3-small')
     matchings = aligner.generate(input_data=...)
 
 .. hint::
 
-    More information on OpenAI embeddings can be found at `OpenAI > Embedding models <https://platform.openai.com/docs/guides/embeddings#embedding-models>`_.
+    - More information on OpenAI embeddings can be found at `OpenAI > Embedding models <https://platform.openai.com/docs/guides/embeddings#embedding-models>`_.
+    - API failure or rate limit interruptions are automatically retried with a 5-second backoff.
 
 Reranking
 -----------------------------------

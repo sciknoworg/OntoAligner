@@ -32,6 +32,8 @@ from rank_bm25 import BM25Okapi
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor
+import time
 
 from .retrieval import BiEncoderRetrieval, MLRetrieval, Retrieval
 
@@ -216,12 +218,21 @@ class AdaRetrieval(BiEncoderRetrieval):
         return self.transform(inputs=inputs)
 
     def _clean(self, text: str) -> str:
-        text = text.replace("_", " ")
-        text = text.lower()
-        return text
+        return text.replace("_", " ").lower()
 
     def _get_embedding(self, text: str):
-        return self.client.embeddings.create(input=[text], model=self.path).data[0].embedding
+        while True:
+            try:
+                return self.client.embeddings.create(input=[text], model=self.path).data[0].embedding
+            except Exception as err:
+                print(f"Error creating embedding: {err}. Retrying in 5 seconds...")
+                time.sleep(5)
+
+    def _process_single(self, text: str):
+        text = self._clean(text)
+        if text == "":
+            text = " "
+        return self._get_embedding(text)
 
     def transform(self, inputs: Any) -> Any:
         """
@@ -233,9 +244,12 @@ class AdaRetrieval(BiEncoderRetrieval):
         Returns:
             np.array: An array of embeddings for the input data.
         """
-        embeddings = []
-        for input_text in tqdm(inputs):
-            input_text = self._clean(input_text)
-            embedding = self._get_embedding(input_text) if input_text != "" else self._get_embedding(" ")
-            embeddings.append(embedding)
+        max_workers = self.kwargs.get("max_workers", 8)
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            embeddings = list(
+                tqdm(
+                    executor.map(self._process_single, inputs),
+                    total=len(inputs),
+                )
+            )
         return np.array(embeddings)

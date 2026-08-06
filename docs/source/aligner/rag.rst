@@ -404,6 +404,120 @@ In another approach you can simply use the ``RAG`` class and provide the retriev
 					 retriever_config = ...,
 					 llm_config = ...)
 
+OpenAI & OpenRouter Configuration
+----------------------------------------------
+
+In addition to local HuggingFace models (via ``AutoModelDecoderRAGLLM``), OntoAligner supports cloud-hosted LLM and embedding providers—such as **OpenAI** and **OpenRouter** (for models like Gemini)—using ``RAGBasedOpenAILLMArch`` and ``AdaRetrieval``.
+
+.. tab:: Configuring OpenAI RAG
+
+	To route LLM requests and dense retrieval to OpenAI's native endpoints:
+
+	1. Use ``AdaRetrieval`` as the retriever component and ``RAGBasedOpenAILLMArch`` as the LLM architecture. Or you can use other retrieval models.
+	2. Provide your API key and OpenAI endpoint configuration inside ``retriever_config`` and ``llm_config``.
+
+	Here is the example usage:
+
+	.. code-block:: python
+
+		import os
+		from ontoaligner.aligner import RAG, AdaRetrieval, RAGBasedOpenAILLMArch
+
+		# 1. Base Retrieval Configuration for OpenAI
+		retriever_config = {
+		    "top_k": 5,
+		    "threshold": 0.0,
+		    "batch_size": 32,
+		    "openai_key": os.environ["OPENAI_KEY"]
+		}
+
+		# 2. LLM Configuration for OpenAI Models
+		llm_config = {
+		    "base_url": "https://api.openai.com/v1",
+		    "openai_key": os.environ["OPENAI_KEY"],
+		    "max_workers": 10,
+		    "max_new_tokens": 10,
+		    "temperature": 1,
+		    "reasoning_effort": "none",
+		    "answer_set": {
+		        "yes": ["yes", "correct", "true", "positive", "valid"],
+		        "no": ["no", "incorrect", "false", "negative", "invalid"],
+		    }
+		}
+
+		# 3. Instantiate and Load the Aligner
+		gpt_aligner = RAG(
+		    retriever=AdaRetrieval,
+		    llm=RAGBasedOpenAILLMArch,
+		    retriever_config=retriever_config,
+		    llm_config=llm_config
+		)
+
+		gpt_aligner.load(
+		    llm_path="gpt-4o-mini",          # Target OpenAI LLM model
+		    ir_path="text-embedding-3-small"   # Target OpenAI embedding model
+		)
+
+
+.. tab::  Configuring OpenRouter (e.g., Google Gemini)
+
+	You can also route requests through **OpenRouter** to evaluate third-party models like Google Gemini while using sentence-transformers (``SBERTRetrieval``) or OpenAI embeddings locally for retrieval. Here is the example usage:
+
+	.. code-block:: python
+
+		from ontoaligner.aligner import RAG, SBERTRetrieval, RAGBasedOpenAILLMArch
+
+		# 1. Retriever using local CUDA sentence-transformers
+		retriever_config = {
+		    "device": "cuda",
+		    "top_k": 5,
+		    "threshold": 0.0,
+		    "batch_size": 32,
+		    "model_kwargs": {"attn_implementation": "eager"}
+		}
+
+		# 2. OpenRouter API Configuration for LLM Generation
+		llm_config = {
+		    "base_url": "https://openrouter.ai/api/v1",
+		    "openai_key": os.environ["OPENROUTER_API_KEY"],
+		    "max_length": 300,
+		    "max_new_tokens": 5,
+		    "batch_size": 32,
+		    "answer_set": {
+		        "yes": ["yes", "correct", "true", "positive", "valid"],
+		        "no": ["no", "incorrect", "false", "negative", "invalid"],
+		    }
+		}
+
+		# 3. Instantiate and Load the Gemini Aligner
+		gemini_aligner = RAG(
+		    retriever=SBERTRetrieval,
+		    llm=RAGBasedOpenAILLMArch,
+		    retriever_config=retriever_config,
+		    llm_config=llm_config
+		)
+
+		gemini_aligner.load(
+		    llm_path="google/gemini-2.5-flash-lite",
+		    ir_path="google/embeddinggemma-300m"
+		)
+
+**Key Parameter Reference**:
+
+.. list-table::
+	:widths: 25 75
+	:header-rows: 1
+
+	* - Parameter
+	  - Description
+	* - ``base_url``
+	  - The target API base URL (e.g., ``https://api.openai.com/v1`` for OpenAI or ``https://openrouter.ai/api/v1`` for OpenRouter).
+	* - ``openai_key``
+	  - API key string passed to authenticate with the target provider.
+	* - ``max_workers``
+	  - Defines the parallel thread pool count used by ``AdaRetrieval`` or ``RAGBasedOpenAILLMArch`` for concurrent API queries.
+	* - ``reasoning_effort``
+	  - Optional string setting (e.g., ``"none"``, ``"low"``, ``"medium"``, ``"high"``) passed for reasoning-enabled models.
 
 .. note::
 
