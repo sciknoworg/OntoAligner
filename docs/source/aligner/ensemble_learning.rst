@@ -3,41 +3,97 @@ Ensemble Learning Aligner
 
 Ensemble Learning
 ------------------
-.. sidebar:: Useful links:
+
+.. sidebar:: Useful Links
 
     * `Developer Guide > AlignerPipeline <../developerguide/pipeline.html>`_
+    * `API Reference > EnsembleLearningAligner <../api/ensemble.html>`_
 
-**Ensemble Learning** combines predictions from multiple ontology alignment pipelines to produce a final set of correspondences. In OntoAligner, ensemble learning is handled by :class:`EnsembleLearningAligner`, where each ensemble member is represented as a branch configured with :class:`AlignerPipeline`.
-
-Each branch follows the standard OntoAligner flow: encode the ontology matching dataset, load the aligner when needed, generate predictions, and optionally apply branch-level postprocessing. Postprocessing may be required before voting for LLM, RAG, and KGE outputs because these aligners may produce outputs that need conversion or filtering before fusion.
+**Ensemble Learning** combines predictions from multiple heterogeneous ontology alignment pipelines into a unified set of correspondences. Managed by :class:`EnsembleLearningAligner`, each constituent member is wrapped inside an :class:`AlignerPipeline`. Because the framework is **aligner-agnostic**, any model capable of outputting source--target correspondences can participate—including lexical matchers, structural/graph-based algorithms, semantic retrieval systems, LLMs, RAG, etc.
 
 .. hint::
 
-    **Why Ensemble Learning for Ontology Alignment?**
+    **Why Use Ensemble Learning for Ontology Alignment?**
 
-    1) *Complementary Signals*: Combines lexical similarity, semantic retrieval, graph structure, and LLM/RAG-based verification from different aligners.
-    2) *Robustness*: Reduces reliance on a single aligner, which can help balance the weaknesses of individual models.
-    3) *Model-Agnostic Fusion*: Allows heterogeneous aligner families to contribute through a shared voting strategy and produce one final alignment.
+    1. **Complementary Signals:** Combines distinct alignment heuristics (lexical surface form, structural proximity, deep vector embeddings, and LLM semantic reasoning).
+    2. **Increased Robustness:** Mitigates individual model weaknesses, reducing false positives and out-of-vocabulary blind spots.
+    3. **Model-Agnostic Fusion:** Integrates heterogeneous matchers into a single workflow via unified score/rank fusion and post-fusion decision policies.
 
 .. raw:: html
 
     <div align="center">
-        <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/ensemble_learning_aligner.png" width="70%"/>
+        <img src="https://raw.githubusercontent.com/sciknoworg/OntoAligner/refs/heads/dev/docs/source/img/ensemble_learning_aligner.png" width="75%" alt="OntoAligner Ensemble Architecture Overview"/>
     </div>
 
-The ensemble workflow has four stages:
+Overall, the ensemble execution operates in a structured **two-stage decision process** across four sequential steps:
 
-**🔧 1. Branch Configuration**: Multiple :class:`AlignerPipeline` are configured with encoders, aligners, datasets, optional loading parameters, and optional postprocessors.
+.. tab:: 1. 🔧 Ensemble Representation & Input Setup
 
-**⚙️ 2. Branch Prediction**: Each branch generates correspondences independently using lightweight, retrieval, KGE, LLM, or RAG-based aligners.
+	An ensemble consists of :math:`n` constituent pipelines  :math:`A = \{A_1, A_2, \dots, A_n\}`, where each aligner pipeline :math:`A_i` is assigned a reliability weight :math:`w_i \in \mathbb{R}` (default :math:`w_i = 1`).
 
-**🧩 3. Output Normalization**: Branch outputs are converted into a common ``source``-``target``-``score`` format before fusion.
+	Each aligner independently generates candidate correspondences over source (:math:`O_{\text{source}}`) and target (:math:`O_{\text{target}}`) ontologies:
 
-**🗳️ 4. Voting**: A voting method combines weighted branch outputs into the final matchings.
+	.. math::
+
+	   P_i = \{ (s, t, q_i(s, t)) \mid s \in O_{\text{source}}, \, t \in O_{\text{target}} \}
+
+	where :math:`q_i(s,t) \in [0, 1]` represents the confidence score assigned to pair :math:`(s,t)` by aligner :math:`A_i`. The total ensemble input state is defined as :math:`\mathcal{P} = \{ (P_i, w_i) \}_{i=1}^n`.
+
+
+.. tab:: 2. 🧩 Output Normalization
+
+	Outputs generated across heterogeneous aligners are normalized into flat source--target triples. For example, a retrieval-based mapping :math:`s \mapsto \{(t_1, q_1), (t_2, q_2), \dots\}` is expanded to individual triples :math:`(s, t_j, q_j)`.
+
+	To guarantee a unique representation before voting, duplicate candidate pairs are resolved by retaining the entry with the highest confidence score:
+
+	.. math::
+
+	   q(s, t) = \arg\max q_i(s, t)
+
+.. tab:: 🗳️ Stage 1: Voting-Based Fusion
+
+	The fusion component aggregates predictions across all constituent pipelines. First, it constructs the candidate space :math:`\mathcal{C}` from the union of all candidate pairs proposed by at least one aligner:
+
+	.. math::
+
+	   \mathcal{C} = \bigcup_{i=1}^{n} \{(s, t) \mid (s, t, q_i(s,t)) \in P_i\}
+
+	For each candidate pair :math:`(s,t) \in \mathcal{C}`, a voting strategy :math:`\mathcal{V}` computes a unified fused score :math:`S(s,t)` parameterized by strategy-specific parameters :math:`\theta`:
+
+	.. math::
+
+	   S(s,t) = \mathcal{V}\left( \{(P_i, w_i)\}_{i=1}^{n}, \, (s,t), \, \theta \right)
+
+	The candidates are then sorted in descending order of their fused score to yield the ranked candidate pool $\mathcal{F}$:
+
+	.. math::
+
+	   \mathcal{F} = \operatorname{sort}_{\downarrow S}\left( \{(s,t,S(s,t)) \mid (s,t) \in \mathcal{C}\} \right)
+
+	**Supported Voting Strategies** (:math:`\mathcal{V}`):
+
+	* **Weighted Voting:** Aggregates weighted linear confidence scores.
+	* **Reciprocal Rank Fusion (RRF):** Fuses candidates based on candidate position ranks rather than raw confidence scores.
+	* **Borda Count:** Applies rank-position point totals across aligner preference lists.
+	* **Condorcet Voting:** Evaluates pairwise preferences between candidate matchings.
+	* **Score Averaging:** Unweighted mean confidence score across participating pipelines.
+
+.. tab:: 4. 🎯 Stage 2: Post-Fusion Selection
+
+	After fusion, a selection policy :math:`g_\phi` converts the ranked candidate pool :math:`\mathcal{F}` into the final target alignment :math:`\mathcal{A} = \operatorname{Select}(\mathcal{F}, g_\phi)`:
+
+	* **Top-1 per Source:** Assigns each source entity to its highest-scoring target candidate: :math:`t^* = \arg\max_t S(s, t)`
+
+	* **Top-k per Source (with optional Margin):** Retains the top-k target candidates per source entity. When a relative score margin :math:`m \in [0, 1]` is supplied, candidates must additionally satisfy: :math:`S(s,t) \ge m \cdot \max_{t'} S(s, t')`
+
+	* **Threshold-based Selection:** Retains only correspondences exceeding an absolute confidence threshold :math:`\gamma`: :math:`\mathcal{A} = \{ (s, t) \in \mathcal{F} \mid S(s,t) \ge \gamma \}`
+
+	* **Greedy Bijective Selection:** Enforces strict one-to-one (1:1) mapping constraints: :math:`\forall (s_i, t_i), (s_j, t_j) \in \mathcal{A}, \quad (s_i \neq s_j) \land (t_i \neq t_j)`
 
 Usage
 ---------
-This module guides you through a step-by-step process for performing ensemble-based ontology alignment using multiple OntoAligner models. By the end, you’ll understand how to configure aligner pipeline, combine their predictions with voting strategies, evaluate the final matchings, and save the outputs in XML and JSON formats.
+
+This module guides you through a step-by-step process for performing ensemble-based ontology alignment using multiple OntoAligner models. By the end, you’ll understand how to configure aligner pipelines, combine their predictions with voting strategies, evaluate the final matchings, and save the outputs in XML and JSON formats.
 
 .. tab:: ➡️ 1: Import
 
@@ -106,8 +162,8 @@ This module guides you through a step-by-step process for performing ensemble-ba
 .. tab:: ➡️ 3: Configure Ensemble
 
     Configure the runtime settings, model paths, label mapper, RAG configuration,
-    and ensemble aligners. Each branch is represented by an :class:`AlignerPipeline`
-    and may include branch-level postprocessing before voting.
+    and ensemble aligners. Each aligner is represented by an :class:`AlignerPipeline`
+    and may include aligner-level postprocessing before voting.
 
     .. code-block:: python
 
@@ -223,12 +279,11 @@ This module guides you through a step-by-step process for performing ensemble-ba
                     },
                 ),
                 1.0,
-            ),
-
+            )
         ]
 
-    Each branch is represented as a tuple containing the branch name, an
-    :class:`AlignerPipeline`, and an optional branch weight.
+    Each aligner is represented as a tuple containing the aligner name, an
+    :class:`AlignerPipeline`, and an optional aligner weight.
 
     .. code-block:: python
 
@@ -237,18 +292,24 @@ This module guides you through a step-by-step process for performing ensemble-ba
             ("sbert", AlignerPipeline(...), 1.0),
         ]
 
-    The branch weight controls how much influence the branch has during voting.
+    The aligner weight controls how much influence the aligner has during voting.
 
 .. tab:: ➡️ 4: Ensemble Learning Aligner
 
     Initialize :class:`EnsembleLearningAligner` with the configured aligners and a voting
     method. The default voting method is :class:`ReciprocalRankFusionVoting`.
 
+    .. note::
+
+        Ensemble aligners are executed sequentially in the current implementation: each
+        aligner generates its predictions in turn, and the voting step is applied after all
+        aligner outputs are collected.
+
     .. code-block:: python
 
         ensemble = EnsembleLearningAligner(
             aligners=aligners,
-            voting=ReciprocalRankFusionVoting(k=60),
+            voting=ReciprocalRankFusionVoting(k=60, selection="top1_source"),
         )
 
         final_matchings = ensemble.generate()
@@ -389,9 +450,9 @@ passing those ensembles into the final ensemble.
 Voting Strategies
 -----------------------
 
-Voting strategies combine normalized predictions from multiple aligners. Each branch
-contributes a list of predictions and a branch weight. The branch weight controls the
-influence of the branch during fusion.
+Voting strategies combine normalized predictions from multiple aligners. Each aligner
+contributes a list of predictions and an aligner weight. The aligner weight controls the
+influence of the aligner during fusion.
 
 
 .. list-table::
@@ -402,7 +463,7 @@ influence of the branch during fusion.
      - Description
      - Link
    * - ``ReciprocalRankFusionVoting``
-     - Adds reciprocal-rank scores from each branch and ranks pairs by the fused score.
+     - Adds reciprocal-rank scores from each aligner and ranks pairs by the fused score.
      - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/ensemble/voting/reciprocal_rank_fusion.py>`_
    * - ``BordaCountVoting``
      - Assigns normalized rank-based points to predictions and sums them across aligners.
@@ -414,7 +475,7 @@ influence of the branch during fusion.
      - Computes the weighted average score for each source-target pair across aligners.
      - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/ensemble/voting/average.py>`_
    * - ``WeightedVoting``
-     - Counts weighted branch support for each source-target pair and filters by vote settings.
+     - Counts weighted aligner support for each source-target pair and filters by vote settings.
      - `Source <https://github.com/sciknoworg/OntoAligner/blob/dev/ontoaligner/aligner/ensemble/voting/weighted.py>`_
 
 .. hint::
@@ -433,8 +494,14 @@ Import a voting method and pass it to :class:`EnsembleLearningAligner`.
 
     ensemble = EnsembleLearningAligner(
         aligners=aligners,
-        voting=ReciprocalRankFusionVoting(k=60),
+        voting=ReciprocalRankFusionVoting(k=60, selection="top1_source"),
     )
+
+All voting classes now share the same post-fusion selection controls from
+:class:`BaseVoting`: ``selection`` (``none``, ``top1_source``, ``bijective``,
+``threshold``, or ``topk_source``), plus ``threshold``, ``top_k``, and ``margin``.
+These options let you decide whether the fused output should stay ranked, be
+reduced to one match per source, or keep multiple candidates per source.
 
 A different voting method can be used by changing the import & voting object.
 
@@ -465,13 +532,30 @@ Configuration
        * - **aligners**
          - list
          - —
-         - A list of branch tuples in the form ``(name, aligner_pipeline)`` or
+         - A list of aligner tuples in the form ``(name, aligner_pipeline)`` or
            ``(name, aligner_pipeline, weight)``. At least two aligner pipelines
            are required.
        * - **voting**
          - BaseVoting
          - ``ReciprocalRankFusionVoting()``
-         - Voting method used to combine branch predictions.
+         - Voting method used to combine aligner predictions.
+       * - **selection**
+         - str
+         - ``"top1_source"`` for most voting methods
+         - Post-fusion selection strategy: ``none``, ``top1_source``, ``bijective``,
+           ``threshold``, or ``topk_source``.
+       * - **threshold**
+         - float
+         - ``None``
+         - Score cutoff used when ``selection="threshold"``.
+       * - **top_k**
+         - int
+         - ``None``
+         - Maximum targets kept per source when ``selection="topk_source"``.
+       * - **margin**
+         - float
+         - ``None``
+         - Relative score margin used with ``selection="topk_source"``.
        * - ****kwargs**
          - dict
          - ``{}``
@@ -492,6 +576,22 @@ Configuration
          - int
          - ``60``
          - Smoothing constant used in reciprocal rank fusion.
+       * - **selection**
+         - str
+         - ``"top1_source"``
+         - Post-fusion selection strategy applied to the ranked fused output.
+       * - **threshold**
+         - float
+         - ``None``
+         - Score cutoff used when ``selection="threshold"``.
+       * - **top_k**
+         - int
+         - ``None``
+         - Maximum targets kept per source when ``selection="topk_source"``.
+       * - **margin**
+         - float
+         - ``None``
+         - Relative score margin used with ``selection="topk_source"``.
 
 .. tab:: ✅ WeightedVoting
 
@@ -510,7 +610,23 @@ Configuration
        * - **score_threshold**
          - float
          - ``None``
-         - Minimum branch score required to count a vote.
+         - Minimum aligner score required to count a vote.
+       * - **selection**
+         - str
+         - ``"top1_source"``
+         - Post-fusion selection strategy applied after weighted voting.
+       * - **threshold**
+         - float
+         - ``None``
+         - Score cutoff used when ``selection="threshold"``.
+       * - **top_k**
+         - int
+         - ``None``
+         - Maximum targets kept per source when ``selection="topk_source"``.
+       * - **margin**
+         - float
+         - ``None``
+         - Relative score margin used with ``selection="topk_source"``.
 
     ``WeightedVoting`` can work as majority voting when all aligners have the same
     weight and ``min_votes`` is set to more than half of the total number of aligners;
@@ -532,7 +648,9 @@ Configuration
     * `Developer Guide > AlignerPipeline Configuration <../developerguide/pipeline.html#configuration>`_
     * `Package Reference > Ensemble Aligner <../package_reference/aligners.html#ensemble-aligner>`_
 
-No additional constructor parameters are required for BordaCountVoting, CondorcetVoting, ScoreAverageVoting.
+    BordaCountVoting, CondorcetVoting, and ScoreAverageVoting also accept the same
+    shared :class:`BaseVoting` selection controls (``selection``, ``threshold``,
+    ``top_k``, and ``margin``) in addition to their own voting-specific settings.
 
 Configuration Example:
 
@@ -540,5 +658,5 @@ Configuration Example:
 
     ensemble = EnsembleLearningAligner(
         aligners=aligners,
-        voting=ReciprocalRankFusionVoting(k=60),
+        voting=ReciprocalRankFusionVoting(k=60, selection="topk_source", top_k=3),
     )
