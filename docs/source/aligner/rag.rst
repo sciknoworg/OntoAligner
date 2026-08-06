@@ -361,46 +361,25 @@ You can use custom LLMs with RAG for alignment. Below, we define two classes, ea
         TFIDFRetrieval,
         SBERTRetrieval,
         AutoModelDecoderRAGLLM,
-        AutoModelDecoderRAGLLMV2,
         RAG
     )
 
     class QwenLLMTFIDFRetrieverRAG(RAG):
         Retrieval = TFIDFRetrieval
-        LLM = AutoModelDecoderRAGLLMV2
+        LLM = AutoModelDecoderRAGLLM
 
     class MinistralLLMBERTRetrieverRAG(RAG):
         Retrieval = SBERTRetrieval
         LLM = AutoModelDecoderRAGLLM
 
-As you can see,  **QwenLLMTFIDFRetrieverRAG** Utilizes ``TFIDFRetrieval`` for lightweight retriever with Qwen LLM. While, **MinistralLLMBERTRetrieverRAG** Employs ``SBERTRetrieval`` for retriever using sentence transformers and Ministral LLM.
-
-**AutoModelDecoderRAGLLMV2 and AutoModelDecoderRAGLLM Differences:**
-
-The primary distinction between ``AutoModelDecoderRAGLLMV2`` and ``AutoModelDecoderRAGLLM`` lies in the enhanced functionality of the former. ``AutoModelDecoderRAGLLMV2`` includes additional methods (as presented in the following) for better classification and token validation. Overall, these classes enable seamless integration of retrieval mechanisms with LLM-based generation, making them powerful tools for ontology alignment and other domain-specific applications.
-
+As you can see,  **QwenLLMTFIDFRetrieverRAG** Utilizes ``TFIDFRetrieval`` for lightweight retriever with Qwen LLM. While, **MinistralLLMBERTRetrieverRAG** Employs ``SBERTRetrieval`` for retriever using sentence transformers and Ministral LLM. In another way of making your own RAG, you can simply use the ``RAG`` class and provide the retriever and LLM as follows in a light configuration manner:
 
 .. code-block:: python
 
-    def get_probas_yes_no(self, outputs):
-        """Retrieves the probabilities for the "yes" and "no" labels from model output."""
-        probas_yes_no = (outputs.scores[0][:, self.answer_sets_token_id["yes"] +
-                                              self.answer_sets_token_id["no"]].float().softmax(-1))
-        return probas_yes_no
-
-    def check_answer_set_tokenizer(self, answer: str) -> bool:
-        """Checks if the tokenizer produces a single token for a given answer string."""
-        return len(self.tokenizer(answer).input_ids) == 1
-
-
-In another approach you can simply use the ``RAG`` class and provide the retriever and LLM as follows in a light configuration manner:
-
-.. code-block:: python
-
-	from ontoaligner.aligner import RAG, TFIDFRetrieval, AutoModelDecoderRAGLLMV2
+	from ontoaligner.aligner import RAG, TFIDFRetrieval, AutoModelDecoderRAGLLM
 
 	custom_rag = RAG(retrieval = TFIDFRetrieval,
-					 llm = AutoModelDecoderRAGLLMV2,
+					 llm = AutoModelDecoderRAGLLM,
 					 retriever_config = ...,
 					 llm_config = ...)
 

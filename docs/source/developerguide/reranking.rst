@@ -296,7 +296,7 @@ Usage
 
         # Encode source and target concepts for RAG
         from ontoaligner.encoder import ConceptParentRAGEncoder
-        from ontoaligner.aligner.rag.rag import RAG, AutoModelDecoderRAGLLMV2
+        from ontoaligner.aligner.rag.rag import RAG, AutoModelDecoderRAGLLM
         from ontoaligner.aligner.retrieval.models import SBERTRetrieval
         from ontoaligner.postprocess import rag_hybrid_postprocessor
 
@@ -310,7 +310,7 @@ Usage
         # Initialize and load the RAG aligner
         model = RAG(
             retriever=SBERTRetrieval,
-            llm=AutoModelDecoderRAGLLMV2,
+            llm=AutoModelDecoderRAGLLM,
             retriever_config={
                 "device": device,
                 "top_k": 10,
