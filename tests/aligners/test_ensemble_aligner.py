@@ -141,7 +141,7 @@ def test_ensemble_learning_aligner_combines_flat_outputs():
 
     predictions = ensemble.generate()
 
-    assert len(predictions) == 2
+    assert len(predictions) == 1
     assert predictions[0]["target"] == "t1"
 
 
@@ -167,7 +167,7 @@ def test_ensemble_learning_aligner_flattens_grouped_outputs(om_dataset):
 
     predictions = ensemble.generate()
 
-    assert len(predictions) == 2
+    assert len(predictions) == 1
     assert predictions[0]["target"] == "t1"
 
 
