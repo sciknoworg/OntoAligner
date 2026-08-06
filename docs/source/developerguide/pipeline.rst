@@ -14,7 +14,7 @@ Pipeline
 ``AlignerPipeline`` provides a reusable execution flow for running one user-provided
 encoder and one ontology matching aligner over a collected ontology matching dataset.
 It is useful when users want direct control over the encoder, aligner, model loading,
-LLM dataset batching, and optional postprocessing.
+LLM dataset batching, reranking, and postprocessing.
 
 Unlike a full orchestration pipeline, :class:`AlignerPipeline` does not collect
 datasets, choose methods, define model-specific configurations, evaluate predictions,
@@ -22,20 +22,28 @@ or save outputs. It focuses only on running the configured encoder-aligner setup
 returning predictions.
 
 Given two ontologies :math:`O_1` and :math:`O_2`, :class:`AlignerPipeline` produces
-a list of correspondence predictions through four stages:
+a list of correspondence predictions through five stages:
 
-**🔧 1. Component Setup**: Provide the encoder, aligner, dataset, and optional
-pipeline settings such as ``load_params``, ``llm_dataset_class``, ``postprocessor``,
-or ``postprocessor_params``.
+**🔧 1. Component Setup**: Provide the encoder, aligner, dataset, and pipeline settings such as ``load_params``, ``llm_dataset_class``, ``reranker``,
+``reranker_load_params``, ``postprocessor``, or ``postprocessor_params``.
 
 **⚙️ 2. Encoding**: Convert the collected ontology matching dataset into the format
 expected by the aligner.
 
 **🧠 3. Prediction Generation**: Generate predictions from encoded ontology data, with
-optional LLM dataset batching when ``llm_dataset_class`` is provided.
+LLM dataset batching when ``llm_dataset_class`` is provided.
 
-**🧹 4. Optional Postprocessing**: Apply a user-provided postprocessor to convert,
+**🔀 4. Reranking**: Reorder candidate predictions with a user-provided
+reranker before postprocessing. If predictions are flat ``source``/``target``/``score``
+records, the pipeline groups them into ``target-cands`` and ``score-cands`` before
+reranking.
+
+**🧹 5. Postprocessing**: Apply a user-provided postprocessor to convert,
 filter, or normalize predictions before returning the final pipeline output.
+
+.. note::
+
+    Reranking and postprocessing are optional pipeline stages. Skip them when raw aligner outputs are needed.
 
 Usage
 ----------
@@ -165,9 +173,10 @@ This module guides you through a step-by-step process for running a single ontol
 
 .. note::
 
-        A complete aligner pipeline example is available at
-        `examples/aligner_pipeline.py <https://github.com/sciknoworg/OntoAligner/blob/dev/examples/aligner_pipeline.py>`_.
+    Complete aligner pipeline examples are available at:
 
+    * `examples/aligner_pipeline.py <https://github.com/sciknoworg/OntoAligner/blob/dev/examples/aligner_pipeline.py>`_
+    * `examples/aligner_pipeline_reranking.py <https://github.com/sciknoworg/OntoAligner/blob/dev/examples/aligner_pipeline_reranking.py>`_
 Configuration
 --------------------
 
@@ -209,10 +218,26 @@ Configuration
          - bool
          - ``False``
          - Whether to shuffle LLM dataset batches.
+       * - **reranker**
+         - BaseOMModel
+         - ``None``
+         - reranking model used to reorder candidate predictions before postprocessing.
+       * - **reranker_load_params**
+         - dict
+         - ``None``
+         - Parameters forwarded to the reranker ``load`` method.
+       * - **reranker_encoder**
+         - BaseEncoder
+         - ``None``
+         - encoder used to prepare source and target ontology text for reranking.
+       * - **reranker_om_dataset**
+         - dict
+         - ``None``
+         - ontology matching dataset used by the reranker encoder.
        * - **postprocessor**
          - Any
          - ``None``
-         - Optional postprocessor applied to pipeline predictions.
+         - postprocessor applied to pipeline predictions.
        * - **postprocessor_params**
          - dict
          - ``None``
@@ -230,24 +255,27 @@ Configuration Example:
 
 .. code-block:: python
 
-    #FewShotRAG
+    # Retrieval with reranking
     AlignerPipeline(
-            encoder=ConceptParentFewShotEncoder(),
-            aligner=MistralLLMBERTRetrieverFSRAG(
-                positive_ratio=1.0,
-                n_shots=1,
-                retriever_config=retriever_config,
-                llm_config=llm_config,
-            ),
-            om_dataset=dataset,
-            load_params={
-                "llm_path": llm_model_path,
-                "ir_path": ir_model_path,
-            },
-            postprocessor=rag_heuristic_postprocessor,
-            postprocessor_params={
-                "topk_confidence_ratio": 3,
-                "topk_confidence_score": 3,
-            },
-            include_reference=True,
-        )
+        encoder=ConceptParentLightweightEncoder(),
+        aligner=SBERTRetrieval(
+            device=device,
+            top_k=10,
+        ),
+        om_dataset=dataset,
+        load_params={
+            "path": "all-MiniLM-L6-v2",
+        },
+        reranker=CrossEncoderReranking(
+            device=device,
+            top_k=5,
+            normalize_score="sigmoid",
+        ),
+        reranker_load_params={
+            "path": "cross-encoder/ms-marco-MiniLM-L6-v2",
+        },
+        postprocessor=retriever_postprocessor,
+        postprocessor_params={
+            "threshold": 0.5,
+        },
+    )

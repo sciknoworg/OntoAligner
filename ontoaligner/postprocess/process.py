@@ -25,8 +25,7 @@ Functions:
     rag_hybrid_postprocessor: Hybrid method for processing predictions by integrating IR and LLM results using matrix-based analysis.
 """
 
-from typing import Dict, List, Any
-
+from typing import Dict, List, Any, Tuple
 import numpy as np
 from tqdm import tqdm
 
@@ -107,7 +106,8 @@ def rag_heuristic_postprocessor(predicts: List, topk_confidence_ratio: int = 3, 
     return filtered_predicts, configs
 
 
-def rag_hybrid_postprocessor(predicts: List, ir_score_threshold: float = 0.9, llm_confidence_th: float = 0.7) -> [List, Dict]:
+
+def rag_hybrid_postprocessor(predicts: List, ir_score_threshold: float = 0.9, llm_confidence_th: float = 0.7) -> Tuple[List, Dict]:
     """
     A hybrid approach that integrates IR and LLM outputs using matrix analysis and confidence thresholds.
 

@@ -82,10 +82,10 @@ class GraphEmbeddingAligner(BaseOMModel):
                          top_k=top_k,
                          random_seed=random_seed)
         self.graph_embedder: Any = None
-        if not model:
-            raise ValueError("Model name must be specified for GraphEmbeddingAligner.")
-        else:
+        if model:
             self.model = model
+        if not self.model:
+            raise ValueError("Model name must be specified for GraphEmbeddingAligner.")
 
     def fit(self, triplets: List):
         """

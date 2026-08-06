@@ -112,20 +112,20 @@ def test_aligner_pipeline_with_postprocessor(om_dataset):
 
 
 def test_ensemble_learning_aligner_requires_multiple_aligners():
-    branch = StaticBranch([{"source": "s1", "target": "t1", "score": 1.0}])
+    aligner = StaticBranch([{"source": "s1", "target": "t1", "score": 1.0}])
 
     with pytest.raises(ValueError):
-        EnsembleLearningAligner(aligners=[("single", branch, 1.0)])
+        EnsembleLearningAligner(aligners=[("single", aligner, 1.0)])
 
 
 def test_ensemble_learning_aligner_combines_flat_outputs():
-    branch_1 = StaticBranch(
+    aligner_1 = StaticBranch(
         [
             {"source": "s1", "target": "t1", "score": 0.9},
             {"source": "s1", "target": "t2", "score": 0.8},
         ]
     )
-    branch_2 = StaticBranch(
+    aligner_2 = StaticBranch(
         [
             {"source": "s1", "target": "t1", "score": 0.7},
         ]
@@ -133,25 +133,25 @@ def test_ensemble_learning_aligner_combines_flat_outputs():
 
     ensemble = EnsembleLearningAligner(
         aligners=[
-            ("branch-1", branch_1, 1.0),
-            ("branch-2", branch_2, 1.0),
+            ("aligner-1", aligner_1, 1.0),
+            ("aligner-2", aligner_2, 1.0),
         ],
         voting=ReciprocalRankFusionVoting(k=60),
     )
 
     predictions = ensemble.generate()
 
-    assert len(predictions) == 2
+    assert len(predictions) == 1
     assert predictions[0]["target"] == "t1"
 
 
 def test_ensemble_learning_aligner_flattens_grouped_outputs(om_dataset):
-    branch_1 = AlignerPipeline(
+    aligner_1 = AlignerPipeline(
         encoder=DummyEncoder(),
         aligner=DummyGroupedAligner(),
         om_dataset=om_dataset,
     )
-    branch_2 = StaticBranch(
+    aligner_2 = StaticBranch(
         [
             {"source": "s1", "target": "t1", "score": 1.0},
         ]
@@ -159,15 +159,15 @@ def test_ensemble_learning_aligner_flattens_grouped_outputs(om_dataset):
 
     ensemble = EnsembleLearningAligner(
         aligners=[
-            ("grouped", branch_1, 1.0),
-            ("flat", branch_2, 1.0),
+            ("grouped", aligner_1, 1.0),
+            ("flat", aligner_2, 1.0),
         ],
         voting=ReciprocalRankFusionVoting(k=60),
     )
 
     predictions = ensemble.generate()
 
-    assert len(predictions) == 2
+    assert len(predictions) == 1
     assert predictions[0]["target"] == "t1"
 
 
@@ -182,7 +182,7 @@ def test_ensemble_learning_aligner_flattens_grouped_outputs(om_dataset):
     ],
 )
 def test_voting_methods_generate_predictions(voting):
-    branch_outputs = [
+    aligner_outputs = [
         (
             [
                 {"source": "s1", "target": "t1", "score": 0.9},
@@ -199,7 +199,7 @@ def test_voting_methods_generate_predictions(voting):
         ),
     ]
 
-    predictions = voting.combine(branch_outputs=branch_outputs)
+    predictions = voting.combine(aligner_outputs=aligner_outputs)
 
     assert len(predictions) > 0
     assert all("source" in prediction for prediction in predictions)
@@ -208,7 +208,7 @@ def test_voting_methods_generate_predictions(voting):
 
 
 def test_weighted_voting_min_votes_filters_predictions():
-    branch_outputs = [
+    aligner_outputs = [
         (
             [
                 {"source": "s1", "target": "t1", "score": 0.9},
@@ -225,14 +225,14 @@ def test_weighted_voting_min_votes_filters_predictions():
     ]
 
     voting = WeightedVoting(min_votes=2)
-    predictions = voting.combine(branch_outputs=branch_outputs)
+    predictions = voting.combine(aligner_outputs=aligner_outputs)
 
     assert len(predictions) == 1
     assert predictions[0]["target"] == "t1"
 
 
 def test_voting_requires_score():
-    branch_outputs = [
+    aligner_outputs = [
         (
             [
                 {"source": "s1", "target": "t1"},
@@ -250,4 +250,4 @@ def test_voting_requires_score():
     voting = ReciprocalRankFusionVoting(k=60)
 
     with pytest.raises(KeyError):
-        voting.combine(branch_outputs=branch_outputs)
+        voting.combine(aligner_outputs=aligner_outputs)

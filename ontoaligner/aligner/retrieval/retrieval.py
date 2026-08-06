@@ -185,7 +185,10 @@ class BiEncoderRetrieval(Retrieval):
         Returns:
             None
         """
-        self.model = SentenceTransformer(path, device=self.kwargs["device"], trust_remote_code=True)
+        self.model = SentenceTransformer(path,
+                                         device=self.kwargs["device"],
+                                         trust_remote_code=True,
+                                         model_kwargs=self.kwargs.get('model_kwargs'))
 
     def fit(self, inputs: Any) -> Any:
         """
@@ -197,7 +200,7 @@ class BiEncoderRetrieval(Retrieval):
         Returns:
             Any: Generated embeddings for the input data.
         """
-        return self.model.encode(inputs, show_progress_bar=True, batch_size=16)
+        return self.model.encode(inputs, show_progress_bar=True, batch_size=self.kwargs.get("batch_size", 16))
 
     def transform(self, inputs: Any) -> Any:
         """
@@ -209,7 +212,7 @@ class BiEncoderRetrieval(Retrieval):
         Returns:
             Any: Generated embeddings for the input data.
         """
-        return self.model.encode(inputs, show_progress_bar=True, batch_size=16)
+        return self.model.encode(inputs, show_progress_bar=True, batch_size=self.kwargs.get("batch_size", 16))
 
     def generate(self, input_data: List) -> List:
         """
@@ -277,7 +280,7 @@ class MLRetrieval(Retrieval):
         Returns:
             Any: Generated embeddings for the input data.
         """
-        return self.model.encode(inputs, show_progress_bar=True, batch_size=16)
+        return self.model.encode(inputs, show_progress_bar=True, batch_size=self.kwargs.get("batch_size", 16))
 
     def transform(self, inputs: Any) -> Any:
         """
@@ -289,7 +292,7 @@ class MLRetrieval(Retrieval):
         Returns:
             Any: Generated embeddings for the input data.
         """
-        return self.model.encode(inputs, show_progress_bar=True, batch_size=16)
+        return self.model.encode(inputs, show_progress_bar=True, batch_size=self.kwargs.get("batch_size", 16))
 
     def generate(self, input_data: List) -> List:
         """

@@ -7,7 +7,6 @@ from ontoaligner.aligner.rag.rag import (
     RAGBasedOpenAILLMArch,
     RAG,
     AutoModelDecoderRAGLLM,
-    AutoModelDecoderRAGLLMV2,
     OpenAIRAGLLM,
     MambaSSMRAGLLM,
 )
@@ -43,8 +42,9 @@ class TestRAGBasedDecoderLLMArch(unittest.TestCase):
         """Test model loading and token ID initialization"""
         # Set up mocks
         mock_tokenizer = MagicMock()
-        mock_tokenizer.encode.return_value = [0, 1]
+        mock_tokenizer.return_value = MagicMock(input_ids=[101, 42, 102])
         mock_tokenizer_class.return_value = mock_tokenizer
+
 
         mock_model = MagicMock()
         mock_model_class.return_value = mock_model
@@ -64,29 +64,6 @@ class TestRAGBasedDecoderLLMArch(unittest.TestCase):
         mock_tokenizer_class.assert_called_once_with("dummy_path", token="dummy_token")
         mock_model_class.assert_called_once_with("dummy_path", token="dummy_token")
 
-    def test_check_answer_set_tokenizer(self):
-        """Test answer set tokenizer validation"""
-        # Mock tokenizer behavior
-        self.model.tokenizer = MagicMock()
-        # Mock encode to return exactly 2 tokens for valid input
-        self.model.tokenizer.encode.return_value = [0, 1]  # Mock valid tokenization
-        self.model.tokenizer.decode.side_effect = lambda x: (
-            "test" if x == [0, 1] else "other"
-        )
-
-        # Mock the answer set
-        self.model.ANSWER_SET = {"yes": ["test"], "no": ["test2"]}
-
-        # Test with valid input that should return exactly 2 tokens
-        self.model.tokenizer.input_ids = [0, 1]  # Mock input_ids property
-        self.model.tokenizer.return_value = MagicMock(
-            input_ids=[0, 1]
-        )  # Mock tokenizer call result
-        result = self.model.check_answer_set_tokenizer("test")
-        self.assertTrue(
-            result
-        )  # Should return True since tokenization returns exactly 2 tokens
-
     @patch("torch.no_grad")
     def test_generate_for_llm(self, mock_no_grad):
         """Test LLM generation"""
@@ -103,7 +80,7 @@ class TestRAGBasedDecoderLLMArch(unittest.TestCase):
 
 class TestRAGBasedOpenAILLMArch(unittest.TestCase):
     def setUp(self):
-        self.model = RAGBasedOpenAILLMArch()
+        self.model = RAGBasedOpenAILLMArch(openai_key=' ')
         # Set up default answer set
         self.model.ANSWER_SET = {
             "yes": ["yes", "correct", "true"],
@@ -166,6 +143,7 @@ class TestRAG(unittest.TestCase):
                     }
 
 
+
 class TestAutoModelDecoderRAGLLM(unittest.TestCase):
     def setUp(self):
         self.model = AutoModelDecoderRAGLLM()
@@ -178,35 +156,20 @@ class TestAutoModelDecoderRAGLLM(unittest.TestCase):
         self.assertEqual(self.model.tokenizer, AutoTokenizer)
         self.assertEqual(self.model.model, AutoModelForCausalLM)
 
-
-class TestAutoModelDecoderRAGLLMV2(unittest.TestCase):
-    def setUp(self):
-        self.model = AutoModelDecoderRAGLLMV2()
-
-    def test_initialization(self):
-        """Test initialization and attributes"""
-        self.assertEqual(
-            str(self.model), "RAGBasedDecoderLLMArch-AutoModelV2"
-        )  # Updated to match actual implementation
-        self.assertEqual(self.model.tokenizer, AutoTokenizer)
-        self.assertEqual(self.model.model, AutoModelForCausalLM)
-
     @patch("torch.no_grad")
     def test_get_probas_yes_no(self, mock_no_grad):
         """Test probability calculation for yes/no answers"""
         # Mock outputs with scores
         mock_outputs = MagicMock()
-        mock_outputs.scores = [torch.rand(1, 10)]  # Random scores for testing
-
-        self.model.answer_sets_token_id = {"yes": [1, 2, 3], "no": [4, 5, 6]}
-
+        mock_outputs.scores = [torch.rand(1, 10), torch.rand(1, 10)]
+        self.model.answer_sets_token_id = {"yes": [[1, 2], [3, 4]], "no": [[5, 6], [7, 8]]}
         probas = self.model.get_probas_yes_no(mock_outputs)
         self.assertIsInstance(probas, torch.Tensor)
 
 
 class TestOpenAIRAGLLM(unittest.TestCase):
     def setUp(self):
-        self.model = OpenAIRAGLLM()
+        self.model = OpenAIRAGLLM(openai_key=' ')
 
     def test_initialization(self):
         """Test initialization and string representation"""
@@ -219,7 +182,7 @@ class TestMambaSSMRAGLLM(unittest.TestCase):
 
     def test_initialization(self):
         """Test initialization and string representation"""
-        self.assertEqual(str(self.model), "RAGBasedDecoderLLMArch-AutoModelV2-MambaSSM")
+        self.assertEqual(str(self.model), "RAGBasedDecoderLLMArch-AutoModel-MambaSSM")
         self.assertEqual(self.model.tokenizer, AutoTokenizer)
         self.assertEqual(self.model.model, AutoModelForCausalLM)
 

@@ -88,14 +88,14 @@ print("Matching Evaluation Report:", evaluation)
 Build the same RAG-based alignment yourself for full control over every stage:
 
 ```python
-from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
+from ontoaligner.ontology import GenericOMDataset
 from ontoaligner.utils import metrics, xmlify
 from ontoaligner.aligner import MistralLLMBERTRetrieverRAG
 from ontoaligner.encoder import ConceptParentRAGEncoder
 from ontoaligner.postprocess import rag_hybrid_postprocessor
 
-# Step 1: Initialize the dataset object for the MaterialInformation MatOnto dataset
-task = MaterialInformationMatOntoOMDataset()
+# Step 1: Initialize the dataset using GenericOMDataset
+task = GenericOMDataset()
 print("Test Task:", task)
 
 # Step 2: Load source and target ontologies along with reference matchings
@@ -135,13 +135,13 @@ open("matchings.xml", "w", encoding="utf-8").write(xml_str)
 `AlignerPipeline` provides a reusable execution flow for running one user-provided encoder and one ontology matching aligner over a collected ontology matching dataset.  See the bellow on how to define advanced aligner pipeline.
 
 ```python
-from ontoaligner.ontology import MaterialInformationMatOntoOMDataset
+from ontoaligner.ontology import GenericOMDataset
 from ontoaligner.utils import metrics
 from ontoaligner.encoder import ConceptParentLightweightEncoder
 from ontoaligner.aligner import SimpleFuzzySMLightweight
 from ontoaligner import AlignerPipeline
 
-task = MaterialInformationMatOntoOMDataset()
+task = GenericOMDataset()
 
 dataset = task.collect(
     source_ontology_path="assets/MI-MatOnto/mi_ontology.xml",

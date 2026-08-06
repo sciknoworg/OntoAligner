@@ -21,7 +21,7 @@ class ReciprocalRankFusionVoting(BaseVoting):
     """
     A reciprocal rank fusion voting method for combining alignment predictions.
 
-    This class combines branch predictions by ranking each branch output independently
+    This class combines aligner predictions by ranking each aligner output independently
     and adding reciprocal-rank scores for repeated source-target pairs.
 
     Attributes:
@@ -30,13 +30,11 @@ class ReciprocalRankFusionVoting(BaseVoting):
 
     voting_method: str = "ReciprocalRankFusion"
 
-    def __init__(self, k: int = 60):
+    def __init__(self, k: int = 60, selection: str = "top1_source", threshold: float = None, top_k: int = None, margin: float = None):
         """
         Initializes the ReciprocalRankFusion voting method.
-
-        Parameters:
-            k (int, optional): Smoothing constant used in reciprocal rank fusion. Defaults to 60.
         """
+        super().__init__(selection=selection, threshold=threshold, top_k=top_k, margin=margin)
         self.k = k
 
     def __str__(self):
@@ -48,19 +46,19 @@ class ReciprocalRankFusionVoting(BaseVoting):
         """
         return {"ReciprocalRankFusion": {"k": self.k}}
 
-    def combine(self, branch_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
+    def fuse(self, aligner_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         """
-        Combines branch predictions using reciprocal rank fusion.
+        Combines aligner predictions using reciprocal rank fusion.
 
         Parameters:
-            branch_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and branch weights.
+            aligner_outputs (List[Tuple[List[Dict], float]]): A list of flat predictions and aligner weights.
 
         Returns:
             List[Dict]: A list of combined source-target predictions sorted by fused score.
         """
         fused_scores = defaultdict(float)
 
-        for flat_predictions, weight in branch_outputs:
+        for flat_predictions, weight in aligner_outputs:
             sorted_predictions = _get_unique_sorted_predictions(predictions=flat_predictions)
 
             for rank, prediction in enumerate(sorted_predictions, start=1):

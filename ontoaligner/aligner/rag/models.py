@@ -18,7 +18,7 @@ with a specific language model (e.g., AutoModelDecoderRAGLLM, OpenAIRAGLLM). The
 retrieval-augmented generation tasks for various configurations of models.
 """
 
-from .rag import RAG, OpenAIRAGLLM, AutoModelDecoderRAGLLMV2, MambaSSMRAGLLM, AutoModelDecoderRAGLLM
+from .rag import RAG, OpenAIRAGLLM, MambaSSMRAGLLM, AutoModelDecoderRAGLLM
 from ..retrieval.models import AdaRetrieval, SBERTRetrieval
 
 
@@ -84,20 +84,20 @@ class GPTOpenAILLMBERTRetrieverRAG(RAG):
 
 class FalconLLMAdaRetrieverRAG(RAG):
     """
-    FalconLLMAdaRetrieverRAG class combines the AdaRetrieval retrieval model with the AutoModelDecoderRAGLLMV2 language model.
+    FalconLLMAdaRetrieverRAG class combines the AdaRetrieval retrieval model with the AutoModelDecoderRAGLLM language model.
     """
     Retrieval = AdaRetrieval
-    LLM = AutoModelDecoderRAGLLMV2
+    LLM = AutoModelDecoderRAGLLM
     def __str__(self):
         return super().__str__() + "-FalconLLMAdaRetriever"
 
 
 class FalconLLMBERTRetrieverRAG(RAG):
     """
-    FalconLLMBERTRetrieverRAG class combines the SBERTRetrieval retrieval model with the AutoModelDecoderRAGLLMV2 language model.
+    FalconLLMBERTRetrieverRAG class combines the SBERTRetrieval retrieval model with the AutoModelDecoderRAGLLM language model.
     """
     Retrieval = SBERTRetrieval
-    LLM = AutoModelDecoderRAGLLMV2
+    LLM = AutoModelDecoderRAGLLM
     def __str__(self):
         return super().__str__() + "-FalconLLMBERTRetrieverRAG"
 
@@ -124,20 +124,20 @@ class VicunaLLMBERTRetrieverRAG(RAG):
 
 class MPTLLMAdaRetrieverRAG(RAG):
     """
-    MPTLLMAdaRetrieverRAG class combines the AdaRetrieval retrieval model with the AutoModelDecoderRAGLLMV2 language model.
+    MPTLLMAdaRetrieverRAG class combines the AdaRetrieval retrieval model with the AutoModelDecoderRAGLLM language model.
     """
     Retrieval = AdaRetrieval
-    LLM = AutoModelDecoderRAGLLMV2
+    LLM = AutoModelDecoderRAGLLM
     def __str__(self):
         return super().__str__() + "-MPTLLMAdaRetrieverRAG"
 
 
 class MPTLLMBERTRetrieverRAG(RAG):
     """
-    MPTLLMBERTRetrieverRAG class combines the SBERTRetrieval retrieval model with the AutoModelDecoderRAGLLMV2 language model.
+    MPTLLMBERTRetrieverRAG class combines the SBERTRetrieval retrieval model with the AutoModelDecoderRAGLLM language model.
     """
     Retrieval = SBERTRetrieval
-    LLM = AutoModelDecoderRAGLLMV2
+    LLM = AutoModelDecoderRAGLLM
     def __str__(self):
         return super().__str__() + "-MPTLLMBERTRetrieverRAG"
 

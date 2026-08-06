@@ -32,9 +32,9 @@ class EnsembleLearningAligner(BaseOMModel):
         Initializes the ensemble aligner.
 
         Parameters:
-            aligners (List[Tuple]): A list of branch tuples in the form
+            aligners (List[Tuple]): A list of aligner tuples in the form
                                     (name, aligner_pipeline) or (name, aligner_pipeline, weight).
-            voting (BaseVoting, optional): Voting method used to combine branch predictions.
+            voting (BaseVoting, optional): Voting method used to combine aligner predictions.
                                         Defaults to ReciprocalRankFusionVoting.
             **kwargs: Additional keyword arguments that may be used for model configuration.
         """
@@ -45,14 +45,14 @@ class EnsembleLearningAligner(BaseOMModel):
 
         self.aligners = []
 
-        for branch in aligners:
-            if len(branch) == 2:
-                name, aligner_pipeline = branch
+        for aligner in aligners:
+            if len(aligner) == 2:
+                name, aligner_pipeline = aligner
                 weight = 1.0
-            elif len(branch) == 3:
-                name, aligner_pipeline, weight = branch
+            elif len(aligner) == 3:
+                name, aligner_pipeline, weight = aligner
             else:
-                raise ValueError("Each branch must be (name, aligner_pipeline) or (name, aligner_pipeline, weight).")
+                raise ValueError("Each aligner must be (name, aligner_pipeline) or (name, aligner_pipeline, weight).")
 
             self.aligners.append((name, aligner_pipeline, float(weight)))
 
@@ -119,20 +119,20 @@ class EnsembleLearningAligner(BaseOMModel):
 
     def generate(self, input_data: Dict = None) -> List:
         """
-        Generates ensemble predictions by combining branch predictions.
+        Generates ensemble predictions by combining aligner predictions.
 
         Parameters:
-            input_data (Dict, optional): Optional ontology matching dataset forwarded to each branch.
-                                         If not provided, each branch uses its own dataset.
+            input_data (Dict, optional): Optional ontology matching dataset forwarded to each aligner.
+                                         If not provided, each aligner uses its own dataset.
 
         Returns:
             List: A list of fused source-target predictions sorted by score.
         """
-        branch_outputs = []
+        aligner_outputs = []
 
         for _, aligner_pipeline, weight in self.aligners:
             predictions = aligner_pipeline.generate(input_data=input_data)
             flat_predictions = self._flatten_predictions(predictions=predictions)
-            branch_outputs.append((flat_predictions, weight))
+            aligner_outputs.append((flat_predictions, weight))
 
-        return self.voting.combine(branch_outputs=branch_outputs)
+        return self.voting.combine(aligner_outputs=aligner_outputs)

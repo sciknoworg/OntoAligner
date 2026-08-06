@@ -49,7 +49,7 @@ def test_model_string_representations():
     """Test string representations of different model types."""
     models = [
         (RAGBasedDecoderLLMArch(), "RAGBasedDecoderLLMArch"),
-        (OpenAIRAGLLM(), "RAGBasedOpenAILLMArch-OpenAILLM"),
+        (OpenAIRAGLLM(openai_key=' '), "RAGBasedOpenAILLMArch-OpenAILLM"),
     ]
 
     for model, expected_str in models:
@@ -85,7 +85,7 @@ def test_model_generation_with_different_inputs(mock_tokenizer, mock_model):
 
 def test_openai_model_response_handling():
     """Test OpenAI model's handling of different response formats."""
-    model = OpenAIRAGLLM()
+    model = OpenAIRAGLLM(openai_key=' ')
 
     # Test various response formats
     test_responses = [

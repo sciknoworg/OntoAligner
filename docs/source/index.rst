@@ -116,6 +116,7 @@ or if you are using Knowledge Graph Embeddings refer to `OntoAligner Meets Knowl
 
    developerguide/parsers
    developerguide/metrics
+   developerguide/reranking
    developerguide/pipeline
 
 .. toctree::
