@@ -56,7 +56,7 @@ The fastest way to run an alignment: pick a dataset, an encoder, and an aligner,
 import ontoaligner
 
 pipeline = ontoaligner.OntoAlignerPipeline(
-    task_class=ontoaligner.ontology.MouseHumanOMDataset,
+    task_class=ontoaligner.ontology.GenericOMDataset,
     source_ontology_path="assets/mouse-human/source.xml",
     target_ontology_path="assets/mouse-human/target.xml",
     reference_matching_path="assets/mouse-human/reference.xml",
