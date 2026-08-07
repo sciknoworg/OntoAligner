@@ -1,5 +1,21 @@
 ## Changelog
 
+### V1.9.3 Changelog (August 7, 2026)
+- Added reranking support to `AlignerPipeline`
+- Added ensemble learning with voting and nested ensembles
+- Added support for OpenAI-compatible APIs
+- Improved LLM architecture and model abstraction
+- New tutorials for reranking and ensemble learning
+- Added nested ensemble diagrams
+- Improved LLM documentation
+- Fixed model assignment issues
+- Fixed ensemble learning bugs
+- Improved pipeline stability
+- Upgraded OpenAI SDK
+- Updated dependencies
+- Expanded unit tests
+- Relevant issue: [#110](https://github.com/sciknoworg/OntoAligner/issues/110)
+
 ### V1.9.2 Changelog (July 5, 2026)
 - Update requirements.
 - Optimize the LLM loadings and use `BitsAndBytesConfig`.
