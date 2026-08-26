@@ -9,6 +9,9 @@ jobs:
   build-and-publish:
     name: Build and Publish
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/OntoAligner/
 
     steps:
       - name: Checkout code

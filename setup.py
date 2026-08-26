@@ -28,7 +28,7 @@ setup(
         "rank_bm25==0.2.2",
         "rapidfuzz==3.5.2",
         "rdflib==7.1.1",
-        "sentence-transformers>=5.1.0,<6.0.0",
+        "sentence-transformers>=5.6.0,<6.0.0",
         "torch>=2.8.0,<3.0.0",
         "transformers==5.13.0",
         "huggingface-hub==1.22.0",

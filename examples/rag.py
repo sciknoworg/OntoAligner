@@ -40,6 +40,7 @@ llm_config = {
     "huggingface_access_token": "",  # Access token for Huggingface models (if required)
     "device_map": 'balanced',  # Distribute LLM model across devices
     "batch_size": 15,  # Batch size for processing
+    "load_in_8bit": True,
     "answer_set": {  # Define answer mapping for yes/no responses
         "yes": ["yes", "correct", "true", "positive", "valid"],
         "no": ["no", "incorrect", "false", "negative", "invalid"]

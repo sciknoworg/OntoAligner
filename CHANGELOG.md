@@ -1,5 +1,62 @@
 ## Changelog
 
+### V1.9.3 Changelog (August 7, 2026)
+- Added reranking support to `AlignerPipeline`
+- Added ensemble learning with voting and nested ensembles
+- Added support for OpenAI-compatible APIs
+- Improved LLM architecture and model abstraction
+- New tutorials for reranking and ensemble learning
+- Added nested ensemble diagrams
+- Improved LLM documentation
+- Fixed model assignment issues
+- Fixed ensemble learning bugs
+- Improved pipeline stability
+- Upgraded OpenAI SDK
+- Updated dependencies
+- Expanded unit tests
+- Relevant issue: [#110](https://github.com/sciknoworg/OntoAligner/issues/110)
+
+### V1.9.2 Changelog (July 5, 2026)
+- Update requirements.
+- Optimize the LLM loadings and use `BitsAndBytesConfig`.
+- Minor adjustment the RAG documentations.
+- Relevant issue: [#106](https://github.com/sciknoworg/OntoAligner/issues/106)
+
+### V1.9.1 Changelog (July 2, 2026)
+- Fix typo in ensemble aligner code and documentation.
+- Update readme.
+
+### V1.9.0 Changelog (June 29, 2026)
+- Ensemble Aligner is added.
+- Ensemble Aligner documentation.
+- Ensemble Aligner example is added.
+- Added unittests for Ensemble Aligner.
+- Reranker added with documentation to the retrieval component of the aligner.
+- PropMatch Aligner extended to support LLM and RAG based alignments.
+- Financial case study added.
+- Documentation is improved.
+- Bug fixing in the RAG component of the aligner.
+- Parser customization is added to the aligner.
+- AlignerPipeline is added to the aligner in support of ensemble learning and other aligners.
+
+### V1.8.0 Changelog (May 22, 2026)
+- OLaLa Aligner is added.
+- OLaLa Aligner documentation.
+- OLaLa Aligner example is added.
+- Added unittests for OLaLa Aligner.
+
+### V1.7.0 Changelog (May 15, 2026)
+- FloraAligner is in action for KG alignment.
+- Documentation refactorings.
+- Added more metrics.
+- Updated the packages.
+- Renamings in examples.
+- Added unittests for Flora aligner.
+- KG loading support.
+- Added MRR and Hit@k metrics with a dedicated documentation page.
+- Minor improvement in parsers.
+- Getting rid of the dependency with `py_stringmatching` (from `propmatch` aligner).
+
 ### V1.6.0 Changelog (Janouary 2, 2026)
 - Add OS compatibility CI/CD
 - Minor fix to documentations
