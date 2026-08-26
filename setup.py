@@ -37,6 +37,9 @@ setup(
         "scipy==1.15.3",
         "multiprocess",
         "cohere",
+        "sssom-pydantic",
+        "bioregistry",
+        "curies",
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
