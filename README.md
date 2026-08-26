@@ -131,8 +131,8 @@ print("Hybrid Matching Evaluation Report:", evaluation)
 xml_str = xmlify.xml_alignment_generator(matchings=hybrid_matchings)
 open("matchings.xml", "w", encoding="utf-8").write(xml_str)
 
-# Step 8: write SSSOM
-write_sssom(hybrid_matchings)
+# Step 8: implicitly convert to SSSOM and write to disk
+write_sssom(hybrid_matchings, "matchings.sssom.tsv")
 ```
 
 ### Advanced `AlignerPipeline`

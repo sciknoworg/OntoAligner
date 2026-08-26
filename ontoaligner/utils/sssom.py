@@ -38,8 +38,10 @@ LOOKUPS = {
 
 
 def to_semantic_mappings(
-    matchings: list[dict], converter: curies.Converter
+    matchings: list[dict], converter: curies.Converter | None = None,
 ) -> list[SemanticMapping]:
+    if converter is None:
+        converter = bioregistry.get_default_converter()
     mappings = []
     for matching in matchings:
         try:
