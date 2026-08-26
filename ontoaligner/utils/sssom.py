@@ -5,12 +5,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TextIO
 
-import sssom_pydantic
-from sssom_pydantic import SemanticMapping, MappingSet
 import bioregistry
-from curies import vocabulary as v
 import curies
-
+import sssom_pydantic
+from curies import vocabulary as v
+from sssom_pydantic import MappingSet, SemanticMapping
 
 __all__ = [
     "write_sssom",
