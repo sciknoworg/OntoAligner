@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TextIO
+from typing import Any, TextIO
 
 import bioregistry
 import curies
@@ -63,5 +63,6 @@ def _to_semantic_mapping(
         subject=sub,
         predicate=LOOKUPS[matching.get("relation", "=")],
         object=obj,
+        justification=v.unspecified_matching_process,
         confidence=matching.get("score"),
     )
