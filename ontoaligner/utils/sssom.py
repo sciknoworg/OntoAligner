@@ -67,12 +67,18 @@ def to_semantic_mappings(
 
 
 def _to_semantic_mapping(
-    matching: dict, converter: curies.Converter
+    matching: dict[str, Any], converter: curies.Converter
 ) -> SemanticMapping | None:
     sub = converter.parse_uri(matching["source"])
     obj = converter.parse_uri(matching["target"])
     if sub is None or obj is None:
         return None
+
+    if confidence := matching.get("score"):
+        confidence = float(confidence)
+        if confidence < 0 or confidence > 1:
+            confidence = None
+
     return SemanticMapping(
         subject=sub,
         predicate=LOOKUPS[matching.get("relation", "=")],
@@ -80,7 +86,7 @@ def _to_semantic_mapping(
         # depending on the aligner, this might be one of several
         # other things from the SEMAPV namespace
         justification=v.unspecified_matching_process,
-        confidence=matching.get("score"),
+        confidence=confidence,
         mapping_date=datetime.date.today(),  # noqa: DTZ011
         # TODO in follow-up, add additional fields such as:
         #  mapping tool, license, etc. from
