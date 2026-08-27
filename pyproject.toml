@@ -33,6 +33,9 @@ pykeen = "^1.11.1"
 multiprocess = "*"
 scipy = "^1.15.3"
 cohere = "*"
+sssom = "^0.4.21"
+bioregistry = "*"
+curies = "*"
 
 [tool.poetry.dev-dependencies]
 ruff = "*"
