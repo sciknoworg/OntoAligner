@@ -121,6 +121,8 @@ class BaseVoting(ABC):
         Returns:
             List[Dict]: The filtered/selected predictions.
         """
+        if self.selection == "none":
+            return fused
         if self.selection == "top1_source":
             return self._select_top1_per_source(fused=fused)
         if self.selection == "bijective":
