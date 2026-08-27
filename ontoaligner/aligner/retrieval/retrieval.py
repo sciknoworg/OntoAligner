@@ -268,7 +268,7 @@ class MLRetrieval(Retrieval):
         Returns:
             None
         """
-        self.model = SentenceTransformer(self.path, device=self.kwargs["device"])
+        self.model = SentenceTransformer(path, device=self.kwargs["device"])
 
     def fit(self, inputs: Any) -> Any:
         """
@@ -330,7 +330,7 @@ class MLRetrieval(Retrieval):
             )
             clf.fit(x, y)
             similarities = clf.decision_function(x)[1:]
-            values, indexes = torch.topk(torch.Tensor(similarities), k=self.kwargs["top_k"], axis=-1)
+            values, indexes = torch.topk(torch.Tensor(similarities), k=min(self.kwargs["top_k"], len(similarities)), axis=-1)
             scores = [float(value) for value in values]
             ids = [int(index) for index in indexes]
             candidates_iris, candidates_scores = [], []
