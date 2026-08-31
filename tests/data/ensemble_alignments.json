@@ -1,0 +1,57 @@
+[
+    {
+        "source": "https://kos.lifewatch.eu/thesauri/fishtraits/c_10",
+        "target": "https://kos.lifewatch.eu/thesauri/zooplanktontraits/c_13",
+        "score": 5.0
+    },
+    {
+        "source": "https://kos.lifewatch.eu/thesauri/fishtraits/c_4",
+        "target": "https://kos.lifewatch.eu/thesauri/zooplanktontraits/c_1",
+        "score": 5.0
+    },
+    {
+        "source": "https://kos.lifewatch.eu/thesauri/fishtraits/c_44",
+        "target": "https://kos.lifewatch.eu/thesauri/zooplanktontraits/c_15",
+        "score": 5.0
+    },
+    {
+        "source": "https://kos.lifewatch.eu/thesauri/fishtraits/c_53",
+        "target": "https://kos.lifewatch.eu/thesauri/zooplanktontraits/c_16",
+        "score": 5.0
+    },
+    {
+        "source": "https://kos.lifewatch.eu/thesauri/fishtraits/c_6",
+        "target": "https://kos.lifewatch.eu/thesauri/zooplanktontraits/c_3",
+        "score": 5.0
+    },
+    {
+        "source": "https://kos.lifewatch.eu/thesauri/fishtraits/c_7",
+        "target": "https://kos.lifewatch.eu/thesauri/zooplanktontraits/c_4",
+        "score": 5.0
+    },
+    {
+        "source": "https://kos.lifewatch.eu/thesauri/fishtraits/c_82",
+        "target": "https://kos.lifewatch.eu/thesauri/zooplanktontraits/c_86",
+        "score": 5.0
+    },
+    {
+        "source": "https://kos.lifewatch.eu/thesauri/fishtraits/c_9",
+        "target": "https://kos.lifewatch.eu/thesauri/zooplanktontraits/c_24",
+        "score": 5.0
+    },
+    {
+        "source": "https://kos.lifewatch.eu/thesauri/fishtraits/c_49",
+        "target": "https://kos.lifewatch.eu/thesauri/zooplanktontraits/c_20",
+        "score": 4.0
+    },
+    {
+        "source": "https://kos.lifewatch.eu/thesauri/fishtraits/c_51",
+        "target": "https://kos.lifewatch.eu/thesauri/zooplanktontraits/c_19",
+        "score": 3.0
+    },
+    {
+        "source": "https://kos.lifewatch.eu/thesauri/fishtraits/c_52",
+        "target": "https://kos.lifewatch.eu/thesauri/zooplanktontraits/c_18",
+        "score": 3.0
+    }
+]
