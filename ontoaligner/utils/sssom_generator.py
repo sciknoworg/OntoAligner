@@ -11,22 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-"""
-This module provides functionality to generate ontology alignment files
-in SSSOM tab-separated format.
-"""
-
 from io import StringIO
 from typing import Any, Dict, List, Optional
-
 import pandas as pd
 import bioregistry
 from curies import Converter
-from sssom.util import MappingSetDataFrame, safe_compress
-from sssom.writers import write_tsv
-
-from ontoaligner import __version__
+import sssom as sss
+from .. import __version__
 
 
 def _get_label_lookup(entities: Optional[List[Dict]]) -> Dict[str, str]:
@@ -261,7 +252,8 @@ def sssom_alignment_generator(
     postprocessor: Optional[Any] = None,
     postprocessor_params: Optional[Dict] = None,
     mapping_justification: Optional[str] = None,
-) -> str:
+    include_aligner_metadata: bool = True,
+ ) -> str:
     """
     Generate ontology alignments in SSSOM TSV format.
 
@@ -332,23 +324,26 @@ def sssom_alignment_generator(
         source_iri = matching["source"]
         target_iri = matching["target"]
 
-        aligner_metadata = _get_aligner_metadata(
-            matching=matching,
-            aligner=aligner,
-            postprocessor=postprocessor,
-            postprocessor_params=postprocessor_params,
-        )
-
-        justification = (
-            mapping_justification
-            or aligner_metadata["mapping_justification"]
-        )
+        if include_aligner_metadata:
+            aligner_metadata = _get_aligner_metadata(
+                matching=matching,
+                aligner=aligner,
+                postprocessor=postprocessor,
+                postprocessor_params=postprocessor_params,
+            )
+            justification = (
+                mapping_justification
+                or aligner_metadata.get("mapping_justification", "semapv:UnspecifiedMatching")
+            )
+        else:
+            aligner_metadata = {}
+            justification = mapping_justification or "semapv:UnspecifiedMatching"
 
         row = {
-            "subject_id": safe_compress(source_iri, converter),
-            "predicate_id": safe_compress(predicate_id, converter),
-            "object_id": safe_compress(target_iri, converter),
-            "mapping_justification": safe_compress(
+            "subject_id": sss.util.safe_compress(source_iri, converter),
+            "predicate_id": sss.util.safe_compress(predicate_id, converter),
+            "object_id": sss.util.safe_compress(target_iri, converter),
+            "mapping_justification": sss.util.safe_compress(
                 justification,
                 converter,
             ),
@@ -360,13 +355,13 @@ def sssom_alignment_generator(
         if target_iri in target_labels:
             row["object_label"] = target_labels[target_iri]
 
-        if "similarity_score" in aligner_metadata:
+        if include_aligner_metadata and "similarity_score" in aligner_metadata:
             row["similarity_score"] = aligner_metadata["similarity_score"]
             row["similarity_measure"] = aligner_metadata[
                 "similarity_measure"
             ]
 
-        if "confidence" in aligner_metadata:
+        if include_aligner_metadata and "confidence" in aligner_metadata:
             row["confidence"] = aligner_metadata["confidence"]
 
         rows.append(row)
@@ -384,13 +379,13 @@ def sssom_alignment_generator(
 
     sssom_df = pd.DataFrame(rows)
 
-    sssom_mapping_set = MappingSetDataFrame(
+    sssom_mapping_set = sss.util.MappingSetDataFrame(
         df=sssom_df,
         converter=converter,
         metadata=metadata,
     )
 
     sssom_output = StringIO()
-    write_tsv(sssom_mapping_set, sssom_output)
+    sss.writers.write_tsv(sssom_mapping_set, sssom_output)
 
     return sssom_output.getvalue()

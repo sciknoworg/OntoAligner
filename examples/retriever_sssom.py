@@ -4,7 +4,7 @@ import json
 # The library provides tools for ontology alignment tasks, including dataset management, encoding, retrieval models, and postprocessing.
 from ontoaligner import ontology, encoder
 from ontoaligner.utils import metrics
-from ontoaligner.utils.sssom import sssom_alignment_generator
+from ontoaligner.utils.sssom_generator import sssom_alignment_generator
 from ontoaligner.aligner import SBERTRetrieval  # Other available modules: AdaRetrieval, SVMBERTRetrieval, BM25Retrieval
 from ontoaligner.postprocess import retriever_postprocessor
 
@@ -111,6 +111,10 @@ sssom_str = sssom_alignment_generator(
     postprocessor_params={
         "threshold": threshold,
     },
+    # If you don't want per-matching aligner/postprocessor metadata (e.g. similarity
+    # scores or mapping_justification inferred from the aligner), set
+    # include_aligner_metadata=False to produce a minimal SSSOM output.
+    include_aligner_metadata=False,
 )
 
 
