@@ -17,7 +17,7 @@ import pandas as pd
 import bioregistry
 from curies import Converter
 import sssom as sss
-from .. import __version__
+from ontoaligner import __version__
 
 
 def _get_label_lookup(entities: Optional[List[Dict]]) -> Dict[str, str]:

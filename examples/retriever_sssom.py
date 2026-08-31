@@ -4,7 +4,7 @@ import json
 # The library provides tools for ontology alignment tasks, including dataset management, encoding, retrieval models, and postprocessing.
 from ontoaligner import ontology, encoder
 from ontoaligner.utils import metrics
-from ontoaligner.utils.sssom_generator import sssom_alignment_generator
+from ontoaligner.utils.sssom import sssom_alignment_generator
 from ontoaligner.aligner import SBERTRetrieval  # Other available modules: AdaRetrieval, SVMBERTRetrieval, BM25Retrieval
 from ontoaligner.postprocess import retriever_postprocessor
 
@@ -21,9 +21,9 @@ print("Test Task:", task)
 # Step 2: Collect the ontology dataset
 # The dataset includes paths to the source ontology, target ontology, and reference matching files.
 dataset = task.collect(
-    source_ontology_path="assets/mouse-human/source.xml",
-    target_ontology_path="assets/mouse-human/target.xml",
-    reference_matching_path="assets/mouse-human/reference.xml",
+    source_ontology_path="../assets/mouse-human/source.xml",
+    target_ontology_path="../assets/mouse-human/target.xml",
+    reference_matching_path="../assets/mouse-human/reference.xml",
 )
 
 
