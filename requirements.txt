@@ -26,3 +26,6 @@ wheel
 twine
 pytest
 cohere
+sssom-pydantic
+bioregistry
+curies
