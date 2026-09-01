@@ -1,5 +1,10 @@
 ## Changelog
 
+### V1.9.4 Changelog (September 1, 2026)
+- Adding SSSOM [#128](https://github.com/sciknoworg/OntoAligner/pull/128) and SSSOM-Pydantic [#124](https://github.com/sciknoworg/OntoAligner/pull/124) alignment generator.
+- Bug fixing ([#129](https://github.com/sciknoworg/OntoAligner/pull/129)).
+- Minor document fixes ([#129](https://github.com/sciknoworg/OntoAligner/pull/129)).
+
 ### V1.9.3 Changelog (August 7, 2026)
 - Added reranking support to `AlignerPipeline`
 - Added ensemble learning with voting and nested ensembles
