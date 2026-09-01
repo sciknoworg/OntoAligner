@@ -94,7 +94,7 @@ Usage
 
     .. code-block:: python
 
-        task = OLaLaOMDataset(language="en")
+        task = OLaLaOMDataset()
         print("Task:", task)
 
         dataset = task.collect(

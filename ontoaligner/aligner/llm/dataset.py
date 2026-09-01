@@ -160,54 +160,14 @@ class PropertyFullTextLLMDataset(LLMDataset):
         source = self.preprocess(input_data["source"].get("label", ""))
         target = self.preprocess(input_data["target"].get("label", ""))
 
-        source_domain = (
-            " ".join(input_data["source"].get("domain_text", []))
-            if len(input_data["source"].get("domain_text", [])) > 0
-            else ""
-        )
+        source_domain = self.preprocess(input_data["source"].get("domain_text", ""))
+        target_domain = self.preprocess(input_data["target"].get("domain_text", ""))
 
-        target_domain = (
-            " ".join(input_data["target"].get("domain_text", []))
-            if len(input_data["target"].get("domain_text", [])) > 0
-            else ""
-        )
+        source_range = self.preprocess(input_data["source"].get("range_text", ""))
+        target_range = self.preprocess(input_data["target"].get("range_text", ""))
 
-        source_range = (
-            " ".join(input_data["source"].get("range_text", []))
-            if len(input_data["source"].get("range_text", [])) > 0
-            else ""
-        )
-
-        target_range = (
-            " ".join(input_data["target"].get("range_text", []))
-            if len(input_data["target"].get("range_text", [])) > 0
-            else ""
-        )
-
-        source_inverse = ""
-        if input_data["source"].get("inverse_of"):
-            source_inverse = (
-                " ".join(input_data["source"].get("inverse_label", []))
-                if len(input_data["source"].get("inverse_label", [])) > 0
-                else ""
-            )
-
-        target_inverse = ""
-        if input_data["target"].get("inverse_of"):
-            target_inverse = (
-                " ".join(input_data["target"].get("inverse_label", []))
-                if len(input_data["target"].get("inverse_label", [])) > 0
-                else ""
-            )
-
-        source_domain = self.preprocess(source_domain)
-        target_domain = self.preprocess(target_domain)
-
-        source_range = self.preprocess(source_range)
-        target_range = self.preprocess(target_range)
-
-        source_inverse = self.preprocess(source_inverse)
-        target_inverse = self.preprocess(target_inverse)
+        source_inverse = self.preprocess(input_data["source"].get("inverse_text", ""))
+        target_inverse = self.preprocess(input_data["target"].get("inverse_text", ""))
 
         template = (
             template.replace("{source}", source)

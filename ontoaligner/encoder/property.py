@@ -133,7 +133,7 @@ class PropMatchEncoder(PropertyEncoder):
         range_text = " ".join(property['range_text']) if len(property['range_text']) > 0 else ""
         inverse_text = ""
         if property['inverse_of']:
-            inverse_text = " ".join(property['inverse_label']) if len(property['inverse_label']) > 0 else ""
+            inverse_text = property.get("inverse_label") or ""
 
         combined_text = label
         if domain_text:
@@ -261,11 +261,7 @@ class PropertyFullTextLLMEncoder(LLMEncoder):
 
         inverse_text = ""
         if prop.get("inverse_of"):
-            inverse_text = (
-                " ".join(prop.get("inverse_label", []))
-                if len(prop.get("inverse_label", [])) > 0
-                else ""
-            )
+            inverse_text = prop.get("inverse_label") or ""
 
         combined_text = label
 
@@ -279,10 +275,9 @@ class PropertyFullTextLLMEncoder(LLMEncoder):
             combined_text += "  inverse: " + inverse_text
 
         return {
-            "iri": prop["iri"],
-            "label": label,
-            "domain": domain_text,
-            "range": range_text,
-            "inverse": inverse_text,
+            **prop,
+            "domain_text": domain_text,
+            "range_text": range_text,
+            "inverse_text": inverse_text,
             "text": combined_text,
-        }    
+        }

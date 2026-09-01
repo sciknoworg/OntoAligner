@@ -36,12 +36,12 @@ class LLMEncoder(BaseEncoder):
         source_onto, target_onto = kwargs["source"], kwargs["target"]
         source_ontos = []
         for source in source_onto:
-            encoded_source = self.get_owl_items(owl=source)
+            encoded_source = self.get_owl_items(source)
             # encoded_source["concept"] = self.preprocess(encoded_source["text"])
             source_ontos.append(encoded_source)
         target_ontos = []
         for target in target_onto:
-            encoded_target = self.get_owl_items(owl=target)
+            encoded_target = self.get_owl_items(target)
             # encoded_target["concept"] = self.preprocess(encoded_target["text"])
             target_ontos.append(encoded_target)
         return [source_ontos, target_ontos]

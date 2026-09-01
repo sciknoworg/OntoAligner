@@ -42,9 +42,9 @@ class ReciprocalRankFusionVoting(BaseVoting):
         Returns a string representation of the voting method.
 
         Returns:
-            dict: A dictionary with the class name as key and voting configuration as value.
+            str: A simple string representation of the class ("ReciprocalRankFusionVoting").
         """
-        return {"ReciprocalRankFusion": {"k": self.k}}
+        return "ReciprocalRankFusionVoting"
 
     def fuse(self, aligner_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         """

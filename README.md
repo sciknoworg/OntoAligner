@@ -89,7 +89,7 @@ Build the same RAG-based alignment yourself for full control over every stage:
 
 ```python
 from ontoaligner.ontology import GenericOMDataset
-from ontoaligner.utils import metrics, xmlify
+from ontoaligner.utils import metrics, xmlify, sssom_pydantic
 from ontoaligner.aligner import MistralLLMBERTRetrieverRAG
 from ontoaligner.encoder import ConceptParentRAGEncoder
 from ontoaligner.postprocess import rag_hybrid_postprocessor
@@ -129,6 +129,9 @@ print("Hybrid Matching Evaluation Report:", evaluation)
 # Step 7: Convert matchings to XML format and save the XML representation
 xml_str = xmlify.xml_alignment_generator(matchings=hybrid_matchings)
 open("matchings.xml", "w", encoding="utf-8").write(xml_str)
+
+# Or you can explicitly convert to SSSOM and write to disk
+sssom_pydantic.sssom_alignment_generator(hybrid_matchings, "matchings.sssom.tsv")
 ```
 
 ### Advanced `AlignerPipeline`
