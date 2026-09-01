@@ -42,14 +42,9 @@ class WeightedVoting(BaseVoting):
         Returns a string representation of the voting method.
 
         Returns:
-            dict: A dictionary with the class name as key and voting configuration as value.
+            str: A simple string representation of the class ("WeightedVoting").
         """
-        return {
-            "WeightedVoting": {
-                "min_votes": self.min_votes,
-                "score_threshold": self.score_threshold,
-            }
-        }
+        return "WeightedVoting"
 
     def fuse(self, aligner_outputs: List[Tuple[List[Dict], float]]) -> List[Dict]:
         """

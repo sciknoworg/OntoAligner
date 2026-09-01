@@ -296,9 +296,10 @@ class Graph(object):
             bool: ``True`` if the predicate has any literal objects.
         """
         if pred in self.relindex:
-            for literal in self.relindex[pred]:
-                if is_literal(literal):
-                    return True
+            for subject in self.relindex[pred]:
+                for literal in self.relindex[pred][subject]:
+                    if is_literal(literal):
+                        return True
         return False
 
     def local_functionality(self, subjects, preds):
@@ -1025,7 +1026,7 @@ class FLORAOpenEAKnowledgeBase(ABC):
             for line in file.readlines():
                 head, rel, tail = line.strip().split('\t')
                 kg.add((head, rel, tail))
-        if not attribute_path:
+        if attribute_path:
             with open(attribute_path, 'r', encoding='UTF-8') as attribute_file:
                 for line in attribute_file.readlines():
                     head, attribute, literal = line.strip().split('\t')
@@ -1185,7 +1186,7 @@ class FLORADBpedia15KKnowledgeBase(ABC):
                 id2rel[int(ids)] = rel
 
         with open(ent_ids_path, encoding='UTF-8') as ent_ids_file:
-            if (not translated_name_path) and ent_ids_path.endswith('_1'):
+            if translated_name_path and ent_ids_path.endswith('_1'):
                 ent_name_trans = {}
                 with open(translated_name_path, encoding='UTF-8') as f2:
                     for line1, line2 in zip(ent_ids_file.readlines(), f2.readlines()):
@@ -1219,7 +1220,7 @@ class FLORADBpedia15KKnowledgeBase(ABC):
                 head, rel, tail = int(head), int(rel), int(tail)
                 kg.add((id2ent[head], id2rel[rel], id2ent[tail]))
 
-        if not att_triples_path:
+        if att_triples_path:
             for triple in parse_turtle_triples(att_triples_path):
                 head, attribute, literal = triple
                 literal = literal.replace('\n','\\n')\
@@ -1641,8 +1642,8 @@ class FLORAOpenEAOMDataset(OMDataset):
         target_kg = self.target_ontology.parse(target_kg_path, target_kg_attribute_path)
         return {
             "dataset-info": {"track": self.track, "ontology-name": self.ontology_name},
-            "source":       source_kg,
-            "target":       target_kg,
+            "source":       [source_kg],
+            "target":       [target_kg],
             "reference":    self.alignments.parse(input_file_path=reference_matching_path),
         }
 

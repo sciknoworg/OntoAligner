@@ -406,8 +406,7 @@ class FLORALiteralsEmbedding:
         if not identity:
             if emb_path is not None:
                 try:
-                    self.kg1_pretrained = self.load_embeddings(emb_path)
-                    self.kg2_pretrained = self.load_embeddings(emb_path)
+                    self.kg1_pretrained, self.kg2_pretrained = self.load_embeddings(emb_path)
                 except Exception as e:
                     raise RuntimeError(f"Error loading embeddings from {emb_path}: {e} \n "
                                        f"Please ensure the embedding files exist and are in the correct format. ")

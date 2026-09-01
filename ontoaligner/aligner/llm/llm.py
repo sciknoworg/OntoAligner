@@ -232,7 +232,7 @@ class BaseLLMArch(LLM):
             path (str): The path to the pretrained model.
         """
         if self.kwargs["device"] != "cpu":
-            self.model = self.model.from_pretrained(self.path, load_in_8bit=True, device_map=self.kwargs['device_map'])
+            self.model = self.model.from_pretrained(path, load_in_8bit=True, device_map=self.kwargs['device_map'])
         else:
             super().load_model(path=path)
 
@@ -276,6 +276,7 @@ class BaseLLMArch(LLM):
             sequence_ids = self.model.generate(
                 input_ids=tokenized_input_data["input_ids"],
                 attention_mask=tokenized_input_data["attention_mask"],
+                num_beams=self.kwargs["num_beams"],
                 max_new_tokens=self.kwargs["max_new_tokens"],
                 temperature=self.kwargs["temperature"],
                 top_p=self.kwargs["top_p"],
@@ -402,6 +403,68 @@ class EncoderDecoderLLMArch(BaseLLMArch):
             str: String representation of EncoderDecoderLLMArch class.
         """
         return "EncoderDecoderLLMArch"
+
+    def generate_for_one_input(self, tokenized_input_data: Any) -> List:
+        """
+        Generates output for a single input using beam search.
+
+        Args:
+            tokenized_input_data (Any): The tokenized input data.
+
+        Returns:
+            List: A list of generated texts for the single input.
+        """
+        with torch.no_grad():
+            sequence_ids = self.model.generate(
+                **tokenized_input_data,
+                num_beams=self.kwargs["num_beams"],
+                max_new_tokens=self.kwargs["max_new_tokens"],
+                temperature=self.kwargs["temperature"],
+                top_p=self.kwargs["top_p"],
+                pad_token_id=self.tokenizer.eos_token_id,
+                return_dict_in_generate=True,
+                output_scores=False,
+            )
+
+            generated_ids = sequence_ids["sequences"]
+
+        sequences = self.tokenizer.batch_decode(
+            generated_ids,
+            skip_special_tokens=True,
+            clean_up_tokenization_spaces=False,
+        )
+        return sequences
+
+    def generate_for_multiple_input(self, tokenized_input_data: Any) -> List:
+        """
+        Generates output for multiple inputs.
+
+        Args:
+            tokenized_input_data (Any): The tokenized input data.
+
+        Returns:
+            List: A list of generated texts for the multiple inputs.
+        """
+        with torch.no_grad():
+            sequence_ids = self.model.generate(
+                input_ids=tokenized_input_data["input_ids"],
+                attention_mask=tokenized_input_data["attention_mask"],
+                num_beams=self.kwargs["num_beams"],
+                max_new_tokens=self.kwargs["max_new_tokens"],
+                temperature=self.kwargs["temperature"],
+                top_p=self.kwargs["top_p"],
+                pad_token_id=self.tokenizer.eos_token_id,
+                return_dict_in_generate=True,
+                output_scores=False,
+            )
+            generated_ids = sequence_ids["sequences"]
+
+        sequences = self.tokenizer.batch_decode(
+            generated_ids,
+            skip_special_tokens=True,
+            clean_up_tokenization_spaces=False,
+        )
+        return sequences
 
 
 class DecoderLLMArch(BaseLLMArch):

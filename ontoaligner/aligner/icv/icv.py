@@ -35,6 +35,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from .tasks.demo import DemoProbInferenceForStyle
 from ..rag import RAG, RAGBasedDecoderLLMArch
 from ...postprocess import process
+from .utils.llm_layers import get_layers
 
 def tokenize_each_demonstration(tok, demonstration_list, dataset_name=None):
     """
@@ -141,6 +142,18 @@ class ICVAdapter(torch.nn.Module):
         for params in self.model.parameters():
             params.requires_grad = False
 
+    def _get_mlp_attr_name(self, layer):
+        """
+        Returns the feed-forward/MLP attribute name used by the transformer layer.
+        """
+        for attr_name in ("mlp", "ffn", "feed_forward", "feedforward"):
+            if hasattr(layer, attr_name):
+                return attr_name
+
+        raise AttributeError(
+            f"Could not find MLP/FFN module in layer {layer.__class__.__name__}"
+        )
+
     def get_model(self, icvs, alpha):
         """
         Adds ICV-based adapter layers to the model for ICV-based embedding adjustment.
@@ -155,23 +168,28 @@ class ICVAdapter(torch.nn.Module):
             torch.nn.Module
                 The model with ICV-based adapter layers integrated.
         """
-        for i in range(0, len(self.model.transformer.h)):
-            icvs_ = icvs[i]
-            self.model.transformer.h[i].mlp = torch.nn.Sequential(
-                self.model.transformer.h[i].mlp, AdapterLayer(icvs_, alpha)
-            )
+        layers = get_layers(self.model)
+
+        for i, layer in enumerate(layers):
+            mlp_attr_name = self._get_mlp_attr_name(layer)
+            mlp_layer = getattr(layer, mlp_attr_name)
+
+            setattr(layer,mlp_attr_name,torch.nn.Sequential(mlp_layer, AdapterLayer(icvs[i], alpha)))
         return self.model
 
     def remove_adapter(self):
         """
         Removes adapter layers from the model and restores the original architecture.
-
         """
         weight_all = []
+        layers = get_layers(self.model)
 
-        for i in range(0, len(self.model.transformer.h)):
-            weight_all.append(self.model.transformer.h[i].mlp[1].weight_all)
-            self.model.transformer.h[i].mlp = self.model.transformer.h[i].mlp[0]
+        for layer in layers:
+            mlp_attr_name = self._get_mlp_attr_name(layer)
+            mlp_layer = getattr(layer, mlp_attr_name)
+
+            weight_all.append(mlp_layer[1].weight_all)
+            setattr(layer, mlp_attr_name, mlp_layer[0])
         return weight_all
 
 
@@ -222,7 +240,7 @@ class ICVBasedDecoderLLMArch(RAGBasedDecoderLLMArch):
         icvs_to_shift = [icv_examples]
         updated_wrapper = ICVAdapter(self.model)
         _ = updated_wrapper.get_model(
-            torch.stack(icvs_to_shift, dim=1).cuda(), alpha=[self.icv_alpha]
+            torch.stack(icvs_to_shift, dim=1).to(self.kwargs.get("device", "cpu")), alpha=[self.icv_alpha]
         )
 
 
@@ -278,7 +296,11 @@ class ICV(RAG):
         """
         # IR generation
         ir_output = self.ir_generate(input_data=input_data)
-        ir_output_cleaned = process.retriever_postprocessor(predicts=ir_output)
+        if 'threshold' in self.kwargs['retriever_config']:
+            threshold = self.kwargs['retriever_config']['threshold']
+        else:
+            threshold = 0.0
+        ir_output_cleaned = process.retriever_postprocessor(predicts=ir_output, threshold=threshold)
         examples = self.build_icv_examples(input_data=input_data)
         self.LLM.build_icv(examples=examples)
         # LLm generation
