@@ -5,12 +5,14 @@
 <div align="center">
 
 [![PyPI version](https://badge.fury.io/py/OntoAligner.svg)](https://badge.fury.io/py/OntoAligner)
+[![PyPI - Python Versions](https://img.shields.io/pypi/pyversions/OntoAligner)](https://pypi.org/project/OntoAligner)
 [![PyPI Downloads](https://static.pepy.tech/badge/ontoaligner)](https://pepy.tech/projects/ontoaligner)
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Documentation Status](https://readthedocs.org/projects/ontoaligner/badge/?version=main)](https://ontoaligner.readthedocs.io/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](MAINTANANCE.md)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14533133.svg)](https://doi.org/10.5281/zenodo.14533133)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.14533133-blue.svg)](https://doi.org/10.5281/zenodo.14533133)
+
 
 </div>
 
