@@ -189,7 +189,7 @@ class FLORAAligner(BaseOMModel):
         string_identity: bool = False,
         relinit: float = 0.1,
         ngrams: Optional[List[int]] = None,
-        model_id: Optional[str] = None,
+        model_id: Optional[str] = "Lihuchen/pearl_small",
         emb_path: Optional[str] = None,
         training_data: Optional[str] = None,
         device: Optional[str] = None,

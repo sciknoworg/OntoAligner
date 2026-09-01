@@ -282,7 +282,7 @@ ICV-RAG Aligner
     [1] Liu, S., Ye, H., Xing, L., & Zou, J. (2023). `In-context vectors: Making in context learning more effective and controllable through latent space steering <https://arxiv.org/abs/2311.06668>`_. arXiv preprint arXiv:2311.06668.
 
 
-This RAG variant performs ontology matching using ``ConceptRAGEncoder`` only. The In-Contect Vectors introduced by [1](https://github.com/shengliu66/ICV) tackle in-context learning as in-context vectors (ICV). We used LLMs in this perspective in the RAG module. The workflow is the same as RAG or FewShot RAG with the following differences:
+This RAG variant performs ontology matching using ``ConceptRAGEncoder`` only. The In-Context Vectors introduced by [1](https://github.com/shengliu66/ICV) tackle in-context learning as in-context vectors (ICV). We used LLMs in this perspective in the RAG module. The workflow is the same as RAG or FewShot RAG with the following differences:
 
 
 1. Incorporate the ``ConceptRAGEncoder`` and also provide reference (or examples to build up the ICV vectors).
@@ -314,7 +314,7 @@ Embedded ICV-RAG aligners within OntoAligner:
      - Link
 
    * - ``FalconLLMAdaRetrieverICVRAG``
-     - Falcon LLM with Ada retriever for iterative consistency verification (ICV) alignment.
+     - Falcon LLM with Ada retriever for ICV-driven alignment.
      - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/icv/models.py#L47-L54>`__
 
    * - ``FalconLLMBERTRetrieverICVRAG``
@@ -342,7 +342,7 @@ Embedded ICV-RAG aligners within OntoAligner:
      - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/icv/models.py#L67-L74>`__
 
    * - ``VicunaLLMBERTRetrieverICVRAG``
-     - Vicuna model paired with BERT-based retrieval for iterative consistency verification.
+     - Vicuna model paired with BERT-based retrieval for ICV-driven alignment.
      - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/icv/models.py#L77-L84>`__
 
 

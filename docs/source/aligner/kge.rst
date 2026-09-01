@@ -187,55 +187,55 @@ The following table lists the available KGE aligners:
 
    * - ``ConvEAligner``
      - Based on ConvE, which uses 2D convolutions over reshaped entity and relation embeddings to model complex interactions.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L17-L18>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L17-L18>`_
    * - ``TransDAligner``
      - Based on TransD, which constructs relation-specific projection matrices dynamically from both entity and relation vectors.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L21-L22>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L21-L22>`_
    * - ``TransEAligner``
      - Based on TransE, a translation-based model that learns embeddings where :math:`h + r \approx t`.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L25-L26>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L25-L26>`_
    * - ``TransFAligner``
      - Based on TransF, which enables flexible translations for complex relations without increasing model complexity.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L29-L230>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L29-L230>`_
    * - ``TransHAligner``
      - Based on TransH, which projects entities onto relation-specific hyperplanes before translation.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L33-L234>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L33-L234>`_
    * - ``TransRAligner``
      - Based on TransR, which embeds entities and relations in separate spaces using relation-specific projections.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L37-L38>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L37-L38>`_
    * - ``DistMultAligner``
      - Based on DistMult, a bilinear model that uses diagonal matrices for efficient relational modeling.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L41-L42>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L41-L42>`_
    * - ``ComplExAligner``
      - Based on ComplEx, which uses complex-valued embeddings to model symmetric and antisymmetric relations; includes a custom similarity function using real parts of complex dot products.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L45-L49>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L45-L49>`_
    * - ``HolEAligner``
      - Based on HolE, which combines compositional and holographic representations using circular correlation.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L51-L52>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L51-L52>`_
    * - ``RotatEAligner``
      - Based on RotatE, which models relations as rotations in complex space and supports rich relational patterns; includes a similarity override.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L55-L60>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L55-L60>`_
    * - ``SimplEAligner``
      - Based on SimplE, which learns dependent embeddings for each entity and supports fully expressive factorization.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L62-L63>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L62-L63>`_
    * - ``CrossEAligner``
      - Based on CrossE, which learns both general and triple-specific embeddings to capture bidirectional interactions.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L66-L67>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L66-L67>`_
    * - ``BoxEAligner``
      - Based on BoxE, which models relations as boxes in vector space to support hierarchies and logical rules.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L70-L71>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L70-L71>`_
    * - ``CompGCNAligner``
      - Based on CompGCN, a graph convolutional network designed for multi-relational graphs using composition operations.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L74-L75>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L74-L75>`_
    * - ``MuREAligner``
      - Based on MuRE, which embeds entities in hyperbolic space to better model hierarchies and relation-specific transformations.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L78-L79>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L78-L79>`_
    * - ``QuatEAligner``
      - Based on QuatE, which uses quaternion embeddings and custom similarity logic to model expressive 4D rotations and relational structure.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L82-L133>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L82-L133>`_
    * - ``SEAligner``
      - Based on SE, a neural model that embeds symbolic knowledge into vector space using learned neural transformations.
-     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/kge/models.py#L134-L135>`_
+     - `Source <https://github.com/sciknoworg/OntoAligner/blob/main/ontoaligner/aligner/graph/models.py#L134-L135>`_
 
 To use KGE aligner based technique:
 
@@ -279,8 +279,8 @@ KGE Retriever
 
 .. sidebar:: Key Parameters:
 
-		- ``retruever``: boolean
-		- ``top_K``: integer
+		- ``retriever``: boolean
+		- ``top_k``: integer
 
 In addition to one-to-one alignments, OntoAligner also supports retriever-based alignment. When retriever mode is enabled (``retriever=True``), the aligner returns the top-k candidate target entities for each source entity, along with their similarity scores (similar to retriever aligner). This model is useful if you want to build downstream candidate filtering pipelines, apply human-in-the-loop validation, or integrate with reranking modules (e.g., LLMs or supervised classifiers).
 

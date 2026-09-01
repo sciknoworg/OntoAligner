@@ -78,7 +78,8 @@ def precision_score(predicts: List, references: List) -> float:
     - **`precision`** (*float*): The calculated precision score.
     """
     intersection = calculate_intersection(predicts=predicts, references=references)
-    return intersection / len(predicts) if len(predicts) != 0 else 0
+    predict_set = {(predict["source"], predict["target"]) for predict in predicts}
+    return intersection / len(predict_set) if len(predict_set) != 0 else 0
 
 def recall_score(predicts: List, references: List) -> float:
     r"""
@@ -97,7 +98,8 @@ def recall_score(predicts: List, references: List) -> float:
     - **`recall`** (*float*): The calculated recall score.
     """
     intersection = calculate_intersection(predicts=predicts, references=references)
-    return intersection / len(references) if len(references) != 0 else 0
+    reference_set = {(reference["source"], reference["target"]) for reference in references}
+    return intersection / len(reference_set) if len(reference_set) != 0 else 0
 
 def f1_measurement(predicts: List, references: List, beta: int = 1) -> float:
     r"""
@@ -137,14 +139,16 @@ def evaluation_report(predicts: List, references: List, beta: int = 1) -> Dict:
     precision = precision_score(predicts=predicts, references=references)
     recall = recall_score(predicts=predicts, references=references)
     f_score = f1_measurement(predicts=predicts, references=references, beta=beta)
+    predict_set = {(predict["source"], predict["target"]) for predict in predicts}
+    reference_set = {(reference["source"], reference["target"]) for reference in references}
 
     evaluations_dict = {
         "intersection": intersection,
         "precision": precision * 100,
         "recall": recall * 100,
         "f-score": f_score * 100,
-        "predictions-len": len(predicts),
-        "reference-len": len(references),
+        "predictions-len": len(predict_set),
+        "reference-len": len(reference_set),
     }
     return evaluations_dict
 

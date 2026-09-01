@@ -77,7 +77,11 @@ class FewShotRAG(RAG):
         """
         # IR generation
         ir_output = self.ir_generate(input_data=input_data)
-        ir_output_cleaned = process.retriever_postprocessor(predicts=ir_output)
+        if 'threshold' in self.kwargs['retriever_config']:
+            threshold = self.kwargs['retriever_config']['threshold']
+        else:
+            threshold = 0.0
+        ir_output_cleaned = process.retriever_postprocessor(predicts=ir_output, threshold=threshold)
         examples = self.build_fewshots(input_data=input_data)
         input_data['examples'] = examples
         # LLm generation
