@@ -94,17 +94,25 @@ def convert_matching(matching: Mapping[str, Any], converter: curies.Converter) -
         logger.debug("Matching missing source/target: %r", matching)
         return None
 
-    subject = converter.parse_uri(source)
-    object_ = converter.parse_uri(target)
-    if subject is None or object_ is None:
+    source_curie = converter.compress(source)
+    target_curie = converter.compress(target)
+    if source_curie is None or target_curie is None:
         logger.debug("Could not parse source/target into CURIEs: %r -> %r", source, target)
         return None
+    subject = curies.NamedReference.from_curie(source_curie,name=source_curie)
+    object_ = curies.NamedReference.from_curie(target_curie,name=target_curie)
 
     # Confidence handling
     confidence: Optional[float] = None
     if "score" in matching and matching.get("score") is not None:
         try:
             confidence = float(matching.get("score"))
+            if 1 < confidence <= 1 + 1e-6:
+                confidence = 1.0
+            elif -1e-6 <= confidence < 0:
+                confidence = 0.0
+            elif not 0 <= confidence <= 1:
+                confidence = None
         except (TypeError, ValueError):
             logger.debug("Invalid confidence value: %r", matching.get("score"))
             confidence = None
